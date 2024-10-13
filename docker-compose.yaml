@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+
+  traefik:
+    profiles:
+      - dev
+    image: traefik:v2.10
+    container_name: traefik
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:8081"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   
+    networks:
+      - nx-network
+
+  npm_install:
+    profiles:
+      - install
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    entrypoint: npm install
+    container_name: npm_install
+    volumes:
+      - .:/app
+
+  go_mod_install:
+    profiles:
+      - install
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    entrypoint: ./go.mod.install.sh
+    container_name: go_mod_install
+    volumes:
+      - .:/app
+  api:
+    profiles:
+      - dev
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    entrypoint: npx nx run api:serve
+    container_name: api
+    labels:
+      - "traefik.http.routers.api.rule=PathPrefix(`/api`)"
+      - "traefik.http.services.api.loadbalancer.server.port=3000"
+      - "traefik.http.routers.api.entrypoints=web"   
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+    networks:
+      - nx-network
+    depends_on:
+      - database
+
+  frontend:
+    profiles:
+      - dev
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    entrypoint: npx nx run frontend:serve
+    container_name: frontend
+    labels:
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=4200"
+      - "traefik.http.routers.frontend.entrypoints=web"   
+    ports:
+      - '4200:4200'
+    volumes:
+      - .:/app
+    networks:
+      - nx-network
+    depends_on:
+      - api
+
+  database:
+    profiles:
+      - dev
+    image: mariadb:11.5.2
+    container_name: database
+    environment:
+      MYSQL_DATABASE: api
+      MYSQL_USER: api
+      MYSQL_PASSWORD: apipass
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - nx-network
+
+networks:
+  nx-network:
+    driver: bridge
+
+volumes:
+  db-data:
