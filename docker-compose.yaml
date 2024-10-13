@@ -41,6 +41,19 @@ services:
     container_name: go_mod_install
     volumes:
       - .:/app
+
+
+  cli:
+    profiles:
+      - cli
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    entrypoint: tail -f /dev/null
+    container_name: cli
+    volumes:
+      - .:/app
+
   api:
     profiles:
       - dev

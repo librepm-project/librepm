@@ -3,4 +3,6 @@ go 1.23
 use (
 	./apps/api
 	./libs/authentication
+	./libs/http_utils
+	./libs/jwt_utils
 )

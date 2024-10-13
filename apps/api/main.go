@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	fmt.Println("API listen on port 3000")
 	http.HandleFunc("/", api_http.Handler)
 	log.Fatal(http.ListenAndServe(":3000", nil))
