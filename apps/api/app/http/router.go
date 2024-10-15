@@ -1,10 +1,19 @@
-package api_http
+package http
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/go-chi/chi/v5"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, World!")
+type Router struct {
+	ProjectController ProjectControllerInterface
+}
+
+func (r Router) Init() *chi.Mux {
+	router := chi.NewRouter()
+
+	router.Get("/product", r.ProjectController.Index)
+	router.Post("/product", r.ProjectController.Create)
+	router.Get("/product/{product_id}", r.ProjectController.Show)
+	router.Put("/product/{product_id}", r.ProjectController.Update)
+	return router
 }

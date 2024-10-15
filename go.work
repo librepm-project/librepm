@@ -5,4 +5,5 @@ use (
 	./libs/authentication
 	./libs/http_utils
 	./libs/jwt_utils
+	./libs/mysql_utils
 )
