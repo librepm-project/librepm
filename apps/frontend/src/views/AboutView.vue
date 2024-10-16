@@ -1,6 +1,8 @@
 <template>
   <div class="about">
     <h1>This is an about page</h1>
+    <v-text-field label="Label"></v-text-field>
+    <v-btn prepend-icon="$vuetify">Button</v-btn>
   </div>
 </template>
 
