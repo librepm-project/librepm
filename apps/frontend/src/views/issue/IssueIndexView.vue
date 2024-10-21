@@ -31,18 +31,10 @@
 
 <script lang="ts" setup>
   import Issue from '../../lib/interfaces/issue.interface.ts';
-  
-  const issues: Issue[] = [
-    {
-      key: "SW-1",
-      summary: "First Issue",
-      status: "In progress"
-    },
-    {
-      key: "SW-2",
-      summary: "Second Issue",
-      status: "To Do"
-    }
-  ];
+  import { useIssueStore } from '../../store/issue.store.ts';
+
+  useIssueStore().getIssues();
+
+  const issues: Issue[] = useIssueStore().index;
 
 </script>
