@@ -7,7 +7,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import App from './app/App.vue';
-import router from './router';
+import router from './router/index.router';
 
 const vuetify = createVuetify({
   components,

@@ -1,5 +1,5 @@
 {
-  "name": "@go-workspace/source",
+  "name": "@librepm/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {},
