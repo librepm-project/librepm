@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { Issue } from '../lib/interfaces/issue.interface';
+import { issueMock } from '../lib/mock-data';
 
 interface IssueStore {
   current: Issue | null;
@@ -15,29 +16,11 @@ export const useIssueStore = defineStore('issue', {
   },
   actions: {
     getIssue(issueId: number) {
-      this.current = {
-        key: 'SW-1',
-        summary: 'First Issue',
-        status: 'In progress',
-        description: 'Lorem ipsum dolor amet',
-      };
+      this.current = issueMock[0];
     },
 
     getIssues() {
-      this.index = [
-        {
-          key: 'SW-1',
-          summary: 'First Issue',
-          status: 'In progress',
-          description: 'Lorem ipsum dolor amet',
-        },
-        {
-          key: 'SW-2',
-          summary: 'Second Issue',
-          status: 'To Do',
-          description: 'Lorem ipsum dolor amet',
-        },
-      ];
+      this.index = issueMock
     },
   },
 });

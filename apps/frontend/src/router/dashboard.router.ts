@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-import DashboardIndexView from '../views/dashboard/DashboardIndexView.vue';
+import DashboardIndexView from '../pages/dashboard/DashboardIndexPage.vue';
 
 export const dashboardRouter: RouteRecordRaw[] = [
   {

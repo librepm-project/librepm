@@ -10,15 +10,19 @@
           <th class="text-left">
             Description
           </th>
+          <th>
+            Operations
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="item in boards"
-          :key="item.name"
+          :key="item.id"
         >
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
+          <td><router-link to:="/admin/board/{item.id}/edit">Configure</router-link></td>
         </tr>
       </tbody>
     </v-table>
@@ -26,8 +30,10 @@
 </template>
 
 <script lang="ts" setup>
-  import Board from '../../lib/interfaces/board.interface.ts';
-  import { useBoardStore } from '../../store/board.store.ts';
+import { RouterLink } from 'vue-router';
+
+  import { Board } from '../../../lib/interfaces/board.interface';
+  import { useBoardStore } from '../../../store/board.store';
 
   useBoardStore().getBoards();
 

@@ -1,6 +1,4 @@
 <template>
-  <div>
-    <h1>Filters</h1>
     <v-table>
       <thead>
         <tr>
@@ -14,7 +12,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="item in filters"
+          v-for="item in items"
           :key="item.name"
         >
           <td>{{ item.name }}</td>
@@ -22,15 +20,12 @@
         </tr>
       </tbody>
     </v-table>
-  </div>
 </template>
 
-<script lang="ts" setup>
-  import Filter from '../../lib/interfaces/filter.interface.ts';
-  import { useFilterStore } from '../../store/filter.store.ts';
+<script setup lang="ts">
 
-  useFilterStore().getFilters();
-
-  const filters: Filter[] = useFilterStore().index;
+defineProps<{
+    items: Filter[]
+}>()
 
 </script>

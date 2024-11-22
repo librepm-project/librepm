@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { User } from '../lib/interfaces/user.interface';
+import { userMock } from '../lib/mock-data';
 
 interface UserStore {
   current: User | null;
@@ -15,26 +16,11 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     getUser(userId: number) {
-      this.current = {
-        email: "example1@company.org",
-        firstName: "John",
-        lastName: "Doe",
-      };
+      this.current = userMock[0];
     },
 
     getUsers() {
-      this.index = [
-        {
-            email: "example1@company.org",
-            firstName: "John",
-            lastName: "Doe",
-        },
-        {
-            email: "example2@company.org",
-            firstName: "Joe",
-            lastName: "Smish",
-        },
-      ];
+      this.index = userMock;
     },
   },
 });

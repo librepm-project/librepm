@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
-import LoginView from '../views/session/LoginView.vue';
-import ProfileView from '../views/session/ProfileView.vue';
+import LoginView from '../pages/session/LoginPage.vue';
+import ProfileView from '../pages/session/ProfilePage.vue';
 
 export const sessionRouter: RouteRecordRaw[] = [
   {

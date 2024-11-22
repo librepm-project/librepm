@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
-import IssueIndexView from '../views/issue/IssueIndexView.vue';
-import IssueShowView from '../views/issue/IssueShowView.vue';
+import IssueIndexView from '../pages/issue/IssueIndexPage.vue';
+import IssueShowView from '../pages/issue/IssueShowPage.vue';
 
 export const issueRouter: RouteRecordRaw[] = [
   {

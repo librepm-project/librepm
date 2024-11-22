@@ -1,6 +1,4 @@
 <template>
-  <div>
-    <h1>Issues</h1>
     <v-table>
       <thead>
         <tr>
@@ -17,7 +15,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="item in issues"
+          v-for="item in items"
           :key="item.key"
         >
           <td>{{ item.key }}</td>
@@ -26,15 +24,12 @@
         </tr>
       </tbody>
     </v-table>
-  </div>
 </template>
 
-<script lang="ts" setup>
-  import Issue from '../../lib/interfaces/issue.interface.ts';
-  import { useIssueStore } from '../../store/issue.store.ts';
+<script setup lang="ts">
 
-  useIssueStore().getIssues();
-
-  const issues: Issue[] = useIssueStore().index;
+defineProps<{
+    items: Issue[]
+}>()
 
 </script>
