@@ -6,6 +6,8 @@ dev:
 
 cli:
 	docker compose --profile cli up -d && docker exec -it cli npx
+mysqlcli:
+	docker compose exec -it database mariadb -uroot -prootpass api
 open:
 	@URL="http://localhost:8081"; \
 	if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \

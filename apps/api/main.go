@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println("API listen on port 3000")
+	fmt.Println("API listen on port 80")
 	domain := domain.NewDomain()
 	http.StartHttpServer(domain)
 }

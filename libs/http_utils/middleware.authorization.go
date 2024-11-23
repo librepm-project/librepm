@@ -1,6 +1,7 @@
 package http_utils
 
 import (
+	"fmt"
 	"libs/jwt_utils"
 	"net/http"
 )
@@ -17,6 +18,7 @@ type AuthorizationMiddlewareContext struct {
 func AuthorizationMiddleware(ctx AuthorizationMiddlewareContext) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			fmt.Println(r.URL.Path)
 			for _, endpoint := range ctx.Whitelist {
 				if endpoint.Path == r.URL.Path && endpoint.Method == r.Method {
 					next.ServeHTTP(w, r)

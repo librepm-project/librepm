@@ -12,6 +12,7 @@ type ProjectRepositoryInterface interface {
 	FindByID(project_id uuid.UUID) *ProjectModel
 	Create(project *ProjectModel)
 	Update(project_id uuid.UUID, project *ProjectModel)
+	Destroy(project_id uuid.UUID)
 }
 
 type ProjectRepository struct {
@@ -30,6 +31,7 @@ func (r ProjectRepository) All() *[]ProjectModel {
 
 func (r ProjectRepository) FindByID(project_id uuid.UUID) *ProjectModel {
 	var project ProjectModel
+	fmt.Println(project_id)
 	err := r.DB.Model(ProjectModel{ID: project_id}).Scan(&project)
 
 	if err != nil {
@@ -44,4 +46,8 @@ func (r ProjectRepository) Create(project *ProjectModel) {
 
 func (r ProjectRepository) Update(project_id uuid.UUID, project *ProjectModel) {
 	r.DB.Model(ProjectModel{}).Where("id", project_id).Updates(&project)
+}
+
+func (r ProjectRepository) Destroy(project_id uuid.UUID) {
+	r.DB.Model(ProjectModel{}).Delete(ProjectModel{}, project_id)
 }

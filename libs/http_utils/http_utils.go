@@ -34,7 +34,7 @@ func StartGenericHTTPServer(ctx StartGenericHTTPServerContext) {
 	r.Use(LoggingMiddleware)
 	r.Use(CORSMiddleware())
 	r.Use(OpenAPIMiddleware)
-	r.Use(AuthorizationMiddleware(ctx.AuthorizationMiddlewareContext))
+	// r.Use(AuthorizationMiddleware(ctx.AuthorizationMiddlewareContext))
 
 	r.Mount("/", ctx.Router)
 	http.Handle("/", r)

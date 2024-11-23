@@ -9,6 +9,7 @@ type ProjectServiceInterface interface {
 	Show(project_id uuid.UUID) *ProjectModel
 	Create(project *ProjectModel)
 	Update(project_id uuid.UUID, project *ProjectModel)
+	Destroy(project_id uuid.UUID)
 }
 
 type ProjectService struct {
@@ -30,4 +31,8 @@ func (s ProjectService) Create(project *ProjectModel) {
 
 func (s ProjectService) Update(project_id uuid.UUID, project *ProjectModel) {
 	s.ProjectRepository.Update(project_id, project)
+}
+
+func (s ProjectService) Destroy(project_id uuid.UUID) {
+	s.ProjectRepository.Destroy(project_id)
 }

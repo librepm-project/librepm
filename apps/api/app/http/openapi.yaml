@@ -1,0 +1,58 @@
+openapi: 3.1.0
+info:
+  title: LibrePM API
+  version: 1.0.0
+paths:
+  /project:
+    get:
+      description: Get project list
+      responses:
+        '200':
+          description: List of projects
+    post:
+      description: Create project
+      responses:
+        '201':
+          description: Created
+
+  /project/{propjectId}:
+    get:
+      description: Get a project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Project
+    put:
+      description: Update a project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      description: Delete a project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+components:
+  Project:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      createdAt:
+        type: string%       
