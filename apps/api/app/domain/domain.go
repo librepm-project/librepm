@@ -5,10 +5,11 @@ import (
 )
 
 type Domain struct {
-	ProjectService ProjectServiceInterface
-	IssueService   IssueServiceInterface
-	FilterService  FilterServiceInterface
-	BoardService   BoardServiceInterface
+	ProjectService   ProjectServiceInterface
+	IssueService     IssueServiceInterface
+	FilterService    FilterServiceInterface
+	BoardService     BoardServiceInterface
+	DashboardService DashboardServiceInterface
 }
 
 func NewDomain() Domain {
@@ -32,6 +33,11 @@ func NewDomain() Domain {
 		},
 		BoardService: BoardService{
 			BoardRepository: BoardRepository{
+				DB: DB,
+			},
+		},
+		DashboardService: DashboardService{
+			DashboardRepository: DashboardRepository{
 				DB: DB,
 			},
 		},

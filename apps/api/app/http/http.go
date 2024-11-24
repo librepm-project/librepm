@@ -23,6 +23,9 @@ func StartHttpServer(domain domain.Domain) {
 		BoardController: BoardController{
 			BoardService: domain.BoardService,
 		},
+		DashboardController: DashboardController{
+			DashboardService: domain.DashboardService,
+		},
 	}.Init()
 
 	http_utils.StartGenericHTTPServer(http_utils.StartGenericHTTPServerContext{
