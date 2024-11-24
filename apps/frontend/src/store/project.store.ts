@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Project } from '../lib/interfaces/project.interface';
 import { projectMock } from '../lib/mock-data';
-import projectAPI from '../api/project.api';
+import projectApi from '../api/project.api';
 
 
 interface ProjectStore {
@@ -22,7 +22,7 @@ export const useProjectStore = defineStore('project', {
     },
 
     async getProjects() {
-      this.index = await projectAPI.indexProject()
+      this.index = await projectApi.indexProject()
     },
   },
 });

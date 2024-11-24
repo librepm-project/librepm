@@ -10,6 +10,7 @@
   import ProjectTable from '../../components/ProjectTable.vue';
   import { onMounted } from 'vue';
 
+
   const projectStore = useProjectStore()
 
   onMounted(async () => {

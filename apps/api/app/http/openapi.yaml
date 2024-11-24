@@ -46,6 +46,48 @@ paths:
       responses:
         '204':
           description: No content
+  /issue:
+    get:
+      description: Get issue list
+      responses:
+        '200':
+          description: List of issues
+    post:
+      description: Create issue
+      responses:
+        '201':
+          description: Created
+  /issue/{propjectId}:
+    get:
+      description: Get a issue
+      parameters:
+        - in: path
+          name: issueId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Issue
+    put:
+      description: Update a issue
+      parameters:
+        - in: path
+          name: issueId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      description: Delete a issue
+      parameters:
+        - in: path
+          name: issueId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
 components:
   Project:
     type: object
@@ -54,5 +96,24 @@ components:
         type: string
       name:
         type: string
+      codeName:
+        type: string
       createdAt:
-        type: string%       
+        type: string
+  Issue:
+    type: object
+    properties:
+      id:
+        type: string
+      key:
+        type: string
+      type:
+        type: string
+      summary:
+        type: string
+      description:
+        type: string
+      status:
+        type: string
+      createdAt:
+        type: string  

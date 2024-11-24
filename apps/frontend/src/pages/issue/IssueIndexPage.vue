@@ -1,17 +1,19 @@
 <template>
   <div>
     <h1>Issues</h1>
-    <issue-table :items="issues" />
+    <issue-table :items="projectStore.index" />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import Issue from '../../lib/interfaces/issue.interface.ts';
-  import { useIssueStore } from '../../store/issue.store.ts';
+  import { useIssueStore } from '../../store/issue.store';
   import IssueTable from '../../components/IssueTable.vue';
+  import { onMounted } from 'vue';
 
-  useIssueStore().getIssues();
+  const projectStore = useIssueStore()
 
-  const issues: Issue[] = useIssueStore().index;
+  onMounted(async () => {
+    await projectStore.getIssues();
+  });
 
 </script>

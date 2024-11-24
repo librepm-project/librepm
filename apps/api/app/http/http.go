@@ -14,6 +14,9 @@ func StartHttpServer(domain domain.Domain) {
 		ProjectController: ProjectController{
 			ProjectService: domain.ProjectService,
 		},
+		IssueController: IssueController{
+			IssueService: domain.IssueService,
+		},
 	}.Init()
 
 	http_utils.StartGenericHTTPServer(http_utils.StartGenericHTTPServerContext{

@@ -6,6 +6,7 @@ import (
 
 type Router struct {
 	ProjectController ProjectControllerInterface
+	IssueController   IssueControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
@@ -16,5 +17,12 @@ func (r Router) Init() *chi.Mux {
 	router.Get("/project/{project_id}", r.ProjectController.Show)
 	router.Put("/project/{project_id}", r.ProjectController.Update)
 	router.Delete("/project/{project_id}", r.ProjectController.Destroy)
+
+	router.Get("/issue", r.IssueController.Index)
+	router.Post("/issue", r.IssueController.Create)
+	router.Get("/issue/{issue_id}", r.IssueController.Show)
+	router.Put("/issue/{issue_id}", r.IssueController.Update)
+	router.Delete("/issue/{issue_id}", r.IssueController.Destroy)
+
 	return router
 }
