@@ -8,5 +8,7 @@ func MigrateProductDatabase(db *gorm.DB) {
 	db.AutoMigrate(
 		ProjectModel{},
 		IssueModel{},
+		FilterModel{},
+		BoardModel{},
 	)
 }

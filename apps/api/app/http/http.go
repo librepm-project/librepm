@@ -17,6 +17,12 @@ func StartHttpServer(domain domain.Domain) {
 		IssueController: IssueController{
 			IssueService: domain.IssueService,
 		},
+		FilterController: FilterController{
+			FilterService: domain.FilterService,
+		},
+		BoardController: BoardController{
+			BoardService: domain.BoardService,
+		},
 	}.Init()
 
 	http_utils.StartGenericHTTPServer(http_utils.StartGenericHTTPServerContext{
