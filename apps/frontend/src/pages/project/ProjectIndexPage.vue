@@ -11,7 +11,7 @@
   import { onMounted } from 'vue';
 
 
-  const projectStore = useProjectStore()
+  const projectStore = useProjectStore();
 
   onMounted(async () => {
     await projectStore.getProjects();

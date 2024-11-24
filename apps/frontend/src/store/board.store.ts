@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { Board } from '../lib/interfaces/board.interface';
 import { boardMock } from '../lib/mock-data';
+import boardApi from '../api/board.api';
 
 interface BoardStore {
   current: Board | null;
@@ -19,8 +20,8 @@ export const useBoardStore = defineStore('board', {
       this.current = boardMock[0];
     },
 
-    getBoards() {
-      this.index = boardMock;
+    async getBoards() {
+      this.index = await boardApi.indexBoard();
     },
   },
 });

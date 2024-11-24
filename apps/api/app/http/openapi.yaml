@@ -16,7 +16,6 @@ paths:
       responses:
         '201':
           description: Created
-
   /project/{propjectId}:
     get:
       tags: ["project"]
@@ -98,6 +97,19 @@ paths:
       responses:
         '204':
           description: No content
+  /filter:
+    get:
+      tags: ["filter"]
+      description: Get filter list
+      responses:
+        '200':
+          description: List of filters
+    post:
+      tags: ["filter"]
+      description: Create filter
+      responses:
+        '201':
+          description: Created
   /filter/{filterId}:
     get:
       tags: ["filter"]
@@ -132,6 +144,19 @@ paths:
       responses:
         '204':
           description: No content
+  /board:
+    get:
+      tags: ["board"]
+      description: Get board list
+      responses:
+        '200':
+          description: List of boards
+    post:
+      tags: ["board"]
+      description: Create board
+      responses:
+        '201':
+          description: Created
   /board/{boardId}:
     get:
       tags: ["board"]
@@ -166,6 +191,19 @@ paths:
       responses:
         '204':
           description: No content
+  /dashboard:
+    get:
+      tags: ["dashboard"]
+      description: Get dashboard list
+      responses:
+        '200':
+          description: List of dashboards
+    post:
+      tags: ["dashboard"]
+      description: Create dashboard
+      responses:
+        '201':
+          description: Created
   /dashboard/{dashboardId}:
     get:
       tags: ["dashboard"]

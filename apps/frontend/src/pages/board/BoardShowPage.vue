@@ -2,23 +2,26 @@
   <div>
     <h1>Board</h1>
     <v-select
-  label="Select"
-  :items="boards"
-  item-title="name"
-  item-value="id"
-  :name="selectedBoardId"
-></v-select>
+      label="Select"
+      :items="boardStore.index"
+      item-title="name"
+      item-value="id"
+      :name="selectedBoardId"
+    ></v-select>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Board } from '../../lib/interfaces/board.interface';
+import { onMounted } from 'vue';
 import { useBoardStore } from '../../store/board.store';
 
-  useBoardStore().getBoards();
+  const boardStore = useBoardStore();
 
-  const boards: Board[] = useBoardStore().index;
+  onMounted(async () => {
+    await boardStore.getBoards();
+  })
+
   let selectedBoardId = "0";
-  let selectedBoard = boards[Number(selectedBoardId)];
+  let selectedBoard = boardStore.index[Number(selectedBoardId)];
  
 </script>
