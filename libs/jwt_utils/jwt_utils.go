@@ -12,7 +12,6 @@ import (
 type TokenInfo struct {
 	UserID uuid.UUID `json:"user_id"`
 	Email  string    `json:"email"`
-	Admin  bool      `json:"admin"`
 	jwt.RegisteredClaims
 }
 
@@ -35,11 +34,10 @@ func GetTokenInfoFromRequest(r *http.Request) *TokenInfo {
 	return GetTokenInfo(GetTokenString(r))
 }
 
-func GenerateToken(user_id uuid.UUID, email string, admin bool) string {
+func GenerateToken(user_id uuid.UUID, email string) string {
 	token_info := TokenInfo{
 		UserID: user_id,
 		Email:  email,
-		Admin:  admin,
 	}
 
 	token_obj := jwt.NewWithClaims(jwt.SigningMethodHS256, token_info)

@@ -6,4 +6,5 @@ use (
 	./libs/http_utils
 	./libs/jwt_utils
 	./libs/mysql_utils
+	./libs/password_utils
 )

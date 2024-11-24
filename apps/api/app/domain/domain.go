@@ -5,11 +5,14 @@ import (
 )
 
 type Domain struct {
-	ProjectService   ProjectServiceInterface
-	IssueService     IssueServiceInterface
-	FilterService    FilterServiceInterface
-	BoardService     BoardServiceInterface
-	DashboardService DashboardServiceInterface
+	ProjectService      ProjectServiceInterface
+	IssueService        IssueServiceInterface
+	FilterService       FilterServiceInterface
+	BoardService        BoardServiceInterface
+	DashboardService    DashboardServiceInterface
+	UserService         UserService
+	UserSessionService  UserSessionService
+	UserRegisterService UserRegisterService
 }
 
 func NewDomain() Domain {
@@ -38,6 +41,21 @@ func NewDomain() Domain {
 		},
 		DashboardService: DashboardService{
 			DashboardRepository: DashboardRepository{
+				DB: DB,
+			},
+		},
+		UserService: UserService{
+			UserRepository: UserRepository{
+				DB: DB,
+			},
+		},
+		UserSessionService: UserSessionService{
+			UserRepository: UserRepository{
+				DB: DB,
+			},
+		},
+		UserRegisterService: UserRegisterService{
+			UserRepository: UserRepository{
 				DB: DB,
 			},
 		},

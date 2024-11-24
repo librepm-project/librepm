@@ -57,7 +57,7 @@ paths:
       responses:
         '201':
           description: Created
-  /issue/{propjectId}:
+  /issue/{issueId}:
     get:
       description: Get a issue
       parameters:
@@ -85,6 +85,153 @@ paths:
           name: issueId
           schema:
             type: string
+      responses:
+        '204':
+          description: No content
+  /filter/{filterId}:
+    get:
+      description: Get a filter
+      parameters:
+        - in: path
+          name: filterId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Filter
+    put:
+      description: Update a filter
+      parameters:
+        - in: path
+          name: filterId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      description: Delete a filter
+      parameters:
+        - in: path
+          name: filterId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+  /board/{boardId}:
+    get:
+      description: Get a board
+      parameters:
+        - in: path
+          name: boardId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Board
+    put:
+      description: Update a board
+      parameters:
+        - in: path
+          name: boardId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      description: Delete a board
+      parameters:
+        - in: path
+          name: boardId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+  /dashboard/{dashboardId}:
+    get:
+      description: Get a dashboard
+      parameters:
+        - in: path
+          name: dashboardId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dashboard
+    put:
+      description: Update a dashboard
+      parameters:
+        - in: path
+          name: dashboardId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      description: Delete a dashboard
+      parameters:
+        - in: path
+          name: dashboardId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+  /user/current:
+    get:
+      description: Get current user
+      responses:
+        '200':
+          description: User
+    put:
+      description: Update current user
+      responses:
+        '200':
+          description: User
+    delete:
+      description: Delete current user
+      responses:
+        '204':
+          description: No content
+  /user/session:
+    post:
+      description: Create session
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '201':
+          description: Session
+  /user/register:
+    get:
+      description: Register user
+      responses:
+        '200':
+          description: User
+    post:
+      description: Register user
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '201':
+          description: Session
+    delete:
+      description: Delete session
       responses:
         '204':
           description: No content
@@ -117,3 +264,20 @@ components:
         type: string
       createdAt:
         type: string  
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phone:
+        type: string
+      language:
+        type: string
+      country:
+        type: string

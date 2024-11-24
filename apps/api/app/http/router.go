@@ -5,11 +5,14 @@ import (
 )
 
 type Router struct {
-	ProjectController   ProjectControllerInterface
-	IssueController     IssueControllerInterface
-	FilterController    FilterControllerInterface
-	BoardController     BoardControllerInterface
-	DashboardController DashboardControllerInterface
+	ProjectController      ProjectControllerInterface
+	IssueController        IssueControllerInterface
+	FilterController       FilterControllerInterface
+	BoardController        BoardControllerInterface
+	DashboardController    DashboardControllerInterface
+	UserCurrentController  UserCurrentControllerInterface
+	UserSessionController  UserSessionControllerInterface
+	UserRegisterController UserRegisterControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
@@ -44,6 +47,12 @@ func (r Router) Init() *chi.Mux {
 	router.Get("/dashboard/{dashboard_id}", r.DashboardController.Show)
 	router.Put("/dashboard/{dashboard_id}", r.DashboardController.Update)
 	router.Delete("/dashboard/{dashboard_id}", r.DashboardController.Destroy)
+
+	router.Get("/user/current", r.UserCurrentController.Show)
+	router.Put("/user/current", r.UserCurrentController.Update)
+	router.Delete("/user/current", r.UserCurrentController.Destroy)
+	router.Post("/user/register", r.UserRegisterController.Create)
+	router.Post("/user/session", r.UserSessionController.Create)
 
 	return router
 }

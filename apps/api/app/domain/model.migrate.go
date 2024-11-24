@@ -10,5 +10,7 @@ func MigrateProductDatabase(db *gorm.DB) {
 		IssueModel{},
 		FilterModel{},
 		BoardModel{},
+		DashboardModel{},
+		UserModel{},
 	)
 }
