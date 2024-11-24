@@ -1,6 +1,7 @@
 import { Board } from './interfaces/board.interface';
 import { Filter } from './interfaces/filter.interface';
 import { Issue } from './interfaces/issue.interface';
+import { Project } from './interfaces/project.interface';
 import { User } from './interfaces/user.interface';
 
 export const boardMock: Board[] = [
@@ -58,5 +59,13 @@ export const userMock: User[] = [
     email: 'example2@company.org',
     firstName: 'Joe',
     lastName: 'Smish',
+  },
+];
+
+
+export const projectMock: Project[] = [
+  {
+    codeName: "MOCK",
+    name: "Mocked Project"
   },
 ];

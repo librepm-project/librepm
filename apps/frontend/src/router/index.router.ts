@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { issueRouter } from './issue.router';
+import { projectRouter } from './project.router';
 import { adminRouter } from './admin.router';
 import { boardRouter } from './board.router';
 import { dashboardRouter } from './dashboard.router';
@@ -16,5 +17,6 @@ export default createRouter({
     ...filterRouter,
     ...issueRouter,
     ...sessionRouter,
+    ...projectRouter,
   ],
 });

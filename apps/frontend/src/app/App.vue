@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 
 interface Link {
   text: string;
@@ -50,6 +50,11 @@ interface Link {
 };
 
 const links: Link[] = [
+  {
+    text: 'Projects',
+    key: 'projects',
+    to: '/project'
+  },
   {
     text: 'Dashboard',
     key: 'dashboard',
@@ -70,7 +75,7 @@ const links: Link[] = [
     key: 'filters',
     to: '/filter'
   },
-  {
+/*  {
     text: 'Profile',
     key: 'profile',
     to: '/profile'
@@ -79,6 +84,6 @@ const links: Link[] = [
     text: 'Logout',
     key: 'logout',
     to: '/logout'
-  },
+  }, */
 ]
 </script>
