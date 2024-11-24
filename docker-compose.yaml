@@ -67,6 +67,7 @@ services:
       DB_PASSWORD: apipass
       DB_NAME: api
       OPENAPI_PATH: /app/apps/api/app/http/openapi.yaml
+      JWT_SECRET: secret
     labels:
       - "traefik.http.routers.api.rule=PathPrefix(`/api`)"
       - "traefik.http.services.api.loadbalancer.server.port=80"

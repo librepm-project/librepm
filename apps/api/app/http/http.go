@@ -7,7 +7,16 @@ import (
 
 func StartHttpServer(domain domain.Domain) {
 	authorization_middleware_context := http_utils.AuthorizationMiddlewareContext{
-		Whitelist: []http_utils.Endpoint{},
+		Whitelist: []http_utils.Endpoint{
+			{
+				Method: "POST",
+				Path:   "/user/session",
+			},
+			{
+				Method: "POST",
+				Path:   "/user/register",
+			},
+		},
 	}
 
 	router := Router{
