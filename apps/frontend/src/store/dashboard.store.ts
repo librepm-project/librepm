@@ -19,7 +19,7 @@ export const useDashboardStore = defineStore('dashboard', {
     },
 
     async getDashboards() {
-      this.index = await dashboardApi.indexDashboard();
+      this.index = await dashboardApi.index();
     },
   },
 });

@@ -22,7 +22,7 @@ export const useProjectStore = defineStore('project', {
     },
 
     async getProjects() {
-      this.index = await projectApi.indexProject()
+      this.index = await projectApi.index()
     },
   },
 });

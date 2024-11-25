@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { User } from '../lib/interfaces/user.interface';
-import { userMock } from '../lib/mock-data';
+import userCurrentApi from '../api/userCurrent.api';
 
 interface UserCurrentStore {
   current: User | null;
@@ -13,8 +13,11 @@ export const useUserCurrentStore = defineStore('userCurrent', {
     };
   },
   actions: {
-    getUser() {
-      this.current = userMock[0];
+    async getUser() {
+      this.current = await userCurrentApi.create();
     },
+    setUser(user: User) {
+      this.current = user;
+    }
   },
 });

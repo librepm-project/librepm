@@ -21,7 +21,7 @@ export const useBoardStore = defineStore('board', {
     },
 
     async getBoards() {
-      this.index = await boardApi.indexBoard();
+      this.index = await boardApi.index();
     },
   },
 });

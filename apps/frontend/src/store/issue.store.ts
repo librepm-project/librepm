@@ -21,7 +21,7 @@ export const useIssueStore = defineStore('issue', {
     },
 
     async getIssues() {
-      this.index = await issueApi.indexIssue()
+      this.index = await issueApi.index()
     },
   },
 });

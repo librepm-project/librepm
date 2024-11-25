@@ -21,7 +21,7 @@ export const useFilterStore = defineStore('filter', {
     },
 
     async getFilters() {
-      this.index = await filterApi.indexFilter();
+      this.index = await filterApi.index();
     },
   },
 });
