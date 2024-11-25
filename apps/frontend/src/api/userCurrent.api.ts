@@ -1,8 +1,9 @@
 import { User } from "../lib/interfaces/user.interface";
+import api from "./api";
 
 const create = async (): Promise<User> => {
-    const response = await fetch("/api/user/current");
-    return await response.json() as User;
+    const response = await api.apiCall().get("/user/current");
+    return await response.data as User;
 }
 
 export default {

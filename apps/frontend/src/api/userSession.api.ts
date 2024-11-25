@@ -1,11 +1,11 @@
 import { Login, LoginRequest } from "../lib/interfaces/user.interface";
+import api from "./api";
 
 const create = async (data: LoginRequest): Promise<Login> => {
-    const response = await fetch("/api/user/session", {
-        method: "post",
-        body: JSON.stringify(data),
+    const response = await api.apiCall().post("/user/session", {
+        data: data,
     });
-    return await response.json() as Login;
+    return await response.data as Login;
 }
 
 export default {
