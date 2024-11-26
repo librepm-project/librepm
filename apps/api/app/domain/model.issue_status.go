@@ -6,9 +6,10 @@ import (
 )
 
 type IssueStatusModel struct {
-	ID                       uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name                     string
-	IssueTypeID              uuid.UUID                     `gorm:"type:char(36)"`
+	ID          uuid.UUID `gorm:"type:char(36);primary_key;"`
+	Name        string    `gorm:"type:varchar(100);not null;"`
+	IssueTypeID uuid.UUID `gorm:"type:char(36) references issue_type;not null;"`
+
 	BoardColumnIssueStatuses []BoardColumnIssueStatusModel `gorm:"foreignKey:IssueStatusID"`
 }
 

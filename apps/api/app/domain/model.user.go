@@ -17,12 +17,13 @@ type UserModel struct {
 	Language     string    `gorm:"type:varchar(3);"`
 	Country      string    `gorm:"type:varchar(3);"`
 	Blocked      bool
-	ProjectUsers []ProjectUserModel `gorm:"foreignKey:UserID"`
-	Filters      []FilterModel      `gorm:"foreignKey:UserID"`
-	Dashboads    []DashboardModel   `gorm:"foreignKey:UserID"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	DeletedAt    *time.Time `sql:"index"`
+
+	ProjectUsers []ProjectUserModel `gorm:"foreignKey:UserID"`
+	Filters      []FilterModel      `gorm:"foreignKey:UserID"`
+	Dashboads    []DashboardModel   `gorm:"foreignKey:UserID"`
 }
 
 func (user UserModel) TableName() string {

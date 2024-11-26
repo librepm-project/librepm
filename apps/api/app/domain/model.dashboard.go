@@ -9,13 +9,14 @@ import (
 
 type DashboardModel struct {
 	ID          uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name        string
-	Description string
+	Name        string    `gorm:"type:varchar(100);not null;"`
+	Description string    `gorm:"type:varchar(255);"`
 	Public      bool
-	UserID      uuid.UUID
-	User        UserModel
+	UserID      uuid.UUID `gorm:"type:char(36) references user;not null;"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+
+	User UserModel
 }
 
 func (dashboard DashboardModel) TableName() string {

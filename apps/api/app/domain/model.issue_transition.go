@@ -7,11 +7,12 @@ import (
 
 type IssueTransitionModel struct {
 	ID                  uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name                string
-	SourceIssueStatusID uuid.UUID `gorm:"type:char(36)"`
-	SourceIssueStatus   IssueStatusModel
-	TargetIssueStatusID uuid.UUID `gorm:"type:char(36)"`
-	TargetIssueStatus   IssueStatusModel
+	Name                string    `gorm:"varchar(100);not null;"`
+	SourceIssueStatusID uuid.UUID `gorm:"type:char(36) references issue_status;not null;"`
+	TargetIssueStatusID uuid.UUID `gorm:"type:char(36) rererences issue_status;not null;"`
+
+	SourceIssueStatus IssueStatusModel
+	TargetIssueStatus IssueStatusModel
 }
 
 func (issue_transition IssueTransitionModel) TableName() string {

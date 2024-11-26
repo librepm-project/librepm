@@ -7,9 +7,10 @@ import (
 
 type FilterConditionModel struct {
 	ID        uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Condition string
-	FilterID  uuid.UUID `gorm:"type:char(36)"`
-	Filter    FilterModel
+	Condition string    `gorm:"type:varchar(100);not null;"`
+	FilterID  uuid.UUID `gorm:"type:char(36) references filter;not null;"`
+
+	Filter FilterModel
 }
 
 func (filter_condition FilterConditionModel) TableName() string {

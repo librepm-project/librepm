@@ -6,9 +6,10 @@ import (
 )
 
 type IssueTypeModel struct {
-	ID            uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name          string
-	IssueStatuses []IssueStatusModel `gorm:"foreignKey:IssueTypeID"`
+	ID   uuid.UUID `gorm:"type:char(36);primary_key;"`
+	Name string    `gorm:"type:varchar(100);not null;"`
+
+	IssueStatuses []IssueStatusModel `gorm:"foreignKey:IssueTypeID;"`
 }
 
 func (issue_type IssueTypeModel) TableName() string {

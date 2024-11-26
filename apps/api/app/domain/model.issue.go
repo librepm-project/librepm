@@ -9,20 +9,22 @@ import (
 
 type IssueModel struct {
 	ID            uuid.UUID `gorm:"type:char(36);primary_key;"`
-	ProjectID     uuid.UUID
-	Project       ProjectModel
-	IssueTypeID   uuid.UUID `gorm:"type:char(36) references issue_type"`
-	IssueType     IssueTypeModel
-	IssueStatusID uuid.UUID `gorm:"type:char(36) references issue_status"`
-	IssueStatus   IssueStatusModel
-	ParentID      uuid.UUID `gorm:"type:char(36) references issue"`
-	Parent        *IssueModel
-	Key           string
-	Summary       string
-	Description   string
+	ProjectID     uuid.UUID `gorm:"type:char(36);not null;"`
+	IssueTypeID   uuid.UUID `gorm:"type:char(36) references issue_type;not null;"`
+	IssueStatusID uuid.UUID `gorm:"type:char(36) references issue_status;not null;"`
+	ParentID      uuid.UUID `gorm:"type:char(36) references issue;not null;"`
+	Key           string    `gorm:"type:varchar(5);not null;"`
+	Summary       string    `gorm:"type:varchar(100);not null;"`
+	Description   string    `gorm:"type:varchar(255)"`
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	DeletedAt     *time.Time `sql:"index"`
+
+	Project     ProjectModel
+	IssueType   IssueTypeModel
+	IssueStatus IssueStatusModel
+
+	Parent *IssueModel
 }
 
 func (issue IssueModel) TableName() string {
