@@ -8,11 +8,12 @@ import (
 )
 
 type BoardModel struct {
-	ID          uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name        string
-	Description string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID           uuid.UUID `gorm:"type:char(36);primary_key;"`
+	Name         string
+	Description  string
+	BoardColumns []BoardColumnModel `gorm:"foreignKey:BoardID;references:ID"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 func (board BoardModel) TableName() string {

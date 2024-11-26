@@ -20,6 +20,7 @@ type DashboardModel struct {
 
 func (dashboard DashboardModel) TableName() string {
 	return "dashboard"
+
 }
 
 func (dashboard *DashboardModel) BeforeCreate(tx *gorm.DB) (err error) {

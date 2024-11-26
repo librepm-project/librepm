@@ -7,10 +7,10 @@ import (
 
 type BoardColumnIssueStatusModel struct {
 	ID            uuid.UUID `gorm:"type:char(36);primary_key;"`
-	BoardColumnID uuid.UUID
+	BoardColumnID uuid.UUID `gorm:"type:char(36)"`
 	BoardColumn   BoardColumnModel
-	IssueTypeID   uuid.UUID
-	IssueType     IssueTypeModel
+	IssueStatusID uuid.UUID `gorm:"type:char(36) references issue_status"`
+	IssueStatus   IssueStatusModel
 }
 
 func (board_column_issue_status BoardColumnIssueStatusModel) TableName() string {

@@ -6,9 +6,9 @@ import (
 
 func MigrateProductDatabase(db *gorm.DB) {
 	db.AutoMigrate(
+		BoardModel{},
 		BoardColumnIssueStatusModel{},
 		BoardColumnModel{},
-		BoardModel{},
 		DashboardModel{},
 		FilterConditionModel{},
 		FilterModel{},

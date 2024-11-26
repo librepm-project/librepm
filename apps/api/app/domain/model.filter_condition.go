@@ -8,7 +8,7 @@ import (
 type FilterConditionModel struct {
 	ID        uuid.UUID `gorm:"type:char(36);primary_key;"`
 	Condition string
-	FilterID  uuid.UUID
+	FilterID  uuid.UUID `gorm:"type:char(36)"`
 	Filter    FilterModel
 }
 

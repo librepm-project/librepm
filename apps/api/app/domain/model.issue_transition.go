@@ -6,12 +6,12 @@ import (
 )
 
 type IssueTransitionModel struct {
-	ID             uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name           string
-	SourceStatusID uuid.UUID
-	SourceStatus   IssueStatusModel
-	TargetStatusID uuid.UUID
-	TargetStatus   IssueStatusModel
+	ID                  uuid.UUID `gorm:"type:char(36);primary_key;"`
+	Name                string
+	SourceIssueStatusID uuid.UUID `gorm:"type:char(36)"`
+	SourceIssueStatus   IssueStatusModel
+	TargetIssueStatusID uuid.UUID `gorm:"type:char(36)"`
+	TargetIssueStatus   IssueStatusModel
 }
 
 func (issue_transition IssueTransitionModel) TableName() string {

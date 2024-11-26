@@ -6,11 +6,13 @@ import (
 )
 
 type ProjectIssueTypeModel struct {
-	ID          uuid.UUID `gorm:"type:char(36);primary_key;"`
-	ProjectID   uuid.UUID
-	Project     ProjectModel
-	IssueTypeID uuid.UUID
-	IssueType   IssueTypeModel
+	ID                          uuid.UUID `gorm:"type:char(36);primary_key;"`
+	ProjectID                   uuid.UUID `gorm:"type:char(36) references project"`
+	Project                     ProjectModel
+	IssueTypeID                 uuid.UUID `gorm:"type:char(36) references issue_type"`
+	IssueType                   IssueTypeModel
+	ProjectIssueTypeStatuses    []ProjectIssueTypeStatusModel     `gorm:"foreignKey:ProjectIssueTypeID"`
+	ProjectIssueTypeTransitions []ProjectIssueTypeTransitionModel `gorm:"foreignKey:ProjectIssueTypeID"`
 }
 
 func (project_issue_type ProjectIssueTypeModel) TableName() string {

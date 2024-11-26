@@ -6,10 +6,11 @@ import (
 )
 
 type BoardColumnModel struct {
-	ID      uuid.UUID `gorm:"type:char(36);primary_key;"`
-	BoardID uuid.UUID
-	Board   BoardModel
-	Label   string
+	ID                       uuid.UUID `gorm:"type:char(36);primary_key;"`
+	BoardID                  uuid.UUID `gorm:"type:char(36) references board"`
+	Board                    BoardModel
+	Label                    string
+	BoardColumnIssueStatuses []BoardColumnIssueStatusModel `gorm:"foreignKey:BoardColumnID"`
 }
 
 func (board_column BoardColumnModel) TableName() string {

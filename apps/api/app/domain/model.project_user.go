@@ -7,9 +7,9 @@ import (
 
 type ProjectUserModel struct {
 	ID        uuid.UUID `gorm:"type:char(36);primary_key;"`
-	ProjectID uuid.UUID
+	ProjectID uuid.UUID `gorm:"type:char(36)"`
 	Project   ProjectModel
-	UserID    uuid.UUID
+	UserID    uuid.UUID `gorm:"type:char(36)"`
 	User      UserModel
 }
 
