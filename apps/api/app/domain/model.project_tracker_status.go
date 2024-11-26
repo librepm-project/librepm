@@ -10,7 +10,7 @@ type ProjectTrackerStatusModel struct {
 	StatusID         uuid.UUID `gorm:"type:char(36) references status;not null;"`
 	ProjectTrackerID uuid.UUID `gorm:"type:char(36) references project_tracker;not null;"`
 
-	Status         TrackerModel
+	Status         StatusModel
 	ProjectTracker ProjectTrackerModel
 }
 
