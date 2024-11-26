@@ -15,10 +15,9 @@ type ProjectModel struct {
 	UpdatedAt time.Time
 	DeletedAt *time.Time `sql:"index"`
 
-	Issues                      []IssueModel                      `gorm:"foreignKey:ProjectID"`
-	ProjectUsers                []ProjectUserModel                `gorm:"foreignKey:ProjectID"`
-	ProjectIssueTypeStatuses    []ProjectIssueTypeStatusModel     `gorm:"foreignKey:ProjectID"`
-	ProjectIssueTypeTransitions []ProjectIssueTypeTransitionModel `gorm:"foreignKey:ProjectID"`
+	Issues          []IssueModel          `gorm:"foreignKey:ProjectID"`
+	ProjectUsers    []ProjectUserModel    `gorm:"foreignKey:ProjectID"`
+	ProjectTrackers []ProjectTrackerModel `gorm:"foreignKey:ProjectID"`
 }
 
 func (project ProjectModel) TableName() string {

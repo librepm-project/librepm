@@ -26,7 +26,7 @@ func (s IssueSerializer) SerializeIssue(issue domain.IssueModel) Issue {
 
 		Summary:     issue.Summary,
 		Description: issue.Description,
-		Status:      issue.IssueStatus.Name,
+		Status:      issue.Status.Name,
 	}
 }
 

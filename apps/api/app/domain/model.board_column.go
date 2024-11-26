@@ -10,8 +10,8 @@ type BoardColumnModel struct {
 	BoardID uuid.UUID `gorm:"type:char(36) references board;not null;"`
 	Label   string    `gorm:"type:varchar(100);not null;"`
 
-	Board                    BoardModel
-	BoardColumnIssueStatuses []BoardColumnIssueStatusModel `gorm:"foreignKey:BoardColumnID"`
+	Board               BoardModel
+	BoardColumnStatuses []BoardColumnStatusModel `gorm:"foreignKey:BoardColumnID"`
 }
 
 func (board_column BoardColumnModel) TableName() string {
