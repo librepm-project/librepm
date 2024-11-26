@@ -10,11 +10,16 @@ import (
 type IssueModel struct {
 	ID          uuid.UUID `gorm:"type:char(36);primary_key;"`
 	ProjectID   uuid.UUID
+	Project     ProjectModel
+	TypeID      uuid.UUID
+	Type        IssueTypeModel
+	StatusID    uuid.UUID
+	Status      IssueStatusModel
+	ParentID    uuid.UUID `gorm:"TYPE:char(36) REFERENCES issue"`
+	Parent      *IssueModel
 	Key         string
-	Type        string
 	Summary     string
 	Description string
-	Status      string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   *time.Time `sql:"index"`

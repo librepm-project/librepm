@@ -13,7 +13,6 @@ type BoardModel struct {
 	Description string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   *time.Time `sql:"index"`
 }
 
 func (board BoardModel) TableName() string {

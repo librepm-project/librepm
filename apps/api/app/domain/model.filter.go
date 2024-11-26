@@ -11,9 +11,11 @@ type FilterModel struct {
 	ID          uuid.UUID `gorm:"type:char(36);primary_key;"`
 	Name        string
 	Description string
+	Public      bool
+	UserID      uuid.UUID
+	User        UserModel
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   *time.Time `sql:"index"`
 }
 
 func (filter FilterModel) TableName() string {
