@@ -144,6 +144,147 @@ paths:
       responses:
         '204':
           description: No content
+  /status:
+    get:
+      tags: ["status"]
+      description: Get status list
+      responses:
+        '200':
+          description: List of statuss
+    post:
+      tags: ["status"]
+      description: Create status
+      responses:
+        '201':
+          description: Created
+  /status/{statusId}:
+    get:
+      tags: ["status"]
+      description: Get a status
+      parameters:
+        - in: path
+          name: statusId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status
+    put:
+      tags: ["status"]
+      description: Update a status
+      parameters:
+        - in: path
+          name: statusId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: ["status"]
+      description: Delete a status
+      parameters:
+        - in: path
+          name: statusId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+  /tracker:
+    get:
+      tags: ["tracker"]
+      description: Get tracker list
+      responses:
+        '200':
+          description: List of trackers
+    post:
+      tags: ["tracker"]
+      description: Create tracker
+      responses:
+        '201':
+          description: Created
+  /tracker/{trackerId}:
+    get:
+      tags: ["tracker"]
+      description: Get a tracker
+      parameters:
+        - in: path
+          name: trackerId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tracker
+    put:
+      tags: ["tracker"]
+      description: Update a tracker
+      parameters:
+        - in: path
+          name: trackerId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: ["tracker"]
+      description: Delete a tracker
+      parameters:
+        - in: path
+          name: trackerId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+  /transition:
+    get:
+      tags: ["transition"]
+      description: Get transition list
+      responses:
+        '200':
+          description: List of transitions
+    post:
+      tags: ["transition"]
+      description: Create transition
+      responses:
+        '201':
+          description: Created
+  /transition/{transitionId}:
+    get:
+      tags: ["transition"]
+      description: Get a transition
+      parameters:
+        - in: path
+          name: transitionId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transition
+    put:
+      tags: ["transition"]
+      description: Update a transition
+      parameters:
+        - in: path
+          name: transitionId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: ["transition"]
+      description: Delete a transition
+      parameters:
+        - in: path
+          name: transitionId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
   /board:
     get:
       tags: ["board"]

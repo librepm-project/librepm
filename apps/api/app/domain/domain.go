@@ -13,6 +13,9 @@ type Domain struct {
 	UserService         UserService
 	UserSessionService  UserSessionService
 	UserRegisterService UserRegisterService
+	StatusService       StatusServiceInterface
+	TransitionService   TransitionServiceInterface
+	TrackerService      TrackerServiceInterface
 }
 
 func NewDomain() Domain {
@@ -56,6 +59,21 @@ func NewDomain() Domain {
 		},
 		UserRegisterService: UserRegisterService{
 			UserRepository: UserRepository{
+				DB: DB,
+			},
+		},
+		StatusService: StatusService{
+			StatusRepository: StatusRepository{
+				DB: DB,
+			},
+		},
+		TransitionService: TransitionService{
+			TransitionRepository: TransitionRepository{
+				DB: DB,
+			},
+		},
+		TrackerService: TrackerService{
+			TrackerRepository: TrackerRepository{
 				DB: DB,
 			},
 		},

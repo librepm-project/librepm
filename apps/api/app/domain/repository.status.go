@@ -20,13 +20,13 @@ type StatusRepository struct {
 }
 
 func (r StatusRepository) All() *[]StatusModel {
-	var statuss []StatusModel
+	var statuses []StatusModel
 	query := r.DB.Select("status.*")
 
-	if err := query.Find(&statuss).Error; err != nil {
+	if err := query.Find(&statuses).Error; err != nil {
 		fmt.Println(err)
 	}
-	return &statuss
+	return &statuses
 }
 
 func (r StatusRepository) FindByID(status_id uuid.UUID) *StatusModel {
