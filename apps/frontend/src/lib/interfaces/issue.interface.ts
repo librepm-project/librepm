@@ -1,6 +1,6 @@
 export interface Issue {
     key: string;
-    type: string;
+    tracker: string;
     summary: string;
     description: string;
     status: string;   

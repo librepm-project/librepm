@@ -6,6 +6,8 @@ import { boardRouter } from './board.router';
 import { dashboardRouter } from './dashboard.router';
 import { filterRouter } from './filter.router';
 import { sessionRouter } from './session.router';
+import { statusRouter } from './status.router';
+import { trackerRouter } from './tracker.router';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +20,8 @@ const router = createRouter({
     ...issueRouter,
     ...sessionRouter,
     ...projectRouter,
+    ...statusRouter,
+    ...trackerRouter,
   ],
 });
 

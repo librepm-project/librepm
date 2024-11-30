@@ -44,6 +44,18 @@ func StartHttpServer(domain domain.Domain) {
 		UserRegisterController: UserRegisterController{
 			UserRegisterService: domain.UserRegisterService,
 		},
+		UserController: UserController{
+			UserService: domain.UserService,
+		},
+		StatusController: StatusController{
+			StatusService: domain.StatusService,
+		},
+		TrackerController: TrackerController{
+			TrackerService: domain.TrackerService,
+		},
+		TransitionController: TransitionController{
+			TransitionService: domain.TransitionService,
+		},
 	}.Init()
 
 	http_utils.StartGenericHTTPServer(http_utils.StartGenericHTTPServerContext{

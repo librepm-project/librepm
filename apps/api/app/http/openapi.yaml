@@ -482,6 +482,7 @@ paths:
         '201':
           description: Session
     delete:
+      tags: ["userRegister"]
       description: Delete session
       responses:
         '204':

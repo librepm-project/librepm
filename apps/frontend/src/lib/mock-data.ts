@@ -2,6 +2,8 @@ import { Board } from './interfaces/board.interface';
 import { Filter } from './interfaces/filter.interface';
 import { Issue } from './interfaces/issue.interface';
 import { Project } from './interfaces/project.interface';
+import { Status } from './interfaces/status.interface';
+import { Tracker } from './interfaces/tracker.interface';
 import { User } from './interfaces/user.interface';
 
 export const boardMock: Board[] = [
@@ -38,12 +40,14 @@ export const issueMock: Issue[] = [
     summary: 'First Issue',
     status: 'In progress',
     description: 'Lorem ipsum dolor amet',
+    tracker: 'Task',
   },
   {
     key: 'SW-2',
     summary: 'Second Issue',
     status: 'To Do',
     description: 'Lorem ipsum dolor amet',
+    tracker: 'Task',
   },
 ];
 
@@ -65,7 +69,22 @@ export const userMock: User[] = [
 
 export const projectMock: Project[] = [
   {
+    id: 'id',
     codeName: "MOCK",
-    name: "Mocked Project"
+    name: "Mocked Project",
+  },
+];
+
+export const statusMock: Status[] = [
+  {
+    id: 'id',
+    name: "Mocked Project",
+  },
+];
+
+export const trackerMock: Tracker[] = [
+  {
+    id: 'id',
+    name: "Mocked Project",
   },
 ];

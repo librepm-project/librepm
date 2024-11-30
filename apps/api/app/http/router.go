@@ -13,6 +13,10 @@ type Router struct {
 	UserCurrentController  UserCurrentControllerInterface
 	UserSessionController  UserSessionControllerInterface
 	UserRegisterController UserRegisterControllerInterface
+	UserController         UserControllerInterface
+	TrackerController      TrackerControllerInterface
+	StatusController       StatusControllerInterface
+	TransitionController   TransitionControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
@@ -53,6 +57,30 @@ func (r Router) Init() *chi.Mux {
 	router.Delete("/user/current", r.UserCurrentController.Destroy)
 	router.Post("/user/register", r.UserRegisterController.Create)
 	router.Post("/user/session", r.UserSessionController.Create)
+
+	router.Get("/user", r.UserController.Index)
+	router.Post("/user", r.UserController.Create)
+	router.Get("/user/{user_id}", r.UserController.Show)
+	router.Put("/user/{user_id}", r.UserController.Update)
+	router.Delete("/user/{user_id}", r.UserController.Destroy)
+
+	router.Get("/tracker", r.TrackerController.Index)
+	router.Post("/tracker", r.TrackerController.Create)
+	router.Get("/tracker/{tracker_id}", r.TrackerController.Show)
+	router.Put("/tracker/{tracker_id}", r.TrackerController.Update)
+	router.Delete("/tracker/{tracker_id}", r.TrackerController.Destroy)
+
+	router.Get("/status", r.StatusController.Index)
+	router.Post("/status", r.StatusController.Create)
+	router.Get("/status/{status_id}", r.StatusController.Show)
+	router.Put("/status/{status_id}", r.StatusController.Update)
+	router.Delete("/status/{status_id}", r.StatusController.Destroy)
+
+	router.Get("/transition", r.TransitionController.Index)
+	router.Post("/transition", r.TransitionController.Create)
+	router.Get("/transition/{transition_id}", r.TransitionController.Show)
+	router.Put("/transition/{transition_id}", r.TransitionController.Update)
+	router.Delete("/transition/{transition_id}", r.TransitionController.Destroy)
 
 	return router
 }

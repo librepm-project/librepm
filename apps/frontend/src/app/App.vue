@@ -75,6 +75,16 @@ const links: Link[] = [
     key: 'filters',
     to: '/filter'
   },
+  {
+    text: 'Statuses',
+    key: 'statuses',
+    to: '/status'
+  },
+  {
+    text: 'Trackers',
+    key: 'trackers',
+    to: '/tracker'
+  },
 /*  {
     text: 'Profile',
     key: 'profile',

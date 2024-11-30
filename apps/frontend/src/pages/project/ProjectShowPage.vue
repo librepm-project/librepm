@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-  import Project from '../../lib/interfaces/Project.interface.ts';
+  import Project from '../../lib/interfaces/project.interface.ts';
   import { useProjectStore } from '../../store/project.store.ts';
 
   useProjectStore().getProject(1);
