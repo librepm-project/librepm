@@ -3,7 +3,7 @@ package domain
 import "github.com/google/uuid"
 
 type UserServiceInterface interface {
-	Index() *[]UserModel
+	All() *[]UserModel
 	Show(user_id uuid.UUID) *UserModel
 	Update(user_id uuid.UUID, user *UserModel)
 	Create(user *UserModel)
@@ -14,7 +14,7 @@ type UserService struct {
 	UserRepository UserRepositoryInterface
 }
 
-func (s UserService) Index() *[]UserModel {
+func (s UserService) All() *[]UserModel {
 	users := s.UserRepository.All()
 	return users
 }

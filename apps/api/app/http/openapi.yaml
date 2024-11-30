@@ -379,6 +379,53 @@ paths:
       responses:
         '204':
           description: No content
+  /user:
+    get:
+      tags: ["user"]
+      description: Get user list
+      responses:
+        '200':
+          description: List of users
+    post:
+      tags: ["user"]
+      description: Create user
+      responses:
+        '201':
+          description: Created
+  /user/{userId}:
+    get:
+      tags: ["user"]
+      description: Get a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User
+    put:
+      tags: ["user"]
+      description: Update a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: ["user"]
+      description: Delete a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
   /user/current:
     get:
       tags: ["userCurrent"]
