@@ -1,20 +1,20 @@
 <template>
   <div>
-    <h1>Statuses</h1>
-    <status-table :items="statusStore.index" />
+    <h1>Trackers</h1>
+    <tracker-table :items="trackerStore.index" />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { useStatusStore } from '../../store/status.store';
-  import StatusTable from '../../components/StatusTable.vue';
+  import { useTrackerStore } from '../../store/tracker.store';
+  import TrackerTable from '../../components/TrackerTable.vue';
   import { onMounted } from 'vue';
 
 
-  const statusStore = useStatusStore();
+  const trackerStore = useTrackerStore();
 
   onMounted(async () => {
-    await statusStore.getStatuses();
+    await trackerStore.getTrackers();
   });
 
 </script>
