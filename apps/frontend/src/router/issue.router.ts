@@ -1,16 +1,23 @@
 import { RouteRecordRaw } from 'vue-router';
-import IssueIndexView from '@/pages/issue/IssueIndexPage.vue';
-import IssueShowView from '@/pages/issue/IssueShowPage.vue';
+import IssueIndexPage from '@/page/issue/IssueIndexPage.vue';
+import IssueShowPage from '@/page/issue/IssueShowPage.vue';
+import { reactive } from 'vue';
 
 export const issueRouter: RouteRecordRaw[] = [
   {
     path: '/issue',
     name: 'issueIndex',
-    component: IssueIndexView,
+    component: IssueIndexPage,
+    meta: reactive({
+      title: 'Issues',
+    }),
   },
   {
     path: '/issue/{issueid}',
     name: 'issueShow',
-    component: IssueShowView,
+    component: IssueShowPage,
+    meta: reactive({
+      title: '',
+    }),
   },
 ];

@@ -1,29 +1,42 @@
 import { RouteRecordRaw } from 'vue-router';
-import AdminUserIndexView from '@/pages/admin/user/AdminUserIndexPage.vue';
-import AdminUserShowView from '@/pages/admin/user/AdminUserShowPage.vue';
-import AdminBoardIndexView from '@/pages/admin/board/AdminBoardIndexPage.vue';
-import AdminBoardEditView from '@/pages/admin/board/AdminBoardEditPage.vue';
+import AdminUserIndexPage from '@/page/admin/user/AdminUserIndexPage.vue';
+import AdminUserShowPage from '@/page/admin/user/AdminUserShowPage.vue';
+import AdminBoardIndexPage from '@/page/admin/board/AdminBoardIndexPage.vue';
+import AdminBoardEditPage from '@/page/admin/board/AdminBoardEditPage.vue';
+import { reactive } from 'vue';
 
 export const adminRouter: RouteRecordRaw[] = [
   {
     path: '/admin/user',
     name: 'adminUserIndex',
-    component: AdminUserIndexView,
+    component: AdminUserIndexPage,
+    meta: reactive({
+      title: 'Users',
+    }),
   },
   {
     path: '/admin/user/{userId}',
     name: 'adminUserShow',
-    component: AdminUserShowView,
+    component: AdminUserShowPage,
+    meta: reactive({
+      title: 'User details',
+    }),
   },
   {
     path: '/admin/board',
     name: 'adminBoardIndex',
-    component: AdminBoardIndexView
+    component: AdminBoardIndexPage,
+    meta: reactive({
+      title: 'Boards',
+    }),
   },
   {
     path: '/admin/board/{boardId}/edit',
     name: 'adminBoardEdit',
-    component: AdminBoardEditView
+    component: AdminBoardEditPage,
+    meta: reactive({
+      title: 'Edit board',
+    }),
   },
 ];
 

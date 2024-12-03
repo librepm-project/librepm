@@ -8,6 +8,8 @@ import { filterRouter } from '@/router/filter.router';
 import { sessionRouter } from '@/router/session.router';
 import { statusRouter } from '@/router/status.router';
 import { trackerRouter } from '@/router/tracker.router';
+import { authorizationMiddleware } from '@/router/middleware/authorization.middleware';
+import { pageTitleMiddleware } from '@/router/middleware/page-title.middleware';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,14 +27,7 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, _from, next) => {
-  const accessToken = localStorage.getItem("accessToken");
-  const requiresAuth = to.matched.some((record) => record.meta.authRequired);
-  if (requiresAuth && !accessToken) {
-    next("login");
-  } else {
-    next();
-  }
-});
+router.beforeEach(pageTitleMiddleware)
+router.beforeEach(authorizationMiddleware);
 
 export default  router;

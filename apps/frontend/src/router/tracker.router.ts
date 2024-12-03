@@ -1,16 +1,23 @@
 import { RouteRecordRaw } from 'vue-router';
-import TrackerIndexView from '@/pages/tracker/TrackerIndexPage.vue';
-import TrackerShowView from '@/pages/tracker/TrackerShowPage.vue';
+import TrackerIndexPage from '@/page/tracker/TrackerIndexPage.vue';
+import TrackerShowPage from '@/page/tracker/TrackerShowPage.vue';
+import { reactive } from 'vue';
 
 export const trackerRouter: RouteRecordRaw[] = [
   {
     path: '/tracker',
     name: 'trackerIndex',
-    component: TrackerIndexView,
+    component: TrackerIndexPage,
+    meta: reactive({
+      title: 'Trackers',
+    }),
   },
   {
     path: '/tracker/{trackerid}',
     name: 'trackerShow',
-    component: TrackerShowView,
+    component: TrackerShowPage,
+    meta: reactive({
+      title: '',
+    }),
   },
 ];

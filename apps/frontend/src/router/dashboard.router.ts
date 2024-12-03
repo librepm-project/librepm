@@ -1,11 +1,15 @@
 import { RouteRecordRaw } from 'vue-router';
-import DashboardIndexView from '@/pages/dashboard/DashboardIndexPage.vue';
+import DashboardIndexPage from '@/page/dashboard/DashboardIndexPage.vue';
+import { reactive } from 'vue';
 
 export const dashboardRouter: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'dashboardIndex',
-    component: DashboardIndexView,
+    component: DashboardIndexPage,
+    meta: reactive({
+      title: 'Dashboards',
+    }),
   },
 ];
 
