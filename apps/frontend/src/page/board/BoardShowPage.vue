@@ -5,7 +5,6 @@
       :items="boardStore.index"
       item-title="name"
       item-value="id"
-      :name="selectedBoardId"
     ></v-select>
   </div>
 </template>

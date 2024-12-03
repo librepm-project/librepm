@@ -16,8 +16,8 @@ export const useBoardStore = defineStore('board', {
     };
   },
   actions: {
-    getBoard(boardId: number) {
-      this.current = boardMock[0];
+    async getBoard(boardId: number) {
+      this.current = await boardApi.show(boardId);
     },
 
     async getBoards() {

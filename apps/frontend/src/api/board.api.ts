@@ -2,7 +2,7 @@ import { Board } from "@/lib/interfaces/board.interface";
 import api from "@/api/api";
 
 const index = async (): Promise<Board[]> => {
-    const response = await api.apiCall().get("/api/board");
+    const response = await api.apiCall().get("/board");
     return response.data as Board[];
 }
 

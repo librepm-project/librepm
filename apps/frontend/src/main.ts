@@ -1,4 +1,4 @@
-import './styles.scss';
+import '@/theme/styles.scss';
 import 'vuetify/styles'
 
 import { createApp } from 'vue';
@@ -10,10 +10,15 @@ import * as directives from 'vuetify/directives'
 
 import App from '@/layout/App.vue';
 import router from '@/router/index.router';
+import { themes } from '@/theme/theme';
 
 const vuetify = createVuetify({
   components,
   directives,
+  theme: {
+    defaultTheme: 'light',
+    themes,
+  },
 })
 
 const pinia = createPinia()

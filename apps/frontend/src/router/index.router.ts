@@ -30,4 +30,4 @@ const router = createRouter({
 router.beforeEach(pageTitleMiddleware)
 router.beforeEach(authorizationMiddleware);
 
-export default  router;
+export default router;
