@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
-import FilterIndexView from '../pages/filter/FilterIndexPage.vue';
-import FilterShowView from '../pages/filter/FilterShowPage.vue';
+import FilterIndexView from '@/pages/filter/FilterIndexPage.vue';
+import FilterShowView from '@/pages/filter/FilterShowPage.vue';
 
 export const filterRouter: RouteRecordRaw[] = [
   {

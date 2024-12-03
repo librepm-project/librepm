@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
-import StatusIndexView from '../pages/status/StatusIndexPage.vue';
-import StatusShowView from '../pages/status/StatusShowPage.vue';
+import StatusIndexView from '@/pages/status/StatusIndexPage.vue';
+import StatusShowView from '@/pages/status/StatusShowPage.vue';
 
 export const statusRouter: RouteRecordRaw[] = [
   {

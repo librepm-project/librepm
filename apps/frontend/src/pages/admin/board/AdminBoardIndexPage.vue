@@ -22,7 +22,7 @@
         >
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
-          <td><router-link to:="/admin/board/{item.id}/edit">Configure</router-link></td>
+          <td><router-link to="/admin/board/{item.id}/edit">Configure</router-link></td>
         </tr>
       </tbody>
     </v-table>
@@ -30,10 +30,10 @@
 </template>
 
 <script lang="ts" setup>
+import { Board } from '@/lib/interfaces/board.interface';
+import { useBoardStore } from '@/store/board.store';
 import { RouterLink } from 'vue-router';
 
-  import { Board } from '../../../lib/interfaces/board.interface';
-  import { useBoardStore } from '../../../store/board.store';
 
   useBoardStore().getBoards();
 

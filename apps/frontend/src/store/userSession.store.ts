@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import userSessionApi from '../api/userSession.api';
+import userSessionApi from '@/api/userSession.api';
 import { useUserCurrentStore } from './userCurrent.store';
-import { LoginRequest } from '../lib/interfaces/user.interface';
+import { LoginRequest } from '@/lib/interfaces/user.interface';
 
 export const useCurrentUserStore = defineStore('userSession', {
   state: () => ({}),

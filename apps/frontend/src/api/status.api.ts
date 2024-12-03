@@ -1,5 +1,5 @@
-import { Status } from "../lib/interfaces/status.interface";
-import api from "./api";
+import { Status } from "@/lib/interfaces/status.interface";
+import api from "@/api/api";
 
 const index = async (): Promise<Status[]> => {
     const response = await api.apiCall().get("/status");

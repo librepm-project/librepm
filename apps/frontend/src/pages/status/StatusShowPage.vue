@@ -6,11 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-  import Status from '../../lib/interfaces/status.interface.ts';
-  import { useStatusStore } from '../../store/status.store.ts';
+  import { useStatusStore } from '@/store/status.store';
 
   useStatusStore().getStatus(1);
 
-  const project: Status = useStatusStore().current;
+  const status = useStatusStore().current;
 
 </script>

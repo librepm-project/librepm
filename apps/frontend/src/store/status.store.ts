@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { Status } from '../lib/interfaces/status.interface';
-import { statusMock } from '../lib/mock-data';
-import statusApi from '../api/status.api';
+import { Status } from '@/lib/interfaces/status.interface';
+import { statusMock } from '@/lib/mock-data';
+import statusApi from '@/api/status.api';
 
 
 interface StatusStore {

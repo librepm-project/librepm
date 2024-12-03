@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { useProjectStore } from '../../store/project.store';
-  import ProjectTable from '../../components/ProjectTable.vue';
+  import { useProjectStore } from '@/store/project.store';
+  import ProjectTable from '@/components/ProjectTable.vue';
   import { onMounted } from 'vue';
 
 

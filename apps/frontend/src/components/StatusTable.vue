@@ -19,9 +19,11 @@
 </template>
 
 <script setup lang="ts">
+import { Status } from '@/lib/interfaces/status.interface';
+
 
 defineProps<{
-    items: Issue[]
+    items: Status[]
 }>()
 
 </script>

@@ -27,6 +27,8 @@
 </template>
 
 <script setup lang="ts">
+import { Issue } from '@/lib/interfaces/issue.interface';
+
 
 defineProps<{
     items: Issue[]

@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { issueRouter } from './issue.router';
-import { projectRouter } from './project.router';
-import { adminRouter } from './admin.router';
-import { boardRouter } from './board.router';
-import { dashboardRouter } from './dashboard.router';
-import { filterRouter } from './filter.router';
-import { sessionRouter } from './session.router';
-import { statusRouter } from './status.router';
-import { trackerRouter } from './tracker.router';
+import { issueRouter } from '@/router/issue.router';
+import { projectRouter } from '@/router/project.router';
+import { adminRouter } from '@/router/admin.router';
+import { boardRouter } from '@/router/board.router';
+import { dashboardRouter } from '@/router/dashboard.router';
+import { filterRouter } from '@/router/filter.router';
+import { sessionRouter } from '@/router/session.router';
+import { statusRouter } from '@/router/status.router';
+import { trackerRouter } from '@/router/tracker.router';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

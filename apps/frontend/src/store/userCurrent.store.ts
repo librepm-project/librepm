@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { User } from '../lib/interfaces/user.interface';
-import userCurrentApi from '../api/userCurrent.api';
+import { User } from '@/lib/interfaces/user.interface';
+import userCurrentApi from '@/api/userCurrent.api';
 
 interface UserCurrentStore {
   current: User | null;

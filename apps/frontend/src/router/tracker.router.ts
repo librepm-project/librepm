@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
-import TrackerIndexView from '../pages/tracker/TrackerIndexPage.vue';
-import TrackerShowView from '../pages/tracker/TrackerShowPage.vue';
+import TrackerIndexView from '@/pages/tracker/TrackerIndexPage.vue';
+import TrackerShowView from '@/pages/tracker/TrackerShowPage.vue';
 
 export const trackerRouter: RouteRecordRaw[] = [
   {

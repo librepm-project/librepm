@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { Tracker } from '../lib/interfaces/tracker.interface';
-import { trackerMock } from '../lib/mock-data';
-import trackerApi from '../api/tracker.api';
+import { Tracker } from '@/lib/interfaces/tracker.interface';
+import { trackerMock } from '@/lib/mock-data';
+import trackerApi from '@/api/tracker.api';
 
 
 interface TrackerStore {

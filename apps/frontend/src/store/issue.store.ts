@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { Issue } from '../lib/interfaces/issue.interface';
-import { issueMock } from '../lib/mock-data';
-import issueApi from '../api/issue.api';
+import { Issue } from '@/lib/interfaces/issue.interface';
+import { issueMock } from '@/lib/mock-data';
+import issueApi from '@/api/issue.api';
 
 interface IssueStore {
   current: Issue | null;

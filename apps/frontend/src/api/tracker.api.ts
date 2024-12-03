@@ -1,5 +1,5 @@
-import { Tracker } from "../lib/interfaces/tracker.interface";
-import api from "./api";
+import { Tracker } from "@/lib/interfaces/tracker.interface";
+import api from "@/api/api";
 
 const index = async (): Promise<Tracker[]> => {
     const response = await api.apiCall().get("/tracker");

@@ -23,6 +23,9 @@
 </template>
 
 <script setup lang="ts">
+import { Project } from '@/lib/interfaces/project.interface';
+
+
 
 defineProps<{
     items: Project[]

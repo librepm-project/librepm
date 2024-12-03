@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { User } from '../lib/interfaces/user.interface';
-import { userMock } from '../lib/mock-data';
+import { User } from '@/lib/interfaces/user.interface';
+import { userMock } from '@/lib/mock-data';
 
 interface UserStore {
   current: User | null;

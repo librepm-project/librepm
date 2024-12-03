@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { useTrackerStore } from '../../store/tracker.store';
-  import TrackerTable from '../../components/TrackerTable.vue';
+  import { useTrackerStore } from '@/store/tracker.store';
+  import TrackerTable from '@/components/TrackerTable.vue';
   import { onMounted } from 'vue';
 
 

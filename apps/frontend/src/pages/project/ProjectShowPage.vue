@@ -6,11 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-  import Project from '../../lib/interfaces/project.interface.ts';
-  import { useProjectStore } from '../../store/project.store.ts';
+  import { useProjectStore } from '@/store/project.store';
 
   useProjectStore().getProject(1);
 
-  const project: Project = useProjectStore().current;
+  const project  = useProjectStore().current;
 
 </script>

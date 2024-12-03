@@ -1,5 +1,5 @@
-import { Project } from "../lib/interfaces/project.interface";
-import api from "./api";
+import { Project } from "@/lib/interfaces/project.interface";
+import api from "@/api/api";
 
 const index = async (): Promise<Project[]> => {
     const response = await api.apiCall().get("/project");

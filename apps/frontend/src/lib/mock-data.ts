@@ -1,10 +1,11 @@
-import { Board } from './interfaces/board.interface';
-import { Filter } from './interfaces/filter.interface';
-import { Issue } from './interfaces/issue.interface';
-import { Project } from './interfaces/project.interface';
-import { Status } from './interfaces/status.interface';
-import { Tracker } from './interfaces/tracker.interface';
-import { User } from './interfaces/user.interface';
+import { Board } from "@/lib/interfaces/board.interface";
+import { Filter } from "@/lib/interfaces/filter.interface";
+import { Issue } from "@/lib/interfaces/issue.interface";
+import { Project } from "@/lib/interfaces/project.interface";
+import { Status } from "@/lib/interfaces/status.interface";
+import { Tracker } from "@/lib/interfaces/tracker.interface";
+import { User } from "@/lib/interfaces/user.interface";
+
 
 export const boardMock: Board[] = [
   {
@@ -69,8 +70,8 @@ export const userMock: User[] = [
 
 export const projectMock: Project[] = [
   {
-    id: 'id',
-    codeName: "MOCK",
+    id: "id",
+    codeName: "SW",
     name: "Mocked Project",
   },
 ];

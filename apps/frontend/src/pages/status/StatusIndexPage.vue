@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { useStatusStore } from '../../store/status.store';
-  import StatusTable from '../../components/StatusTable.vue';
+  import { useStatusStore } from '@/store/status.store';
+  import StatusTable from '@/components/StatusTable.vue';
   import { onMounted } from 'vue';
 
 

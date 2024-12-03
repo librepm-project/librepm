@@ -6,11 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-  import Tracker from '../../lib/interfaces/tracker.interface.ts';
-  import { useTrackerStore } from '../../store/tracker.store.ts';
+  import { useTrackerStore } from '@/store/tracker.store';
 
   useTrackerStore().getTracker(1);
 
-  const project: Tracker = useTrackerStore().current;
+  const project = useTrackerStore().current;
 
 </script>

@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
-import ProjectIndexView from '../pages/project/ProjectIndexPage.vue';
-import ProjectShowView from '../pages/project/ProjectShowPage.vue';
+import ProjectIndexView from '@/pages/project/ProjectIndexPage.vue';
+import ProjectShowView from '@/pages/project/ProjectShowPage.vue';
 
 export const projectRouter: RouteRecordRaw[] = [
   {

@@ -19,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import { Tracker } from '@/lib/interfaces/tracker.interface';
+
 
 defineProps<{
     items: Tracker[]

@@ -23,6 +23,8 @@
 </template>
 
 <script setup lang="ts">
+import { Filter } from '@/lib/interfaces/filter.interface';
+
 
 defineProps<{
     items: Filter[]

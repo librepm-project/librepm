@@ -1,5 +1,5 @@
-import { Filter } from "../lib/interfaces/filter.interface";
-import api from "./api";
+import { Filter } from "@/lib/interfaces/filter.interface";
+import api from "@/api/api";
 
 const index = async (): Promise<Filter[]> => {
     const response = await api.apiCall().get("/filter");

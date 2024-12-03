@@ -1,5 +1,5 @@
-import { Dashboard } from "../lib/interfaces/dashboard.interface";
-import api from "./api";
+import { Dashboard } from "@/lib/interfaces/dashboard.interface";
+import api from "@/api/api";
 
 const index = async (): Promise<Dashboard[]> => {
     const response = await api.apiCall().get("/dashboard");

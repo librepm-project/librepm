@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { Dashboard } from '../lib/interfaces/dashboard.interface';
-import dashboardApi from '../api/dashboard.api';
+import { Dashboard } from '@/lib/interfaces/dashboard.interface';
+import dashboardApi from '@/api/dashboard.api';
 
 interface DashboardStore {
   current: Dashboard | null;

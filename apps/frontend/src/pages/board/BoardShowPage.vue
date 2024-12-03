@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useBoardStore } from '../../store/board.store';
+import { useBoardStore } from '@/store/board.store';
 
   const boardStore = useBoardStore();
 

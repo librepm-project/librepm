@@ -1,8 +1,8 @@
 import { RouteRecordRaw } from 'vue-router';
-import AdminUserIndexView from '../pages/admin/user/AdminUserIndexPage.vue';
-import AdminUserShowView from '../pages/admin/user/AdminUserShowPage.vue';
-import AdminBoardIndexView from '../pages/admin/board/AdminBoardIndexPage.vue';
-import AdminBoardEditView from '../pages/admin/board/AdminBoardEditPage.vue';
+import AdminUserIndexView from '@/pages/admin/user/AdminUserIndexPage.vue';
+import AdminUserShowView from '@/pages/admin/user/AdminUserShowPage.vue';
+import AdminBoardIndexView from '@/pages/admin/board/AdminBoardIndexPage.vue';
+import AdminBoardEditView from '@/pages/admin/board/AdminBoardEditPage.vue';
 
 export const adminRouter: RouteRecordRaw[] = [
   {

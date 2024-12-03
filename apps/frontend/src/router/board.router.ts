@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-import BoardShowView from '../pages/board/BoardShowPage.vue';
+import BoardShowView from '@/pages/board/BoardShowPage.vue';
 
 export const boardRouter: RouteRecordRaw[] = [
   {
