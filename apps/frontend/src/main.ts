@@ -11,6 +11,7 @@ import * as directives from 'vuetify/directives'
 import App from '@/layout/App.vue';
 import router from '@/router/index.router';
 import { themes } from '@/theme/theme';
+import { i18n } from '@/i18n';
 
 const vuetify = createVuetify({
   components,
@@ -24,6 +25,7 @@ const vuetify = createVuetify({
 const pinia = createPinia()
 
 const app = createApp(App);
+app.use(i18n);
 app.use(pinia);
 app.use(vuetify);
 app.use(router);

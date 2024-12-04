@@ -1,10 +1,11 @@
 <template>
-  <v-container>
+  <v-container v-if="issueStore.current">
     <v-row>
       <v-col>
         <v-card>
           <v-card-title>{{ issueStore.current.summary }}</v-card-title>
           <v-card-subtitle>{{ issueStore.current.id }}</v-card-subtitle>
+          <v-card-text class="text-bold">{{ t('issue.description') }}</v-card-text>
           <v-card-text>{{ issueStore.current.description }}</v-card-text>
         </v-card>
       </v-col>
@@ -25,7 +26,9 @@
 import { useIssueStore } from '@/store/issue.store';
 import { useRoute } from 'vue-router';
 import { onBeforeMount } from 'vue';
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n();
 const route = useRoute();
 const issueStore = useIssueStore();
 
