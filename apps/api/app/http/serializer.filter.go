@@ -6,24 +6,34 @@ import (
 	"apps/api/app/domain"
 )
 
-type Filter struct {
+type FilterRequest struct {
+	Name string `json:"name"`
+}
+
+type FilterResponse struct {
 	ID   uuid.UUID `json:"id"`
 	Name string    `json:"name"`
 }
 
 type FilterSerializer struct{}
 
-func (s FilterSerializer) SerializeFilter(filter domain.FilterModel) Filter {
-	return Filter{
+func (s FilterSerializer) RequestToModel(filter_request FilterRequest) domain.FilterModel {
+	return domain.FilterModel{
+		Name: filter_request.Name,
+	}
+}
+
+func (s FilterSerializer) ModelToResponse(filter domain.FilterModel) FilterResponse {
+	return FilterResponse{
 		ID:   filter.ID,
 		Name: filter.Name,
 	}
 }
 
-func (s FilterSerializer) SerializeFilters(filters []domain.FilterModel) []Filter {
-	var serialized []Filter
+func (s FilterSerializer) ModelToResponseMany(filters []domain.FilterModel) []FilterResponse {
+	var serialized []FilterResponse
 	for _, filter := range filters {
-		serialized = append(serialized, s.SerializeFilter(filter))
+		serialized = append(serialized, s.ModelToResponse(filter))
 	}
 	return serialized
 }

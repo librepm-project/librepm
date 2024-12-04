@@ -29,5 +29,5 @@ func (c UserSessionController) Create(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.SerializeSession(*session))
+	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ToSessionResponse(*session))
 }

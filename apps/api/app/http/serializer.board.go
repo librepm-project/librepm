@@ -6,24 +6,35 @@ import (
 	"apps/api/app/domain"
 )
 
-type Board struct {
+type BoardRequest struct {
+	ID   uuid.UUID `json:"id"`
+	Name string    `json:"name"`
+}
+
+type BoardResponse struct {
 	ID   uuid.UUID `json:"id"`
 	Name string    `json:"name"`
 }
 
 type BoardSerializer struct{}
 
-func (s BoardSerializer) SerializeBoard(board domain.BoardModel) Board {
-	return Board{
+func (s BoardSerializer) RequestToModel(board_request BoardRequest) domain.BoardModel {
+	return domain.BoardModel{
+		Name: board_request.Name,
+	}
+}
+
+func (s BoardSerializer) ModelToResponse(board domain.BoardModel) BoardResponse {
+	return BoardResponse{
 		ID:   board.ID,
 		Name: board.Name,
 	}
 }
 
-func (s BoardSerializer) SerializeBoards(boards []domain.BoardModel) []Board {
-	var serialized []Board
+func (s BoardSerializer) ModelToResponseMany(boards []domain.BoardModel) []BoardResponse {
+	var serialized []BoardResponse
 	for _, board := range boards {
-		serialized = append(serialized, s.SerializeBoard(board))
+		serialized = append(serialized, s.ModelToResponse(board))
 	}
 	return serialized
 }

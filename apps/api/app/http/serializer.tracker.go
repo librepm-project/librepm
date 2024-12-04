@@ -6,24 +6,34 @@ import (
 	"apps/api/app/domain"
 )
 
-type Tracker struct {
+type TrackerRequest struct {
+	Name string `json:"name"`
+}
+
+type TrackerResponse struct {
 	ID   uuid.UUID `json:"id"`
 	Name string    `json:"name"`
 }
 
 type TrackerSerializer struct{}
 
-func (s TrackerSerializer) SerializeTracker(tracker domain.TrackerModel) Tracker {
-	return Tracker{
+func (s TrackerSerializer) RequestToModel(tracker_request TrackerRequest) domain.TrackerModel {
+	return domain.TrackerModel{
+		Name: tracker_request.Name,
+	}
+}
+
+func (s TrackerSerializer) ModelToResponse(tracker domain.TrackerModel) TrackerResponse {
+	return TrackerResponse{
 		ID:   tracker.ID,
 		Name: tracker.Name,
 	}
 }
 
-func (s TrackerSerializer) SerializeTrackers(trackers []domain.TrackerModel) []Tracker {
-	var serialized []Tracker
+func (s TrackerSerializer) ModelToResponseMany(trackers []domain.TrackerModel) []TrackerResponse {
+	var serialized []TrackerResponse
 	for _, tracker := range trackers {
-		serialized = append(serialized, s.SerializeTracker(tracker))
+		serialized = append(serialized, s.ModelToResponse(tracker))
 	}
 	return serialized
 }

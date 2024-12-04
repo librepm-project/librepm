@@ -22,26 +22,28 @@ type FilterController struct {
 
 func (c FilterController) Index(w http.ResponseWriter, r *http.Request) {
 	filters := c.FilterService.All()
-	http_utils.RespondWithJSON(w, http.StatusOK, FilterSerializer{}.SerializeFilters(*filters))
+	http_utils.RespondWithJSON(w, http.StatusOK, FilterSerializer{}.ModelToResponseMany(*filters))
 }
 
 func (c FilterController) Show(w http.ResponseWriter, r *http.Request) {
 	var filter_id, _ = http_utils.GetParamUUID(r, "filter_id")
 	filter := c.FilterService.Show(filter_id)
-	http_utils.RespondWithJSON(w, http.StatusOK, FilterSerializer{}.SerializeFilter(*filter))
+	http_utils.RespondWithJSON(w, http.StatusOK, FilterSerializer{}.ModelToResponse(*filter))
 }
 
 func (c FilterController) Create(w http.ResponseWriter, r *http.Request) {
-	var filter domain.FilterModel
-	json.NewDecoder(r.Body).Decode(&filter)
+	var filter_request FilterRequest
+	json.NewDecoder(r.Body).Decode(&filter_request)
+	filter := FilterSerializer{}.RequestToModel(filter_request)
 	c.FilterService.Create(&filter)
-	http_utils.RespondWithJSON(w, http.StatusCreated, FilterSerializer{}.SerializeFilter(filter))
+	http_utils.RespondWithJSON(w, http.StatusCreated, FilterSerializer{}.ModelToResponse(filter))
 }
 
 func (c FilterController) Update(w http.ResponseWriter, r *http.Request) {
 	filter_id, _ := http_utils.GetParamUUID(r, "filter_id")
-	var filter domain.FilterModel
-	json.NewDecoder(r.Body).Decode(&filter)
+	var filter_request FilterRequest
+	json.NewDecoder(r.Body).Decode(&filter_request)
+	filter := FilterSerializer{}.RequestToModel(filter_request)
 	c.FilterService.Update(filter_id, &filter)
 	w.WriteHeader(http.StatusOK)
 }

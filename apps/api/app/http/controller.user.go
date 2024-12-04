@@ -22,26 +22,28 @@ type UserController struct {
 
 func (c UserController) Index(w http.ResponseWriter, r *http.Request) {
 	users := c.UserService.All()
-	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.SerializeUsers(*users))
+	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponseMany(*users))
 }
 
 func (c UserController) Show(w http.ResponseWriter, r *http.Request) {
 	var user_id, _ = http_utils.GetParamUUID(r, "user_id")
 	user := c.UserService.Show(user_id)
-	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.SerializeUser(*user))
+	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*user))
 }
 
 func (c UserController) Create(w http.ResponseWriter, r *http.Request) {
-	var user domain.UserModel
-	json.NewDecoder(r.Body).Decode(&user)
+	var user_request UserRequest
+	json.NewDecoder(r.Body).Decode(&user_request)
+	user := UserSerializer{}.RequestToModel(user_request)
 	c.UserService.Create(&user)
-	http_utils.RespondWithJSON(w, http.StatusCreated, UserSerializer{}.SerializeUser(user))
+	http_utils.RespondWithJSON(w, http.StatusCreated, UserSerializer{}.ModelToResponse(user))
 }
 
 func (c UserController) Update(w http.ResponseWriter, r *http.Request) {
 	user_id, _ := http_utils.GetParamUUID(r, "user_id")
-	var user domain.UserModel
-	json.NewDecoder(r.Body).Decode(&user)
+	var user_request UserRequest
+	json.NewDecoder(r.Body).Decode(&user_request)
+	user := UserSerializer{}.RequestToModel(user_request)
 	c.UserService.Update(user_id, &user)
 	w.WriteHeader(http.StatusOK)
 }

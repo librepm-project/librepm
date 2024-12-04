@@ -22,26 +22,28 @@ type DashboardController struct {
 
 func (c DashboardController) Index(w http.ResponseWriter, r *http.Request) {
 	dashboards := c.DashboardService.All()
-	http_utils.RespondWithJSON(w, http.StatusOK, DashboardSerializer{}.SerializeDashboards(*dashboards))
+	http_utils.RespondWithJSON(w, http.StatusOK, DashboardSerializer{}.ModelToResponseMany(*dashboards))
 }
 
 func (c DashboardController) Show(w http.ResponseWriter, r *http.Request) {
 	var dashboard_id, _ = http_utils.GetParamUUID(r, "dashboard_id")
 	dashboard := c.DashboardService.Show(dashboard_id)
-	http_utils.RespondWithJSON(w, http.StatusOK, DashboardSerializer{}.SerializeDashboard(*dashboard))
+	http_utils.RespondWithJSON(w, http.StatusOK, DashboardSerializer{}.ModelToResponse(*dashboard))
 }
 
 func (c DashboardController) Create(w http.ResponseWriter, r *http.Request) {
-	var dashboard domain.DashboardModel
-	json.NewDecoder(r.Body).Decode(&dashboard)
+	var dashboard_request DashboardRequest
+	json.NewDecoder(r.Body).Decode(&dashboard_request)
+	dashboard := DashboardSerializer{}.RequestToModel(dashboard_request)
 	c.DashboardService.Create(&dashboard)
-	http_utils.RespondWithJSON(w, http.StatusCreated, DashboardSerializer{}.SerializeDashboard(dashboard))
+	http_utils.RespondWithJSON(w, http.StatusCreated, DashboardSerializer{}.ModelToResponse(dashboard))
 }
 
 func (c DashboardController) Update(w http.ResponseWriter, r *http.Request) {
 	dashboard_id, _ := http_utils.GetParamUUID(r, "dashboard_id")
-	var dashboard domain.DashboardModel
-	json.NewDecoder(r.Body).Decode(&dashboard)
+	var dashboard_request DashboardRequest
+	json.NewDecoder(r.Body).Decode(&dashboard_request)
+	dashboard := DashboardSerializer{}.RequestToModel(dashboard_request)
 	c.DashboardService.Update(dashboard_id, &dashboard)
 	w.WriteHeader(http.StatusOK)
 }

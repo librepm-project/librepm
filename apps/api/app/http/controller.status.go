@@ -22,26 +22,28 @@ type StatusController struct {
 
 func (c StatusController) Index(w http.ResponseWriter, r *http.Request) {
 	statuses := c.StatusService.All()
-	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.SerializeStatuss(*statuses))
+	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponseMany(*statuses))
 }
 
 func (c StatusController) Show(w http.ResponseWriter, r *http.Request) {
 	var status_id, _ = http_utils.GetParamUUID(r, "status_id")
 	status := c.StatusService.Show(status_id)
-	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.SerializeStatus(*status))
+	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponse(*status))
 }
 
 func (c StatusController) Create(w http.ResponseWriter, r *http.Request) {
-	var status domain.StatusModel
-	json.NewDecoder(r.Body).Decode(&status)
+	var status_request StatusRequest
+	json.NewDecoder(r.Body).Decode(&status_request)
+	status := StatusSerializer{}.RequestToModel(status_request)
 	c.StatusService.Create(&status)
-	http_utils.RespondWithJSON(w, http.StatusCreated, StatusSerializer{}.SerializeStatus(status))
+	http_utils.RespondWithJSON(w, http.StatusCreated, StatusSerializer{}.ModelToResponse(status))
 }
 
 func (c StatusController) Update(w http.ResponseWriter, r *http.Request) {
 	status_id, _ := http_utils.GetParamUUID(r, "status_id")
-	var status domain.StatusModel
-	json.NewDecoder(r.Body).Decode(&status)
+	var status_request StatusRequest
+	json.NewDecoder(r.Body).Decode(&status_request)
+	status := StatusSerializer{}.RequestToModel(status_request)
 	c.StatusService.Update(status_id, &status)
 	w.WriteHeader(http.StatusOK)
 }

@@ -22,26 +22,28 @@ type ProjectController struct {
 
 func (c ProjectController) Index(w http.ResponseWriter, r *http.Request) {
 	projects := c.ProjectService.All()
-	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.SerializeProjects(*projects))
+	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponseMany(*projects))
 }
 
 func (c ProjectController) Show(w http.ResponseWriter, r *http.Request) {
 	var project_id, _ = http_utils.GetParamUUID(r, "project_id")
 	project := c.ProjectService.Show(project_id)
-	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.SerializeProject(*project))
+	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponse(*project))
 }
 
 func (c ProjectController) Create(w http.ResponseWriter, r *http.Request) {
-	var project domain.ProjectModel
-	json.NewDecoder(r.Body).Decode(&project)
+	var project_request ProjectRequest
+	json.NewDecoder(r.Body).Decode(&project_request)
+	project := ProjectSerializer{}.RequestToModel(project_request)
 	c.ProjectService.Create(&project)
-	http_utils.RespondWithJSON(w, http.StatusCreated, ProjectSerializer{}.SerializeProject(project))
+	http_utils.RespondWithJSON(w, http.StatusCreated, ProjectSerializer{}.ModelToResponse(project))
 }
 
 func (c ProjectController) Update(w http.ResponseWriter, r *http.Request) {
 	project_id, _ := http_utils.GetParamUUID(r, "project_id")
-	var project domain.ProjectModel
-	json.NewDecoder(r.Body).Decode(&project)
+	var project_request ProjectRequest
+	json.NewDecoder(r.Body).Decode(&project_request)
+	project := ProjectSerializer{}.RequestToModel(project_request)
 	c.ProjectService.Update(project_id, &project)
 	w.WriteHeader(http.StatusOK)
 }

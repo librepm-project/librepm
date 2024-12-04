@@ -22,26 +22,27 @@ type BoardController struct {
 
 func (c BoardController) Index(w http.ResponseWriter, r *http.Request) {
 	boards := c.BoardService.All()
-	http_utils.RespondWithJSON(w, http.StatusOK, BoardSerializer{}.SerializeBoards(*boards))
+	http_utils.RespondWithJSON(w, http.StatusOK, BoardSerializer{}.ModelToResponseMany(*boards))
 }
 
 func (c BoardController) Show(w http.ResponseWriter, r *http.Request) {
 	var board_id, _ = http_utils.GetParamUUID(r, "board_id")
 	board := c.BoardService.Show(board_id)
-	http_utils.RespondWithJSON(w, http.StatusOK, BoardSerializer{}.SerializeBoard(*board))
+	http_utils.RespondWithJSON(w, http.StatusOK, BoardSerializer{}.ModelToResponse(*board))
 }
 
 func (c BoardController) Create(w http.ResponseWriter, r *http.Request) {
-	var board domain.BoardModel
-	json.NewDecoder(r.Body).Decode(&board)
-	c.BoardService.Create(&board)
-	http_utils.RespondWithJSON(w, http.StatusCreated, BoardSerializer{}.SerializeBoard(board))
+	var board_request BoardRequest
+	json.NewDecoder(r.Body).Decode(&board_request)
+	board := BoardSerializer{}.RequestToModel(board_request)
+	http_utils.RespondWithJSON(w, http.StatusCreated, BoardSerializer{}.ModelToResponse(board))
 }
 
 func (c BoardController) Update(w http.ResponseWriter, r *http.Request) {
 	board_id, _ := http_utils.GetParamUUID(r, "board_id")
-	var board domain.BoardModel
-	json.NewDecoder(r.Body).Decode(&board)
+	var board_request BoardRequest
+	json.NewDecoder(r.Body).Decode(&board_request)
+	board := BoardSerializer{}.RequestToModel(board_request)
 	c.BoardService.Update(board_id, &board)
 	w.WriteHeader(http.StatusOK)
 }

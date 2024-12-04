@@ -22,26 +22,28 @@ type TransitionController struct {
 
 func (c TransitionController) Index(w http.ResponseWriter, r *http.Request) {
 	transitions := c.TransitionService.All()
-	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.SerializeTransitions(*transitions))
+	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponseMany(*transitions))
 }
 
 func (c TransitionController) Show(w http.ResponseWriter, r *http.Request) {
 	var transition_id, _ = http_utils.GetParamUUID(r, "transition_id")
 	transition := c.TransitionService.Show(transition_id)
-	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.SerializeTransition(*transition))
+	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponse(*transition))
 }
 
 func (c TransitionController) Create(w http.ResponseWriter, r *http.Request) {
-	var transition domain.TransitionModel
-	json.NewDecoder(r.Body).Decode(&transition)
+	var transition_request TransitionRequest
+	json.NewDecoder(r.Body).Decode(&transition_request)
+	transition := TransitionSerializer{}.RequestToModel(transition_request)
 	c.TransitionService.Create(&transition)
-	http_utils.RespondWithJSON(w, http.StatusCreated, TransitionSerializer{}.SerializeTransition(transition))
+	http_utils.RespondWithJSON(w, http.StatusCreated, TransitionSerializer{}.ModelToResponse(transition))
 }
 
 func (c TransitionController) Update(w http.ResponseWriter, r *http.Request) {
 	transition_id, _ := http_utils.GetParamUUID(r, "transition_id")
-	var transition domain.TransitionModel
-	json.NewDecoder(r.Body).Decode(&transition)
+	var transition_request TransitionRequest
+	json.NewDecoder(r.Body).Decode(&transition_request)
+	transition := TransitionSerializer{}.RequestToModel(transition_request)
 	c.TransitionService.Update(transition_id, &transition)
 	w.WriteHeader(http.StatusOK)
 }

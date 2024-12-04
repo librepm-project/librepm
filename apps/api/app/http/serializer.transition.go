@@ -6,7 +6,13 @@ import (
 	"apps/api/app/domain"
 )
 
-type Transition struct {
+type TransitionRequest struct {
+	Name           string    `json:"name"`
+	SourceStatusID uuid.UUID `json:"source_status_id"`
+	TargetStatusID uuid.UUID `json:"target_status_id"`
+}
+
+type TransitionResponse struct {
 	ID             uuid.UUID `json:"id"`
 	Name           string    `json:"name"`
 	SourceStatusID uuid.UUID `json:"source_status_id"`
@@ -15,8 +21,16 @@ type Transition struct {
 
 type TransitionSerializer struct{}
 
-func (s TransitionSerializer) SerializeTransition(transition domain.TransitionModel) Transition {
-	return Transition{
+func (s TransitionSerializer) RequestToModel(transition_request TransitionRequest) domain.TransitionModel {
+	return domain.TransitionModel{
+		Name:           transition_request.Name,
+		SourceStatusID: transition_request.SourceStatusID,
+		TargetStatusID: transition_request.TargetStatusID,
+	}
+}
+
+func (s TransitionSerializer) ModelToResponse(transition domain.TransitionModel) TransitionResponse {
+	return TransitionResponse{
 		ID:             transition.ID,
 		Name:           transition.Name,
 		SourceStatusID: transition.SourceStatusID,
@@ -24,10 +38,10 @@ func (s TransitionSerializer) SerializeTransition(transition domain.TransitionMo
 	}
 }
 
-func (s TransitionSerializer) SerializeTransitions(transitions []domain.TransitionModel) []Transition {
-	var serialized []Transition
+func (s TransitionSerializer) ModelToResponseMany(transitions []domain.TransitionModel) []TransitionResponse {
+	var serialized []TransitionResponse
 	for _, transition := range transitions {
-		serialized = append(serialized, s.SerializeTransition(transition))
+		serialized = append(serialized, s.ModelToResponse(transition))
 	}
 	return serialized
 }
