@@ -19,8 +19,8 @@
           :key="item.key"
         >
           <td>{{ item.key }}</td>
-          <td>{{ item.summary }}</td>
-          <td>{{ item.status }}</td>
+          <td><router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link></td>
+          <td>{{ item.status.name }}</td>
         </tr>
       </tbody>
     </v-table>

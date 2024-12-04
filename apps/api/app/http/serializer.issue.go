@@ -9,6 +9,7 @@ import (
 type IssueRequest struct {
 	ProjectID   uuid.UUID `json:"projectId"`
 	StatusID    uuid.UUID `json:"statusId"`
+	TrackerID   uuid.UUID `json:"trackerId"`
 	Key         string    `json:"key"`
 	Type        string    `json:"type"`
 	Summary     string    `json:"summary"`
@@ -16,13 +17,14 @@ type IssueRequest struct {
 }
 
 type IssueResponse struct {
-	ID          uuid.UUID `json:"id"`
-	ProjectID   uuid.UUID `json:"projectId"`
-	StatusID    uuid.UUID `json:"statusId"`
-	Key         string    `json:"key"`
-	Type        string    `json:"type"`
-	Summary     string    `json:"summary"`
-	Description string    `json:"description"`
+	ID          uuid.UUID       `json:"id"`
+	Key         string          `json:"key"`
+	Type        string          `json:"type"`
+	Summary     string          `json:"summary"`
+	Description string          `json:"description"`
+	Project     ProjectResponse `json:"project"`
+	Status      StatusResponse  `json:"status"`
+	Tracker     TrackerResponse `json:"tracker"`
 }
 
 type IssueSerializer struct{}
@@ -34,17 +36,19 @@ func (s IssueSerializer) RequestToModel(issue_request IssueRequest) domain.Issue
 		Summary:     issue_request.Summary,
 		Description: issue_request.Description,
 		StatusID:    issue_request.StatusID,
+		TrackerID:   issue_request.TrackerID,
 	}
 }
 
 func (s IssueSerializer) ModelToResponse(issue domain.IssueModel) IssueResponse {
 	return IssueResponse{
 		ID:          issue.ID,
-		ProjectID:   issue.ProjectID,
 		Key:         issue.Key,
 		Summary:     issue.Summary,
 		Description: issue.Description,
-		StatusID:    issue.StatusID,
+		Project:     ProjectSerializer{}.ModelToResponse(issue.Project),
+		Status:      StatusSerializer{}.ModelToResponse(issue.Status),
+		Tracker:     TrackerSerializer{}.ModelToResponse(issue.Tracker),
 	}
 }
 

@@ -16,8 +16,8 @@ export const useIssueStore = defineStore('issue', {
     };
   },
   actions: {
-    getIssue(issueId: number) {
-      this.current = issueMock[0];
+    async getIssue(issueId: string) {
+      this.current = await issueApi.show(issueId);
     },
 
     async getIssues() {

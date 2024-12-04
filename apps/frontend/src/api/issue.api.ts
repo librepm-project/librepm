@@ -6,7 +6,7 @@ const index = async (): Promise<Issue[]> => {
     return response.data as Issue[];
 }
 
-const show = async (issueId: number): Promise<Issue> => {
+const show = async (issueId: string): Promise<Issue> => {
     const response = await api.apiCall().get(`/issue/${issueId}`);
     return response.data as Issue;
 }

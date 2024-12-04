@@ -12,7 +12,7 @@ type IssueModel struct {
 	ProjectID   uuid.UUID `gorm:"type:char(36);not null;"`
 	TrackerID   uuid.UUID `gorm:"type:char(36) references tracker;not null;"`
 	StatusID    uuid.UUID `gorm:"type:char(36) references status;not null;"`
-	ParentID    uuid.UUID `gorm:"type:char(36) references issue;not null;"`
+	ParentID    uuid.UUID `gorm:"type:char(36) references issue;"`
 	Key         string    `gorm:"type:varchar(5);not null;"`
 	Summary     string    `gorm:"type:varchar(100);not null;"`
 	Description string    `gorm:"type:varchar(255)"`

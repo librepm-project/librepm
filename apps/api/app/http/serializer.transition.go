@@ -8,15 +8,15 @@ import (
 
 type TransitionRequest struct {
 	Name           string    `json:"name"`
-	SourceStatusID uuid.UUID `json:"source_status_id"`
-	TargetStatusID uuid.UUID `json:"target_status_id"`
+	SourceStatusID uuid.UUID `json:"sourceStatusId"`
+	TargetStatusID uuid.UUID `json:"targetStatusId"`
 }
 
 type TransitionResponse struct {
 	ID             uuid.UUID `json:"id"`
 	Name           string    `json:"name"`
-	SourceStatusID uuid.UUID `json:"source_status_id"`
-	TargetStatusID uuid.UUID `json:"target_status_id"`
+	SourceStatusID uuid.UUID `json:"sourceStatusId"`
+	TargetStatusID uuid.UUID `json:"targetStatusId"`
 }
 
 type TransitionSerializer struct{}

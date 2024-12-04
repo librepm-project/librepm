@@ -23,7 +23,7 @@ func (r IssueRepository) All() *[]IssueModel {
 	var issues []IssueModel
 	query := r.DB.Select("issue.*")
 
-	if err := query.Find(&issues).Error; err != nil {
+	if err := query.Preload("Project").Preload("Tracker").Preload("Status").Find(&issues).Error; err != nil {
 		fmt.Println(err)
 	}
 	return &issues
@@ -32,7 +32,7 @@ func (r IssueRepository) All() *[]IssueModel {
 func (r IssueRepository) FindByID(issue_id uuid.UUID) *IssueModel {
 	var issue IssueModel
 	fmt.Println(issue_id)
-	err := r.DB.Model(IssueModel{ID: issue_id}).Scan(&issue)
+	err := r.DB.Preload("Project").Preload("Tracker").Preload("Status").First(&issue, issue_id)
 
 	if err != nil {
 		fmt.Println(err)

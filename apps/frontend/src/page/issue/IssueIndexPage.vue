@@ -1,18 +1,17 @@
 <template>
   <div>
-    <issue-table :items="projectStore.index" />
+    <issue-table :items="issueStore.index" />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { useIssueStore } from '@/store/issue.store';
-  import IssueTable from '@/component/IssueTable.vue';
-  import { onMounted } from 'vue';
+import { useIssueStore } from '@/store/issue.store';
+import IssueTable from '@/component/IssueTable.vue';
+import { onMounted } from 'vue';
 
-  const projectStore = useIssueStore()
+const issueStore = useIssueStore();
 
-  onMounted(async () => {
-    await projectStore.getIssues();
-  });
-
+onMounted(async () => {
+  await issueStore.getIssues();
+});
 </script>

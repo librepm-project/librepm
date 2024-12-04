@@ -13,7 +13,7 @@ export const issueRouter: RouteRecordRaw[] = [
     }),
   },
   {
-    path: '/issue/{issueid}',
+    path: '/issue/:issueId',
     name: 'issueShow',
     component: IssueShowPage,
     meta: reactive({
