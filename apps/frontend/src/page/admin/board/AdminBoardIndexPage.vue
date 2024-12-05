@@ -4,13 +4,12 @@
       <thead>
         <tr>
           <th class="text-left">
-            Name
+            {{ t('dashboard.name') }}
           </th>
           <th class="text-left">
-            Description
+            {{ t('dashboard.description') }}
           </th>
           <th>
-            Operations
           </th>
         </tr>
       </thead>
@@ -32,10 +31,11 @@
 import { Board } from '@/lib/interfaces/board.interface';
 import { useBoardStore } from '@/store/board.store';
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n();
+useBoardStore().getBoards();
 
-  useBoardStore().getBoards();
-
-  const boards: Board[] = useBoardStore().index;
+const boards: Board[] = useBoardStore().index;
 
 </script>

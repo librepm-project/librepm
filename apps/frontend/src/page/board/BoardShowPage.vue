@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-select
-      label="Select"
+      :label="t('global.select')"
       :items="boardStore.index"
       item-title="name"
       item-value="id"
@@ -12,14 +12,16 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useBoardStore } from '@/store/board.store';
+import { useI18n } from 'vue-i18n'
 
-  const boardStore = useBoardStore();
+const { t } = useI18n();
+const boardStore = useBoardStore();
 
-  onMounted(async () => {
-    await boardStore.getBoards();
-  })
+onMounted(async () => {
+  await boardStore.getBoards();
+})
 
-  let selectedBoardId = "0";
-  let selectedBoard = boardStore.index[Number(selectedBoardId)];
+let selectedBoardId = "0";
+let selectedBoard = boardStore.index[Number(selectedBoardId)];
  
 </script>

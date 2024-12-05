@@ -11,9 +11,11 @@
       </v-col>
       <v-col>
         <v-card>
-          <v-card-title>Details</v-card-title>
+          <v-card-text class="text-bold">{{ t('issue.project') }}</v-card-text>
           <v-card-text>{{ issueStore.current.project.name }}</v-card-text>
+          <v-card-text class="text-bold">{{ t('issue.status') }}</v-card-text>
           <v-card-text>{{ issueStore.current.status.name }}</v-card-text>
+          <v-card-text class="text-bold">{{ t('issue.tracker') }}</v-card-text>
           <v-card-text>{{ issueStore.current.tracker.name }}</v-card-text>
         </v-card>
       </v-col>

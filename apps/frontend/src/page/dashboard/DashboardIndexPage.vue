@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-select
-      label="Select"
+      :label="t('global.select')"
       :items="dashboardStore.index"
       item-title="name"
       item-value="id"
@@ -12,7 +12,9 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useDashboardStore } from '@/store/dashboard.store';
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n();
 
 const dashboardStore = useDashboardStore();
 

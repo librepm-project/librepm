@@ -3,10 +3,10 @@
       <thead>
         <tr>
           <th class="text-left">
-            Code
+            {{ t('project.codeName') }}
           </th>
           <th class="text-left">
-            Name
+            {{ t('project.name') }}
           </th>
         </tr>
       </thead>
@@ -24,8 +24,9 @@
 
 <script setup lang="ts">
 import { Project } from '@/lib/interfaces/project.interface';
+import { useI18n } from 'vue-i18n'
 
-
+const { t } = useI18n();
 
 defineProps<{
     items: Project[]

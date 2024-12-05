@@ -8,7 +8,7 @@
         <v-spacer></v-spacer>
 
         <v-responsive max-width="160">
-            <v-text-field density="compact" label="Search" rounded="lg" variant="solo-filled" flat hide-details
+            <v-text-field density="compact" :label="t('global.search')" rounded="lg" variant="solo-filled" flat hide-details
             single-line></v-text-field>
         </v-responsive>
         </v-container>
@@ -16,6 +16,8 @@
 </template>
 
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n'; 
+const { t } = useI18n();
 
 interface Link {
   text: string;
