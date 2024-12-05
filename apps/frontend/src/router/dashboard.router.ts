@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from 'vue-router';
-import DashboardIndexPage from '@/page/dashboard/DashboardIndexPage.vue';
+import DashboardShowPage from '@/page/dashboard/DashboardShowPage.vue';
 
 export const dashboardRouter: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'dashboardIndex',
-    component: DashboardIndexPage,
+    name: 'dashboardShow',
+    component: DashboardShowPage,
   },
 ];
 

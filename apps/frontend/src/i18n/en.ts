@@ -7,17 +7,20 @@ export const en = {
     title: {
         issueIndex: 'Issues',
         projectIndex: 'Projects',
-        dashboardIndex: 'Dashboards',
+        dashboardShow: 'Dashboards',
         boardShow: 'Board',
         filterIndex: 'Filters',
         statusIndex: 'Statuses',
-        trackerIndex: 'Trackers'
+        trackerIndex: 'Trackers',
+        issueShow: 'Issue details'
     },
     issue: {
         description: 'Description',
         summary: 'Summary',
         status: 'Status',
         key: 'Key',
+        project: 'Project',
+        tracker: 'Tracker',
     },
     filter: {
         name: 'Name',

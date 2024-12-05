@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 
-interface SidebarStore {
-  items: {
-    key: string;
+interface SidebarItem {
+  key: string;
     title: string;
     link: string;
-  }[];
+}
+
+interface SidebarStore {
+  items: SidebarItem[];
 }
 
 export const useSidebarStore = defineStore('sidebar', {
@@ -13,5 +15,13 @@ export const useSidebarStore = defineStore('sidebar', {
     return {
       items: [],
     };
+  },
+  actions: {
+    set(items: SidebarItem[]) {
+      this.items = items;
+    },
+    reset() {
+      this.items = [];
+    },
   }
 });

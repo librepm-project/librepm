@@ -1,32 +1,27 @@
 <template>
-  <div>
-  </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
-import { useBoardStore } from '@/store/board.store';
+import { useDashboardStore } from '@/store/dashboard.store';
 import { useSidebarStore } from '@/store/sidebar.store';
+
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();
-const boardStore = useBoardStore();
 
-onMounted(async () => {
-  await boardStore.getBoards();
-})
-
+const dashboardStore = useDashboardStore();
 const sidebarStore = useSidebarStore();
 
 onMounted(async () => {
-  await boardStore.getBoards();
-  sidebarStore.set(boardStore.index.map(board => ({
-    key: board.id,
-    title: board.name,
-    link: `/board/${board.id}`,
+  await dashboardStore.getDashboards();
+  sidebarStore.set(dashboardStore.index.map(dashboard => ({
+    key: dashboard.id,
+    title: dashboard.name,
+    link: `/dashboard/${dashboard.id}`,
   })))
 });
- 
+
 onUnmounted(() => {
   sidebarStore.reset()
 });
