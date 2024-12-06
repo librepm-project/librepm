@@ -2,7 +2,7 @@
   <v-app id="librepm">
     <Header />
 
-    <v-main class="bg-grey-lighten-3">
+    <v-main>
       <v-container>
         <v-row>
           <Sidebar v-if="sidebarStore.items.length > 0"/>
