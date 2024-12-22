@@ -1,16 +1,16 @@
 import { RouteRecordRaw } from 'vue-router';
-import ProjectIndexView from '@/page/project/ProjectIndexPage.vue';
-import ProjectShowView from '@/page/project/ProjectShowPage.vue';
+import ProjectIndexPage from '@/page/project/ProjectIndexPage.vue';
+import ProjectShowPage from '@/page/project/ProjectShowPage.vue';
 
 export const projectRouter: RouteRecordRaw[] = [
   {
     path: '/project',
     name: 'projectIndex',
-    component: ProjectIndexView,
+    component: ProjectIndexPage,
   },
   {
     path: '/project/{projectid}',
     name: 'projectShow',
-    component: ProjectShowView,
+    component: ProjectShowPage,
   },
 ];
