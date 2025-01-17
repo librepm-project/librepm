@@ -53,7 +53,7 @@ func (s IssueSerializer) ModelToResponse(issue domain.IssueModel) IssueResponse 
 }
 
 func (s IssueSerializer) ModelToResponseMany(issues []domain.IssueModel) []IssueResponse {
-	var serialized []IssueResponse
+	serialized := []IssueResponse{}
 	for _, issue := range issues {
 		serialized = append(serialized, s.ModelToResponse(issue))
 	}

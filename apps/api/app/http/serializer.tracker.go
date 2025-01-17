@@ -31,7 +31,7 @@ func (s TrackerSerializer) ModelToResponse(tracker domain.TrackerModel) TrackerR
 }
 
 func (s TrackerSerializer) ModelToResponseMany(trackers []domain.TrackerModel) []TrackerResponse {
-	var serialized []TrackerResponse
+	serialized := []TrackerResponse{}
 	for _, tracker := range trackers {
 		serialized = append(serialized, s.ModelToResponse(tracker))
 	}

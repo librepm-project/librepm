@@ -32,7 +32,7 @@ func (s BoardSerializer) ModelToResponse(board domain.BoardModel) BoardResponse 
 }
 
 func (s BoardSerializer) ModelToResponseMany(boards []domain.BoardModel) []BoardResponse {
-	var serialized []BoardResponse
+	serialized := []BoardResponse{}
 	for _, board := range boards {
 		serialized = append(serialized, s.ModelToResponse(board))
 	}

@@ -39,7 +39,7 @@ func (s TransitionSerializer) ModelToResponse(transition domain.TransitionModel)
 }
 
 func (s TransitionSerializer) ModelToResponseMany(transitions []domain.TransitionModel) []TransitionResponse {
-	var serialized []TransitionResponse
+	serialized := []TransitionResponse{}
 	for _, transition := range transitions {
 		serialized = append(serialized, s.ModelToResponse(transition))
 	}

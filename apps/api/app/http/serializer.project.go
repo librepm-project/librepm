@@ -35,7 +35,7 @@ func (s ProjectSerializer) ModelToResponse(project domain.ProjectModel) ProjectR
 }
 
 func (s ProjectSerializer) ModelToResponseMany(projects []domain.ProjectModel) []ProjectResponse {
-	var serialized []ProjectResponse
+	serialized := []ProjectResponse{}
 	for _, project := range projects {
 		serialized = append(serialized, s.ModelToResponse(project))
 	}

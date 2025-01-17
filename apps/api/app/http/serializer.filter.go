@@ -31,7 +31,7 @@ func (s FilterSerializer) ModelToResponse(filter domain.FilterModel) FilterRespo
 }
 
 func (s FilterSerializer) ModelToResponseMany(filters []domain.FilterModel) []FilterResponse {
-	var serialized []FilterResponse
+	serialized := []FilterResponse{}
 	for _, filter := range filters {
 		serialized = append(serialized, s.ModelToResponse(filter))
 	}

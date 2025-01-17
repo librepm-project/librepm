@@ -62,7 +62,7 @@ func (s UserSerializer) ModelToResponse(user domain.UserModel) UserResponse {
 }
 
 func (s UserSerializer) ModelToResponseMany(users []domain.UserModel) []UserResponse {
-	var serialized []UserResponse
+	serialized := []UserResponse{}
 	for _, user := range users {
 		serialized = append(serialized, s.ModelToResponse(user))
 	}

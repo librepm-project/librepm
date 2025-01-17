@@ -31,7 +31,7 @@ func (s StatusSerializer) ModelToResponse(status domain.StatusModel) StatusRespo
 }
 
 func (s StatusSerializer) ModelToResponseMany(statuses []domain.StatusModel) []StatusResponse {
-	var serialized []StatusResponse
+	serialized := []StatusResponse{}
 	for _, status := range statuses {
 		serialized = append(serialized, s.ModelToResponse(status))
 	}

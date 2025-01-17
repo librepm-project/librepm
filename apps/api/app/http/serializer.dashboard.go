@@ -31,7 +31,7 @@ func (s DashboardSerializer) ModelToResponse(dashboard domain.DashboardModel) Da
 }
 
 func (s DashboardSerializer) ModelToResponseMany(dashboards []domain.DashboardModel) []DashboardResponse {
-	var serialized []DashboardResponse
+	serialized := []DashboardResponse{}
 	for _, dashboard := range dashboards {
 		serialized = append(serialized, s.ModelToResponse(dashboard))
 	}
