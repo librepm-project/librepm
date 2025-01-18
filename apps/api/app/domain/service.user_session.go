@@ -6,7 +6,7 @@ import (
 )
 
 type UserSessionServiceInterface interface {
-	Create(email string, password string) *UserSessionCreateReturn
+	Create(email string, password string) (*UserSessionCreateReturn, error)
 }
 
 type UserSessionService struct {
@@ -18,16 +18,16 @@ type UserSessionCreateReturn struct {
 	Token string
 }
 
-func (s UserSessionService) Create(email string, password string) *UserSessionCreateReturn {
-	user := s.UserRepository.FindByEmail(email)
+func (s UserSessionService) Create(email string, password string) (*UserSessionCreateReturn, error) {
+	user, err := s.UserRepository.FindByEmail(email)
 
 	if !password_utils.CheckPasswordHash(password, user.PasswordHash) {
-		return nil
+		return nil, err
 	}
 
 	jwt_token := jwt_utils.GenerateToken(user.ID, user.Email)
 	return &UserSessionCreateReturn{
 		User:  *user,
 		Token: jwt_token,
-	}
+	}, err
 }

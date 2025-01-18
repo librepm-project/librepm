@@ -8,46 +8,58 @@ import (
 )
 
 type ProjectRepositoryInterface interface {
-	All() *[]ProjectModel
-	FindByID(project_id uuid.UUID) *ProjectModel
-	Create(project *ProjectModel)
-	Update(project_id uuid.UUID, project *ProjectModel)
-	Destroy(project_id uuid.UUID)
+	All() (*[]ProjectModel, error)
+	FindByID(project_id uuid.UUID) (*ProjectModel, error)
+	Create(project *ProjectModel) error
+	Update(project_id uuid.UUID, project *ProjectModel) error
+	Destroy(project_id uuid.UUID) error
 }
 
 type ProjectRepository struct {
 	DB *gorm.DB
 }
 
-func (r ProjectRepository) All() *[]ProjectModel {
+func (r ProjectRepository) All() (*[]ProjectModel, error) {
 	var projects []ProjectModel
+	var err error
 	query := r.DB.Select("project.*")
 
 	if err := query.Find(&projects).Error; err != nil {
 		fmt.Println(err)
 	}
-	return &projects
+	return &projects, err
 }
 
-func (r ProjectRepository) FindByID(project_id uuid.UUID) *ProjectModel {
+func (r ProjectRepository) FindByID(project_id uuid.UUID) (*ProjectModel, error) {
 	var project ProjectModel
-	fmt.Println(project_id)
-	err := r.DB.Model(ProjectModel{ID: project_id}).Scan(&project)
+	query := r.DB.Model(ProjectModel{ID: project_id}).Scan(&project)
 
-	if err != nil {
-		fmt.Println(err)
+	if query.Error != nil {
+		fmt.Println(query)
 	}
-	return &project
+	return &project, query.Error
 }
 
-func (r ProjectRepository) Create(project *ProjectModel) {
-	r.DB.Create(&project)
+func (r ProjectRepository) Create(project *ProjectModel) error {
+	query := r.DB.Create(&project)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r ProjectRepository) Update(project_id uuid.UUID, project *ProjectModel) {
-	r.DB.Model(ProjectModel{}).Where("id", project_id).Updates(&project)
+func (r ProjectRepository) Update(project_id uuid.UUID, project *ProjectModel) error {
+	query := r.DB.Model(ProjectModel{}).Where("id", project_id).Updates(&project)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r ProjectRepository) Destroy(project_id uuid.UUID) {
-	r.DB.Model(ProjectModel{}).Delete(ProjectModel{}, project_id)
+func (r ProjectRepository) Destroy(project_id uuid.UUID) error {
+	query := r.DB.Model(ProjectModel{}).Delete(ProjectModel{}, project_id)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }

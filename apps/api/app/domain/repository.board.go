@@ -8,46 +8,58 @@ import (
 )
 
 type BoardRepositoryInterface interface {
-	All() *[]BoardModel
-	FindByID(board_id uuid.UUID) *BoardModel
-	Create(board *BoardModel)
-	Update(board_id uuid.UUID, board *BoardModel)
-	Destroy(board_id uuid.UUID)
+	All() (*[]BoardModel, error)
+	FindByID(board_id uuid.UUID) (*BoardModel, error)
+	Create(board *BoardModel) error
+	Update(board_id uuid.UUID, board *BoardModel) error
+	Destroy(board_id uuid.UUID) error
 }
 
 type BoardRepository struct {
 	DB *gorm.DB
 }
 
-func (r BoardRepository) All() *[]BoardModel {
+func (r BoardRepository) All() (*[]BoardModel, error) {
 	var boards []BoardModel
+	var err error
 	query := r.DB.Select("board.*")
 
 	if err := query.Find(&boards).Error; err != nil {
 		fmt.Println(err)
 	}
-	return &boards
+	return &boards, err
 }
 
-func (r BoardRepository) FindByID(board_id uuid.UUID) *BoardModel {
+func (r BoardRepository) FindByID(board_id uuid.UUID) (*BoardModel, error) {
 	var board BoardModel
-	fmt.Println(board_id)
-	err := r.DB.Model(BoardModel{ID: board_id}).Scan(&board)
+	query := r.DB.Model(BoardModel{ID: board_id}).Scan(&board)
 
-	if err != nil {
-		fmt.Println(err)
+	if query.Error != nil {
+		fmt.Println(query)
 	}
-	return &board
+	return &board, query.Error
 }
 
-func (r BoardRepository) Create(board *BoardModel) {
-	r.DB.Create(&board)
+func (r BoardRepository) Create(board *BoardModel) error {
+	query := r.DB.Create(&board)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r BoardRepository) Update(board_id uuid.UUID, board *BoardModel) {
-	r.DB.Model(BoardModel{}).Where("id", board_id).Updates(&board)
+func (r BoardRepository) Update(board_id uuid.UUID, board *BoardModel) error {
+	query := r.DB.Model(BoardModel{}).Where("id", board_id).Updates(&board)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r BoardRepository) Destroy(board_id uuid.UUID) {
-	r.DB.Model(BoardModel{}).Delete(BoardModel{}, board_id)
+func (r BoardRepository) Destroy(board_id uuid.UUID) error {
+	query := r.DB.Model(BoardModel{}).Delete(BoardModel{}, board_id)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }

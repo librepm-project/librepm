@@ -21,13 +21,13 @@ type BoardController struct {
 }
 
 func (c BoardController) Index(w http.ResponseWriter, r *http.Request) {
-	boards := c.BoardService.All()
+	boards, _ := c.BoardService.All()
 	http_utils.RespondWithJSON(w, http.StatusOK, BoardSerializer{}.ModelToResponseMany(*boards))
 }
 
 func (c BoardController) Show(w http.ResponseWriter, r *http.Request) {
 	var board_id, _ = http_utils.GetParamUUID(r, "board_id")
-	board := c.BoardService.Show(board_id)
+	board, _ := c.BoardService.Show(board_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, BoardSerializer{}.ModelToResponse(*board))
 }
 
@@ -35,6 +35,7 @@ func (c BoardController) Create(w http.ResponseWriter, r *http.Request) {
 	var board_request BoardRequest
 	json.NewDecoder(r.Body).Decode(&board_request)
 	board := BoardSerializer{}.RequestToModel(board_request)
+	c.BoardService.Create(&board)
 	http_utils.RespondWithJSON(w, http.StatusCreated, BoardSerializer{}.ModelToResponse(board))
 }
 

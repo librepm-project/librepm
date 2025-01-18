@@ -5,34 +5,34 @@ import (
 )
 
 type IssueServiceInterface interface {
-	All() *[]IssueModel
-	Show(issue_id uuid.UUID) *IssueModel
-	Create(issue *IssueModel)
-	Update(issue_id uuid.UUID, issue *IssueModel)
-	Destroy(issue_id uuid.UUID)
+	All() (*[]IssueModel, error)
+	Show(issue_id uuid.UUID) (*IssueModel, error)
+	Create(issue *IssueModel) error
+	Update(issue_id uuid.UUID, issue *IssueModel) error
+	Destroy(issue_id uuid.UUID) error
 }
 
 type IssueService struct {
 	IssueRepository IssueRepositoryInterface
 }
 
-func (s IssueService) All() *[]IssueModel {
-	issues := s.IssueRepository.All()
-	return issues
+func (s IssueService) All() (*[]IssueModel, error) {
+	issues, err := s.IssueRepository.All()
+	return issues, err
 }
 
-func (s IssueService) Show(issue_id uuid.UUID) *IssueModel {
+func (s IssueService) Show(issue_id uuid.UUID) (*IssueModel, error) {
 	return s.IssueRepository.FindByID(issue_id)
 }
 
-func (s IssueService) Create(issue *IssueModel) {
-	s.IssueRepository.Create(issue)
+func (s IssueService) Create(issue *IssueModel) error {
+	return s.IssueRepository.Create(issue)
 }
 
-func (s IssueService) Update(issue_id uuid.UUID, issue *IssueModel) {
-	s.IssueRepository.Update(issue_id, issue)
+func (s IssueService) Update(issue_id uuid.UUID, issue *IssueModel) error {
+	return s.IssueRepository.Update(issue_id, issue)
 }
 
-func (s IssueService) Destroy(issue_id uuid.UUID) {
-	s.IssueRepository.Destroy(issue_id)
+func (s IssueService) Destroy(issue_id uuid.UUID) error {
+	return s.IssueRepository.Destroy(issue_id)
 }

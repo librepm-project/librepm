@@ -21,13 +21,13 @@ type TransitionController struct {
 }
 
 func (c TransitionController) Index(w http.ResponseWriter, r *http.Request) {
-	transitions := c.TransitionService.All()
+	transitions, _ := c.TransitionService.All()
 	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponseMany(*transitions))
 }
 
 func (c TransitionController) Show(w http.ResponseWriter, r *http.Request) {
 	var transition_id, _ = http_utils.GetParamUUID(r, "transition_id")
-	transition := c.TransitionService.Show(transition_id)
+	transition, _ := c.TransitionService.Show(transition_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponse(*transition))
 }
 

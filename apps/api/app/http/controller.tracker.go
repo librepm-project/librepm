@@ -21,13 +21,13 @@ type TrackerController struct {
 }
 
 func (c TrackerController) Index(w http.ResponseWriter, r *http.Request) {
-	trackers := c.TrackerService.All()
+	trackers, _ := c.TrackerService.All()
 	http_utils.RespondWithJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponseMany(*trackers))
 }
 
 func (c TrackerController) Show(w http.ResponseWriter, r *http.Request) {
 	var tracker_id, _ = http_utils.GetParamUUID(r, "tracker_id")
-	tracker := c.TrackerService.Show(tracker_id)
+	tracker, _ := c.TrackerService.Show(tracker_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponse(*tracker))
 }
 

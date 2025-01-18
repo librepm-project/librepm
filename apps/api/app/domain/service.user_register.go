@@ -5,7 +5,7 @@ import (
 )
 
 type UserRegisterServiceInterface interface {
-	Create(email string, password string) *UserModel
+	Create(email string, password string) (*UserModel, error)
 }
 
 type UserRegisterService struct {
@@ -17,12 +17,12 @@ type UserRegisterCreateReturn struct {
 	Token string
 }
 
-func (s UserRegisterService) Create(email string, password string) *UserModel {
+func (s UserRegisterService) Create(email string, password string) (*UserModel, error) {
 	password_hash, _ := password_utils.HashPassword(password)
 	user := UserModel{
 		Email:        email,
 		PasswordHash: password_hash,
 	}
-	s.UserRepository.Create(&user)
-	return &user
+	err := s.UserRepository.Create(&user)
+	return &user, err
 }

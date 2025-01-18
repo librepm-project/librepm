@@ -21,13 +21,13 @@ type UserController struct {
 }
 
 func (c UserController) Index(w http.ResponseWriter, r *http.Request) {
-	users := c.UserService.All()
+	users, _ := c.UserService.All()
 	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponseMany(*users))
 }
 
 func (c UserController) Show(w http.ResponseWriter, r *http.Request) {
 	var user_id, _ = http_utils.GetParamUUID(r, "user_id")
-	user := c.UserService.Show(user_id)
+	user, _ := c.UserService.Show(user_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*user))
 }
 

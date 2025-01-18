@@ -21,7 +21,7 @@ type UserCurrentController struct {
 
 func (c UserCurrentController) Show(w http.ResponseWriter, r *http.Request) {
 	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
-	user := c.UserService.Show(user_id)
+	user, _ := c.UserService.Show(user_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*user))
 }
 

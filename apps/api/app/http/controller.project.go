@@ -21,13 +21,13 @@ type ProjectController struct {
 }
 
 func (c ProjectController) Index(w http.ResponseWriter, r *http.Request) {
-	projects := c.ProjectService.All()
+	projects, _ := c.ProjectService.All()
 	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponseMany(*projects))
 }
 
 func (c ProjectController) Show(w http.ResponseWriter, r *http.Request) {
 	var project_id, _ = http_utils.GetParamUUID(r, "project_id")
-	project := c.ProjectService.Show(project_id)
+	project, _ := c.ProjectService.Show(project_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponse(*project))
 }
 

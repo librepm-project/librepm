@@ -8,46 +8,58 @@ import (
 )
 
 type ProjectUserRepositoryInterface interface {
-	All() *[]ProjectUserModel
-	FindByID(project_user_id uuid.UUID) *ProjectUserModel
-	Create(project_user *ProjectUserModel)
-	Update(project_user_id uuid.UUID, project_user *ProjectUserModel)
-	Destroy(project_user_id uuid.UUID)
+	All() (*[]ProjectUserModel, error)
+	FindByID(project_user_id uuid.UUID) (*ProjectUserModel, error)
+	Create(project_user *ProjectUserModel) error
+	Update(project_user_id uuid.UUID, project_user *ProjectUserModel) error
+	Destroy(project_user_id uuid.UUID) error
 }
 
 type ProjectUserRepository struct {
 	DB *gorm.DB
 }
 
-func (r ProjectUserRepository) All() *[]ProjectUserModel {
+func (r ProjectUserRepository) All() (*[]ProjectUserModel, error) {
 	var project_users []ProjectUserModel
+	var err error
 	query := r.DB.Select("project_user.*")
 
 	if err := query.Find(&project_users).Error; err != nil {
 		fmt.Println(err)
 	}
-	return &project_users
+	return &project_users, err
 }
 
-func (r ProjectUserRepository) FindByID(project_user_id uuid.UUID) *ProjectUserModel {
+func (r ProjectUserRepository) FindByID(project_user_id uuid.UUID) (*ProjectUserModel, error) {
 	var project_user ProjectUserModel
-	fmt.Println(project_user_id)
-	err := r.DB.Model(ProjectUserModel{ID: project_user_id}).Scan(&project_user)
+	query := r.DB.Model(ProjectUserModel{ID: project_user_id}).Scan(&project_user)
 
-	if err != nil {
-		fmt.Println(err)
+	if query.Error != nil {
+		fmt.Println(query)
 	}
-	return &project_user
+	return &project_user, query.Error
 }
 
-func (r ProjectUserRepository) Create(project_user *ProjectUserModel) {
-	r.DB.Create(&project_user)
+func (r ProjectUserRepository) Create(project_user *ProjectUserModel) error {
+	query := r.DB.Create(&project_user)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r ProjectUserRepository) Update(project_user_id uuid.UUID, project_user *ProjectUserModel) {
-	r.DB.Model(ProjectUserModel{}).Where("id", project_user_id).Updates(&project_user)
+func (r ProjectUserRepository) Update(project_user_id uuid.UUID, project_user *ProjectUserModel) error {
+	query := r.DB.Model(ProjectUserModel{}).Where("id", project_user_id).Updates(&project_user)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r ProjectUserRepository) Destroy(project_user_id uuid.UUID) {
-	r.DB.Model(ProjectUserModel{}).Delete(ProjectUserModel{}, project_user_id)
+func (r ProjectUserRepository) Destroy(project_user_id uuid.UUID) error {
+	query := r.DB.Model(ProjectUserModel{}).Delete(ProjectUserModel{}, project_user_id)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }

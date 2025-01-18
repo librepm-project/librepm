@@ -8,46 +8,58 @@ import (
 )
 
 type TransitionRepositoryInterface interface {
-	All() *[]TransitionModel
-	FindByID(transition_id uuid.UUID) *TransitionModel
-	Create(transition *TransitionModel)
-	Update(transition_id uuid.UUID, transition *TransitionModel)
-	Destroy(transition_id uuid.UUID)
+	All() (*[]TransitionModel, error)
+	FindByID(transition_id uuid.UUID) (*TransitionModel, error)
+	Create(transition *TransitionModel) error
+	Update(transition_id uuid.UUID, transition *TransitionModel) error
+	Destroy(transition_id uuid.UUID) error
 }
 
 type TransitionRepository struct {
 	DB *gorm.DB
 }
 
-func (r TransitionRepository) All() *[]TransitionModel {
+func (r TransitionRepository) All() (*[]TransitionModel, error) {
 	var transitions []TransitionModel
+	var err error
 	query := r.DB.Select("transition.*")
 
 	if err := query.Find(&transitions).Error; err != nil {
 		fmt.Println(err)
 	}
-	return &transitions
+	return &transitions, err
 }
 
-func (r TransitionRepository) FindByID(transition_id uuid.UUID) *TransitionModel {
+func (r TransitionRepository) FindByID(transition_id uuid.UUID) (*TransitionModel, error) {
 	var transition TransitionModel
-	fmt.Println(transition_id)
-	err := r.DB.Model(TransitionModel{ID: transition_id}).Scan(&transition)
+	query := r.DB.Model(TransitionModel{ID: transition_id}).Scan(&transition)
 
-	if err != nil {
-		fmt.Println(err)
+	if query.Error != nil {
+		fmt.Println(query)
 	}
-	return &transition
+	return &transition, query.Error
 }
 
-func (r TransitionRepository) Create(transition *TransitionModel) {
-	r.DB.Create(&transition)
+func (r TransitionRepository) Create(transition *TransitionModel) error {
+	query := r.DB.Create(&transition)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r TransitionRepository) Update(transition_id uuid.UUID, transition *TransitionModel) {
-	r.DB.Model(TransitionModel{}).Where("id", transition_id).Updates(&transition)
+func (r TransitionRepository) Update(transition_id uuid.UUID, transition *TransitionModel) error {
+	query := r.DB.Model(TransitionModel{}).Where("id", transition_id).Updates(&transition)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r TransitionRepository) Destroy(transition_id uuid.UUID) {
-	r.DB.Model(TransitionModel{}).Delete(TransitionModel{}, transition_id)
+func (r TransitionRepository) Destroy(transition_id uuid.UUID) error {
+	query := r.DB.Model(TransitionModel{}).Delete(TransitionModel{}, transition_id)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }

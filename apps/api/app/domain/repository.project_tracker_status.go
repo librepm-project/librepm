@@ -8,46 +8,58 @@ import (
 )
 
 type ProjectTrackerStatusRepositoryInterface interface {
-	All() *[]ProjectTrackerStatusModel
-	FindByID(project_tracker_status_id uuid.UUID) *ProjectTrackerStatusModel
-	Create(project_tracker_status *ProjectTrackerStatusModel)
-	Update(project_tracker_status_id uuid.UUID, project_tracker_status *ProjectTrackerStatusModel)
-	Destroy(project_tracker_status_id uuid.UUID)
+	All() (*[]ProjectTrackerStatusModel, error)
+	FindByID(project_tracker_status_id uuid.UUID) (*ProjectTrackerStatusModel, error)
+	Create(project_tracker_status *ProjectTrackerStatusModel) error
+	Update(project_tracker_status_id uuid.UUID, project_tracker_status *ProjectTrackerStatusModel) error
+	Destroy(project_tracker_status_id uuid.UUID) error
 }
 
 type ProjectTrackerStatusRepository struct {
 	DB *gorm.DB
 }
 
-func (r ProjectTrackerStatusRepository) All() *[]ProjectTrackerStatusModel {
+func (r ProjectTrackerStatusRepository) All() (*[]ProjectTrackerStatusModel, error) {
 	var project_tracker_statuses []ProjectTrackerStatusModel
+	var err error
 	query := r.DB.Select("project_tracker_status.*")
 
 	if err := query.Find(&project_tracker_statuses).Error; err != nil {
 		fmt.Println(err)
 	}
-	return &project_tracker_statuses
+	return &project_tracker_statuses, err
 }
 
-func (r ProjectTrackerStatusRepository) FindByID(project_tracker_status_id uuid.UUID) *ProjectTrackerStatusModel {
+func (r ProjectTrackerStatusRepository) FindByID(project_tracker_status_id uuid.UUID) (*ProjectTrackerStatusModel, error) {
 	var project_tracker_status ProjectTrackerStatusModel
-	fmt.Println(project_tracker_status_id)
-	err := r.DB.Model(ProjectTrackerStatusModel{ID: project_tracker_status_id}).Scan(&project_tracker_status)
+	query := r.DB.Model(ProjectTrackerStatusModel{ID: project_tracker_status_id}).Scan(&project_tracker_status)
 
-	if err != nil {
-		fmt.Println(err)
+	if query.Error != nil {
+		fmt.Println(query)
 	}
-	return &project_tracker_status
+	return &project_tracker_status, query.Error
 }
 
-func (r ProjectTrackerStatusRepository) Create(project_tracker_status *ProjectTrackerStatusModel) {
-	r.DB.Create(&project_tracker_status)
+func (r ProjectTrackerStatusRepository) Create(project_tracker_status *ProjectTrackerStatusModel) error {
+	query := r.DB.Create(&project_tracker_status)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r ProjectTrackerStatusRepository) Update(project_tracker_status_id uuid.UUID, project_tracker_status *ProjectTrackerStatusModel) {
-	r.DB.Model(ProjectTrackerStatusModel{}).Where("id", project_tracker_status_id).Updates(&project_tracker_status)
+func (r ProjectTrackerStatusRepository) Update(project_tracker_status_id uuid.UUID, project_tracker_status *ProjectTrackerStatusModel) error {
+	query := r.DB.Model(ProjectTrackerStatusModel{}).Where("id", project_tracker_status_id).Updates(&project_tracker_status)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r ProjectTrackerStatusRepository) Destroy(project_tracker_status_id uuid.UUID) {
-	r.DB.Model(ProjectTrackerStatusModel{}).Delete(ProjectTrackerStatusModel{}, project_tracker_status_id)
+func (r ProjectTrackerStatusRepository) Destroy(project_tracker_status_id uuid.UUID) error {
+	query := r.DB.Model(ProjectTrackerStatusModel{}).Delete(ProjectTrackerStatusModel{}, project_tracker_status_id)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }

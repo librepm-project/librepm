@@ -7,8 +7,8 @@ import (
 
 type ProjectTrackerStatusModel struct {
 	ID               uuid.UUID `gorm:"type:char(36);primary_key;"`
-	StatusID         uuid.UUID `gorm:"type:char(36) references status;not null;"`
-	ProjectTrackerID uuid.UUID `gorm:"type:char(36) references project_tracker;not null;"`
+	StatusID         uuid.UUID `gorm:"type:char(36) references status;not null;uniqueIndex:project_tracker_id_status_id;"`
+	ProjectTrackerID uuid.UUID `gorm:"type:char(36) references project_tracker;not null;uniqueIndex:project_tracker_id_status_id;"`
 
 	Status         StatusModel
 	ProjectTracker ProjectTrackerModel

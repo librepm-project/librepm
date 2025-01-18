@@ -7,8 +7,8 @@ import (
 
 type BoardColumnStatusModel struct {
 	ID            uuid.UUID `gorm:"type:char(36);primary_key;"`
-	BoardColumnID uuid.UUID `gorm:"type:char(36) references board_column;not null;"`
-	StatusID      uuid.UUID `gorm:"type:char(36) references status;not null;"`
+	BoardColumnID uuid.UUID `gorm:"type:char(36) references board_column;not null;uniqueIndex:boatd_column_id_status_id;"`
+	StatusID      uuid.UUID `gorm:"type:char(36) references status;not null;uniqueIndex:boatd_column_id_status_id;"`
 
 	BoardColumn BoardColumnModel
 	Status      StatusModel

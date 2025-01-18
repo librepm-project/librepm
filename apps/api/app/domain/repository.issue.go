@@ -8,46 +8,58 @@ import (
 )
 
 type IssueRepositoryInterface interface {
-	All() *[]IssueModel
-	FindByID(issue_id uuid.UUID) *IssueModel
-	Create(issue *IssueModel)
-	Update(issue_id uuid.UUID, issue *IssueModel)
-	Destroy(issue_id uuid.UUID)
+	All() (*[]IssueModel, error)
+	FindByID(issue_id uuid.UUID) (*IssueModel, error)
+	Create(issue *IssueModel) error
+	Update(issue_id uuid.UUID, issue *IssueModel) error
+	Destroy(issue_id uuid.UUID) error
 }
 
 type IssueRepository struct {
 	DB *gorm.DB
 }
 
-func (r IssueRepository) All() *[]IssueModel {
+func (r IssueRepository) All() (*[]IssueModel, error) {
 	var issues []IssueModel
+	var err error
 	query := r.DB.Select("issue.*")
 
 	if err := query.Preload("Project").Preload("Tracker").Preload("Status").Find(&issues).Error; err != nil {
 		fmt.Println(err)
 	}
-	return &issues
+	return &issues, err
 }
 
-func (r IssueRepository) FindByID(issue_id uuid.UUID) *IssueModel {
+func (r IssueRepository) FindByID(issue_id uuid.UUID) (*IssueModel, error) {
 	var issue IssueModel
-	fmt.Println(issue_id)
-	err := r.DB.Preload("Project").Preload("Tracker").Preload("Status").First(&issue, issue_id)
+	query := r.DB.Preload("Project").Preload("Tracker").Preload("Status").First(&issue, issue_id)
 
-	if err != nil {
-		fmt.Println(err)
+	if query.Error != nil {
+		fmt.Println(query)
 	}
-	return &issue
+	return &issue, query.Error
 }
 
-func (r IssueRepository) Create(issue *IssueModel) {
-	r.DB.Create(&issue)
+func (r IssueRepository) Create(issue *IssueModel) error {
+	query := r.DB.Create(&issue)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r IssueRepository) Update(issue_id uuid.UUID, issue *IssueModel) {
-	r.DB.Model(IssueModel{}).Where("id", issue_id).Updates(&issue)
+func (r IssueRepository) Update(issue_id uuid.UUID, issue *IssueModel) error {
+	query := r.DB.Model(IssueModel{}).Where("id", issue_id).Updates(&issue)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r IssueRepository) Destroy(issue_id uuid.UUID) {
-	r.DB.Model(IssueModel{}).Delete(IssueModel{}, issue_id)
+func (r IssueRepository) Destroy(issue_id uuid.UUID) error {
+	query := r.DB.Model(IssueModel{}).Delete(IssueModel{}, issue_id)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }

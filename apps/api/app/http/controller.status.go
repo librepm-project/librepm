@@ -21,13 +21,13 @@ type StatusController struct {
 }
 
 func (c StatusController) Index(w http.ResponseWriter, r *http.Request) {
-	statuses := c.StatusService.All()
+	statuses, _ := c.StatusService.All()
 	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponseMany(*statuses))
 }
 
 func (c StatusController) Show(w http.ResponseWriter, r *http.Request) {
 	var status_id, _ = http_utils.GetParamUUID(r, "status_id")
-	status := c.StatusService.Show(status_id)
+	status, _ := c.StatusService.Show(status_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponse(*status))
 }
 

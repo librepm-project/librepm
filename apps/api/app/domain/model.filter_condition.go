@@ -7,8 +7,8 @@ import (
 
 type FilterConditionModel struct {
 	ID        uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Condition string    `gorm:"type:varchar(100);not null;"`
-	FilterID  uuid.UUID `gorm:"type:char(36) references filter;not null;"`
+	Condition string    `gorm:"type:varchar(100);not null;uniqueIndex:condition_filter_id;"`
+	FilterID  uuid.UUID `gorm:"type:char(36) references filter;not null;uniqueIndex:condition_filter_id;"`
 
 	Filter FilterModel
 }

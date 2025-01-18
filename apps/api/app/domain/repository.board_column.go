@@ -8,46 +8,58 @@ import (
 )
 
 type BoardColumnRepositoryInterface interface {
-	All() *[]BoardColumnModel
-	FindByID(board_column_id uuid.UUID) *BoardColumnModel
-	Create(board_column *BoardColumnModel)
-	Update(board_column_id uuid.UUID, board_column *BoardColumnModel)
-	Destroy(board_column_id uuid.UUID)
+	All() (*[]BoardColumnModel, error)
+	FindByID(board_column_id uuid.UUID) (*BoardColumnModel, error)
+	Create(board_column *BoardColumnModel) error
+	Update(board_column_id uuid.UUID, board_column *BoardColumnModel) error
+	Destroy(board_column_id uuid.UUID) error
 }
 
 type BoardColumnRepository struct {
 	DB *gorm.DB
 }
 
-func (r BoardColumnRepository) All() *[]BoardColumnModel {
+func (r BoardColumnRepository) All() (*[]BoardColumnModel, error) {
 	var board_columns []BoardColumnModel
+	var err error
 	query := r.DB.Select("board_column.*")
 
 	if err := query.Find(&board_columns).Error; err != nil {
 		fmt.Println(err)
 	}
-	return &board_columns
+	return &board_columns, err
 }
 
-func (r BoardColumnRepository) FindByID(board_column_id uuid.UUID) *BoardColumnModel {
+func (r BoardColumnRepository) FindByID(board_column_id uuid.UUID) (*BoardColumnModel, error) {
 	var board_column BoardColumnModel
-	fmt.Println(board_column_id)
-	err := r.DB.Model(BoardColumnModel{ID: board_column_id}).Scan(&board_column)
+	query := r.DB.Model(BoardColumnModel{ID: board_column_id}).Scan(&board_column)
 
-	if err != nil {
-		fmt.Println(err)
+	if query.Error != nil {
+		fmt.Println(query)
 	}
-	return &board_column
+	return &board_column, query.Error
 }
 
-func (r BoardColumnRepository) Create(board_column *BoardColumnModel) {
-	r.DB.Create(&board_column)
+func (r BoardColumnRepository) Create(board_column *BoardColumnModel) error {
+	query := r.DB.Create(&board_column)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r BoardColumnRepository) Update(board_column_id uuid.UUID, board_column *BoardColumnModel) {
-	r.DB.Model(BoardColumnModel{}).Where("id", board_column_id).Updates(&board_column)
+func (r BoardColumnRepository) Update(board_column_id uuid.UUID, board_column *BoardColumnModel) error {
+	query := r.DB.Model(BoardColumnModel{}).Where("id", board_column_id).Updates(&board_column)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }
 
-func (r BoardColumnRepository) Destroy(board_column_id uuid.UUID) {
-	r.DB.Model(BoardColumnModel{}).Delete(BoardColumnModel{}, board_column_id)
+func (r BoardColumnRepository) Destroy(board_column_id uuid.UUID) error {
+	query := r.DB.Model(BoardColumnModel{}).Delete(BoardColumnModel{}, board_column_id)
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return query.Error
 }

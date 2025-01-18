@@ -6,6 +6,7 @@ import (
 
 	"apps/api/app/domain"
 	"libs/http_utils"
+	"libs/jwt_utils"
 )
 
 type FilterControllerInterface interface {
@@ -21,13 +22,13 @@ type FilterController struct {
 }
 
 func (c FilterController) Index(w http.ResponseWriter, r *http.Request) {
-	filters := c.FilterService.All()
+	filters, _ := c.FilterService.All()
 	http_utils.RespondWithJSON(w, http.StatusOK, FilterSerializer{}.ModelToResponseMany(*filters))
 }
 
 func (c FilterController) Show(w http.ResponseWriter, r *http.Request) {
 	var filter_id, _ = http_utils.GetParamUUID(r, "filter_id")
-	filter := c.FilterService.Show(filter_id)
+	filter, _ := c.FilterService.Show(filter_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, FilterSerializer{}.ModelToResponse(*filter))
 }
 
@@ -35,6 +36,7 @@ func (c FilterController) Create(w http.ResponseWriter, r *http.Request) {
 	var filter_request FilterRequest
 	json.NewDecoder(r.Body).Decode(&filter_request)
 	filter := FilterSerializer{}.RequestToModel(filter_request)
+	filter.UserID = jwt_utils.GetTokenInfoFromRequest(r).UserID
 	c.FilterService.Create(&filter)
 	http_utils.RespondWithJSON(w, http.StatusCreated, FilterSerializer{}.ModelToResponse(filter))
 }

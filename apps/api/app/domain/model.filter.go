@@ -9,10 +9,10 @@ import (
 
 type FilterModel struct {
 	ID          uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name        string    `gorm:"type:varchar(100);not null;"`
+	Name        string    `gorm:"type:varchar(100);not null;uniqueIndex:name_user_id;"`
 	Description string    `gorm:"type:varchar(255);"`
 	Public      bool
-	UserID      uuid.UUID `gorm:"type:char(36) references user;not null;"`
+	UserID      uuid.UUID `gorm:"type:char(36) references user;not null;uniqueIndex:name_user_id;"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 

@@ -5,34 +5,34 @@ import (
 )
 
 type FilterServiceInterface interface {
-	All() *[]FilterModel
-	Show(filter_id uuid.UUID) *FilterModel
-	Create(filter *FilterModel)
-	Update(filter_id uuid.UUID, filter *FilterModel)
-	Destroy(filter_id uuid.UUID)
+	All() (*[]FilterModel, error)
+	Show(filter_id uuid.UUID) (*FilterModel, error)
+	Create(filter *FilterModel) error
+	Update(filter_id uuid.UUID, filter *FilterModel) error
+	Destroy(filter_id uuid.UUID) error
 }
 
 type FilterService struct {
 	FilterRepository FilterRepositoryInterface
 }
 
-func (s FilterService) All() *[]FilterModel {
-	filters := s.FilterRepository.All()
-	return filters
+func (s FilterService) All() (*[]FilterModel, error) {
+	filters, err := s.FilterRepository.All()
+	return filters, err
 }
 
-func (s FilterService) Show(filter_id uuid.UUID) *FilterModel {
+func (s FilterService) Show(filter_id uuid.UUID) (*FilterModel, error) {
 	return s.FilterRepository.FindByID(filter_id)
 }
 
-func (s FilterService) Create(filter *FilterModel) {
-	s.FilterRepository.Create(filter)
+func (s FilterService) Create(filter *FilterModel) error {
+	return s.FilterRepository.Create(filter)
 }
 
-func (s FilterService) Update(filter_id uuid.UUID, filter *FilterModel) {
-	s.FilterRepository.Update(filter_id, filter)
+func (s FilterService) Update(filter_id uuid.UUID, filter *FilterModel) error {
+	return s.FilterRepository.Update(filter_id, filter)
 }
 
-func (s FilterService) Destroy(filter_id uuid.UUID) {
-	s.FilterRepository.Destroy(filter_id)
+func (s FilterService) Destroy(filter_id uuid.UUID) error {
+	return s.FilterRepository.Destroy(filter_id)
 }

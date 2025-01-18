@@ -21,13 +21,13 @@ type IssueController struct {
 }
 
 func (c IssueController) Index(w http.ResponseWriter, r *http.Request) {
-	issues := c.IssueService.All()
+	issues, _ := c.IssueService.All()
 	http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponseMany(*issues))
 }
 
 func (c IssueController) Show(w http.ResponseWriter, r *http.Request) {
 	var issue_id, _ = http_utils.GetParamUUID(r, "issue_id")
-	issue := c.IssueService.Show(issue_id)
+	issue, _ := c.IssueService.Show(issue_id)
 	http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*issue))
 }
 

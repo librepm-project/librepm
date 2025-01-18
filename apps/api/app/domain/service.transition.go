@@ -5,34 +5,34 @@ import (
 )
 
 type TransitionServiceInterface interface {
-	All() *[]TransitionModel
-	Show(transition_id uuid.UUID) *TransitionModel
-	Create(transition *TransitionModel)
-	Update(transition_id uuid.UUID, transition *TransitionModel)
-	Destroy(transition_id uuid.UUID)
+	All() (*[]TransitionModel, error)
+	Show(transition_id uuid.UUID) (*TransitionModel, error)
+	Create(transition *TransitionModel) error
+	Update(transition_id uuid.UUID, transition *TransitionModel) error
+	Destroy(transition_id uuid.UUID) error
 }
 
 type TransitionService struct {
 	TransitionRepository TransitionRepositoryInterface
 }
 
-func (s TransitionService) All() *[]TransitionModel {
-	transitions := s.TransitionRepository.All()
-	return transitions
+func (s TransitionService) All() (*[]TransitionModel, error) {
+	transitions, err := s.TransitionRepository.All()
+	return transitions, err
 }
 
-func (s TransitionService) Show(transition_id uuid.UUID) *TransitionModel {
+func (s TransitionService) Show(transition_id uuid.UUID) (*TransitionModel, error) {
 	return s.TransitionRepository.FindByID(transition_id)
 }
 
-func (s TransitionService) Create(transition *TransitionModel) {
-	s.TransitionRepository.Create(transition)
+func (s TransitionService) Create(transition *TransitionModel) error {
+	return s.TransitionRepository.Create(transition)
 }
 
-func (s TransitionService) Update(transition_id uuid.UUID, transition *TransitionModel) {
-	s.TransitionRepository.Update(transition_id, transition)
+func (s TransitionService) Update(transition_id uuid.UUID, transition *TransitionModel) error {
+	return s.TransitionRepository.Update(transition_id, transition)
 }
 
-func (s TransitionService) Destroy(transition_id uuid.UUID) {
-	s.TransitionRepository.Destroy(transition_id)
+func (s TransitionService) Destroy(transition_id uuid.UUID) error {
+	return s.TransitionRepository.Destroy(transition_id)
 }

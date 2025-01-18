@@ -24,7 +24,7 @@ type UserSessionCreateRequestBody struct {
 func (c UserSessionController) Create(w http.ResponseWriter, r *http.Request) {
 	var body UserSessionCreateRequestBody
 	json.NewDecoder(r.Body).Decode(&body)
-	session := c.UserSessionService.Create(body.Email, body.Password)
+	session, _ := c.UserSessionService.Create(body.Email, body.Password)
 	if session == nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
