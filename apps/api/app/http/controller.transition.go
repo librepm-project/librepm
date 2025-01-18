@@ -21,13 +21,21 @@ type TransitionController struct {
 }
 
 func (c TransitionController) Index(w http.ResponseWriter, r *http.Request) {
-	transitions, _ := c.TransitionService.All()
+	transitions, err := c.TransitionService.All()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponseMany(*transitions))
 }
 
 func (c TransitionController) Show(w http.ResponseWriter, r *http.Request) {
-	var transition_id, _ = http_utils.GetParamUUID(r, "transition_id")
+	var transition_id, err = http_utils.GetParamUUID(r, "transition_id")
 	transition, _ := c.TransitionService.Show(transition_id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponse(*transition))
 }
 
@@ -35,7 +43,11 @@ func (c TransitionController) Create(w http.ResponseWriter, r *http.Request) {
 	var transition_request TransitionRequest
 	json.NewDecoder(r.Body).Decode(&transition_request)
 	transition := TransitionSerializer{}.RequestToModel(transition_request)
-	c.TransitionService.Create(&transition)
+	err := c.TransitionService.Create(&transition)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	http_utils.RespondWithJSON(w, http.StatusCreated, TransitionSerializer{}.ModelToResponse(transition))
 }
 
@@ -44,12 +56,20 @@ func (c TransitionController) Update(w http.ResponseWriter, r *http.Request) {
 	var transition_request TransitionRequest
 	json.NewDecoder(r.Body).Decode(&transition_request)
 	transition := TransitionSerializer{}.RequestToModel(transition_request)
-	c.TransitionService.Update(transition_id, &transition)
+	err := c.TransitionService.Update(transition_id, &transition)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
 
 func (c TransitionController) Destroy(w http.ResponseWriter, r *http.Request) {
 	transition_id, _ := http_utils.GetParamUUID(r, "transition_id")
-	c.TransitionService.Destroy(transition_id)
+	err := c.TransitionService.Destroy(transition_id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	w.WriteHeader(http.StatusNoContent)
 }

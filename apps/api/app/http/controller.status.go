@@ -21,13 +21,21 @@ type StatusController struct {
 }
 
 func (c StatusController) Index(w http.ResponseWriter, r *http.Request) {
-	statuses, _ := c.StatusService.All()
+	statuses, err := c.StatusService.All()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponseMany(*statuses))
 }
 
 func (c StatusController) Show(w http.ResponseWriter, r *http.Request) {
 	var status_id, _ = http_utils.GetParamUUID(r, "status_id")
-	status, _ := c.StatusService.Show(status_id)
+	status, err := c.StatusService.Show(status_id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponse(*status))
 }
 
@@ -35,7 +43,11 @@ func (c StatusController) Create(w http.ResponseWriter, r *http.Request) {
 	var status_request StatusRequest
 	json.NewDecoder(r.Body).Decode(&status_request)
 	status := StatusSerializer{}.RequestToModel(status_request)
-	c.StatusService.Create(&status)
+	err := c.StatusService.Create(&status)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	http_utils.RespondWithJSON(w, http.StatusCreated, StatusSerializer{}.ModelToResponse(status))
 }
 
@@ -44,12 +56,20 @@ func (c StatusController) Update(w http.ResponseWriter, r *http.Request) {
 	var status_request StatusRequest
 	json.NewDecoder(r.Body).Decode(&status_request)
 	status := StatusSerializer{}.RequestToModel(status_request)
-	c.StatusService.Update(status_id, &status)
+	err := c.StatusService.Update(status_id, &status)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
 
 func (c StatusController) Destroy(w http.ResponseWriter, r *http.Request) {
 	status_id, _ := http_utils.GetParamUUID(r, "status_id")
-	c.StatusService.Destroy(status_id)
+	err := c.StatusService.Destroy(status_id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	w.WriteHeader(http.StatusNoContent)
 }

@@ -21,7 +21,7 @@ type UserSessionCreateReturn struct {
 func (s UserSessionService) Create(email string, password string) (*UserSessionCreateReturn, error) {
 	user, err := s.UserRepository.FindByEmail(email)
 
-	if !password_utils.CheckPasswordHash(password, user.PasswordHash) {
+	if err != nil || !password_utils.CheckPasswordHash(password, user.PasswordHash) {
 		return nil, err
 	}
 

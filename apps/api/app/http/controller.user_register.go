@@ -19,6 +19,10 @@ type UserRegisterController struct {
 func (c UserRegisterController) Create(w http.ResponseWriter, r *http.Request) {
 	var body UserRegisterRequest
 	json.NewDecoder(r.Body).Decode(&body)
-	user, _ := c.UserRegisterService.Create(body.Email, body.Password)
+	user, err := c.UserRegisterService.Create(body.Email, body.Password)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*user))
 }

@@ -21,7 +21,11 @@ type UserCurrentController struct {
 
 func (c UserCurrentController) Show(w http.ResponseWriter, r *http.Request) {
 	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
-	user, _ := c.UserService.Show(user_id)
+	user, err := c.UserService.Show(user_id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*user))
 }
 
@@ -31,12 +35,20 @@ func (c UserCurrentController) Update(w http.ResponseWriter, r *http.Request) {
 		ID: user_id,
 	}
 	json.NewDecoder(r.Body).Decode(&user)
-	c.UserService.Update(user_id, &user)
+	err := c.UserService.Update(user_id, &user)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
 
 func (c UserCurrentController) Destroy(w http.ResponseWriter, r *http.Request) {
 	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
-	c.UserService.Destroy(user_id)
+	err := c.UserService.Destroy(user_id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	w.WriteHeader(http.StatusNoContent)
 }
