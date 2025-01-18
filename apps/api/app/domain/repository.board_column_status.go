@@ -8,10 +8,10 @@ import (
 )
 
 type BoardColumnStatusRepositoryInterface interface {
-	All() (*[]BoardColumnModel, error)
-	FindByID(board_column_status_id uuid.UUID) (*BoardColumnModel, error)
-	Create(board_column_status *BoardColumnModel) error
-	Update(board_column_status_id uuid.UUID, board_column_status *BoardColumnModel) error
+	All() (*[]BoardColumnStatusModel, error)
+	FindByID(board_column_status_id uuid.UUID) (*BoardColumnStatusModel, error)
+	Create(board_column_status *BoardColumnStatusModel) error
+	Update(board_column_status_id uuid.UUID, board_column_status *BoardColumnStatusModel) error
 	Destroy(board_column_status_id uuid.UUID) error
 }
 
@@ -19,8 +19,8 @@ type BoardColumnStatusRepository struct {
 	DB *gorm.DB
 }
 
-func (r BoardColumnStatusRepository) All() (*[]BoardColumnModel, error) {
-	var board_column_statuses []BoardColumnModel
+func (r BoardColumnStatusRepository) All() (*[]BoardColumnStatusModel, error) {
+	var board_column_statuses []BoardColumnStatusModel
 	var err error
 	query := r.DB.Select("board_column_status.*")
 
@@ -30,9 +30,9 @@ func (r BoardColumnStatusRepository) All() (*[]BoardColumnModel, error) {
 	return &board_column_statuses, err
 }
 
-func (r BoardColumnStatusRepository) FindByID(board_column_status_id uuid.UUID) (*BoardColumnModel, error) {
-	var board_column_status BoardColumnModel
-	query := r.DB.Model(BoardColumnModel{ID: board_column_status_id}).Scan(&board_column_status)
+func (r BoardColumnStatusRepository) FindByID(board_column_status_id uuid.UUID) (*BoardColumnStatusModel, error) {
+	var board_column_status BoardColumnStatusModel
+	query := r.DB.Model(BoardColumnStatusModel{ID: board_column_status_id}).Scan(&board_column_status)
 
 	if query.Error != nil {
 		fmt.Println(query)
@@ -40,7 +40,7 @@ func (r BoardColumnStatusRepository) FindByID(board_column_status_id uuid.UUID) 
 	return &board_column_status, query.Error
 }
 
-func (r BoardColumnStatusRepository) Create(board_column_status *BoardColumnModel) error {
+func (r BoardColumnStatusRepository) Create(board_column_status *BoardColumnStatusModel) error {
 	query := r.DB.Create(&board_column_status)
 	if query.Error != nil {
 		fmt.Println(query)
@@ -48,8 +48,8 @@ func (r BoardColumnStatusRepository) Create(board_column_status *BoardColumnMode
 	return query.Error
 }
 
-func (r BoardColumnStatusRepository) Update(board_column_status_id uuid.UUID, board_column_status *BoardColumnModel) error {
-	query := r.DB.Model(BoardColumnModel{}).Where("id", board_column_status_id).Updates(&board_column_status)
+func (r BoardColumnStatusRepository) Update(board_column_status_id uuid.UUID, board_column_status *BoardColumnStatusModel) error {
+	query := r.DB.Model(BoardColumnStatusModel{}).Where("id", board_column_status_id).Updates(&board_column_status)
 	if query.Error != nil {
 		fmt.Println(query)
 	}
@@ -57,7 +57,7 @@ func (r BoardColumnStatusRepository) Update(board_column_status_id uuid.UUID, bo
 }
 
 func (r BoardColumnStatusRepository) Destroy(board_column_status_id uuid.UUID) error {
-	query := r.DB.Model(BoardColumnModel{}).Delete(BoardColumnModel{}, board_column_status_id)
+	query := r.DB.Model(BoardColumnStatusModel{}).Delete(BoardColumnStatusModel{}, board_column_status_id)
 	if query.Error != nil {
 		fmt.Println(query)
 	}

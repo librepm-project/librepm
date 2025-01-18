@@ -1,0 +1,34 @@
+statuses:
+  - name: "To Do"
+  - name: "In Progress"
+  - name: "Done"
+
+boards:
+  - name: "Project Board"
+    description: "Main project board"
+    columns:
+      - label: "Backlog"
+      - label: "In Progress"
+      - label: "Completed"
+
+users:
+  - email: "testuser@example.com"
+    password_hash: "password123"
+    first_name: "John"
+    last_name: "Doe"
+    phone: "123-456-7890"
+    language: "en"
+    country: "US"
+    blocked: false
+
+dashboards:
+  - name: "Main Dashboard"
+    description: "This is the main dashboard"
+    user_email: "testuser@example.com"
+
+filters:
+  - name: "Priority Filter"
+    description: "Filters issues based on priority"
+    user_email: "testuser@example.com"
+    conditions:
+      - condition: "High Priority"

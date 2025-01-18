@@ -16,6 +16,7 @@ type Domain struct {
 	StatusService       StatusServiceInterface
 	TransitionService   TransitionServiceInterface
 	TrackerService      TrackerServiceInterface
+	SeedService         SeedServiceInterface
 }
 
 func NewDomain() Domain {
@@ -74,6 +75,11 @@ func NewDomain() Domain {
 		},
 		TrackerService: TrackerService{
 			TrackerRepository: TrackerRepository{
+				DB: DB,
+			},
+		},
+		SeedService: SeedService{
+			StatusRepository: StatusRepository{
 				DB: DB,
 			},
 		},
