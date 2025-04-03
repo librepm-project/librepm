@@ -8,7 +8,7 @@ const apiCall = (): AxiosInstance => {
     const accessToken = window.localStorage.getItem("accessToken");
     if (accessToken) {
       config.headers = {
-        Authorization: `${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       };
     }
     const instance = axios.create(config);

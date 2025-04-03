@@ -12,7 +12,8 @@ export const en = {
         filterIndex: 'Filters',
         statusIndex: 'Statuses',
         trackerIndex: 'Trackers',
-        issueShow: 'Issue details'
+        issueShow: 'Issue details',
+        login: 'Login',
     },
     issue: {
         description: 'Description',
@@ -35,5 +36,17 @@ export const en = {
     },
     tracker: {
         name: 'Name',
+    },
+    user: {
+        email: 'E-mail',
+        password: 'Password'
+    },
+    login: {
+        submit: 'Login'
+    },
+    rule: {
+        email: "Invalid email format",
+        required: "Required field",
+        minimLength: "Minimum length is %d"
     }
 }
