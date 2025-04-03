@@ -55,6 +55,7 @@ func (s SeedService) Seed() []error {
 	errors = append(errors, err)
 
 	err = s.createFilter(seedData.Filters)
+	errors = append(errors, err)
 
 	fmt.Println("Seed completed successfully")
 	return errors

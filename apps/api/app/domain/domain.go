@@ -82,6 +82,21 @@ func NewDomain() Domain {
 			StatusRepository: StatusRepository{
 				DB: DB,
 			},
+			BoardRepository: BoardRepository{
+				DB: DB,
+			},
+			UserRepository: UserRepository{
+				DB: DB,
+			},
+			DashboardRepository: DashboardRepository{
+				DB: DB,
+			},
+			FilterRepository: FilterRepository{
+				DB: DB,
+			},
+			FilterConditionRepository: FilterConditionRepository{
+				DB: DB,
+			},
 		},
 	}
 }

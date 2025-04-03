@@ -35,7 +35,10 @@ func (r UserRepository) All() (*[]UserModel, error) {
 func (r UserRepository) FindByEmail(email string) (*UserModel, error) {
 	var user UserModel
 	query := r.DB.Model(UserModel{}).Where(UserModel{Email: email}).Find(&user)
-	return &user, query.Error
+	if query.Error != nil {
+		return nil, query.Error
+	}
+	return &user, nil
 }
 
 func (r UserRepository) FindByID(user_id uuid.UUID) (*UserModel, error) {

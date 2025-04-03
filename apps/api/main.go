@@ -17,12 +17,12 @@ func seed(domain domain.Domain) {
 }
 
 func main() {
-	var arg string
-	if len(os.Args) > 2 {
-		arg = os.Args[1]
+	var command string
+	if len(os.Args) > 1 {
+		command = os.Args[1]
 	}
 	domain := domain.NewDomain()
-	switch arg {
+	switch command {
 	case "server":
 		server(domain)
 	case "seed":
