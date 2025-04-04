@@ -6,7 +6,7 @@
             {{ t('project.codeName') }}
           </th>
           <th class="text-left">
-            {{ t('project.name') }}
+            {{ t('global.name') }}
           </th>
         </tr>
       </thead>

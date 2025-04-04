@@ -4,6 +4,9 @@ export const en = {
         select: 'Select',
         search: 'Search',
         create: 'Create',
+        name: 'Name',
+        description: 'Description',
+        public: 'Public',
     },
     title: {
         issueIndex: 'Issues',
@@ -15,7 +18,8 @@ export const en = {
         trackerIndex: 'Trackers',
         issueShow: 'Issue details',
         login: 'Login',
-        projectCreate: 'Create project'
+        projectCreate: 'Create project',
+        dashboardCreate: 'Create dashboard',
     },
     issue: {
         description: 'Description',
@@ -30,7 +34,6 @@ export const en = {
         description: 'Description',
     },
     project: {
-        name: 'Name',
         codeName: 'Code name',
     },
     status: {

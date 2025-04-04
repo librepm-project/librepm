@@ -1,4 +1,7 @@
 <template>
+      <div class="text-right">
+      <v-btn text="Create" to="/dashboard/create" variant="text"></v-btn>
+    </div>
 </template>
 
 <script setup lang="ts">
