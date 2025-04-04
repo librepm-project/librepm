@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="text-right">
+      <v-btn text="Create" to="/project/create" variant="text"></v-btn>
+    </div>
     <project-table :items="projectStore.index" />
   </div>
 </template>

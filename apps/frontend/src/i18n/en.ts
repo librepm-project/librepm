@@ -2,7 +2,8 @@
 export const en = {
     global: {
         select: 'Select',
-        search: 'Search'
+        search: 'Search',
+        create: 'Create',
     },
     title: {
         issueIndex: 'Issues',
@@ -14,6 +15,7 @@ export const en = {
         trackerIndex: 'Trackers',
         issueShow: 'Issue details',
         login: 'Login',
+        projectCreate: 'Create project'
     },
     issue: {
         description: 'Description',
