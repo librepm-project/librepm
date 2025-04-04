@@ -21,7 +21,9 @@ export const en = {
         projectCreate: 'Create project',
         dashboardCreate: 'Create dashboard',
         boardCreate: 'Create board',
-        filterCreate: 'Create filter'
+        filterCreate: 'Create filter',
+        trackerCreate: 'Create tracker',
+        statusCreate: 'Create status'
     },
     issue: {
         description: 'Description',

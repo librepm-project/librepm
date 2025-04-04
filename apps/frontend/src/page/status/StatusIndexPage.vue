@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="text-right">
+      <v-btn text="Create" to="/status/create" variant="text"></v-btn>
+    </div>
     <status-table :items="statusStore.index" />
   </div>
 </template>

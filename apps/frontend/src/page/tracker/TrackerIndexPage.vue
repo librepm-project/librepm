@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="text-right">
+      <v-btn text="Create" to="/tracker/create" variant="text"></v-btn>
+    </div>
     <tracker-table :items="trackerStore.index" />
   </div>
 </template>
