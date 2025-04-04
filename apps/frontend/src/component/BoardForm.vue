@@ -1,7 +1,7 @@
 <template>
     <v-form @submit.prevent="submit" ref="form">
         <v-text-field v-model="name" :rules="[requiredRule]" :label="$t('global.name')"></v-text-field>
-        <v-text-field v-model="codeName" :rules="[requiredRule]" :label="$t('project.codeName')"></v-text-field>
+        <v-text-field v-model="description" :rules="[]" :label="$t('global.description')"></v-text-field>
         <v-btn class="mt-2" type="submit" block>{{ $t(props.submitButtonText) }}</v-btn>
     </v-form>
 </template>
@@ -16,7 +16,8 @@ const props = defineProps({
 })
 
 const name = ref("");
-const codeName = ref("");
+const description = ref("");
+const isPublic = ref(false);
 const form = ref(null);
 
 const submit = async () => {

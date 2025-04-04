@@ -20,6 +20,8 @@ export const en = {
         login: 'Login',
         projectCreate: 'Create project',
         dashboardCreate: 'Create dashboard',
+        boardCreate: 'Create board',
+        filterCreate: 'Create filter'
     },
     issue: {
         description: 'Description',

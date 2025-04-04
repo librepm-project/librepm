@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="text-right">
+    <v-btn text="Create" to="/board/create" variant="text"></v-btn>
   </div>
 </template>
 
@@ -26,7 +27,7 @@ onMounted(async () => {
     link: `/board/${board.id}`,
   })))
 });
- 
+
 onUnmounted(() => {
   sidebarStore.reset()
 });

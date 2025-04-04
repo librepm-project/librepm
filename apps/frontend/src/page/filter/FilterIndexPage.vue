@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="text-right">
+      <v-btn text="Create" to="/filter/create" variant="text"></v-btn>
+    </div>
     <filter-table :items="filterStore.index" />
   </div>
 </template>
