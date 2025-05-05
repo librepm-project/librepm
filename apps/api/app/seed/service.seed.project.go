@@ -2,19 +2,9 @@ package seed
 
 import (
 	"apps/api/app/domain"
+	"fmt"
 	"time"
 )
-
-type ProjectTrackerData struct {
-	Name     string `yaml:"name"`
-	Statuses []string
-}
-
-type ProjectData struct {
-	Name     string               `yaml:"name"`
-	CodeName string               `yaml:"code_name"`
-	Trackers []ProjectTrackerData `yaml:"trackers"`
-}
 
 func (s SeedService) createProject(items []ProjectData) error {
 	var err error
@@ -29,6 +19,7 @@ func (s SeedService) createProject(items []ProjectData) error {
 		}
 
 		err = s.ProjectRepository.Create(&project)
+		fmt.Println(err)
 
 		for _, tracker_data := range item.Trackers {
 
