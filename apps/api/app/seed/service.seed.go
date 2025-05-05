@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/go-playground/validator/v10"
 	"gopkg.in/yaml.v2"
 )
 
@@ -37,6 +38,10 @@ func (s SeedService) Seed(filePath string) []error {
 	var errors []error
 
 	seedData, err := s.getSeedData(filePath)
+
+	if err != nil {
+		panic(err)
+	}
 	errors = append(errors, err)
 
 	err = s.createTracker(seedData.Trackers)
@@ -80,5 +85,11 @@ func (s SeedService) getSeedData(filePath string) (SeedData, error) {
 	if err = yaml.Unmarshal(file, &seedData); err != nil {
 		return seedData, fmt.Errorf("failed to unmarshal YAML: %w", err)
 	}
+
+	validate := validator.New()
+	if err := validate.Struct(seedData); err != nil {
+		return seedData, fmt.Errorf("validation failed: %w", err)
+	}
+
 	return seedData, nil
 }

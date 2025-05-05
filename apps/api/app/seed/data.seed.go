@@ -1,11 +1,11 @@
 package seed
 
 type SeedData struct {
-	Trackers   []TrackerData   `yaml:"trackers"`
-	Statuses   []StatusData    `yaml:"statuses"`
-	Boards     []BoardData     `yaml:"boards"`
-	Users      []UserData      `yaml:"users"`
-	Dashboards []DashboardData `yaml:"dashboards"`
-	Filters    []FilterData    `yaml:"filters"`
-	Projects   []ProjectData   `yaml:"projects"`
+	Trackers   []TrackerData   `yaml:"trackers" validate:"required,dive"`
+	Statuses   []StatusData    `yaml:"statuses" validate:"required,dive"`
+	Boards     []BoardData     `yaml:"boards" validate:"required,dive"`
+	Users      []UserData      `yaml:"users" validate:"required,dive"`
+	Dashboards []DashboardData `yaml:"dashboards" validate:"required,dive"`
+	Filters    []FilterData    `yaml:"filters" validate:"required,dive"`
+	Projects   []ProjectData   `yaml:"projects" validate:"required,dive"`
 }

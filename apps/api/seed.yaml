@@ -43,6 +43,7 @@ filters:
 projects:
   - name: Test Project
     description: This is a test project
+    code_name: "LIB"
     trackers:
       - name: "Story"
         statuses:

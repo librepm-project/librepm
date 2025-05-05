@@ -1,11 +1,11 @@
 package seed
 
 type BoardData struct {
-	Name        string            `yaml:"name"`
-	Description string            `yaml:"description"`
-	Columns     []BoardColumnData `yaml:"columns"`
+	Name        string            `yaml:"name" validate:"required"`
+	Description string            `yaml:"description" validate:"required"`
+	Columns     []BoardColumnData `yaml:"columns" validate:"required,dive"`
 }
 
 type BoardColumnData struct {
-	Label string `yaml:"label"`
+	Label string `yaml:"label" validate:"required"`
 }
