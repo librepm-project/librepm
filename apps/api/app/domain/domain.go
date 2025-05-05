@@ -79,6 +79,15 @@ func NewDomain() Domain {
 			},
 		},
 		SeedService: SeedService{
+			ProjectRepository: ProjectRepository{
+				DB: DB,
+			},
+			ProjectTrackerRepository: ProjectTrackerRepository{
+				DB: DB,
+			},
+			TrackerRepository: TrackerRepository{
+				DB: DB,
+			},
 			StatusRepository: StatusRepository{
 				DB: DB,
 			},
@@ -95,6 +104,9 @@ func NewDomain() Domain {
 				DB: DB,
 			},
 			FilterConditionRepository: FilterConditionRepository{
+				DB: DB,
+			},
+			PurgeRepository: PurgeRepository{
 				DB: DB,
 			},
 		},

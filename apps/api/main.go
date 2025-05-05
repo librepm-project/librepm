@@ -16,6 +16,10 @@ func seed(domain domain.Domain) {
 	domain.SeedService.Seed()
 }
 
+func purge(domain domain.Domain) {
+	domain.SeedService.Purge()
+}
+
 func main() {
 	var command string
 	if len(os.Args) > 1 {
@@ -27,6 +31,8 @@ func main() {
 		server(domain)
 	case "seed":
 		seed(domain)
+	case "purge":
+		purge(domain)
 	default:
 		server(domain)
 	}

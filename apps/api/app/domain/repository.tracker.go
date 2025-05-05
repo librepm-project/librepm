@@ -10,6 +10,7 @@ import (
 type TrackerRepositoryInterface interface {
 	All() (*[]TrackerModel, error)
 	FindByID(tracker_id uuid.UUID) (*TrackerModel, error)
+	FindByName(name string) (*TrackerModel, error)
 	Create(tracker *TrackerModel) error
 	Update(tracker_id uuid.UUID, tracker *TrackerModel) error
 	Destroy(tracker_id uuid.UUID) error
@@ -33,6 +34,16 @@ func (r TrackerRepository) All() (*[]TrackerModel, error) {
 func (r TrackerRepository) FindByID(tracker_id uuid.UUID) (*TrackerModel, error) {
 	var tracker TrackerModel
 	query := r.DB.Model(TrackerModel{ID: tracker_id}).Scan(&tracker)
+
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return &tracker, query.Error
+}
+
+func (r TrackerRepository) FindByName(name string) (*TrackerModel, error) {
+	var tracker TrackerModel
+	query := r.DB.Where("name = ?", name).First(&tracker)
 
 	if query.Error != nil {
 		fmt.Println(query)

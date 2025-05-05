@@ -9,6 +9,7 @@ import (
 
 type SeedServiceInterface interface {
 	Seed() []error
+	Purge()
 }
 
 type SeedService struct {
@@ -28,6 +29,7 @@ type SeedService struct {
 	TrackerRepository                  TrackerRepositoryInterface
 	TransitionRepository               TransitionRepositoryInterface
 	UserRepository                     UserRepositoryInterface
+	PurgeRepository                    PurgeRepositoryInterface
 }
 
 func (s SeedService) Seed() []error {
@@ -36,10 +38,10 @@ func (s SeedService) Seed() []error {
 	seedData, err := s.getSeedData()
 	errors = append(errors, err)
 
-	err = s.createStatus(seedData.Statuses)
+	err = s.createTracker(seedData.Trackers)
 	errors = append(errors, err)
 
-	err = s.createBoard(seedData.Boards)
+	err = s.createStatus(seedData.Statuses)
 	errors = append(errors, err)
 
 	err = s.createUser(seedData.Users)
@@ -61,7 +63,12 @@ func (s SeedService) Seed() []error {
 	return errors
 }
 
+func (s SeedService) Purge() {
+	s.PurgeRepository.Purge()
+}
+
 type SeedData struct {
+	Trackers   []TrackerData   `yaml:"trackers"`
 	Statuses   []StatusData    `yaml:"statuses"`
 	Boards     []BoardData     `yaml:"boards"`
 	Users      []UserData      `yaml:"users"`

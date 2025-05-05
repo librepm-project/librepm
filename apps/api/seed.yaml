@@ -1,4 +1,11 @@
+trackers:
+  - name: "Story"
+  - name: "Task"
+  - name: "Epic"
+  - name: "Bug"
+
 statuses:
+  - name: "Open"
   - name: "To Do"
   - name: "In Progress"
   - name: "Done"
@@ -32,3 +39,12 @@ filters:
     user_email: "testuser@example.com"
     conditions:
       - condition: "High Priority"
+
+projects:
+  - name: Test Project
+    description: This is a test project
+    trackers:
+      - "Story"
+      - "Task"
+      - "Epic"
+      - "Bug"
