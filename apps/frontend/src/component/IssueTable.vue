@@ -6,6 +6,9 @@
             {{ t('issue.key') }}
           </th>
           <th class="text-left">
+            {{ t('issue.tracker') }}
+          </th>
+          <th class="text-left">
             {{ t('issue.summary') }}
           </th>
           <th class="text-left">
@@ -19,6 +22,7 @@
           :key="item.id"
         >
           <td>{{ item.key }}</td>
+          <td>{{ item.tracker.name }}</td>
           <td><router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link></td>
           <td>{{ item.status.name }}</td>
         </tr>

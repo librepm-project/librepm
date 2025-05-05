@@ -4,24 +4,30 @@
       <v-col cols="9">
         <v-card>
           <v-card-title>{{ issueStore.current.summary }}</v-card-title>
-          <v-card-subtitle>{{ issueStore.current.id }}</v-card-subtitle>
-          <v-card-text class="text-bold">{{ t('issue.description') }}</v-card-text>
-          <v-card-text>{{ issueStore.current.description }}</v-card-text>
+          <v-card-subtitle class="mb-2">{{ issueStore.current.id }}</v-card-subtitle>
+          <v-card-text class="border rounded pa-2">{{ issueStore.current.description }}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="3">
         <v-card>
-          <v-card-text class="text-bold">{{ t('issue.project') }}</v-card-text>
-          <v-card-text>{{ issueStore.current.project.name }}</v-card-text>
-          <v-card-text class="text-bold">{{ t('issue.status') }}</v-card-text>
-          <v-card-text>{{ issueStore.current.status.name }}</v-card-text>
-          <v-card-text class="text-bold">{{ t('issue.tracker') }}</v-card-text>
-          <v-card-text>{{ issueStore.current.tracker.name }}</v-card-text>
+          <v-list dense nav>
+            <v-list-item>
+              <v-list-item-title class="text-bold">{{ t('issue.project') }}</v-list-item-title>
+              <v-list-item-subtitle>{{ issueStore.current.project.name }}</v-list-item-subtitle>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title class="text-bold">{{ t('issue.status') }}</v-list-item-title>
+              <v-list-item-subtitle>{{ issueStore.current.status.name }}</v-list-item-subtitle>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title class="text-bold">{{ t('issue.tracker') }}</v-list-item-title>
+              <v-list-item-subtitle>{{ issueStore.current.tracker.name }}</v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
-
 </template>
 
 <script lang="ts" setup>
