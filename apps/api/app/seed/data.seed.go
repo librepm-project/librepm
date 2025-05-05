@@ -8,4 +8,5 @@ type SeedData struct {
 	Dashboards []DashboardData `yaml:"dashboards" validate:"required,dive"`
 	Filters    []FilterData    `yaml:"filters" validate:"required,dive"`
 	Projects   []ProjectData   `yaml:"projects" validate:"required,dive"`
+	Issues     []IssueData     `yaml:"issues" validate:"required,dive"`
 }

@@ -65,6 +65,9 @@ func (s SeedService) Seed(filePath string) []error {
 	err = s.createFilter(seedData.Filters)
 	errors = append(errors, err)
 
+	err = s.createIssue(seedData.Issues)
+	errors = append(errors, err)
+
 	fmt.Println("Seed completed successfully")
 	return errors
 }

@@ -2,7 +2,6 @@ package seed
 
 import (
 	"apps/api/app/domain"
-	"fmt"
 	"time"
 )
 
@@ -19,7 +18,6 @@ func (s SeedService) createProject(items []ProjectData) error {
 		}
 
 		err = s.ProjectRepository.Create(&project)
-		fmt.Println(err)
 
 		for _, tracker_data := range item.Trackers {
 

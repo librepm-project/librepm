@@ -13,7 +13,7 @@ type IssueModel struct {
 	TrackerID   uuid.UUID  `gorm:"type:char(36) references tracker;not null;"`
 	StatusID    uuid.UUID  `gorm:"type:char(36) references status;not null;"`
 	ParentID    *uuid.UUID `gorm:"type:char(36) references issue;uniqueIndex:project_id_key_summary"`
-	Key         string     `gorm:"type:varchar(5);not null;"`
+	Key         string     `gorm:"type:varchar(10);not null;"`
 	Summary     string     `gorm:"type:varchar(100);not null;uniqueIndex:project_id_key_summary"`
 	Description string     `gorm:"type:varchar(255)"`
 	CreatedAt   time.Time

@@ -10,15 +10,17 @@ import * as directives from 'vuetify/directives'
 
 import App from '@/layout/App.vue';
 import router from '@/router/index.router';
-import { themes } from '@/theme/theme';
+import { theme } from '@/theme/theme';
 import { i18n } from '@/i18n';
 
 const vuetify = createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'dark',
-    themes,
+    defaultTheme: 'librepm',
+    themes: {
+      librepm: theme,
+    },
   },
 })
 

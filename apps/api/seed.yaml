@@ -11,8 +11,32 @@ statuses:
   - name: "Done"
 
 boards:
-  - name: "Project Board"
-    description: "Main project board"
+  - name: "Wedding Project Board"
+    description: "Manage wedding planning tasks"
+    columns:
+      - label: "Backlog"
+      - label: "In Progress"
+      - label: "Completed"
+  - name: "Startup Launch Board"
+    description: "Track tasks related to founding the company"
+    columns:
+      - label: "Backlog"
+      - label: "In Progress"
+      - label: "Completed"
+  - name: "Retro Gaming Party Board"
+    description: "Organize a retro gaming event"
+    columns:
+      - label: "Backlog"
+      - label: "In Progress"
+      - label: "Completed"
+  - name: "Commodore 64 Restoration Board"
+    description: "Manage tasks related to restoring a Commodore 64"
+    columns:
+      - label: "Backlog"
+      - label: "In Progress"
+      - label: "Completed"
+  - name: "London Trip Board"
+    description: "Track tasks for the London sightseeing trip"
     columns:
       - label: "Backlog"
       - label: "In Progress"
@@ -29,43 +53,267 @@ users:
     blocked: false
 
 dashboards:
-  - name: "Main Dashboard"
-    description: "This is the main dashboard"
+  - name: "Wedding Dashboard"
+    description: "Overview of the wedding planning"
+    user_email: "testuser@example.com"
+  - name: "Startup Dashboard"
+    description: "Company formation tracking"
+    user_email: "testuser@example.com"
+  - name: "Retro Gaming Party Dashboard"
+    description: "Overview of retro gaming event planning"
+    user_email: "testuser@example.com"
+  - name: "Commodore 64 Restoration Dashboard"
+    description: "Track tasks related to restoring the Commodore 64"
+    user_email: "testuser@example.com"
+  - name: "London Trip Dashboard"
+    description: "Overview of London trip planning"
     user_email: "testuser@example.com"
 
 filters:
-  - name: "Priority Filter"
-    description: "Filters issues based on priority"
+  - name: "High Priority Wedding Tasks"
+    description: "Filter for high priority wedding-related tasks"
     user_email: "testuser@example.com"
     conditions:
       - condition: "High Priority"
+  - name: "Startup Critical Tasks"
+    description: "Filter for urgent tasks in company formation"
+    user_email: "testuser@example.com"
+    conditions:
+      - condition: "Urgent"
+  - name: "Retro Gaming Party High Priority"
+    description: "Filter for high priority tasks for the retro gaming party"
+    user_email: "testuser@example.com"
+    conditions:
+      - condition: "High Priority"
+  - name: "Commodore 64 Restoration Critical Tasks"
+    description: "Filter for urgent tasks related to the Commodore 64 restoration"
+    user_email: "testuser@example.com"
+    conditions:
+      - condition: "Urgent"
+  - name: "London Trip Essentials"
+    description: "Filter for essential tasks for the London trip"
+    user_email: "testuser@example.com"
+    conditions:
+      - condition: "Essential"
 
 projects:
-  - name: Test Project
-    description: This is a test project
-    code_name: "LIB"
+  - name: Wedding Project
+    description: Planning and organizing the full wedding event
+    code_name: "WED"
     trackers:
       - name: "Story"
-        statuses:
-          - "Open"
-          - "To Do"
-          - "In Progress"
-          - "Done"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
       - name: "Task"
-        statuses:
-          - "Open"
-          - "To Do"
-          - "In Progress"
-          - "Done"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
       - name: "Epic"
-        statuses:
-          - "Open"
-          - "To Do"
-          - "In Progress"
-          - "Done"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
       - name: "Bug"
-        statuses:
-          - "Open"
-          - "To Do"
-          - "In Progress"
-          - "Done"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+
+  - name: Startup Launch
+    description: All tasks related to starting a new tech company
+    code_name: "START"
+    trackers:
+      - name: "Story"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Task"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Epic"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Bug"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+
+  - name: Retro Gaming Party
+    description: Organize a retro gaming event with classic games and consoles
+    code_name: "RGP"
+    trackers:
+      - name: "Story"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Task"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Epic"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Bug"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+
+  - name: Commodore 64 Restoration
+    description: Restoring and refurbishing a Commodore 64 vintage computer
+    code_name: "C64"
+    trackers:
+      - name: "Story"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Task"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Epic"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Bug"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+
+  - name: London Trip
+    description: Plan and organize a sightseeing trip to London
+    code_name: "LON"
+    trackers:
+      - name: "Story"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Task"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Epic"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Bug"
+        statuses: ["Open", "To Do", "In Progress", "Done"]
+
+issues:
+  # Wedding project issues
+  - summary: Wedding Planning
+    description: Coordinating all tasks needed for the entire wedding event
+    project_name: Wedding Project
+    tracker_name: Epic
+    status_name: In Progress
+
+  - summary: Book Venue
+    description: Find and book a suitable venue for the wedding
+    project_name: Wedding Project
+    tracker_name: Story
+    status_name: To Do
+    parent_name: Wedding Planning
+
+  - summary: Choose Menu
+    description: Select the dinner menu for the wedding
+    project_name: Wedding Project
+    tracker_name: Task
+    status_name: Open
+    parent_name: Book Venue
+
+  - summary: Hire Band
+    description: Find a band to play at the wedding party
+    project_name: Wedding Project
+    tracker_name: Task
+    status_name: Open
+    parent_name: Book Venue
+
+  - summary: Send Invitations
+    description: Send out wedding invitations to all guests
+    project_name: Wedding Project
+    tracker_name: Task
+    status_name: Open
+    parent_name: Book Venue
+
+  - summary: Book Photographer
+    description: Hire a professional photographer for the wedding
+    project_name: Wedding Project
+    tracker_name: Task
+    status_name: Open
+    parent_name: Book Venue
+
+  - summary: Plan Seating Chart
+    description: Create a well-organized seating chart for guests
+    project_name: Wedding Project
+    tracker_name: Task
+    status_name: Open
+    parent_name: Book Venue
+
+  # Startup project issues
+  - summary: Startup Foundation
+    description: Main epic to organize all tasks for launching the startup
+    project_name: Startup Launch
+    tracker_name: Epic
+    status_name: In Progress
+
+  - summary: Register the Company
+    description: Legally register the business with local authorities
+    project_name: Startup Launch
+    tracker_name: Story
+    status_name: To Do
+    parent_name: Startup Foundation
+
+  - summary: Open Business Bank Account
+    description: Set up a dedicated bank account for the new company
+    project_name: Startup Launch
+    tracker_name: Task
+    status_name: Open
+    parent_name: Register the Company
+
+  - summary: Get a Domain Name
+    description: Purchase and configure a domain name for the company website
+    project_name: Startup Launch
+    tracker_name: Task
+    status_name: Open
+    parent_name: Register the Company
+
+  - summary: Hire Accountant
+    description: Find a professional accountant to manage finances
+    project_name: Startup Launch
+    tracker_name: Task
+    status_name: Open
+    parent_name: Register the Company
+
+  - summary: Choose Legal Structure
+    description: Decide on the appropriate legal entity (e.g., LLC, Inc.)
+    project_name: Startup Launch
+    tracker_name: Task
+    status_name: Open
+    parent_name: Register the Company
+
+  - summary: File Tax ID
+    description: Apply for a tax ID from the IRS
+    project_name: Startup Launch
+    tracker_name: Task
+    status_name: Open
+    parent_name: Register the Company
+
+  # Retro Gaming Party issues
+  - summary: Plan Game List
+    description: Compile a list of retro games for the party
+    project_name: Retro Gaming Party
+    tracker_name: Task
+    status_name: To Do
+
+  - summary: Set Up Consoles
+    description: Set up the retro gaming consoles for the party
+    project_name: Retro Gaming Party
+    tracker_name: Task
+    status_name: To Do
+
+  - summary: Book Venue
+    description: Find a venue to host the retro gaming event
+    project_name: Retro Gaming Party
+    tracker_name: Task
+    status_name: To Do
+
+  # Commodore 64 Restoration issues
+  - summary: Disassemble C64
+    description: Take apart the Commodore 64 to inspect internal components
+    project_name: Commodore 64 Restoration
+    tracker_name: Task
+    status_name: To Do
+
+  - summary: Replace Capacitors
+    description: Replace faulty capacitors in the Commodore 64
+    project_name: Commodore 64 Restoration
+    tracker_name: Task
+    status_name: To Do
+
+  - summary: Clean C64
+    description: Clean the internal and external parts of the Commodore 64
+    project_name: Commodore 64 Restoration
+    tracker_name: Task
+    status_name: To Do
+
+  # London Trip issues
+  - summary: Book Flights
+    description: Book flight tickets to London
+    project_name: London Trip
+    tracker_name: Task
+    status_name: To Do
+
+  - summary: Find Accommodation
+    description: Search for accommodation options in London
+    project_name: London Trip
+    tracker_name: Task
+    status_name: To Do
+
+  - summary: Create Itinerary
+    description: Plan the trip itinerary for sightseeing in London
+    project_name: London Trip
+    tracker_name: Task
+    status_name: To Do
