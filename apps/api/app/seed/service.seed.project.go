@@ -5,10 +5,15 @@ import (
 	"time"
 )
 
+type ProjectTrackerData struct {
+	Name     string `yaml:"name"`
+	Statuses []string
+}
+
 type ProjectData struct {
-	Name     string   `yaml:"name"`
-	CodeName string   `yaml:"code_name"`
-	Trackers []string `yaml:"trackers"`
+	Name     string               `yaml:"name"`
+	CodeName string               `yaml:"code_name"`
+	Trackers []ProjectTrackerData `yaml:"trackers"`
 }
 
 func (s SeedService) createProject(items []ProjectData) error {
@@ -25,14 +30,25 @@ func (s SeedService) createProject(items []ProjectData) error {
 
 		err = s.ProjectRepository.Create(&project)
 
-		for _, trackerName := range item.Trackers {
+		for _, tracker_data := range item.Trackers {
 
-			tracker, _ := s.TrackerRepository.FindByName(trackerName)
+			tracker, _ := s.TrackerRepository.FindByName(tracker_data.Name)
 
-			err = s.ProjectTrackerRepository.Create(&domain.ProjectTrackerModel{
+			project_tracker := domain.ProjectTrackerModel{
 				ProjectID: project.ID,
 				TrackerID: tracker.ID,
-			})
+			}
+			err = s.ProjectTrackerRepository.Create(&project_tracker)
+
+			for _, statusName := range tracker_data.Statuses {
+
+				status, _ := s.StatusRepository.FindByName(statusName)
+
+				err = s.ProjectTrackerStatusRepository.Create(&domain.ProjectTrackerStatusModel{
+					StatusID:         status.ID,
+					ProjectTrackerID: project_tracker.ID,
+				})
+			}
 		}
 	}
 	return err

@@ -21,17 +21,18 @@ type Domain struct {
 	TransitionService   TransitionServiceInterface
 	TrackerService      TrackerServiceInterface
 
-	ProjectRepository         ProjectRepositoryInterface
-	IssueRepository           IssueRepositoryInterface
-	FilterRepository          FilterRepositoryInterface
-	BoardRepository           BoardRepositoryInterface
-	DashboardRepository       DashboardRepositoryInterface
-	UserRepository            UserRepositoryInterface
-	StatusRepository          StatusRepositoryInterface
-	TransitionRepository      TransitionRepositoryInterface
-	TrackerRepository         TrackerRepositoryInterface
-	ProjectTrackerRepository  ProjectTrackerRepositoryInterface
-	FilterConditionRepository FilterConditionRepositoryInterface
+	ProjectRepository              ProjectRepositoryInterface
+	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
+	IssueRepository                IssueRepositoryInterface
+	FilterRepository               FilterRepositoryInterface
+	BoardRepository                BoardRepositoryInterface
+	DashboardRepository            DashboardRepositoryInterface
+	UserRepository                 UserRepositoryInterface
+	StatusRepository               StatusRepositoryInterface
+	TransitionRepository           TransitionRepositoryInterface
+	TrackerRepository              TrackerRepositoryInterface
+	ProjectTrackerRepository       ProjectTrackerRepositoryInterface
+	FilterConditionRepository      FilterConditionRepositoryInterface
 }
 
 func NewDomain() Domain {
@@ -39,6 +40,7 @@ func NewDomain() Domain {
 	MigrateProductDatabase(DB)
 
 	projectRepository := ProjectRepository{DB: DB}
+	projectTrackerStatusRepository := ProjectTrackerStatusRepository{DB: DB}
 	issueRepository := IssueRepository{DB: DB}
 	filterRepository := FilterRepository{DB: DB}
 	boardRepository := BoardRepository{DB: DB}
@@ -87,16 +89,17 @@ func NewDomain() Domain {
 			TrackerRepository: trackerRepository,
 		},
 
-		ProjectRepository:         projectRepository,
-		IssueRepository:           issueRepository,
-		FilterRepository:          filterRepository,
-		BoardRepository:           boardRepository,
-		DashboardRepository:       dashboardRepository,
-		UserRepository:            userRepository,
-		StatusRepository:          statusRepository,
-		TransitionRepository:      transitionRepository,
-		TrackerRepository:         trackerRepository,
-		ProjectTrackerRepository:  projectTrackerRepository,
-		FilterConditionRepository: filterConditionRepository,
+		ProjectRepository:              projectRepository,
+		IssueRepository:                issueRepository,
+		FilterRepository:               filterRepository,
+		BoardRepository:                boardRepository,
+		DashboardRepository:            dashboardRepository,
+		UserRepository:                 userRepository,
+		StatusRepository:               statusRepository,
+		TransitionRepository:           transitionRepository,
+		TrackerRepository:              trackerRepository,
+		ProjectTrackerRepository:       projectTrackerRepository,
+		FilterConditionRepository:      filterConditionRepository,
+		ProjectTrackerStatusRepository: projectTrackerStatusRepository,
 	}
 }

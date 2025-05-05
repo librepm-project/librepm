@@ -10,6 +10,7 @@ import (
 type StatusRepositoryInterface interface {
 	All() (*[]StatusModel, error)
 	FindByID(status_id uuid.UUID) (*StatusModel, error)
+	FindByName(name string) (*StatusModel, error)
 	Create(status *StatusModel) error
 	Update(status_id uuid.UUID, status *StatusModel) error
 	Destroy(status_id uuid.UUID) error
@@ -33,6 +34,16 @@ func (r StatusRepository) All() (*[]StatusModel, error) {
 func (r StatusRepository) FindByID(status_id uuid.UUID) (*StatusModel, error) {
 	var status StatusModel
 	query := r.DB.Model(StatusModel{ID: status_id}).Scan(&status)
+
+	if query.Error != nil {
+		fmt.Println(query)
+	}
+	return &status, query.Error
+}
+
+func (r StatusRepository) FindByName(name string) (*StatusModel, error) {
+	var status StatusModel
+	query := r.DB.Where("name = ?", name).First(&status)
 
 	if query.Error != nil {
 		fmt.Println(query)

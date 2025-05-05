@@ -44,7 +44,27 @@ projects:
   - name: Test Project
     description: This is a test project
     trackers:
-      - "Story"
-      - "Task"
-      - "Epic"
-      - "Bug"
+      - name: "Story"
+        statuses:
+          - "Open"
+          - "To Do"
+          - "In Progress"
+          - "Done"
+      - name: "Task"
+        statuses:
+          - "Open"
+          - "To Do"
+          - "In Progress"
+          - "Done"
+      - name: "Epic"
+        statuses:
+          - "Open"
+          - "To Do"
+          - "In Progress"
+          - "Done"
+      - name: "Bug"
+        statuses:
+          - "Open"
+          - "To Do"
+          - "In Progress"
+          - "Done"
