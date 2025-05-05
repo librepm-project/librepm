@@ -1,6 +1,7 @@
-package domain
+package seed
 
 import (
+	"apps/api/app/domain"
 	"time"
 )
 
@@ -12,10 +13,10 @@ type ProjectData struct {
 
 func (s SeedService) createProject(items []ProjectData) error {
 	var err error
-	var project ProjectModel
+	var project domain.ProjectModel
 
 	for _, item := range items {
-		project = ProjectModel{
+		project = domain.ProjectModel{
 			Name:      item.Name,
 			CodeName:  item.CodeName,
 			CreatedAt: time.Now(),
@@ -28,7 +29,7 @@ func (s SeedService) createProject(items []ProjectData) error {
 
 			tracker, _ := s.TrackerRepository.FindByName(trackerName)
 
-			err = s.ProjectTrackerRepository.Create(&ProjectTrackerModel{
+			err = s.ProjectTrackerRepository.Create(&domain.ProjectTrackerModel{
 				ProjectID: project.ID,
 				TrackerID: tracker.ID,
 			})

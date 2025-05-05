@@ -2,9 +2,13 @@ package domain
 
 import (
 	"libs/mysql_utils"
+
+	"gorm.io/gorm"
 )
 
 type Domain struct {
+	DB *gorm.DB
+
 	ProjectService      ProjectServiceInterface
 	IssueService        IssueServiceInterface
 	FilterService       FilterServiceInterface
@@ -16,99 +20,83 @@ type Domain struct {
 	StatusService       StatusServiceInterface
 	TransitionService   TransitionServiceInterface
 	TrackerService      TrackerServiceInterface
-	SeedService         SeedServiceInterface
+
+	ProjectRepository         ProjectRepositoryInterface
+	IssueRepository           IssueRepositoryInterface
+	FilterRepository          FilterRepositoryInterface
+	BoardRepository           BoardRepositoryInterface
+	DashboardRepository       DashboardRepositoryInterface
+	UserRepository            UserRepositoryInterface
+	StatusRepository          StatusRepositoryInterface
+	TransitionRepository      TransitionRepositoryInterface
+	TrackerRepository         TrackerRepositoryInterface
+	ProjectTrackerRepository  ProjectTrackerRepositoryInterface
+	FilterConditionRepository FilterConditionRepositoryInterface
 }
 
 func NewDomain() Domain {
 	DB := mysql_utils.Init()
 	MigrateProductDatabase(DB)
+
+	projectRepository := ProjectRepository{DB: DB}
+	issueRepository := IssueRepository{DB: DB}
+	filterRepository := FilterRepository{DB: DB}
+	boardRepository := BoardRepository{DB: DB}
+	dashboardRepository := DashboardRepository{DB: DB}
+	userRepository := UserRepository{DB: DB}
+	statusRepository := StatusRepository{DB: DB}
+	transitionRepository := TransitionRepository{DB: DB}
+	trackerRepository := TrackerRepository{DB: DB}
+	projectTrackerRepository := ProjectTrackerRepository{DB: DB}
+	filterConditionRepository := FilterConditionRepository{DB: DB}
+
 	return Domain{
+		DB: DB,
+
 		ProjectService: ProjectService{
-			ProjectRepository: ProjectRepository{
-				DB: DB,
-			},
+			ProjectRepository: projectRepository,
 		},
 		IssueService: IssueService{
-			IssueRepository: IssueRepository{
-				DB: DB,
-			},
+			IssueRepository: issueRepository,
 		},
 		FilterService: FilterService{
-			FilterRepository: FilterRepository{
-				DB: DB,
-			},
+			FilterRepository: filterRepository,
 		},
 		BoardService: BoardService{
-			BoardRepository: BoardRepository{
-				DB: DB,
-			},
+			BoardRepository: boardRepository,
 		},
 		DashboardService: DashboardService{
-			DashboardRepository: DashboardRepository{
-				DB: DB,
-			},
+			DashboardRepository: dashboardRepository,
 		},
 		UserService: UserService{
-			UserRepository: UserRepository{
-				DB: DB,
-			},
+			UserRepository: userRepository,
 		},
 		UserSessionService: UserSessionService{
-			UserRepository: UserRepository{
-				DB: DB,
-			},
+			UserRepository: userRepository,
 		},
 		UserRegisterService: UserRegisterService{
-			UserRepository: UserRepository{
-				DB: DB,
-			},
+			UserRepository: userRepository,
 		},
 		StatusService: StatusService{
-			StatusRepository: StatusRepository{
-				DB: DB,
-			},
+			StatusRepository: statusRepository,
 		},
 		TransitionService: TransitionService{
-			TransitionRepository: TransitionRepository{
-				DB: DB,
-			},
+			TransitionRepository: transitionRepository,
 		},
 		TrackerService: TrackerService{
-			TrackerRepository: TrackerRepository{
-				DB: DB,
-			},
+			TrackerRepository: trackerRepository,
 		},
-		SeedService: SeedService{
-			ProjectRepository: ProjectRepository{
-				DB: DB,
-			},
-			ProjectTrackerRepository: ProjectTrackerRepository{
-				DB: DB,
-			},
-			TrackerRepository: TrackerRepository{
-				DB: DB,
-			},
-			StatusRepository: StatusRepository{
-				DB: DB,
-			},
-			BoardRepository: BoardRepository{
-				DB: DB,
-			},
-			UserRepository: UserRepository{
-				DB: DB,
-			},
-			DashboardRepository: DashboardRepository{
-				DB: DB,
-			},
-			FilterRepository: FilterRepository{
-				DB: DB,
-			},
-			FilterConditionRepository: FilterConditionRepository{
-				DB: DB,
-			},
-			PurgeRepository: PurgeRepository{
-				DB: DB,
-			},
-		},
+
+		ProjectRepository:         projectRepository,
+		IssueRepository:           issueRepository,
+		FilterRepository:          filterRepository,
+		BoardRepository:           boardRepository,
+		DashboardRepository:       dashboardRepository,
+		UserRepository:            userRepository,
+		StatusRepository:          statusRepository,
+		TransitionRepository:      transitionRepository,
+		TrackerRepository:         trackerRepository,
+		ProjectTrackerRepository:  projectTrackerRepository,
+		FilterConditionRepository: filterConditionRepository,
 	}
 }

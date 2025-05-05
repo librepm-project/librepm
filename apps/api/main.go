@@ -3,37 +3,28 @@ package main
 import (
 	"apps/api/app/domain"
 	"apps/api/app/http"
-	"fmt"
+	"apps/api/app/seed"
 	"os"
 )
 
-func server(domain domain.Domain) {
-	fmt.Println("API listen on port 80")
-	http.StartHttpServer(domain)
-}
-
-func seed(domain domain.Domain) {
-	domain.SeedService.Seed()
-}
-
-func purge(domain domain.Domain) {
-	domain.SeedService.Purge()
-}
-
 func main() {
 	var command string
+	var subcommand string
 	if len(os.Args) > 1 {
 		command = os.Args[1]
+	}
+	if len(os.Args) > 2 {
+		subcommand = os.Args[2]
 	}
 	domain := domain.NewDomain()
 	switch command {
 	case "server":
-		server(domain)
+		http.StartHttpServer(domain)
 	case "seed":
-		seed(domain)
+		seed.NewSeedService(domain).Seed(subcommand)
 	case "purge":
-		purge(domain)
+		seed.NewSeedService(domain).Purge()
 	default:
-		server(domain)
+		http.StartHttpServer(domain)
 	}
 }

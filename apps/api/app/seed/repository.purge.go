@@ -1,6 +1,7 @@
-package domain
+package seed
 
 import (
+	"apps/api/app/domain"
 	"log"
 
 	"gorm.io/gorm"
@@ -16,21 +17,21 @@ type PurgeRepository struct {
 
 func (r PurgeRepository) Purge() {
 	models := []interface{}{
-		&ProjectTrackerModel{},
-		&ProjectModel{},
+		&domain.ProjectTrackerModel{},
+		&domain.ProjectModel{},
 
-		&DashboardModel{},
+		&domain.DashboardModel{},
 
-		&BoardColumnModel{},
-		&BoardModel{},
+		&domain.BoardColumnModel{},
+		&domain.BoardModel{},
 
-		&FilterConditionModel{},
-		&FilterModel{},
+		&domain.FilterConditionModel{},
+		&domain.FilterModel{},
 
-		&UserModel{},
+		&domain.UserModel{},
 
-		&StatusModel{},
-		&TrackerModel{},
+		&domain.StatusModel{},
+		&domain.TrackerModel{},
 	}
 	for _, m := range models {
 		err := r.DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(m).Error

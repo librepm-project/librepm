@@ -1,6 +1,7 @@
-package domain
+package seed
 
 import (
+	"apps/api/app/domain"
 	"fmt"
 	"os"
 
@@ -13,29 +14,29 @@ type SeedServiceInterface interface {
 }
 
 type SeedService struct {
-	BoardRepository                    BoardRepositoryInterface
-	BoardColumnRepository              BoardColumnRepositoryInterface
-	BoardColumnStatusRepository        BoardColumnStatusRepositoryInterface
-	DashboardRepository                DashboardRepositoryInterface
-	FilterRepository                   FilterRepositoryInterface
-	FilterConditionRepository          FilterConditionRepositoryInterface
-	IssueRepository                    IssueRepositoryInterface
-	ProjectRepository                  ProjectRepositoryInterface
-	ProjectTrackerRepository           ProjectTrackerRepositoryInterface
-	ProjectTrackerStatusRepository     ProjectTrackerStatusRepositoryInterface
-	ProjectTrackerTransitionRepository ProjectTrackerTransitionRepositoryInterface
-	ProjectUserRepository              ProjectUserRepositoryInterface
-	StatusRepository                   StatusRepositoryInterface
-	TrackerRepository                  TrackerRepositoryInterface
-	TransitionRepository               TransitionRepositoryInterface
-	UserRepository                     UserRepositoryInterface
+	BoardRepository                    domain.BoardRepositoryInterface
+	BoardColumnRepository              domain.BoardColumnRepositoryInterface
+	BoardColumnStatusRepository        domain.BoardColumnStatusRepositoryInterface
+	DashboardRepository                domain.DashboardRepositoryInterface
+	FilterRepository                   domain.FilterRepositoryInterface
+	FilterConditionRepository          domain.FilterConditionRepositoryInterface
+	IssueRepository                    domain.IssueRepositoryInterface
+	ProjectRepository                  domain.ProjectRepositoryInterface
+	ProjectTrackerRepository           domain.ProjectTrackerRepositoryInterface
+	ProjectTrackerStatusRepository     domain.ProjectTrackerStatusRepositoryInterface
+	ProjectTrackerTransitionRepository domain.ProjectTrackerTransitionRepositoryInterface
+	ProjectUserRepository              domain.ProjectUserRepositoryInterface
+	StatusRepository                   domain.StatusRepositoryInterface
+	TrackerRepository                  domain.TrackerRepositoryInterface
+	TransitionRepository               domain.TransitionRepositoryInterface
+	UserRepository                     domain.UserRepositoryInterface
 	PurgeRepository                    PurgeRepositoryInterface
 }
 
-func (s SeedService) Seed() []error {
+func (s SeedService) Seed(filePath string) []error {
 	var errors []error
 
-	seedData, err := s.getSeedData()
+	seedData, err := s.getSeedData(filePath)
 	errors = append(errors, err)
 
 	err = s.createTracker(seedData.Trackers)
@@ -77,10 +78,10 @@ type SeedData struct {
 	Projects   []ProjectData   `yaml:"projects"`
 }
 
-func (s SeedService) getSeedData() (SeedData, error) {
+func (s SeedService) getSeedData(filePath string) (SeedData, error) {
 	var seedData SeedData
 
-	file, err := os.ReadFile("/app/apps/api/seed.yaml")
+	file, err := os.ReadFile(filePath)
 
 	if err != nil {
 		return seedData, fmt.Errorf("failed to read seed data YAML: %w", err)

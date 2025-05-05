@@ -1,4 +1,6 @@
-package domain
+package seed
+
+import "apps/api/app/domain"
 
 type TrackerData struct {
 	Name string `yaml:"name"`
@@ -7,7 +9,7 @@ type TrackerData struct {
 func (s SeedService) createTracker(items []TrackerData) error {
 	var err error
 	for _, item := range items {
-		err = s.TrackerRepository.Create(&TrackerModel{
+		err = s.TrackerRepository.Create(&domain.TrackerModel{
 			Name: item.Name,
 		})
 	}

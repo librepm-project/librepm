@@ -1,6 +1,7 @@
-package domain
+package seed
 
 import (
+	"apps/api/app/domain"
 	"time"
 )
 
@@ -20,7 +21,7 @@ func (s SeedService) createFilter(items []FilterData) error {
 	for _, item := range items {
 		user, _ := s.UserRepository.FindByEmail(item.UserEmail)
 
-		filter := FilterModel{
+		filter := domain.FilterModel{
 			Name:        item.Name,
 			Description: item.Description,
 			UserID:      user.ID,
@@ -31,7 +32,7 @@ func (s SeedService) createFilter(items []FilterData) error {
 		err = s.FilterRepository.Create(&filter)
 
 		for _, conditionData := range item.Conditions {
-			condition := FilterConditionModel{
+			condition := domain.FilterConditionModel{
 				Condition: conditionData.Condition,
 				FilterID:  filter.ID,
 			}

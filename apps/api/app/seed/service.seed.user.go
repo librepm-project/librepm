@@ -1,6 +1,7 @@
-package domain
+package seed
 
 import (
+	"apps/api/app/domain"
 	"time"
 )
 
@@ -17,9 +18,9 @@ type UserData struct {
 
 func (s SeedService) createUser(items []UserData) error {
 	var err error
-	var user UserModel
+	var user domain.UserModel
 	for _, item := range items {
-		user = UserModel{
+		user = domain.UserModel{
 			Email:        item.Email,
 			PasswordHash: item.PasswordHash,
 			FirstName:    item.FirstName,

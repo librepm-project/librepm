@@ -1,6 +1,7 @@
-package domain
+package seed
 
 import (
+	"apps/api/app/domain"
 	"time"
 )
 
@@ -15,7 +16,7 @@ func (s SeedService) createDashboard(items []DashboardData) error {
 	for _, item := range items {
 		user, _ := s.UserRepository.FindByEmail(item.UserEmail)
 
-		err = s.DashboardRepository.Create(&DashboardModel{
+		err = s.DashboardRepository.Create(&domain.DashboardModel{
 			Name:        item.Name,
 			Description: item.Description,
 			UserID:      user.ID,

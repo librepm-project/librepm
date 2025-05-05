@@ -18,6 +18,6 @@ open:
 		echo "Unsupported OS. Please open the URL manually: $$URL"; \
 	fi
 seed:
-	docker compose exec cli go run apps/api seed
+	docker compose exec cli go run apps/api seed /app/apps/api/seed.yaml
 purge:
 	docker compose exec cli go run apps/api purge
