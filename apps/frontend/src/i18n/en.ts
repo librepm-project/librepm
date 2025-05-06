@@ -42,9 +42,11 @@ export const en = {
     },
     status: {
         name: 'Name',
+        color: 'Color',
     },
     tracker: {
         name: 'Name',
+        color: 'Color',
     },
     user: {
         email: 'E-mail',

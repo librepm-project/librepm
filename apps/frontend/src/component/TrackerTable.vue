@@ -5,6 +5,9 @@
           <th class="text-left">
             {{ t('tracker.name') }}
           </th>
+          <th class="text-left">
+            {{ t('tracker.color') }}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -13,6 +16,7 @@
           :key="item.id"
         >
           <td>{{ item.name }}</td>
+          <td><v-chip :color="item.color">{{ item.color }}</v-chip></td>
         </tr>
       </tbody>
     </v-table>

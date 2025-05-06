@@ -17,11 +17,11 @@
             </v-list-item>
             <v-list-item>
               <v-list-item-title class="text-bold">{{ t('issue.status') }}</v-list-item-title>
-              <v-list-item-subtitle>{{ issueStore.current.status.name }}</v-list-item-subtitle>
+              <v-list-item-subtitle><status-chip :status="issueStore.current.status"></status-chip></v-list-item-subtitle>
             </v-list-item>
             <v-list-item>
               <v-list-item-title class="text-bold">{{ t('issue.tracker') }}</v-list-item-title>
-              <v-list-item-subtitle>{{ issueStore.current.tracker.name }}</v-list-item-subtitle>
+              <v-list-item-subtitle><tracker-chip :tracker="issueStore.current.tracker"></tracker-chip></v-list-item-subtitle>
             </v-list-item>
           </v-list>
         </v-card>
@@ -34,7 +34,10 @@
 import { useIssueStore } from '@/store/issue.store';
 import { useRoute } from 'vue-router';
 import { onBeforeMount } from 'vue';
-import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n';
+import StatusChip from '@/component/StatusChip.vue';
+import TrackerChip from '@/component/TrackerChip.vue';
+
 
 const { t } = useI18n();
 const route = useRoute();

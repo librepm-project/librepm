@@ -7,26 +7,30 @@ import (
 )
 
 type StatusRequest struct {
-	Name string `json:"name"`
+	Name  string `json:"name"`
+	Color string `json:"color"`
 }
 
 type StatusResponse struct {
-	ID   uuid.UUID `json:"id"`
-	Name string    `json:"name"`
+	ID    uuid.UUID `json:"id"`
+	Name  string    `json:"name"`
+	Color string    `json:"color"`
 }
 
 type StatusSerializer struct{}
 
 func (s StatusSerializer) RequestToModel(status_request StatusRequest) domain.StatusModel {
 	return domain.StatusModel{
-		Name: status_request.Name,
+		Name:  status_request.Name,
+		Color: status_request.Color,
 	}
 }
 
 func (s StatusSerializer) ModelToResponse(status domain.StatusModel) StatusResponse {
 	return StatusResponse{
-		ID:   status.ID,
-		Name: status.Name,
+		ID:    status.ID,
+		Name:  status.Name,
+		Color: status.Color,
 	}
 }
 

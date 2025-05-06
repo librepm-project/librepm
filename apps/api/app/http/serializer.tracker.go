@@ -7,26 +7,30 @@ import (
 )
 
 type TrackerRequest struct {
-	Name string `json:"name"`
+	Name  string `json:"name"`
+	Color string `json:"color"`
 }
 
 type TrackerResponse struct {
-	ID   uuid.UUID `json:"id"`
-	Name string    `json:"name"`
+	ID    uuid.UUID `json:"id"`
+	Name  string    `json:"name"`
+	Color string    `json:"color"`
 }
 
 type TrackerSerializer struct{}
 
 func (s TrackerSerializer) RequestToModel(tracker_request TrackerRequest) domain.TrackerModel {
 	return domain.TrackerModel{
-		Name: tracker_request.Name,
+		Name:  tracker_request.Name,
+		Color: tracker_request.Color,
 	}
 }
 
 func (s TrackerSerializer) ModelToResponse(tracker domain.TrackerModel) TrackerResponse {
 	return TrackerResponse{
-		ID:   tracker.ID,
-		Name: tracker.Name,
+		ID:    tracker.ID,
+		Name:  tracker.Name,
+		Color: tracker.Color,
 	}
 }
 

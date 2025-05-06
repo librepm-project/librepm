@@ -6,8 +6,9 @@ import (
 )
 
 type TrackerModel struct {
-	ID   uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name string    `gorm:"type:varchar(100);not null;unique;"`
+	ID    uuid.UUID `gorm:"type:char(36);primary_key;"`
+	Name  string    `gorm:"type:varchar(100);not null;unique;"`
+	Color string    `gorm:"type:char(7);nullable;"`
 }
 
 func (tracker TrackerModel) TableName() string {

@@ -1,14 +1,22 @@
 trackers:
   - name: "Story"
+    color: "#00B4B6"
   - name: "Task"
+    color: "#6C63FF"
   - name: "Epic"
+    color: "#FFB400"
   - name: "Bug"
+    color: "#FF4B4B"
 
 statuses:
   - name: "Open"
+    color: "#2196F3"
   - name: "To Do"
+    color: "#9E9E9E"
   - name: "In Progress"
+    color: "#FFC107"
   - name: "Done"
+    color: "#4CAF50"
 
 boards:
   - name: "Wedding Project Board"
