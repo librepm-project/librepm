@@ -90,14 +90,26 @@ const links: Link[] = [
       {
         text: 'Statuses',
         key: 'statuses',
-        to: '/status',
+        to: '/admin/status',
         icon: 'mdi-layers-outline',
       },
       {
         text: 'Trackers',
         key: 'trackers',
-        to: '/tracker',
+        to: '/admin/tracker',
         icon: 'mdi-compass-outline',
+      },
+      {
+        text: 'Users',
+        key: 'userss',
+        to: '/admin/user',
+        icon: 'mdi-account-multiple',
+      },
+      {
+        text: 'Boards',
+        key: 'boards',
+        to: '/admin/board',
+        icon: 'mdi-table-large',
       },
     ],
   },

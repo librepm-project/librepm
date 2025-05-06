@@ -14,16 +14,17 @@ export const en = {
         dashboardShow: 'Dashboards',
         boardShow: 'Board',
         filterIndex: 'Filters',
-        statusIndex: 'Statuses',
-        trackerIndex: 'Trackers',
+        adminStatusIndex: 'Statuses',
+        adminTrackerIndex: 'Trackers',
         issueShow: 'Issue details',
         login: 'Login',
         projectCreate: 'Create project',
         dashboardCreate: 'Create dashboard',
         boardCreate: 'Create board',
         filterCreate: 'Create filter',
-        trackerCreate: 'Create tracker',
-        statusCreate: 'Create status'
+        adminTrackerCreate: 'Create tracker',
+        adminStatusCreate: 'Create status',
+        adminUserIndex: 'Users',
     },
     issue: {
         description: 'Description',
@@ -50,7 +51,10 @@ export const en = {
     },
     user: {
         email: 'E-mail',
-        password: 'Password'
+        password: 'Password',
+        fullName: 'Full name',
+        firstName: 'First name',
+        lastName: 'Last name',
     },
     login: {
         submit: 'Login'

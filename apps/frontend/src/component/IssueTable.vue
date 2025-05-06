@@ -1,5 +1,5 @@
 <template>
-  <v-table class="issue-table" density="compact">
+  <v-data-table class="issue-table" density="compact">
     <thead>
       <tr>
         <th class="text-left key-col">
@@ -26,7 +26,7 @@
         <td><status-chip :status="item.status" /></td>
       </tr>
     </tbody>
-  </v-table>
+  </v-data-table>
 </template>
 
 <script setup lang="ts">

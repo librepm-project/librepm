@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-table>
+    <v-data-table>
       <thead>
         <tr>
           <th class="text-left">
@@ -23,7 +23,7 @@
           <td><router-link to="/admin/board/{item.id}/edit">Configure</router-link></td>
         </tr>
       </tbody>
-    </v-table>
+    </v-data-table>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <v-table>
+    <v-data-table>
       <thead>
         <tr>
           <th class="text-left">
@@ -19,7 +19,7 @@
           <td>{{ item.name }}</td>
         </tr>
       </tbody>
-    </v-table>
+    </v-data-table>
 </template>
 
 <script setup lang="ts">
