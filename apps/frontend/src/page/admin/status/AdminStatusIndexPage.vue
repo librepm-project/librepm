@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-right">
-      <v-btn :text="t('global.create')" to="/status/create" color="primary" prepend-icon="mdi-plus"></v-btn>
+      <v-btn :text="t('global.create')" to="/admin/status/create" color="primary" prepend-icon="mdi-plus"></v-btn>
     </div>
     <status-table :items="statusStore.index" />
   </div>

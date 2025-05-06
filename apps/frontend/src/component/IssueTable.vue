@@ -1,31 +1,14 @@
 <template>
-  <v-data-table class="issue-table" density="compact">
-    <thead>
-      <tr>
-        <th class="text-left key-col">
-          {{ t('issue.key') }}
-        </th>
-        <th class="text-left">
-          {{ t('issue.tracker') }}
-        </th>
-        <th class="text-left summary-col">
-          {{ t('issue.summary') }}
-        </th>
-        <th class="text-left">
-          {{ t('issue.status') }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in items" :key="item.id">
-        <td class="key-col">{{ item.key }}</td>
-        <td><tracker-chip :tracker="item.tracker" /></td>
-        <td class="summary-col">
-          <router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link>
-        </td>
-        <td><status-chip :status="item.status" /></td>
-      </tr>
-    </tbody>
+  <v-data-table class="issue-table" density="compact" :items="items" :headers="headers">
+    <template #item.summary="{ item }">
+      <router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link>
+    </template>
+    <template #item.tracker="{ item }">
+      <TrackerChip :tracker="item.tracker" />
+    </template>
+    <template #item.status="{ item }">
+      <StatusChip :status="item.status" />
+    </template>
   </v-data-table>
 </template>
 
@@ -37,9 +20,16 @@ import StatusChip from './StatusChip.vue';
 
 const { t } = useI18n();
 
-defineProps<{
+const props = defineProps<{
   items: Issue[]
 }>()
+
+const headers = [
+  { key: 'key', title: t('issue.key') },
+  { key: 'tracker', title: t('issue.tracker') },
+  { key: 'summary', title: t('issue.summary') },
+  { key: 'status', title: t('issue.status') },
+]
 
 </script>
 

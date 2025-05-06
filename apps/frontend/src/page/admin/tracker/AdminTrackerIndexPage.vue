@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-right">
-      <v-btn :text="t('global.create')" to="/tracker/create" color="primary" prepend-icon="mdi-plus"></v-btn>
+      <v-btn :text="t('global.create')" to="/admin/tracker/create" color="primary" prepend-icon="mdi-plus"></v-btn>
     </div>
     <tracker-table :items="trackerStore.index" />
   </div>

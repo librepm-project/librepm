@@ -1,7 +1,7 @@
 <template>
     <v-form @submit.prevent="submit" ref="form">
         <v-text-field v-model="name" :rules="[requiredRule]" :label="$t('global.name')"></v-text-field>
-        <v-btn class="mt-2" type="submit" block>{{ $t(props.submitButtonText) }}</v-btn>
+        <v-btn class="mt-2" type="submit" color="primary" prepend-icon="mdi-floppy" block>{{ $t(props.submitButtonText) }}</v-btn>
     </v-form>
 </template>
 
