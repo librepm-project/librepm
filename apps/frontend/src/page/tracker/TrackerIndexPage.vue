@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-right">
-      <v-btn text="Create" to="/tracker/create" variant="text"></v-btn>
+      <v-btn :text="t('global.create')" to="/tracker/create" color="primary" prepend-icon="mdi-plus"></v-btn>
     </div>
     <tracker-table :items="trackerStore.index" />
   </div>
@@ -11,7 +11,9 @@
   import { useTrackerStore } from '@/store/tracker.store';
   import TrackerTable from '@/component/TrackerTable.vue';
   import { onMounted } from 'vue';
+  import { useI18n } from 'vue-i18n'
 
+  const { t } = useI18n();
 
   const trackerStore = useTrackerStore();
 

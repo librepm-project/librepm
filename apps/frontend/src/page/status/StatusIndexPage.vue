@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-right">
-      <v-btn text="Create" to="/status/create" variant="text"></v-btn>
+      <v-btn :text="t('global.create')" to="/status/create" color="primary" prepend-icon="mdi-plus"></v-btn>
     </div>
     <status-table :items="statusStore.index" />
   </div>
@@ -11,7 +11,9 @@
   import { useStatusStore } from '@/store/status.store';
   import StatusTable from '@/component/StatusTable.vue';
   import { onMounted } from 'vue';
+  import { useI18n } from 'vue-i18n'
 
+  const { t } = useI18n();
 
   const statusStore = useStatusStore();
 

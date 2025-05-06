@@ -1,6 +1,6 @@
 <template>
   <div class="text-right">
-    <v-btn text="Create" to="/board/create" variant="text"></v-btn>
+    <v-btn :text="t('global.create')" to="/board/create" color="primary" prepend-icon="mdi-plus"></v-btn>
   </div>
 </template>
 
