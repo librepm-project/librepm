@@ -4,16 +4,17 @@
       <v-img :src="logo" alt="LibrePM" height="70" />
 
       <template v-for="link in links" :key="link.key">
-        <v-btn :text="link.text" :to="link.to" variant="text" v-if="!link.sublinks"></v-btn>
+        <v-btn   :prepend-icon="link.icon"  :text="link.text" :to="link.to" variant="text" v-if="!link.sublinks"></v-btn>
         <template v-else>
           <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" variant="text">{{ link.text }}</v-btn>
+              <v-btn :prepend-icon="link.icon" v-bind="props" variant="text">{{ link.text }}</v-btn>
             </template>
 
             <v-list>
               <v-list-item v-for="(sublink, index) in link.sublinks" :key="index" :value="index" :to="sublink.to">
-                <v-list-item-title>{{ sublink.text }}</v-list-item-title>
+                
+                <v-list-item-title><v-icon start size="small" class="me-2">{{ sublink.icon }}</v-icon>{{ sublink.text }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -39,68 +40,66 @@ interface Sublink {
   text: string;
   key: string;
   to: string;
-};
-
+  icon: string;
+}
 
 interface Link {
   text: string;
-  key?: string;
+  key: string;
   to?: string;
+  icon: string;
   sublinks?: Sublink[];
-};
-
+}
 
 const links: Link[] = [
   {
     text: 'Projects',
     key: 'projects',
-    to: '/project'
+    to: '/project',
+    icon: 'mdi-folder-outline',
   },
   {
     text: 'Dashboard',
     key: 'dashboard',
-    to: '/'
+    to: '/',
+    icon: 'mdi-view-dashboard-outline',
   },
   {
     text: 'Issues',
     key: 'issues',
-    to: '/issue'
+    to: '/issue',
+    icon: 'mdi-bug-outline',
   },
   {
     text: 'Boards',
     key: 'boards',
-    to: '/board'
+    to: '/board',
+    icon: 'mdi-table-large',
   },
   {
     text: 'Filters',
     key: 'filters',
-    to: '/filter'
+    to: '/filter',
+    icon: 'mdi-filter-outline',
   },
   {
     text: 'Administration',
+    key: 'admin',
+    icon: 'mdi-cog-outline',
     sublinks: [
       {
         text: 'Statuses',
         key: 'statuses',
-        to: '/status'
+        to: '/status',
+        icon: 'mdi-layers-outline',
       },
       {
         text: 'Trackers',
         key: 'trackers',
-        to: '/tracker'
+        to: '/tracker',
+        icon: 'mdi-compass-outline',
       },
     ],
   },
-
-  /*  {
-      text: 'Profile',
-      key: 'profile',
-      to: '/profile'
-    },
-    {
-      text: 'Logout',
-      key: 'logout',
-      to: '/logout'
-    }, */
-]
+];
 </script>

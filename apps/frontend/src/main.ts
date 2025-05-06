@@ -12,6 +12,7 @@ import App from '@/layout/App.vue';
 import router from '@/router/index.router';
 import { theme } from '@/theme/theme';
 import { i18n } from '@/i18n';
+import '@mdi/font/css/materialdesignicons.css'
 
 const vuetify = createVuetify({
   components,
