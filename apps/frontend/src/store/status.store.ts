@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { Status } from '@/lib/interfaces/status.interface';
-import { statusMock } from '@/lib/mock-data';
 import statusApi from '@/api/status.api';
 
 
@@ -18,7 +17,6 @@ export const useStatusStore = defineStore('status', {
   },
   actions: {
     getStatus(statusId: number) {
-      this.current = statusMock[0];
     },
 
     async getStatuses() {

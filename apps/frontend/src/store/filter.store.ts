@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { Filter } from '@/lib/interfaces/filter.interface';
-import { filterMock } from '@/lib/mock-data';
 import filterApi from '@/api/filter.api';
 
 interface FilterStore {
@@ -17,7 +16,6 @@ export const useFilterStore = defineStore('filter', {
   },
   actions: {
     getFilter(filterId: number) {
-      this.current = filterMock[0];
     },
 
     async getFilters() {

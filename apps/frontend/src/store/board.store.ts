@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { Board } from '@/lib/interfaces/board.interface';
-import { boardMock } from '@/lib/mock-data';
 import boardApi from '@/api/board.api';
 
 interface BoardStore {

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { Issue } from '@/lib/interfaces/issue.interface';
-import { issueMock } from '@/lib/mock-data';
 import issueApi from '@/api/issue.api';
 
 interface IssueStore {
@@ -23,5 +22,9 @@ export const useIssueStore = defineStore('issue', {
     async getIssues() {
       this.index = await issueApi.index()
     },
+
+    create(issue: Partial<Issue>) {
+      console.log(issue);
+    }
   },
 });

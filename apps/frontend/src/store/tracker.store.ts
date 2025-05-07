@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { Tracker } from '@/lib/interfaces/tracker.interface';
-import { trackerMock } from '@/lib/mock-data';
 import trackerApi from '@/api/tracker.api';
 
 
@@ -18,7 +17,6 @@ export const useTrackerStore = defineStore('tracker', {
   },
   actions: {
     getTracker(trackerId: number) {
-      this.current = trackerMock[0];
     },
 
     async getTrackers() {
