@@ -7,6 +7,8 @@ export const en = {
         name: 'Name',
         description: 'Description',
         public: 'Public',
+        edit: 'Edit',
+        delete: 'Delete',
     },
     title: {
         issueIndex: 'Issues',

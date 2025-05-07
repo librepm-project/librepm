@@ -4,10 +4,13 @@
       <router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link>
     </template>
     <template #item.tracker="{ item }">
-      <TrackerChip :tracker="item.tracker" />
+      <tracker-chip :tracker="item.tracker" />
     </template>
     <template #item.status="{ item }">
-      <StatusChip :status="item.status" />
+      <status-chip :status="item.status" />
+    </template>
+    <template #item.actions="{ item }">
+      <general-record-actions :item="item" :onEdit="onEdit" :onDelete="onDelete" />
     </template>
   </v-data-table>
 </template>
@@ -17,11 +20,14 @@ import { Issue } from '@/lib/interfaces/issue.interface';
 import { useI18n } from 'vue-i18n'
 import TrackerChip from './TrackerChip.vue';
 import StatusChip from './StatusChip.vue';
+import GeneralRecordActions from '@/component/GeneralRecordActions.vue';
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  items: Issue[]
+  items: Issue[],
+  onEdit: (item: Issue) => void,
+  onDelete: (item: Issue) => void,
 }>()
 
 const headers = [
@@ -29,6 +35,7 @@ const headers = [
   { key: 'tracker', title: t('issue.tracker') },
   { key: 'summary', title: t('issue.summary') },
   { key: 'status', title: t('issue.status') },
+  { key: 'actions', title: '' },
 ]
 
 </script>
