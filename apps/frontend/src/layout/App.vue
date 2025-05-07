@@ -26,3 +26,9 @@ import { useLayoutStore } from '@/store/layout.store';
 const layoutStore = useLayoutStore();
 
 </script>
+
+<style>
+.v-data-table thead tr {
+  background-color: rgba(var(--v-theme-secondary));
+}
+</style>

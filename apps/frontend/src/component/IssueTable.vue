@@ -1,5 +1,5 @@
 <template>
-  <v-data-table class="issue-table" density="compact" :items="items" :headers="headers">
+  <v-data-table class="issue-table" :items="items" :headers="headers">
     <template #item.summary="{ item }">
       <router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link>
     </template>

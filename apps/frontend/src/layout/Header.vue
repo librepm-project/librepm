@@ -24,7 +24,7 @@
       <v-spacer></v-spacer>
 
       <v-responsive max-width="160">
-        <v-text-field density="compact" :label="t('global.search')" rounded="lg" variant="solo-filled" flat hide-details
+        <v-text-field :label="t('global.search')" rounded="lg" variant="solo-filled" flat hide-details
           single-line></v-text-field>
       </v-responsive>
     </v-container>

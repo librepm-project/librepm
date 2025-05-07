@@ -1,5 +1,5 @@
 <template>
-  <v-data-table density="compact" :items="items" :headers="headers">
+  <v-data-table :items="items" :headers="headers">
     <template #item.color="{ item }">
       <v-chip :color="item.color">{{ item.color }}</v-chip>
     </template>
