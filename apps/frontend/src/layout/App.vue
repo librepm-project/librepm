@@ -5,7 +5,7 @@
     <v-main>
       <v-container>
         <v-row>
-          <Sidebar v-if="sidebarStore.items.length > 0"/>
+          <Sidebar v-if="layoutStore.sidebarItems.length > 0"/>
           <Main />
         </v-row>
         <v-row>
@@ -21,8 +21,8 @@ import Header from '@/layout/Header.vue';
 import Sidebar from '@/layout/Sidebar.vue';
 import Main from '@/layout/Main.vue';
 import Footer from '@/layout/Footer.vue';
-import { useSidebarStore } from '@/store/sidebar.store';
+import { useLayoutStore } from '@/store/layout.store';
 
-const sidebarStore = useSidebarStore();
+const layoutStore = useLayoutStore();
 
 </script>

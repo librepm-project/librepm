@@ -1,23 +1,29 @@
 <template>
-  <div>
-    <div class="text-right">
-      <v-btn :text="t('global.create')" to="/user/create" color="primary" prepend-icon="mdi-plus"></v-btn>
-    </div>
-    <user-table :items="userStore.index" />
-  </div>
+  <user-table :items="userStore.index" />
 </template>
 
 <script lang="ts" setup>
 import { useUserStore } from '@/store/user.store';
 import UserTable from '@/component/UserTable.vue';
-import { onMounted } from 'vue';
-import { useI18n } from 'vue-i18n'
+import { onMounted, onUnmounted } from 'vue';
+import { useLayoutStore } from '@/store/layout.store';
 
-const { t } = useI18n();
-
+const layoutStore = useLayoutStore();
 const userStore = useUserStore();
 
 onMounted(async () => {
   await userStore.getUsers();
+  layoutStore.setActions([
+    {
+      text: 'global.create',
+      to: '/admin/user/create',
+      color: 'primary',
+      icon: 'mdi-plus'
+    }
+  ]);
+});
+
+onUnmounted(async () => {
+  layoutStore.resetActions();
 });
 </script>

@@ -2,7 +2,7 @@
     <v-col cols="2">
         <v-sheet rounded="lg">
             <v-list rounded="lg">
-                <v-list-item v-for="item in sidebarStore.items" :key="item.key" :title="item.title" :to="item.link"></v-list-item>
+                <v-list-item v-for="item in layoutStore.sidebarItems" :key="item.key" :title="item.title" :to="item.link"></v-list-item>
             </v-list>
         </v-sheet>
     </v-col>
@@ -10,8 +10,8 @@
 
 
 <script setup lang="ts">
-import { useSidebarStore } from '@/store/sidebar.store';
+import { useLayoutStore } from '@/store/layout.store';
 
-const sidebarStore = useSidebarStore();
+const layoutStore = useLayoutStore();
 
 </script>

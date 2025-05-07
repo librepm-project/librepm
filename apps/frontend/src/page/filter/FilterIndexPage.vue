@@ -1,24 +1,30 @@
 <template>
-  <div>
-    <div class="text-right">
-      <v-btn :text="t('global.create')" to="/filter/create" color="primary" prepend-icon="mdi-plus"></v-btn>
-    </div>
-    <filter-table :items="filterStore.index" />
-  </div>
+  <filter-table :items="filterStore.index" />
 </template>
 
 <script lang="ts" setup>
-  import { useFilterStore } from '@/store/filter.store';
-  import FilterTable from '@/component/FilterTable.vue';
-  import { onMounted } from 'vue';
-  import { useI18n } from 'vue-i18n'
+import { useFilterStore } from '@/store/filter.store';
+import FilterTable from '@/component/FilterTable.vue';
+import { onMounted, onUnmounted } from 'vue';
+import { useLayoutStore } from '@/store/layout.store';
 
-const { t } = useI18n();
+const layoutStore = useLayoutStore();
+const filterStore = useFilterStore();
 
-  const filterStore = useFilterStore();
+onMounted(async () => {
+  await filterStore.getFilters();
+  layoutStore.setActions([
+    {
+      text: 'global.create',
+      to: '/admin/filter/create',
+      color: 'primary',
+      icon: 'mdi-plus'
+    },
+  ]);
+})
 
-  onMounted(async () => {
-    await filterStore.getFilters()
-  })
+onUnmounted(async () => {
+  layoutStore.resetActions();
+});
 
 </script>

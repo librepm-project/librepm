@@ -1,24 +1,30 @@
 <template>
-  <div>
-    <div class="text-right">
-      <v-btn :text="t('global.create')" to="/admin/tracker/create" color="primary" prepend-icon="mdi-plus"></v-btn>
-    </div>
-    <tracker-table :items="trackerStore.index" />
-  </div>
+  <tracker-table :items="trackerStore.index" />
 </template>
 
 <script lang="ts" setup>
-  import { useTrackerStore } from '@/store/tracker.store';
-  import TrackerTable from '@/component/TrackerTable.vue';
-  import { onMounted } from 'vue';
-  import { useI18n } from 'vue-i18n'
+import { useTrackerStore } from '@/store/tracker.store';
+import TrackerTable from '@/component/TrackerTable.vue';
+import { onMounted, onUnmounted } from 'vue';
+import { useLayoutStore } from '@/store/layout.store';
 
-  const { t } = useI18n();
+const layoutStore = useLayoutStore();
+const trackerStore = useTrackerStore();
 
-  const trackerStore = useTrackerStore();
+onMounted(async () => {
+  await trackerStore.getTrackers();
+  layoutStore.setActions([
+  {
+    text: 'global.create',
+    to: '/admin/tracker/create',
+    color: 'primary',
+    icon: 'mdi-plus'
+  }
+]);
+});
 
-  onMounted(async () => {
-    await trackerStore.getTrackers();
-  });
+onUnmounted(async () => {
+  layoutStore.resetActions();
+});
 
 </script>

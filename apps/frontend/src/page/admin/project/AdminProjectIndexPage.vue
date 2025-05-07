@@ -1,23 +1,29 @@
 <template>
-  <div>
-    <div class="text-right">
-      <v-btn :text="t('global.create')" to="/admin/project/create" color="primary" prepend-icon="mdi-plus"></v-btn>
-    </div>
-    <project-table :items="projectStore.index" />
-  </div>
+  <project-table :items="projectStore.index" />
 </template>
 
 <script lang="ts" setup>
 import { useProjectStore } from '@/store/project.store';
 import ProjectTable from '@/component/ProjectTable.vue';
-import { onMounted } from 'vue';
-import { useI18n } from 'vue-i18n'
+import { onMounted, onUnmounted } from 'vue';
+import { useLayoutStore } from '@/store/layout.store';
 
-const { t } = useI18n();
-
+const layoutStore = useLayoutStore();
 const projectStore = useProjectStore();
 
 onMounted(async () => {
   await projectStore.getProjects();
+  layoutStore.setActions([
+    {
+      text: 'global.create',
+      to: '/admin/project/create',
+      color: 'primary',
+      icon: 'mdi-plus'
+    }
+  ]);
+});
+
+onUnmounted(async () => {
+  layoutStore.resetActions();
 });
 </script>

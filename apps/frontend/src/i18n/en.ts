@@ -11,6 +11,7 @@ export const en = {
     title: {
         issueIndex: 'Issues',
         adminProjectIndex: 'Projects',
+        adminBoardIndex: 'Boards',
         dashboardShow: 'Dashboards',
         boardShow: 'Board',
         filterIndex: 'Filters',
