@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-right">
-      <v-btn :text="t('global.create')" to="/project/create" color="primary" prepend-icon="mdi-plus"></v-btn>
+      <v-btn :text="t('global.create')" to="/admin/project/create" color="primary" prepend-icon="mdi-plus"></v-btn>
     </div>
     <project-table :items="projectStore.index" />
   </div>

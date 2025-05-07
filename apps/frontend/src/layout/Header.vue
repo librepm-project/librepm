@@ -4,7 +4,7 @@
       <v-img :src="logo" alt="LibrePM" height="70" />
 
       <template v-for="link in links" :key="link.key">
-        <v-btn   :prepend-icon="link.icon"  :text="link.text" :to="link.to" variant="text" v-if="!link.sublinks"></v-btn>
+        <v-btn :prepend-icon="link.icon" :text="link.text" :to="link.to" variant="text" v-if="!link.sublinks"></v-btn>
         <template v-else>
           <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
@@ -13,8 +13,9 @@
 
             <v-list>
               <v-list-item v-for="(sublink, index) in link.sublinks" :key="index" :value="index" :to="sublink.to">
-                
-                <v-list-item-title><v-icon start size="small" class="me-2">{{ sublink.icon }}</v-icon>{{ sublink.text }}</v-list-item-title>
+
+                <v-list-item-title><v-icon start size="small" class="me-2">{{ sublink.icon }}</v-icon>{{ sublink.text
+                  }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -53,12 +54,6 @@ interface Link {
 
 const links: Link[] = [
   {
-    text: 'Projects',
-    key: 'projects',
-    to: '/project',
-    icon: 'mdi-folder-outline',
-  },
-  {
     text: 'Dashboard',
     key: 'dashboard',
     to: '/',
@@ -87,6 +82,12 @@ const links: Link[] = [
     key: 'admin',
     icon: 'mdi-cog-outline',
     sublinks: [
+      {
+        text: 'Projects',
+        key: 'projects',
+        to: '/admin/project',
+        icon: 'mdi-folder-outline',
+      },
       {
         text: 'Statuses',
         key: 'statuses',

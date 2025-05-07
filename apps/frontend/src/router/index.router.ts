@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { issueRouter } from '@/router/issue.router';
-import { projectRouter } from '@/router/project.router';
+import { adminProjectRouter } from '@/router/admin.project.router';
 import { adminBoardRouter } from '@/router/admin.board.router';
 import { adminUserRouter } from '@/router/admin.user.router';
 import { boardRouter } from '@/router/board.router';
@@ -20,7 +20,7 @@ const router = createRouter({
     ...filterRouter,
     ...issueRouter,
     ...sessionRouter,
-    ...projectRouter,
+    ...adminProjectRouter,
     ...adminStatusRouter,
     ...adminTrackerRouter,
     ...adminUserRouter,

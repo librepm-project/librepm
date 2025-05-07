@@ -10,7 +10,7 @@ export const en = {
     },
     title: {
         issueIndex: 'Issues',
-        projectIndex: 'Projects',
+        adminProjectIndex: 'Projects',
         dashboardShow: 'Dashboards',
         boardShow: 'Board',
         filterIndex: 'Filters',
