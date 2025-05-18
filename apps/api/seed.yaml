@@ -1,4 +1,20 @@
 trackers:
+  - name: "Planning"
+    color: "#FF69B4"
+  - name: "Booking"
+    color: "#FFD700"
+  - name: "Vendor"
+    color: "#FF8C00"
+  - name: "Invitation"
+    color: "#4CAF50"
+  - name: "Legal"
+    color: "#673AB7"
+  - name: "Finance"
+    color: "#3F51B5"
+  - name: "Operations"
+    color: "#009688"
+  - name: "Marketing"
+    color: "#FF5722"
   - name: "Story"
     color: "#00B4B6"
   - name: "Task"
@@ -7,8 +23,34 @@ trackers:
     color: "#FFB400"
   - name: "Bug"
     color: "#FF4B4B"
+  - name: "Setup"
+    color: "#8E44AD"
+  - name: "Logistics"
+    color: "#16A085"
+  - name: "Promo"
+    color: "#E67E22"
+  - name: "Activity"
+    color: "#E67E22"
+  - name: "Checklist"
+    color: "#1ABC9C"
 
 statuses:
+  - name: "Planned"
+    color: "#9E9E9E"
+  - name: "Contacted"
+    color: "#2196F3"
+  - name: "Confirmed"
+    color: "#4CAF50"
+  - name: "Delivered"
+    color: "#795548"
+  - name: "Not Started"
+    color: "#9E9E9E"
+  - name: "Researching"
+    color: "#03A9F4"
+  - name: "Pending Approval"
+    color: "#FF9800"
+  - name: "Launched"
+    color: "#4CAF50"
   - name: "Open"
     color: "#2196F3"
   - name: "To Do"
@@ -17,37 +59,59 @@ statuses:
     color: "#FFC107"
   - name: "Done"
     color: "#4CAF50"
+  - name: "Tested"
+    color: "#3F51B5"
+  - name: "Needs Approval"
+    color: "#F44336"
+  - name: "Scheduled"
+    color: "#9C27B0"
+  - name: "Idea"
+    color: "#9E9E9E"
+  - name: "Booked"
+    color: "#8BC34A"
+  - name: "Packed"
+    color: "#FF9800"
+  - name: "Completed"
+    color: "#4CAF50"
 
 boards:
   - name: "Wedding Project Board"
     description: "Manage wedding planning tasks"
     columns:
-      - label: "Backlog"
-      - label: "In Progress"
-      - label: "Completed"
+      - label: "Planned"
+      - label: "Contacted"
+      - label: "Confirmed"
+      - label: "Delivered"
+
   - name: "Startup Launch Board"
     description: "Track tasks related to founding the company"
     columns:
-      - label: "Backlog"
-      - label: "In Progress"
-      - label: "Completed"
+      - label: "Not Started"
+      - label: "Researching"
+      - label: "Pending Approval"
+      - label: "Launched"
+
   - name: "Retro Gaming Party Board"
     description: "Organize a retro gaming event"
     columns:
-      - label: "Backlog"
+      - label: "To Do"
       - label: "In Progress"
-      - label: "Completed"
+      - label: "Scheduled"
+      - label: "Done"
+
   - name: "Commodore 64 Restoration Board"
     description: "Manage tasks related to restoring a Commodore 64"
     columns:
       - label: "Backlog"
       - label: "In Progress"
       - label: "Completed"
+
   - name: "London Trip Board"
     description: "Track tasks for the London sightseeing trip"
     columns:
-      - label: "Backlog"
-      - label: "In Progress"
+      - label: "Idea"
+      - label: "Planned"
+      - label: "Booked"
       - label: "Completed"
 
 users:
@@ -109,40 +173,46 @@ projects:
     description: Planning and organizing the full wedding event
     code_name: "WED"
     trackers:
-      - name: "Story"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Task"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Epic"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Bug"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Planning"
+        statuses: ["Planned", "Contacted", "Confirmed", "Delivered"]
+      - name: "Booking"
+        statuses: ["Planned", "Contacted", "Confirmed", "Delivered"]
+      - name: "Vendor"
+        statuses: ["Planned", "Contacted", "Confirmed", "Delivered"]
+      - name: "Invitation"
+        statuses: ["Planned", "Contacted", "Confirmed", "Delivered"]
 
   - name: Startup Launch
     description: All tasks related to starting a new tech company
     code_name: "START"
     trackers:
-      - name: "Story"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Task"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Epic"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Bug"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Legal"
+        statuses: ["Not Started", "Researching", "Pending Approval", "Launched"]
+      - name: "Finance"
+        statuses: ["Not Started", "Researching", "Pending Approval", "Launched"]
+      - name: "Operations"
+        statuses: ["Not Started", "Researching", "Pending Approval", "Launched"]
+      - name: "Marketing"
+        statuses: ["Not Started", "Researching", "Pending Approval", "Launched"]
 
   - name: Retro Gaming Party
     description: Organize a retro gaming event with classic games and consoles
     code_name: "RGP"
     trackers:
       - name: "Story"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
+        statuses: ["To Do", "In Progress", "Scheduled", "Done"]
       - name: "Task"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
+        statuses: ["To Do", "In Progress", "Scheduled", "Done"]
       - name: "Epic"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
+        statuses: ["To Do", "In Progress", "Scheduled", "Done"]
       - name: "Bug"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
+        statuses: ["To Do", "In Progress", "Needs Approval", "Done"]
+      - name: "Setup"
+        statuses: ["To Do", "In Progress", "Tested", "Done"]
+      - name: "Logistics"
+        statuses: ["To Do", "In Progress", "Scheduled", "Done"]
+      - name: "Promo"
+        statuses: ["To Do", "In Progress", "Needs Approval", "Done"]
 
   - name: Commodore 64 Restoration
     description: Restoring and refurbishing a Commodore 64 vintage computer
@@ -161,113 +231,48 @@ projects:
     description: Plan and organize a sightseeing trip to London
     code_name: "LON"
     trackers:
-      - name: "Story"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Task"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Epic"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
-      - name: "Bug"
-        statuses: ["Open", "To Do", "In Progress", "Done"]
+      - name: "Booking"
+        statuses: ["Idea", "Planned", "Booked", "Completed"]
+      - name: "Activity"
+        statuses: ["Idea", "Planned", "Booked", "Completed"]
+      - name: "Checklist"
+        statuses: ["Idea", "Planned", "Packed", "Completed"]
 
 issues:
   # Wedding project issues
   - summary: Wedding Planning
     description: Coordinating all tasks needed for the entire wedding event
     project_name: Wedding Project
-    tracker_name: Epic
-    status_name: In Progress
+    tracker_name: Planning
+    status_name: Confirmed
 
   - summary: Book Venue
     description: Find and book a suitable venue for the wedding
     project_name: Wedding Project
-    tracker_name: Story
-    status_name: To Do
+    tracker_name: Booking
+    status_name: Contacted
     parent_name: Wedding Planning
 
   - summary: Choose Menu
     description: Select the dinner menu for the wedding
     project_name: Wedding Project
-    tracker_name: Task
-    status_name: Open
-    parent_name: Book Venue
-
-  - summary: Hire Band
-    description: Find a band to play at the wedding party
-    project_name: Wedding Project
-    tracker_name: Task
-    status_name: Open
-    parent_name: Book Venue
-
-  - summary: Send Invitations
-    description: Send out wedding invitations to all guests
-    project_name: Wedding Project
-    tracker_name: Task
-    status_name: Open
-    parent_name: Book Venue
-
-  - summary: Book Photographer
-    description: Hire a professional photographer for the wedding
-    project_name: Wedding Project
-    tracker_name: Task
-    status_name: Open
-    parent_name: Book Venue
-
-  - summary: Plan Seating Chart
-    description: Create a well-organized seating chart for guests
-    project_name: Wedding Project
-    tracker_name: Task
-    status_name: Open
+    tracker_name: Vendor
+    status_name: Planned
     parent_name: Book Venue
 
   # Startup project issues
   - summary: Startup Foundation
     description: Main epic to organize all tasks for launching the startup
     project_name: Startup Launch
-    tracker_name: Epic
-    status_name: In Progress
+    tracker_name: Legal
+    status_name: Pending Approval
 
   - summary: Register the Company
     description: Legally register the business with local authorities
     project_name: Startup Launch
-    tracker_name: Story
-    status_name: To Do
+    tracker_name: Legal
+    status_name: Researching
     parent_name: Startup Foundation
-
-  - summary: Open Business Bank Account
-    description: Set up a dedicated bank account for the new company
-    project_name: Startup Launch
-    tracker_name: Task
-    status_name: Open
-    parent_name: Register the Company
-
-  - summary: Get a Domain Name
-    description: Purchase and configure a domain name for the company website
-    project_name: Startup Launch
-    tracker_name: Task
-    status_name: Open
-    parent_name: Register the Company
-
-  - summary: Hire Accountant
-    description: Find a professional accountant to manage finances
-    project_name: Startup Launch
-    tracker_name: Task
-    status_name: Open
-    parent_name: Register the Company
-
-  - summary: Choose Legal Structure
-    description: Decide on the appropriate legal entity (e.g., LLC, Inc.)
-    project_name: Startup Launch
-    tracker_name: Task
-    status_name: Open
-    parent_name: Register the Company
-
-  - summary: File Tax ID
-    description: Apply for a tax ID from the IRS
-    project_name: Startup Launch
-    tracker_name: Task
-    status_name: Open
-    parent_name: Register the Company
 
   # Retro Gaming Party issues
   - summary: Plan Game List
@@ -279,14 +284,14 @@ issues:
   - summary: Set Up Consoles
     description: Set up the retro gaming consoles for the party
     project_name: Retro Gaming Party
-    tracker_name: Task
-    status_name: To Do
+    tracker_name: Setup
+    status_name: In Progress
 
   - summary: Book Venue
     description: Find a venue to host the retro gaming event
     project_name: Retro Gaming Party
-    tracker_name: Task
-    status_name: To Do
+    tracker_name: Logistics
+    status_name: Scheduled
 
   # Commodore 64 Restoration issues
   - summary: Disassemble C64
@@ -295,33 +300,15 @@ issues:
     tracker_name: Task
     status_name: To Do
 
-  - summary: Replace Capacitors
-    description: Replace faulty capacitors in the Commodore 64
-    project_name: Commodore 64 Restoration
-    tracker_name: Task
-    status_name: To Do
-
-  - summary: Clean C64
-    description: Clean the internal and external parts of the Commodore 64
-    project_name: Commodore 64 Restoration
-    tracker_name: Task
-    status_name: To Do
-
   # London Trip issues
   - summary: Book Flights
     description: Book flight tickets to London
     project_name: London Trip
-    tracker_name: Task
-    status_name: To Do
-
-  - summary: Find Accommodation
-    description: Search for accommodation options in London
-    project_name: London Trip
-    tracker_name: Task
-    status_name: To Do
+    tracker_name: Booking
+    status_name: Booked
 
   - summary: Create Itinerary
     description: Plan the trip itinerary for sightseeing in London
     project_name: London Trip
-    tracker_name: Task
-    status_name: To Do
+    tracker_name: Activity
+    status_name: Planned

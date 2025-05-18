@@ -62,7 +62,8 @@ func NewDomain() Domain {
 			ProjectIssuePropertyRepository: projectIssuePropertyRepository,
 		},
 		IssueService: IssueService{
-			IssueRepository: issueRepository,
+			IssueRepository:   issueRepository,
+			ProjectRepository: projectRepository,
 		},
 		FilterService: FilterService{
 			FilterRepository: filterRepository,

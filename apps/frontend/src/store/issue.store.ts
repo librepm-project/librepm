@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { Issue } from '@/lib/interfaces/issue.interface';
 import issueApi from '@/api/issue.api';
 
+
 interface IssueStore {
   current: Issue | null;
   index: Issue[];
@@ -23,8 +24,8 @@ export const useIssueStore = defineStore('issue', {
       this.index = await issueApi.index()
     },
 
-    create(issue: Partial<Issue>) {
-      console.log(issue);
+    async create(issue: Partial<Issue>) {
+      return issueApi.create(issue);
     }
   },
 });

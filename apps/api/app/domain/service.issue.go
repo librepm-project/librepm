@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"fmt"
+
 	"github.com/google/uuid"
 )
 
@@ -13,7 +15,8 @@ type IssueServiceInterface interface {
 }
 
 type IssueService struct {
-	IssueRepository IssueRepositoryInterface
+	IssueRepository   IssueRepositoryInterface
+	ProjectRepository ProjectRepositoryInterface
 }
 
 func (s IssueService) All() (*[]IssueModel, error) {
@@ -26,6 +29,15 @@ func (s IssueService) Show(issue_id uuid.UUID) (*IssueModel, error) {
 }
 
 func (s IssueService) Create(issue *IssueModel) error {
+	err := s.ProjectRepository.IncrementLastIssueKeyNumber(issue.ProjectID)
+	if err != nil {
+		return err
+	}
+	project, err := s.ProjectRepository.FindByID(issue.ProjectID)
+	if err != nil {
+		return err
+	}
+	issue.Key = project.CodeName + "-" + fmt.Sprint(project.LastIssueKeyNumber)
 	return s.IssueRepository.Create(issue)
 }
 

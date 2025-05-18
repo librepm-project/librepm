@@ -14,6 +14,7 @@ type ProjectRepositoryInterface interface {
 	Create(project *ProjectModel) error
 	Update(project_id uuid.UUID, project *ProjectModel) error
 	Destroy(project_id uuid.UUID) error
+	IncrementLastIssueKeyNumber(project_id uuid.UUID) error
 }
 
 type ProjectRepository struct {
@@ -73,4 +74,14 @@ func (r ProjectRepository) Destroy(project_id uuid.UUID) error {
 		fmt.Println(query)
 	}
 	return query.Error
+}
+
+func (r ProjectRepository) IncrementLastIssueKeyNumber(project_id uuid.UUID) error {
+	query := r.DB.Model(&ProjectModel{}).Where("id = ?", project_id).Update("last_issue_key_number", gorm.Expr("last_issue_key_number + 1"))
+
+	if query.Error != nil {
+		fmt.Println(query)
+		return query.Error
+	}
+	return nil
 }

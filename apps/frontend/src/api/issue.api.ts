@@ -11,7 +11,14 @@ const show = async (issueId: string): Promise<Issue> => {
     return response.data as Issue;
 }
 
+const create = async (issue: Partial<Issue>): Promise<Issue> => {
+    const response = await api.apiCall().post(`/issue`, issue);
+    return response.data as Issue;
+}
+
+
 export default {
     index,
-    show
+    show,
+    create
 }

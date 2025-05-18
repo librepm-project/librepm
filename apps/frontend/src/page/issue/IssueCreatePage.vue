@@ -1,6 +1,6 @@
 <template>
   <div>
-    <issue-form :onSubmit="issueStore.create" submitButtonText="global.create" />
+    <issue-form :onSubmit="create" submitButtonText="global.create" />
   </div>
 </template>
 
@@ -8,7 +8,17 @@
 import { useIssueStore } from '@/store/issue.store';
 
 import IssueForm from '@/component/IssueForm.vue';
+import { Issue } from '@/lib/interfaces/issue.interface';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const issueStore = useIssueStore();
+
+const create = async (issue: Partial<Issue>) => {
+  const record = await issueStore.create(issue);
+  console.log("REDIREKT");
+  router.push(`/issue/${record.id}`);
+}
 
 </script>
