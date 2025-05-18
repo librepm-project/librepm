@@ -19,7 +19,6 @@ export const pageTitleMiddleware = (
   to.meta = reactive({
     title: title,
   }),
-  //@ts-expect-error
   window.document.title = `LibrePM | ${title}`;
   next();
 };

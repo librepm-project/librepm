@@ -10,10 +10,12 @@ type ProjectServiceInterface interface {
 	Create(project *ProjectModel) error
 	Update(project_id uuid.UUID, project *ProjectModel) error
 	Destroy(project_id uuid.UUID) error
+	ShowIssuePropertyById(project_id uuid.UUID) (*ProjectIssueProperty, error)
 }
 
 type ProjectService struct {
-	ProjectRepository ProjectRepositoryInterface
+	ProjectRepository              ProjectRepositoryInterface
+	ProjectIssuePropertyRepository ProjectIssuePropertyRepositoryInterface
 }
 
 func (s ProjectService) All() (*[]ProjectModel, error) {
@@ -35,4 +37,8 @@ func (s ProjectService) Update(project_id uuid.UUID, project *ProjectModel) erro
 
 func (s ProjectService) Destroy(project_id uuid.UUID) error {
 	return s.ProjectRepository.Destroy(project_id)
+}
+
+func (s ProjectService) ShowIssuePropertyById(project_id uuid.UUID) (*ProjectIssueProperty, error) {
+	return s.ProjectIssuePropertyRepository.FindByProjectId(project_id)
 }

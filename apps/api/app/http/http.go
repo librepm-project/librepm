@@ -24,6 +24,9 @@ func StartHttpServer(domain domain.Domain) {
 		ProjectController: ProjectController{
 			ProjectService: domain.ProjectService,
 		},
+		ProjectIssuePropertyController: ProjectIssuePropertyController{
+			ProjectService: domain.ProjectService,
+		},
 		IssueController: IssueController{
 			IssueService: domain.IssueService,
 		},

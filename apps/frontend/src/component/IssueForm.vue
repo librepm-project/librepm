@@ -3,25 +3,25 @@
         <v-form @submit.prevent="createIssue">
             <v-row>
                 <v-col cols="12">
-                    <v-text-field v-model="newIssue.summary" :label="t('issue.summary')" required></v-text-field>
+                    <v-text-field v-model="form.summary" :label="t('issue.summary')" required></v-text-field>
                 </v-col>
 
                 <v-col cols="12">
-                    <v-textarea v-model="newIssue.description" :label="t('issue.description')"></v-textarea>
+                    <v-textarea v-model="form.description" :label="t('issue.description')"></v-textarea>
                 </v-col>
 
                 <v-col cols="12" md="4">
-                    <v-select v-model="newIssue.project" :label="t('issue.project')" :items="projects" item-title="name"
+                    <v-select v-model="form.projectId" :label="t('issue.project')" :items="projectStore.index"
+                        item-title="name" item-value="id" required></v-select>
+                </v-col>
+
+                <v-col cols="12" md="4">
+                    <v-select v-model="form.trackerId" :label="t('issue.tracker')" :items="trackers" item-title="name"
                         item-value="id" required></v-select>
                 </v-col>
 
                 <v-col cols="12" md="4">
-                    <v-select v-model="newIssue.status" :label="t('issue.status')" :items="statuses" item-title="name"
-                        item-value="id" required></v-select>
-                </v-col>
-
-                <v-col cols="12" md="4">
-                    <v-select v-model="newIssue.tracker" :label="t('issue.tracker')" :items="trackers" item-title="name"
+                    <v-select v-model="form.statusId" :label="t('issue.status')" :items="statuses" item-title="name"
                         item-value="id" required></v-select>
                 </v-col>
             </v-row>
@@ -33,10 +33,8 @@
 
 <script lang="ts" setup>
 import { Issue } from '@/lib/interfaces/issue.interface';
-import { Project } from '@/lib/interfaces/project.interface';
-import { Status } from '@/lib/interfaces/status.interface';
-import { Tracker } from '@/lib/interfaces/tracker.interface';
-import { ref } from 'vue';
+import { useProjectStore } from '@/store/project.store';
+import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -46,40 +44,49 @@ const props = defineProps<{
     onSubmit: (item: Issue) => void
 }>();
 
-const projects = ref<Project[]>([
-    { id: '1', name: 'Projekt A', codeName: 'PROJ_A' },
-    { id: '2', name: 'Projekt B', codeName: 'PROJ_B' },
-]);
+const projectStore = useProjectStore();
 
-const statuses = ref<Status[]>([
-    { id: '10', name: 'Új', color: 'grey' },
-    { id: '20', name: 'Folyamatban', color: 'blue' },
-    { id: '30', name: 'Kész', color: 'green' },
-]);
+onMounted(async () => {
+    await projectStore.getProjects();
+});
 
-const trackers = ref<Tracker[]>([
-    { id: '100', name: 'Feladat', color: 'light-blue' },
-    { id: '200', name: 'Hiba', color: 'red' },
-    { id: '300', name: 'Javaslat', color: 'amber' },
-]);
-
-const newIssue = ref<Omit<Issue, 'id' | 'key'>>({
-    tracker: {} as Tracker,
+const form = ref<Issue>({
     summary: '',
     description: '',
-    status: {} as Status,
-    project: {} as Project,
+    trackerId: '',
+    statusId: '',
+    projectId: '',
+});
+
+const trackers = ref<any[]>([]);
+const statuses = ref<any[]>([]);
+
+watch(() => form.value.projectId, async (newProjectId, oldProjectId) => {
+    if (newProjectId === oldProjectId || typeof newProjectId !== 'string') {
+        return
+    }
+    await projectStore.getIssueProperty(newProjectId);
+    trackers.value = projectStore.currentIssueProperty?.trackers || [];
+});
+
+watch(() => form.value.trackerId, async (newTrackerId, oldTrackerId) => {
+    if (newTrackerId === oldTrackerId || typeof newTrackerId !== 'string' || !projectStore.currentIssueProperty) {
+        return;
+    }
+    const tracker = projectStore.currentIssueProperty.trackers.find(t => t.id === newTrackerId);
+    statuses.value = tracker?.statuses || [];
 });
 
 const createIssue = async () => {
-    props.onSubmit(newIssue.value as Issue);
+    props.onSubmit(form.value as Issue);
 
-    newIssue.value = {
-        tracker: {} as Tracker,
+    form.value = {
+        trackerId: '',
         summary: '',
         description: '',
-        status: {} as Status,
-        project: {} as Project,
+        statusId: '',
+        projectId: '',
     };
 };
+
 </script>

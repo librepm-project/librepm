@@ -5,18 +5,19 @@ import (
 )
 
 type Router struct {
-	ProjectController      ProjectControllerInterface
-	IssueController        IssueControllerInterface
-	FilterController       FilterControllerInterface
-	BoardController        BoardControllerInterface
-	DashboardController    DashboardControllerInterface
-	UserCurrentController  UserCurrentControllerInterface
-	UserSessionController  UserSessionControllerInterface
-	UserRegisterController UserRegisterControllerInterface
-	UserController         UserControllerInterface
-	TrackerController      TrackerControllerInterface
-	StatusController       StatusControllerInterface
-	TransitionController   TransitionControllerInterface
+	ProjectController              ProjectControllerInterface
+	IssueController                IssueControllerInterface
+	FilterController               FilterControllerInterface
+	BoardController                BoardControllerInterface
+	DashboardController            DashboardControllerInterface
+	UserCurrentController          UserCurrentControllerInterface
+	UserSessionController          UserSessionControllerInterface
+	UserRegisterController         UserRegisterControllerInterface
+	UserController                 UserControllerInterface
+	TrackerController              TrackerControllerInterface
+	StatusController               StatusControllerInterface
+	TransitionController           TransitionControllerInterface
+	ProjectIssuePropertyController ProjectIssuePropertyController
 }
 
 func (r Router) Init() *chi.Mux {
@@ -27,6 +28,7 @@ func (r Router) Init() *chi.Mux {
 	router.Get("/project/{project_id}", r.ProjectController.Show)
 	router.Put("/project/{project_id}", r.ProjectController.Update)
 	router.Delete("/project/{project_id}", r.ProjectController.Destroy)
+	router.Get("/project/{project_id}/issue-property", r.ProjectIssuePropertyController.Index)
 
 	router.Get("/issue", r.IssueController.Index)
 	router.Post("/issue", r.IssueController.Create)

@@ -50,6 +50,18 @@ paths:
       responses:
         '204':
           description: No content
+  /project/{propjectId}/issue-property:
+    get:
+      tags: ["project-issue-property"]
+      description: Get a project issue property
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ProjectIssueProperty
   /issue:
     get:
       tags: ["issue"]

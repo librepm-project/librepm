@@ -23,6 +23,7 @@ type Domain struct {
 
 	ProjectRepository              ProjectRepositoryInterface
 	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
+	ProjectIssuePropertyRepository ProjectIssuePropertyRepositoryInterface
 	IssueRepository                IssueRepositoryInterface
 	FilterRepository               FilterRepositoryInterface
 	BoardRepository                BoardRepositoryInterface
@@ -41,6 +42,7 @@ func NewDomain() Domain {
 
 	projectRepository := ProjectRepository{DB: DB}
 	projectTrackerStatusRepository := ProjectTrackerStatusRepository{DB: DB}
+	projectIssuePropertyRepository := ProjectIssuePropertyRepository{DB: DB}
 	issueRepository := IssueRepository{DB: DB}
 	filterRepository := FilterRepository{DB: DB}
 	boardRepository := BoardRepository{DB: DB}
@@ -56,7 +58,8 @@ func NewDomain() Domain {
 		DB: DB,
 
 		ProjectService: ProjectService{
-			ProjectRepository: projectRepository,
+			ProjectRepository:              projectRepository,
+			ProjectIssuePropertyRepository: projectIssuePropertyRepository,
 		},
 		IssueService: IssueService{
 			IssueRepository: issueRepository,
@@ -101,5 +104,6 @@ func NewDomain() Domain {
 		ProjectTrackerRepository:       projectTrackerRepository,
 		FilterConditionRepository:      filterConditionRepository,
 		ProjectTrackerStatusRepository: projectTrackerStatusRepository,
+		ProjectIssuePropertyRepository: projectIssuePropertyRepository,
 	}
 }

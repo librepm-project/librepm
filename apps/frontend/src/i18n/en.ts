@@ -12,6 +12,7 @@ export const en = {
     },
     title: {
         issueIndex: 'Issues',
+        issueCreate: "Create issue",
         adminProjectIndex: 'Projects',
         adminBoardIndex: 'Boards',
         dashboardShow: 'Dashboards',
