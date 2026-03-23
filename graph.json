@@ -1,0 +1,1591 @@
+{
+  "graph": {
+    "nodes": {
+      "libs/authentication": {
+        "name": "libs/authentication",
+        "type": "lib",
+        "data": {
+          "root": "libs/authentication",
+          "name": "libs/authentication",
+          "projectType": "library",
+          "targets": {
+            "test": {
+              "executor": "@nx-go/nx-go:test",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tests the Go project",
+                "help": {
+                  "command": "go help test",
+                  "example": {
+                    "options": {
+                      "cover": true
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx-go/nx-go:lint",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Lints the Go project",
+                "help": {
+                  "command": "go help fmt",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "tidy": {
+              "executor": "@nx-go/nx-go:tidy",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tidies the Go project dependencies",
+                "help": {
+                  "command": "go help mod",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "generate": {
+              "executor": "@nx-go/nx-go:generate",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Generates Go source code files",
+                "help": {
+                  "command": "go help generate",
+                  "example": {
+                    "options": {
+                      "args": [
+                        "./..."
+                      ]
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/authentication",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      },
+      "libs/password-utils": {
+        "name": "libs/password-utils",
+        "type": "lib",
+        "data": {
+          "root": "libs/password_utils",
+          "name": "libs/password-utils",
+          "projectType": "library",
+          "targets": {
+            "test": {
+              "executor": "@nx-go/nx-go:test",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tests the Go project",
+                "help": {
+                  "command": "go help test",
+                  "example": {
+                    "options": {
+                      "cover": true
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx-go/nx-go:lint",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Lints the Go project",
+                "help": {
+                  "command": "go help fmt",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "tidy": {
+              "executor": "@nx-go/nx-go:tidy",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tidies the Go project dependencies",
+                "help": {
+                  "command": "go help mod",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "generate": {
+              "executor": "@nx-go/nx-go:generate",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Generates Go source code files",
+                "help": {
+                  "command": "go help generate",
+                  "example": {
+                    "options": {
+                      "args": [
+                        "./..."
+                      ]
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/password_utils",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      },
+      "frontend-e2e": {
+        "name": "frontend-e2e",
+        "type": "e2e",
+        "data": {
+          "root": "apps/frontend-e2e",
+          "targets": {
+            "lint": {
+              "cache": true,
+              "options": {
+                "cwd": "apps/frontend-e2e",
+                "command": "eslint ."
+              },
+              "inputs": [
+                "default",
+                "^default",
+                "{workspaceRoot}/eslint.config.js",
+                "{workspaceRoot}/apps/frontend-e2e/eslint.config.js",
+                "{workspaceRoot}/tools/eslint-rules/**/*",
+                {
+                  "externalDependencies": [
+                    "eslint"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "metadata": {
+                "technologies": [
+                  "eslint"
+                ],
+                "description": "Runs ESLint on project",
+                "help": {
+                  "command": "npx eslint --help",
+                  "example": {
+                    "options": {
+                      "max-warnings": 0
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "e2e": {
+              "options": {
+                "cwd": "apps/frontend-e2e",
+                "env": {
+                  "TS_NODE_COMPILER_OPTIONS": "{\"customConditions\":null}"
+                },
+                "command": "cypress run"
+              },
+              "cache": true,
+              "inputs": [
+                "default",
+                "^production",
+                {
+                  "externalDependencies": [
+                    "cypress"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{workspaceRoot}/dist/cypress/apps/frontend-e2e/videos",
+                "{workspaceRoot}/dist/cypress/apps/frontend-e2e/screenshots"
+              ],
+              "metadata": {
+                "technologies": [
+                  "cypress"
+                ],
+                "description": "Runs Cypress Tests",
+                "help": {
+                  "command": "npx cypress run --help",
+                  "example": {
+                    "args": [
+                      "--dev",
+                      "--headed"
+                    ]
+                  }
+                }
+              },
+              "dependsOn": [
+                {
+                  "projects": [
+                    "frontend"
+                  ],
+                  "target": "serve"
+                }
+              ],
+              "configurations": {
+                "production": {
+                  "command": "cypress run --env webServerCommand=\"npx nx run frontend:preview\""
+                }
+              },
+              "executor": "nx:run-commands",
+              "parallelism": true
+            },
+            "e2e-ci--src/e2e/app.cy.ts": {
+              "outputs": [
+                "{workspaceRoot}/dist/cypress/apps/frontend-e2e/videos/src-e2e-app-cy-ts",
+                "{workspaceRoot}/dist/cypress/apps/frontend-e2e/screenshots/src-e2e-app-cy-ts"
+              ],
+              "inputs": [
+                "default",
+                "^production",
+                {
+                  "externalDependencies": [
+                    "cypress"
+                  ]
+                }
+              ],
+              "cache": true,
+              "options": {
+                "cwd": "apps/frontend-e2e",
+                "env": {
+                  "TS_NODE_COMPILER_OPTIONS": "{\"customConditions\":null}"
+                },
+                "command": "cypress run --env webServerCommand=\"npx nx run frontend:preview\" --spec src/e2e/app.cy.ts --config=\"{\\\"baseUrl\\\":\\\"http://localhost:4300\\\",\\\"e2e\\\":{\\\"videosFolder\\\":\\\"../../dist/cypress/apps/frontend-e2e/videos/src-e2e-app-cy-ts\\\",\\\"screenshotsFolder\\\":\\\"../../dist/cypress/apps/frontend-e2e/screenshots/src-e2e-app-cy-ts\\\"}}\""
+              },
+              "metadata": {
+                "technologies": [
+                  "cypress"
+                ],
+                "description": "Runs Cypress Tests in src/e2e/app.cy.ts in CI",
+                "help": {
+                  "command": "npx cypress run --help",
+                  "example": {
+                    "args": [
+                      "--dev",
+                      "--headed"
+                    ]
+                  }
+                }
+              },
+              "dependsOn": [
+                {
+                  "target": "preview",
+                  "projects": [
+                    "frontend"
+                  ]
+                }
+              ],
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "e2e-ci": {
+              "executor": "nx:noop",
+              "cache": true,
+              "inputs": [
+                "default",
+                "^production",
+                {
+                  "externalDependencies": [
+                    "cypress"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{workspaceRoot}/dist/cypress/apps/frontend-e2e/videos",
+                "{workspaceRoot}/dist/cypress/apps/frontend-e2e/screenshots"
+              ],
+              "dependsOn": [
+                {
+                  "target": "e2e-ci--src/e2e/app.cy.ts",
+                  "projects": "self",
+                  "params": "forward",
+                  "options": "forward"
+                }
+              ],
+              "metadata": {
+                "technologies": [
+                  "cypress"
+                ],
+                "description": "Runs Cypress Tests in CI",
+                "nonAtomizedTarget": "e2e",
+                "help": {
+                  "command": "npx cypress run --help",
+                  "example": {
+                    "args": [
+                      "--dev",
+                      "--headed"
+                    ]
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "open-cypress": {
+              "options": {
+                "cwd": "apps/frontend-e2e",
+                "env": {
+                  "TS_NODE_COMPILER_OPTIONS": "{\"customConditions\":null}"
+                },
+                "command": "cypress open"
+              },
+              "metadata": {
+                "technologies": [
+                  "cypress"
+                ],
+                "description": "Opens Cypress",
+                "help": {
+                  "command": "npx cypress open --help",
+                  "example": {
+                    "args": [
+                      "--dev",
+                      "--e2e"
+                    ]
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "projectType": "application",
+          "metadata": {
+            "targetGroups": {
+              "E2E (CI)": [
+                "e2e-ci--src/e2e/app.cy.ts",
+                "e2e-ci"
+              ]
+            }
+          },
+          "name": "frontend-e2e",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/frontend-e2e/src",
+          "tags": [],
+          "implicitDependencies": [
+            "frontend"
+          ]
+        }
+      },
+      "libs/mysql-utils": {
+        "name": "libs/mysql-utils",
+        "type": "lib",
+        "data": {
+          "root": "libs/mysql_utils",
+          "name": "libs/mysql-utils",
+          "projectType": "library",
+          "targets": {
+            "test": {
+              "executor": "@nx-go/nx-go:test",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tests the Go project",
+                "help": {
+                  "command": "go help test",
+                  "example": {
+                    "options": {
+                      "cover": true
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx-go/nx-go:lint",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Lints the Go project",
+                "help": {
+                  "command": "go help fmt",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "tidy": {
+              "executor": "@nx-go/nx-go:tidy",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tidies the Go project dependencies",
+                "help": {
+                  "command": "go help mod",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "generate": {
+              "executor": "@nx-go/nx-go:generate",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Generates Go source code files",
+                "help": {
+                  "command": "go help generate",
+                  "example": {
+                    "options": {
+                      "args": [
+                        "./..."
+                      ]
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/mysql_utils",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      },
+      "libs/http-utils": {
+        "name": "libs/http-utils",
+        "type": "lib",
+        "data": {
+          "root": "libs/http_utils",
+          "name": "libs/http-utils",
+          "projectType": "library",
+          "targets": {
+            "test": {
+              "executor": "@nx-go/nx-go:test",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tests the Go project",
+                "help": {
+                  "command": "go help test",
+                  "example": {
+                    "options": {
+                      "cover": true
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx-go/nx-go:lint",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Lints the Go project",
+                "help": {
+                  "command": "go help fmt",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "tidy": {
+              "executor": "@nx-go/nx-go:tidy",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tidies the Go project dependencies",
+                "help": {
+                  "command": "go help mod",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "generate": {
+              "executor": "@nx-go/nx-go:generate",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Generates Go source code files",
+                "help": {
+                  "command": "go help generate",
+                  "example": {
+                    "options": {
+                      "args": [
+                        "./..."
+                      ]
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/http_utils",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      },
+      "libs/jwt-utils": {
+        "name": "libs/jwt-utils",
+        "type": "lib",
+        "data": {
+          "root": "libs/jwt_utils",
+          "name": "libs/jwt-utils",
+          "projectType": "library",
+          "targets": {
+            "test": {
+              "executor": "@nx-go/nx-go:test",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tests the Go project",
+                "help": {
+                  "command": "go help test",
+                  "example": {
+                    "options": {
+                      "cover": true
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx-go/nx-go:lint",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Lints the Go project",
+                "help": {
+                  "command": "go help fmt",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "tidy": {
+              "executor": "@nx-go/nx-go:tidy",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tidies the Go project dependencies",
+                "help": {
+                  "command": "go help mod",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "generate": {
+              "executor": "@nx-go/nx-go:generate",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Generates Go source code files",
+                "help": {
+                  "command": "go help generate",
+                  "example": {
+                    "options": {
+                      "args": [
+                        "./..."
+                      ]
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/jwt_utils",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      },
+      "frontend": {
+        "name": "frontend",
+        "type": "app",
+        "data": {
+          "root": "apps/frontend",
+          "targets": {
+            "lint": {
+              "cache": true,
+              "options": {
+                "cwd": "apps/frontend",
+                "command": "eslint ."
+              },
+              "inputs": [
+                "default",
+                "^default",
+                "{workspaceRoot}/eslint.config.js",
+                "{workspaceRoot}/apps/frontend/eslint.config.js",
+                "{workspaceRoot}/tools/eslint-rules/**/*",
+                {
+                  "externalDependencies": [
+                    "eslint"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "metadata": {
+                "technologies": [
+                  "eslint"
+                ],
+                "description": "Runs ESLint on project",
+                "help": {
+                  "command": "npx eslint --help",
+                  "example": {
+                    "options": {
+                      "max-warnings": 0
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "build": {
+              "options": {
+                "cwd": "apps/frontend",
+                "command": "vite build"
+              },
+              "cache": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production",
+                {
+                  "externalDependencies": [
+                    "vite"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{workspaceRoot}/dist/apps/frontend"
+              ],
+              "metadata": {
+                "technologies": [
+                  "vite"
+                ],
+                "description": "Run Vite build",
+                "help": {
+                  "command": "npx vite build --help",
+                  "example": {
+                    "options": {
+                      "sourcemap": true,
+                      "manifest": "manifest.json"
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "serve": {
+              "continuous": true,
+              "options": {
+                "cwd": "apps/frontend",
+                "command": "vite"
+              },
+              "metadata": {
+                "technologies": [
+                  "vite"
+                ],
+                "description": "Starts Vite dev server",
+                "help": {
+                  "command": "npx vite --help",
+                  "example": {
+                    "options": {
+                      "port": 3000
+                    }
+                  }
+                },
+                "deprecated": "Use devTargetName instead. This option will be removed in Nx 22."
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "dev": {
+              "continuous": true,
+              "options": {
+                "cwd": "apps/frontend",
+                "command": "vite"
+              },
+              "metadata": {
+                "technologies": [
+                  "vite"
+                ],
+                "description": "Starts Vite dev server",
+                "help": {
+                  "command": "npx vite --help",
+                  "example": {
+                    "options": {
+                      "port": 3000
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "preview": {
+              "continuous": true,
+              "dependsOn": [
+                "build"
+              ],
+              "options": {
+                "cwd": "apps/frontend",
+                "command": "vite preview"
+              },
+              "metadata": {
+                "technologies": [
+                  "vite"
+                ],
+                "description": "Locally preview Vite production build",
+                "help": {
+                  "command": "npx vite preview --help",
+                  "example": {
+                    "options": {
+                      "port": 3000
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "serve-static": {
+              "continuous": true,
+              "executor": "@nx/web:file-server",
+              "options": {
+                "buildTarget": "build",
+                "spa": true
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "typecheck": {
+              "cache": true,
+              "inputs": [
+                "production",
+                "^production",
+                {
+                  "externalDependencies": [
+                    "vue-tsc",
+                    "typescript"
+                  ]
+                }
+              ],
+              "options": {
+                "cwd": "apps/frontend",
+                "command": "vue-tsc --noEmit -p tsconfig.app.json"
+              },
+              "metadata": {
+                "description": "Runs type-checking for the project.",
+                "technologies": [
+                  "typescript",
+                  "vue"
+                ],
+                "help": {
+                  "command": "npx vue-tsc -p tsconfig.app.json --help",
+                  "example": {
+                    "options": {
+                      "noEmit": true
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "build-deps": {
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "options": {},
+              "parallelism": true,
+              "executor": "nx:noop"
+            },
+            "watch-deps": {
+              "continuous": true,
+              "dependsOn": [
+                "build-deps"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npx nx watch --projects frontend --includeDependentProjects -- npx nx build-deps frontend"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "projectType": "application",
+          "metadata": {},
+          "name": "frontend",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/frontend/src",
+          "implicitDependencies": [],
+          "tags": []
+        }
+      },
+      "auth": {
+        "name": "auth",
+        "type": "app",
+        "data": {
+          "root": "apps/auth",
+          "name": "auth",
+          "projectType": "application",
+          "targets": {
+            "build": {
+              "executor": "@nx-go/nx-go:build",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{workspaceRoot}/dist/{projectRoot}*"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Builds the Go application",
+                "help": {
+                  "command": "go help build",
+                  "example": {
+                    "options": {
+                      "main": "main.go"
+                    }
+                  }
+                }
+              },
+              "options": {
+                "main": "apps/auth/main.go"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "air -c .air.toml",
+                "cwd": "apps/auth"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "serve:air": {
+              "executor": "@nx-go/nx-go:serve-air",
+              "continuous": true,
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Runs the Go application with Air live reload",
+                "help": {
+                  "command": "air -h",
+                  "example": {
+                    "options": {
+                      "config": ".air.toml"
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "@nx-go/nx-go:test",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tests the Go project",
+                "help": {
+                  "command": "go help test",
+                  "example": {
+                    "options": {
+                      "cover": true
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx-go/nx-go:lint",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Lints the Go project",
+                "help": {
+                  "command": "go help fmt",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "tidy": {
+              "executor": "@nx-go/nx-go:tidy",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tidies the Go project dependencies",
+                "help": {
+                  "command": "go help mod",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "generate": {
+              "executor": "@nx-go/nx-go:generate",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Generates Go source code files",
+                "help": {
+                  "command": "go help generate",
+                  "example": {
+                    "options": {
+                      "args": [
+                        "./..."
+                      ]
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/auth",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      },
+      "api": {
+        "name": "api",
+        "type": "app",
+        "data": {
+          "root": "apps/api",
+          "name": "api",
+          "projectType": "application",
+          "targets": {
+            "build": {
+              "executor": "@nx-go/nx-go:build",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{workspaceRoot}/dist/{projectRoot}*"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Builds the Go application",
+                "help": {
+                  "command": "go help build",
+                  "example": {
+                    "options": {
+                      "main": "main.go"
+                    }
+                  }
+                }
+              },
+              "options": {
+                "main": "apps/api/main.go"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "air",
+                "cwd": "apps/api"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "serve:air": {
+              "executor": "@nx-go/nx-go:serve-air",
+              "continuous": true,
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Runs the Go application with Air live reload",
+                "help": {
+                  "command": "air -h",
+                  "example": {
+                    "options": {
+                      "config": ".air.toml"
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "@nx-go/nx-go:test",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tests the Go project",
+                "help": {
+                  "command": "go help test",
+                  "example": {
+                    "options": {
+                      "cover": true
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx-go/nx-go:lint",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Lints the Go project",
+                "help": {
+                  "command": "go help fmt",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "tidy": {
+              "executor": "@nx-go/nx-go:tidy",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "outputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Tidies the Go project dependencies",
+                "help": {
+                  "command": "go help mod",
+                  "example": {}
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            },
+            "generate": {
+              "executor": "@nx-go/nx-go:generate",
+              "cache": true,
+              "inputs": [
+                "{projectRoot}/go.mod",
+                "{projectRoot}/go.sum",
+                "{projectRoot}/**/*.go",
+                "{workspaceRoot}/go.mod",
+                "{workspaceRoot}/go.sum",
+                "{workspaceRoot}/go.work",
+                "{workspaceRoot}/go.work.sum"
+              ],
+              "metadata": {
+                "technologies": [
+                  "go"
+                ],
+                "description": "Generates Go source code files",
+                "help": {
+                  "command": "go help generate",
+                  "example": {
+                    "options": {
+                      "args": [
+                        "./..."
+                      ]
+                    }
+                  }
+                }
+              },
+              "configurations": {},
+              "options": {},
+              "parallelism": true
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/api",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      }
+    },
+    "dependencies": {
+      "libs/authentication": [],
+      "libs/password-utils": [],
+      "frontend-e2e": [
+        {
+          "source": "frontend-e2e",
+          "target": "frontend",
+          "type": "implicit"
+        }
+      ],
+      "libs/mysql-utils": [],
+      "libs/http-utils": [
+        {
+          "source": "libs/http-utils",
+          "target": "libs/jwt-utils",
+          "type": "static"
+        }
+      ],
+      "libs/jwt-utils": [],
+      "frontend": [],
+      "auth": [
+        {
+          "source": "auth",
+          "target": "libs/http-utils",
+          "type": "static"
+        }
+      ],
+      "api": [
+        {
+          "source": "api",
+          "target": "libs/mysql-utils",
+          "type": "static"
+        },
+        {
+          "source": "api",
+          "target": "libs/password-utils",
+          "type": "static"
+        },
+        {
+          "source": "api",
+          "target": "libs/jwt-utils",
+          "type": "static"
+        },
+        {
+          "source": "api",
+          "target": "libs/http-utils",
+          "type": "static"
+        }
+      ]
+    }
+  }
+}
