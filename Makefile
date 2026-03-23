@@ -5,9 +5,9 @@ dev:
 	docker compose --profile dev up
 
 cli:
-	docker compose --profile cli up -d && docker exec -it cli npx
+	docker compose --profile cli up -d && docker exec -it librepm_cli npx
 mysqlcli:
-	docker compose exec -it database mariadb -uroot -prootpass api
+	docker compose exec -it database librepm_mariadb -uroot -prootpass api
 open:
 	@URL="http://localhost:8081"; \
 	if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \
@@ -18,6 +18,6 @@ open:
 		echo "Unsupported OS. Please open the URL manually: $$URL"; \
 	fi
 seed:
-	docker compose exec cli go run apps/api seed /app/apps/api/seed.yaml
+	docker compose --profile cli exec librepm_cli go run apps/api seed /app/apps/api/seed.yaml
 purge:
-	docker compose exec cli go run apps/api purge
+	docker compose exec librepm_cli go run apps/api purge

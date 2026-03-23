@@ -4,7 +4,7 @@ services:
     profiles:
       - dev
     image: traefik:v2.10
-    container_name: traefik
+    container_name: librepm_traefik
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -25,7 +25,7 @@ services:
       context: .
       dockerfile: Dockerfile.development
     entrypoint: npm install
-    container_name: npm_install
+    container_name: librepm_npm_install
     volumes:
       - .:/app
 
@@ -36,7 +36,7 @@ services:
       context: .
       dockerfile: Dockerfile.development
     entrypoint: ./go.mod.install.sh
-    container_name: go_mod_install
+    container_name: librepm_go_mod_install
     volumes:
       - .:/app
 
@@ -48,7 +48,7 @@ services:
       context: .
       dockerfile: Dockerfile.development
     entrypoint: tail -f /dev/null
-    container_name: cli
+    container_name: librepm_cli
     environment:
       DB_HOST: database
       DB_PORT: 3306
@@ -67,7 +67,7 @@ services:
       context: .
       dockerfile: Dockerfile.development
     entrypoint: npx nx run api:serve
-    container_name: api
+    container_name: librepm_api
     environment:
       DB_HOST: database
       DB_PORT: 3306
@@ -98,7 +98,7 @@ services:
       context: .
       dockerfile: Dockerfile.development
     entrypoint: npx nx run auth:serve
-    container_name: auth
+    container_name: librepm_auth
     environment:
       DB_HOST: database
       DB_PORT: 3306
@@ -128,7 +128,7 @@ services:
       context: .
       dockerfile: Dockerfile.development
     entrypoint: npx nx run frontend:serve
-    container_name: frontend
+    container_name: librepm_frontend
     labels:
       - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
       - "traefik.http.services.frontend.loadbalancer.server.port=4200"
@@ -146,7 +146,7 @@ services:
     profiles:
       - dev
     image: mariadb:11.5.2
-    container_name: database
+    container_name: librepm_database
     environment:
       MYSQL_DATABASE: api
       MYSQL_USER: api
