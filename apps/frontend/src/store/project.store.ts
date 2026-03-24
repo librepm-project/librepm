@@ -3,6 +3,7 @@ import { Project } from '@/lib/interfaces/project.interface';
 import projectApi from '@/api/project.api';
 import projectIssuePropertyApi from '@/api/projectIssueProperty.api';
 import { ProjectIssueProperty } from "@/lib/interfaces/projectIssueProperty.interface";
+import { createCrudActions } from './utils/crudMixin';
 
 interface ProjectStore {
   current: Project | null;
@@ -19,32 +20,27 @@ export const useProjectStore = defineStore('project', {
     };
   },
   actions: {
+    ...createCrudActions<Project>(projectApi),
+
+    // Alias methods for backward compatibility
     async getProject(projectId: string) {
-      this.current = await projectApi.show(projectId);
+      return this.getCurrentItem(projectId);
     },
 
     async getProjects() {
-      this.index = await projectApi.index();
+      return this.getAllItems();
     },
 
     async postProject(project: Omit<Project, 'id'>) {
-      const newProject = await projectApi.create(project);
-      this.index.push(newProject);
-      return newProject;
+      return this.createItem(project);
     },
 
     async putProject(projectId: string, project: Omit<Project, 'id'>) {
-      const updatedProject = await projectApi.update(projectId, project);
-      const index = this.index.findIndex(p => p.id === projectId);
-      if (index !== -1) {
-        this.index[index] = updatedProject;
-      }
-      return updatedProject;
+      return this.updateItem(projectId, project);
     },
 
     async deleteProject(projectId: string) {
-      await projectApi.destroy(projectId);
-      this.index = this.index.filter(p => p.id !== projectId);
+      return this.deleteItem(projectId);
     },
 
     async getIssueProperty(projectId: string): Promise<void> {

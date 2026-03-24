@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Tracker } from '@/lib/interfaces/tracker.interface';
 import trackerApi from '@/api/tracker.api';
-
+import { createCrudActions } from './utils/crudMixin';
 
 interface TrackerStore {
   current: Tracker | null;
@@ -16,32 +16,27 @@ export const useTrackerStore = defineStore('tracker', {
     };
   },
   actions: {
+    ...createCrudActions<Tracker>(trackerApi),
+
+    // Alias methods for backward compatibility
     async getTracker(trackerId: string) {
-      this.current = await trackerApi.show(trackerId);
+      return this.getCurrentItem(trackerId);
     },
 
     async getTrackers() {
-      this.index = await trackerApi.index()
+      return this.getAllItems();
     },
 
     async postTracker(tracker: Omit<Tracker, 'id'>) {
-      const newTracker = await trackerApi.create(tracker);
-      this.index.push(newTracker);
-      return newTracker;
+      return this.createItem(tracker);
     },
 
     async putTracker(trackerId: string, tracker: Omit<Tracker, 'id'>) {
-      const updatedTracker = await trackerApi.update(trackerId, tracker);
-      const index = this.index.findIndex(t => t.id === trackerId);
-      if (index !== -1) {
-        this.index[index] = updatedTracker;
-      }
-      return updatedTracker;
+      return this.updateItem(trackerId, tracker);
     },
 
     async deleteTracker(trackerId: string) {
-      await trackerApi.destroy(trackerId);
-      this.index = this.index.filter(t => t.id !== trackerId);
+      return this.deleteItem(trackerId);
     },
   },
 });

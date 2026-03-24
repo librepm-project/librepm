@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { User } from '@/lib/interfaces/user.interface';
 import userApi from '@/api/user.api';
+import { createCrudActions } from './utils/crudMixin';
 
 interface UserStore {
   current: User | null;
@@ -15,32 +16,27 @@ export const useUserStore = defineStore('user', {
     };
   },
   actions: {
+    ...createCrudActions<User>(userApi),
+
+    // Alias methods for backward compatibility
     async getUser(userId: string) {
-      this.current = await userApi.show(userId);
+      return this.getCurrentItem(userId);
     },
 
     async getUsers() {
-      this.index = await userApi.index();
+      return this.getAllItems();
     },
 
     async postUser(user: Omit<User, 'id'>) {
-      const newUser = await userApi.create(user);
-      this.index.push(newUser);
-      return newUser;
+      return this.createItem(user);
     },
 
     async putUser(userId: string, user: Omit<User, 'id'>) {
-      const updatedUser = await userApi.update(userId, user);
-      const index = this.index.findIndex(u => u.id === userId);
-      if (index !== -1) {
-        this.index[index] = updatedUser;
-      }
-      return updatedUser;
+      return this.updateItem(userId, user);
     },
 
     async deleteUser(userId: string) {
-      await userApi.destroy(userId);
-      this.index = this.index.filter(u => u.id !== userId);
+      return this.deleteItem(userId);
     },
   },
 });

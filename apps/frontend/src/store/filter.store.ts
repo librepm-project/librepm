@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { Filter } from '@/lib/interfaces/filter.interface';
 import filterApi from '@/api/filter.api';
+import { createCrudActions } from './utils/crudMixin';
 
 interface FilterStore {
   current: Filter | null;
@@ -15,32 +16,27 @@ export const useFilterStore = defineStore('filter', {
     };
   },
   actions: {
+    ...createCrudActions<Filter>(filterApi),
+
+    // Alias methods for backward compatibility
     async getFilter(filterId: string) {
-      this.current = await filterApi.show(filterId);
+      return this.getCurrentItem(filterId);
     },
 
     async getFilters() {
-      this.index = await filterApi.index();
+      return this.getAllItems();
     },
 
     async postFilter(filter: Omit<Filter, 'id'>) {
-      const newFilter = await filterApi.create(filter);
-      this.index.push(newFilter);
-      return newFilter;
+      return this.createItem(filter);
     },
 
     async putFilter(filterId: string, filter: Omit<Filter, 'id'>) {
-      const updatedFilter = await filterApi.update(filterId, filter);
-      const index = this.index.findIndex(f => f.id === filterId);
-      if (index !== -1) {
-        this.index[index] = updatedFilter;
-      }
-      return updatedFilter;
+      return this.updateItem(filterId, filter);
     },
 
     async deleteFilter(filterId: string) {
-      await filterApi.destroy(filterId);
-      this.index = this.index.filter(f => f.id !== filterId);
+      return this.deleteItem(filterId);
     },
   },
 });

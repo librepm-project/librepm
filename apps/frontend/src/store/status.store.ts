@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Status } from '@/lib/interfaces/status.interface';
 import statusApi from '@/api/status.api';
-
+import { createCrudActions } from './utils/crudMixin';
 
 interface StatusStore {
   current: Status | null;
@@ -16,32 +16,27 @@ export const useStatusStore = defineStore('status', {
     };
   },
   actions: {
+    ...createCrudActions<Status>(statusApi),
+
+    // Alias methods for backward compatibility
     async getStatus(statusId: string) {
-      this.current = await statusApi.show(statusId);
+      return this.getCurrentItem(statusId);
     },
 
     async getStatuses() {
-      this.index = await statusApi.index()
+      return this.getAllItems();
     },
 
     async postStatus(status: Omit<Status, 'id'>) {
-      const newStatus = await statusApi.create(status);
-      this.index.push(newStatus);
-      return newStatus;
+      return this.createItem(status);
     },
 
     async putStatus(statusId: string, status: Omit<Status, 'id'>) {
-      const updatedStatus = await statusApi.update(statusId, status);
-      const index = this.index.findIndex(s => s.id === statusId);
-      if (index !== -1) {
-        this.index[index] = updatedStatus;
-      }
-      return updatedStatus;
+      return this.updateItem(statusId, status);
     },
 
     async deleteStatus(statusId: string) {
-      await statusApi.destroy(statusId);
-      this.index = this.index.filter(s => s.id !== statusId);
+      return this.deleteItem(statusId);
     },
   },
 });
