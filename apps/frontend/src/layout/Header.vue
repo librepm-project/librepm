@@ -1,32 +1,67 @@
 <template>
-  <v-app-bar flat>
-    <v-container class="mx-auto d-flex align-center justify-center">
-      <v-img :src="logo" alt="LibrePM" height="70" />
+  <v-app-bar elevation="4" color="primary" class="px-6">
+    <v-container class="d-flex align-center justify-space-between" fluid>
+      <div class="d-flex align-center gap-4">
+        <v-img :src="logo" alt="LibrePM" height="50" width="50" contain />
+        <span class="text-h6 font-weight-bold text-white">LibrePM</span>
+      </div>
 
-      <template v-for="link in links" :key="link.key">
-        <v-btn :prepend-icon="link.icon" :text="link.text" :to="link.to" variant="text" v-if="!link.sublinks"></v-btn>
-        <template v-else>
-          <v-menu open-on-hover>
-            <template v-slot:activator="{ props }">
-              <v-btn :prepend-icon="link.icon" v-bind="props" variant="text">{{ link.text }}</v-btn>
-            </template>
+      <v-spacer />
 
-            <v-list>
-              <v-list-item v-for="(sublink, index) in link.sublinks" :key="index" :value="index" :to="sublink.to">
+      <nav class="d-none d-md-flex align-center gap-2">
+        <template v-for="link in links" :key="link.key">
+          <v-btn
+            v-if="!link.sublinks"
+            :prepend-icon="link.icon"
+            :text="link.text"
+            :to="link.to"
+            variant="text"
+            class="text-white"
+          />
+          <template v-else>
+            <v-menu open-on-hover location="bottom">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  :prepend-icon="link.icon"
+                  v-bind="props"
+                  variant="text"
+                  class="text-white"
+                >
+                  {{ link.text }}
+                </v-btn>
+              </template>
 
-                <v-list-item-title><v-icon start size="small" class="me-2">{{ sublink.icon }}</v-icon>{{ sublink.text
-                  }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+              <v-list>
+                <v-list-item
+                  v-for="(sublink, index) in link.sublinks"
+                  :key="index"
+                  :to="sublink.to"
+                  class="rounded-lg ma-1"
+                >
+                  <template v-slot:prepend>
+                    <v-icon size="small">{{ sublink.icon }}</v-icon>
+                  </template>
+                  <v-list-item-title class="font-weight-medium">
+                    {{ sublink.text }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
         </template>
-      </template>
-      <v-spacer></v-spacer>
+      </nav>
 
-      <v-responsive max-width="160">
-        <v-text-field :label="t('global.search')" rounded="lg" variant="solo-filled" flat hide-details
-          single-line></v-text-field>
-      </v-responsive>
+      <v-spacer />
+
+      <v-text-field
+        :label="t('global.search')"
+        density="compact"
+        variant="solo-filled"
+        single-line
+        hide-details
+        prepend-inner-icon="mdi-magnify"
+        class="search-field"
+      />
     </v-container>
   </v-app-bar>
 </template>
@@ -102,7 +137,7 @@ const links: Link[] = [
       },
       {
         text: 'Users',
-        key: 'userss',
+        key: 'users',
         to: '/admin/user',
         icon: 'mdi-account-multiple',
       },
@@ -116,3 +151,18 @@ const links: Link[] = [
   },
 ];
 </script>
+
+<style scoped>
+.search-field {
+  max-width: 300px;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+</style>
