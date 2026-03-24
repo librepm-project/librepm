@@ -10,14 +10,13 @@ export const adminProjectRouter: RouteRecordRaw[] = [
     component: AdminProjectIndexPage,
   },
   {
-    path: '/admin//project/{projectid}',
-    name: 'adminProjectShow',
-    component: AdminProjectShowPage,
-  },
-
-  {
-    path: '/admin//project/create',
+    path: '/admin/project/create',
     name: 'adminProjectCreate',
     component: AdminProjectCreatePage,
+  },
+  {
+    path: '/admin/project/:projectid',
+    name: 'adminProjectShow',
+    component: AdminProjectShowPage,
   },
 ];

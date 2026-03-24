@@ -13,7 +13,6 @@
 import GeneralRecordActions from '@/component/GeneralRecordActions.vue';
 import { User } from '@/lib/interfaces/user.interface';
 import { useI18n } from 'vue-i18n'
-GeneralRecordActions
 
 const { t } = useI18n();
 
@@ -25,7 +24,8 @@ defineProps<{
 
 const headers = [
   { key: 'email', title: t('user.email') },
-  { key: 'fullName', title: t('user.fullName') },
+  { key: 'firstName', title: t('user.firstName') },
+  { key: 'lastName', title: t('user.lastName') },
   { key: 'actions', title: '' },
 ]
 

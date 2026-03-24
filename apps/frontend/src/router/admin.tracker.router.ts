@@ -10,13 +10,13 @@ export const adminTrackerRouter: RouteRecordRaw[] = [
     component: AdminTrackerIndexPage,
   },
   {
-    path: '/admin/tracker/{trackerid}',
-    name: 'adminTrackerShow',
-    component: AdminTrackerShowPage,
-  },
-  {
     path: '/admin/tracker/create',
     name: 'adminTrackerCreate',
     component: AdminTrackerCreatePage,
+  },
+  {
+    path: '/admin/tracker/:trackerid',
+    name: 'adminTrackerShow',
+    component: AdminTrackerShowPage,
   },
 ];

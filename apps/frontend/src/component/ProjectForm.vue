@@ -13,16 +13,24 @@ import { requiredRule } from '@/lib/formRule';
 const props = defineProps({
     onSubmit: Function,
     submitButtonText: String,
+    project: Object as any,
 })
 
 const name = ref("");
 const codeName = ref("");
 const form = ref(null);
 
+onMounted(() => {
+    if (props.project) {
+        name.value = props.project.name || "";
+        codeName.value = props.project.codeName || "";
+    }
+})
+
 const submit = async () => {
     const { valid } = await form.value.validate();
     if (valid) {
-        props.onSubmit({ name, codeName });
+        props.onSubmit({ name: name.value, codeName: codeName.value });
     }
 };
 </script>

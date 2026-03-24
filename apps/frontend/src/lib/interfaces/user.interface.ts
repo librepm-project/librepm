@@ -14,8 +14,11 @@ export interface RegisterRequest {
 }
 
 export interface User {
-  id: string;
+  id?: string;
   email: string;
   firstName: string;
   lastName: string;
+  phone?: string;
+  language?: string;
+  country?: string;
 }

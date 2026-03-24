@@ -1,7 +1,7 @@
 <template>
   <v-data-table :items="items" :headers="headers">
     <template #item.color="{ item }">
-      <v-chip :color="item.color">{{ item.color }}</v-chip>
+      <v-chip :style="{ backgroundColor: item.color }">{{ item.name }}</v-chip>
     </template>
     <template #item.actions="{ item }">
       <general-record-actions :item="item" :onEdit="onEdit" :onDelete="onDelete" />

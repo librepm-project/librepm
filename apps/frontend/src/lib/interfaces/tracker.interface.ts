@@ -1,5 +1,5 @@
 export interface Tracker {
-    id: string;
+    id?: string;
     name: string;
     color: string;
 }

@@ -10,13 +10,13 @@ export const adminStatusRouter: RouteRecordRaw[] = [
     component: AdminStatusIndexPage,
   },
   {
-    path: '/admin/status/{statusid}',
-    name: 'adminStatusShow',
-    component: AdminStatusShowPage,
-  },
-  {
     path: '/admin/status/create',
     name: 'adminStatusCreate',
     component: AdminStatusCreatePage,
+  },
+  {
+    path: '/admin/status/:statusid',
+    name: 'adminStatusShow',
+    component: AdminStatusShowPage,
   },
 ];
