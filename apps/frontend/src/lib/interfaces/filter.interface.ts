@@ -1,13 +1,13 @@
 export interface FilterCondition {
-    id: string;
+    id?: string;
     field: string;
     op: string;
     value: string;
-};
+}
 
 export interface Filter {
-    id: string;
+    id?: string;
     name: string;
-    description: string;
-    conditions: FilterCondition[];
-};
+    description?: string;
+    conditions?: FilterCondition[];
+}

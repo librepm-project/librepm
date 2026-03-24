@@ -15,7 +15,7 @@ export const filterRouter: RouteRecordRaw[] = [
     component: FilterCreatePage,
   },
   {
-    path: '/filter/{issueid}',
+    path: '/filter/:issueid',
     name: 'filterShow',
     component: FilterShowPage,
   },
