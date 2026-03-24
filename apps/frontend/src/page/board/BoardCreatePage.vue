@@ -1,14 +1,21 @@
 <template>
   <div>
-    <board-form :onSubmit="boardStore.postBoard" submitButtonText="global.create" />
+    <board-form :onSubmit="create" submitButtonText="global.create" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useBoardStore } from '@/store/board.store';
-
 import BoardForm from '@/component/BoardForm.vue';
+import { Board } from '@/lib/interfaces/board.interface';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const boardStore = useBoardStore();
+
+const create = async (board: Partial<Board>) => {
+  await boardStore.create(board);
+  router.push('/admin/board');
+}
 
 </script>

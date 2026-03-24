@@ -1,5 +1,5 @@
 <template>
-  <board-table :items="boardStore.index" />
+  <board-table :items="boardStore.index" :onEdit="onEdit" :onDelete="onDelete" />
 </template>
 
 <script lang="ts" setup>
@@ -7,9 +7,25 @@ import { useBoardStore } from '@/store/board.store';
 import BoardTable from '@/component/BoardTable.vue';
 import { onMounted, onUnmounted } from 'vue';
 import { useLayoutStore } from '@/store/layout.store';
+import { useRouter } from 'vue-router';
+import { Board } from '@/lib/interfaces/board.interface';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
+const router = useRouter();
 const layoutStore = useLayoutStore();
 const boardStore = useBoardStore();
+
+const onEdit = (item: Board) => {
+  router.push(`/admin/board/${item.id}/edit`);
+}
+
+const onDelete = async (item: Board) => {
+  if (confirm(t('global.delete_confirm'))) {
+    await boardStore.remove(item.id);
+    await boardStore.getBoards();
+  }
+}
 
 onMounted(async () => {
   await boardStore.getBoards();

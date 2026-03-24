@@ -1,3 +1,4 @@
+import { en as baseEn } from 'vuetify/locale';
 
 export const en = {
     global: {
@@ -9,9 +10,8 @@ export const en = {
         public: 'Public',
         edit: 'Edit',
         delete: 'Delete',
-        delete_confirm: 'Are you sure you want to delete this item?',
         update: 'Update',
-        create: 'Create',
+        delete_confirm: 'Are you sure you want to delete this item?',
     },
     title: {
         issueIndex: 'Issues',
@@ -40,6 +40,13 @@ export const en = {
         key: 'Key',
         project: 'Project',
         tracker: 'Tracker',
+    },
+    board: {
+        columns: 'Columns',
+        add_column: 'Add Column',
+        column_label: 'Column Label',
+        column_statuses: 'Statuses',
+        no_columns_defined: 'No columns defined for this board.',
     },
     filter: {
         name: 'Name',
@@ -72,3 +79,6 @@ export const en = {
         minimLength: "Minimum length is %d"
     }
 }
+
+// Merge with Vuetify's English locale
+Object.assign(en, baseEn);
