@@ -26,6 +26,15 @@ export const useIssueStore = defineStore('issue', {
 
     async create(issue: Partial<Issue>) {
       return issueApi.create(issue);
+    },
+
+    async update(issueId: string, issue: Partial<Issue>) {
+      this.current = await issueApi.update(issueId, issue);
+    },
+
+    async remove(issueId: string) {
+      await issueApi.remove(issueId);
+      this.current = null;
     }
   },
 });

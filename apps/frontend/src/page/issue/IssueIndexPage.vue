@@ -1,6 +1,6 @@
 <template>
   <div>
-    <issue-table :items="issueStore.index" />
+    <issue-table :items="issueStore.index" :onEdit="onEdit" :onDelete="onDelete" />
   </div>
 </template>
 
@@ -9,9 +9,25 @@ import { useIssueStore } from '@/store/issue.store';
 import { useLayoutStore } from '@/store/layout.store';
 import IssueTable from '@/component/IssueTable.vue';
 import { onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { Issue } from '@/lib/interfaces/issue.interface';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
+const router = useRouter();
 const issueStore = useIssueStore();
 const layoutStore = useLayoutStore();
+
+const onEdit = (item: Issue) => {
+  router.push(`/issue/${item.id}/edit`);
+}
+
+const onDelete = async (item: Issue) => {
+  if (confirm(t('global.delete_confirm'))) {
+    await issueStore.remove(item.id);
+    await issueStore.getIssues();
+  }
+}
 
 onMounted(async () => {
   await issueStore.getIssues();

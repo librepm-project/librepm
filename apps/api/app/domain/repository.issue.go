@@ -57,7 +57,7 @@ func (r IssueRepository) Update(issue_id uuid.UUID, issue *IssueModel) error {
 }
 
 func (r IssueRepository) Destroy(issue_id uuid.UUID) error {
-	query := r.DB.Model(IssueModel{}).Delete(IssueModel{}, issue_id)
+	query := r.DB.Delete(&IssueModel{}, issue_id)
 	if query.Error != nil {
 		fmt.Println(query)
 	}

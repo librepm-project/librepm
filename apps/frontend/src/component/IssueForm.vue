@@ -41,17 +41,28 @@ const { t } = useI18n();
 
 const props = defineProps<{
     submitButtonText: string;
-    onSubmit: (item: onSubmit) => void
+    onSubmit: (item: Partial<Issue>) => void;
+    initialData?: Partial<Issue>;
 }>();
 
 const projectStore = useProjectStore();
 
 const initForm = () => ({
     description: '',
+    ...props.initialData
 })
 
 onMounted(async () => {
     await projectStore.getProjects();
+    if (props.initialData?.projectId) {
+        await projectStore.getIssueProperty(props.initialData.projectId);
+        trackers.value = projectStore.currentIssueProperty?.trackers || [];
+        
+        if (props.initialData?.trackerId) {
+            const tracker = trackers.value.find(t => t.id === props.initialData!.trackerId);
+            statuses.value = tracker?.statuses || [];
+        }
+    }
 });
 
 const form = ref<Partial<Issue>>(initForm());
@@ -65,8 +76,13 @@ watch(() => form.value.projectId, async (newProjectId, oldProjectId) => {
     }
     await projectStore.getIssueProperty(newProjectId);
     trackers.value = projectStore.currentIssueProperty?.trackers || [];
-    delete form.value.trackerId;
-    delete form.value.statusId;
+    
+    // Only reset if it's a real change by the user, not initial load
+    if (oldProjectId !== undefined) {
+        delete form.value.trackerId;
+        delete form.value.statusId;
+        statuses.value = [];
+    }
 });
 
 watch(() => form.value.trackerId, async (newTrackerId, oldTrackerId) => {
@@ -75,12 +91,18 @@ watch(() => form.value.trackerId, async (newTrackerId, oldTrackerId) => {
     }
     const tracker = projectStore.currentIssueProperty.trackers.find(t => t.id === newTrackerId);
     statuses.value = tracker?.statuses || [];
-    delete form.value.statusId;
+    
+    // Only reset if it's a real change by the user
+    if (oldTrackerId !== undefined) {
+        delete form.value.statusId;
+    }
 });
 
 const submit = async () => {
     props.onSubmit(form.value);
-    form.value = initForm();
+    if (!props.initialData) {
+        form.value = initForm();
+    }
 };
 
 </script>

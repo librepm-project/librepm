@@ -18,7 +18,7 @@ type IssueModel struct {
 	Description string     `gorm:"type:varchar(255)"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   *time.Time `sql:"index"`
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 
 	Project ProjectModel
 	Tracker TrackerModel

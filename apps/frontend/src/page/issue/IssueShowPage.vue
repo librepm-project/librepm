@@ -37,8 +37,9 @@
 
 <script lang="ts" setup>
 import { useIssueStore } from '@/store/issue.store';
-import { useRoute } from 'vue-router';
-import { onBeforeMount } from 'vue';
+import { useLayoutStore } from '@/store/layout.store';
+import { useRoute, useRouter } from 'vue-router';
+import { onBeforeMount, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import StatusChip from '@/component/StatusChip.vue';
 import TrackerChip from '@/component/TrackerChip.vue';
@@ -46,10 +47,40 @@ import TrackerChip from '@/component/TrackerChip.vue';
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 const issueStore = useIssueStore();
+const layoutStore = useLayoutStore();
 
 onBeforeMount(async () => {
   await issueStore.getIssue(route.params.issueId.toString());
   route.meta.title = `${ issueStore.current.key } - ${ issueStore.current.summary }`
+});
+
+const remove = async () => {
+  if (confirm(t('global.delete_confirm'))) {
+    await issueStore.remove(route.params.issueId.toString());
+    router.push('/issue');
+  }
+}
+
+onMounted(() => {
+  layoutStore.setActions([
+    {
+      text: 'global.edit',
+      to: `/issue/${route.params.issueId}/edit`,
+      color: 'primary',
+      icon: 'mdi-pencil'
+    },
+    {
+      text: 'global.delete',
+      onClick: remove,
+      color: 'error',
+      icon: 'mdi-delete'
+    },
+  ]);
+});
+
+onUnmounted(() => {
+  layoutStore.resetActions();
 });
 </script>

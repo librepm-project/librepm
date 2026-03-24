@@ -9,7 +9,8 @@ interface SidebarItem {
 
 interface ActionButton {
   text: string;
-  to: string;
+  to?: string;
+  onClick?: () => void;
   color: string;
   icon: string;  
 }

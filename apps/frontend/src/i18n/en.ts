@@ -9,6 +9,9 @@ export const en = {
         public: 'Public',
         edit: 'Edit',
         delete: 'Delete',
+        delete_confirm: 'Are you sure you want to delete this item?',
+        update: 'Update',
+        create: 'Create',
     },
     title: {
         issueIndex: 'Issues',

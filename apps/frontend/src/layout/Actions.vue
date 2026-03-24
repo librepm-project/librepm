@@ -1,7 +1,7 @@
 <template>
     <v-btn-group v-if="layoutStore.actionButtons.length > 0">
         <v-btn v-for="button in layoutStore.actionButtons" :key="button.text" :text="t(button.text)" :to="button.to"
-            :color="button.color" :prepend-icon="button.icon" class="ml-2" />
+            :color="button.color" :prepend-icon="button.icon" class="ml-2" @click="button.onClick ? button.onClick() : null" />
     </v-btn-group>
 </template>
 
