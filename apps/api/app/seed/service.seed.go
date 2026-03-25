@@ -32,6 +32,7 @@ type SeedService struct {
 	TrackerRepository                  domain.TrackerRepositoryInterface
 	TransitionRepository               domain.TransitionRepositoryInterface
 	UserRepository                     domain.UserRepositoryInterface
+	RelatedIssueRepository             domain.RelatedIssueRepositoryInterface
 	PurgeRepository                    PurgeRepositoryInterface
 }
 
@@ -67,6 +68,9 @@ func (s SeedService) Seed(filePath string) []error {
 	errors = append(errors, err)
 
 	err = s.createIssue(seedData.Issues)
+	errors = append(errors, err)
+
+	err = s.createRelatedIssues(seedData.RelatedIssues)
 	errors = append(errors, err)
 
 	slog.Info("seed completed successfully")

@@ -8,3 +8,9 @@ type IssueData struct {
 	StatusName  string `yaml:"status_name" validate:"required"`
 	ParentName  string `yaml:"parent_name"`
 }
+
+type RelatedIssueData struct {
+IssueSummaryA string `yaml:"issue_a" validate:"required"`
+IssueSummaryB string `yaml:"issue_b" validate:"required"`
+Type          string `yaml:"type" validate:"required"`
+}

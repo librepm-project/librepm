@@ -320,3 +320,27 @@ issues:
     project_name: London Trip
     tracker_name: Activity
     status_name: Planned
+related_issues:
+  - issue_a: "Book Venue"
+    issue_b: "Choose Menu"
+    type: "blocks"
+
+  - issue_a: "Register the Company"
+    issue_b: "Startup Foundation"
+    type: "implements"
+
+  - issue_a: "Set Up Consoles"
+    issue_b: "Plan Game List"
+    type: "blocks"
+
+  - issue_a: "Book Flights"
+    issue_b: "Create Itinerary"
+    type: "related"
+
+  - issue_a: "Disassemble C64"
+    issue_b: "Set Up Consoles"
+    type: "related"
+
+  - issue_a: "Wedding Planning"
+    issue_b: "Book Venue"
+    type: "implements"

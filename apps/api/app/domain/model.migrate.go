@@ -14,6 +14,7 @@ func MigrateProductDatabase(db *gorm.DB) {
 		FilterConditionModel{},
 		FilterModel{},
 		IssueModel{},
+		RelatedIssueModel{},
 		StatusModel{},
 		TransitionModel{},
 		TrackerModel{},

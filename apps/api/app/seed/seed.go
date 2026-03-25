@@ -18,6 +18,7 @@ func NewSeedService(domain domain.Domain) SeedService {
 		FilterConditionRepository:      domain.FilterConditionRepository,
 		ProjectTrackerStatusRepository: domain.ProjectTrackerStatusRepository,
 		IssueRepository:                domain.IssueRepository,
+		RelatedIssueRepository:         domain.RelatedIssueRepository,
 		PurgeRepository: PurgeRepository{
 			DB: domain.DB,
 		},

@@ -9,23 +9,25 @@ import (
 type Domain struct {
 	DB *gorm.DB
 
-	ProjectService      ProjectServiceInterface
-	IssueService        IssueServiceInterface
-	FilterService              FilterServiceInterface
-	BoardService               BoardServiceInterface
-	DashboardService           DashboardServiceInterface
-	DashboardWidgetService     DashboardWidgetServiceInterface
-	UserService         UserServiceInterface
-	UserSessionService  UserSessionServiceInterface
-	UserRegisterService UserRegisterServiceInterface
-	StatusService       StatusServiceInterface
-	TransitionService   TransitionServiceInterface
-	TrackerService      TrackerServiceInterface
+	ProjectService          ProjectServiceInterface
+	IssueService            IssueServiceInterface
+	RelatedIssueService     RelatedIssueServiceInterface
+	FilterService           FilterServiceInterface
+	BoardService            BoardServiceInterface
+	DashboardService        DashboardServiceInterface
+	DashboardWidgetService  DashboardWidgetServiceInterface
+	UserService             UserServiceInterface
+	UserSessionService      UserSessionServiceInterface
+	UserRegisterService     UserRegisterServiceInterface
+	StatusService           StatusServiceInterface
+	TransitionService       TransitionServiceInterface
+	TrackerService          TrackerServiceInterface
 
 	ProjectRepository              ProjectRepositoryInterface
 	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
 	ProjectIssuePropertyRepository ProjectIssuePropertyRepositoryInterface
 	IssueRepository                IssueRepositoryInterface
+	RelatedIssueRepository         RelatedIssueRepositoryInterface
 	FilterRepository               FilterRepositoryInterface
 	BoardRepository                BoardRepositoryInterface
 	BoardColumnRepository          BoardColumnRepositoryInterface
@@ -48,6 +50,7 @@ func NewDomain() Domain {
 	projectTrackerStatusRepository := ProjectTrackerStatusRepository{DB: DB}
 	projectIssuePropertyRepository := ProjectIssuePropertyRepository{DB: DB}
 	issueRepository := IssueRepository{DB: DB}
+	relatedIssueRepository := RelatedIssueRepository{DB: DB}
 	filterRepository := FilterRepository{DB: DB}
 	boardRepository := BoardRepository{DB: DB}
 	boardColumnRepository := BoardColumnRepository{DB: DB}
@@ -72,6 +75,10 @@ func NewDomain() Domain {
 			IssueRepository:   issueRepository,
 			ProjectRepository: projectRepository,
 			FilterRepository:  filterRepository,
+		},
+		RelatedIssueService: RelatedIssueService{
+			RelatedIssueRepository: relatedIssueRepository,
+			IssueRepository:        issueRepository,
 		},
 		FilterService: FilterService{
 			FilterRepository: filterRepository,
@@ -106,6 +113,7 @@ func NewDomain() Domain {
 
 		ProjectRepository:              projectRepository,
 		IssueRepository:                issueRepository,
+		RelatedIssueRepository:         relatedIssueRepository,
 		FilterRepository:               filterRepository,
 		BoardRepository:                boardRepository,
 		BoardColumnRepository:          boardColumnRepository,

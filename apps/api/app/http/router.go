@@ -7,6 +7,7 @@ import (
 type Router struct {
 	ProjectController              ProjectControllerInterface
 	IssueController                IssueControllerInterface
+	RelatedIssueController         RelatedIssueController
 	FilterController               FilterControllerInterface
 	BoardController                BoardControllerInterface
 	DashboardController            DashboardControllerInterface
@@ -36,6 +37,10 @@ func (r Router) Init() *chi.Mux {
 	router.Get("/issue/{issue_id}", r.IssueController.Show)
 	router.Put("/issue/{issue_id}", r.IssueController.Update)
 	router.Delete("/issue/{issue_id}", r.IssueController.Destroy)
+	router.Get("/issue/{issue_id}/related", r.RelatedIssueController.GetRelated)
+	router.Post("/issue/{issue_id}/related", r.RelatedIssueController.Create)
+
+	router.Delete("/related-issue/{related_issue_id}", r.RelatedIssueController.Delete)
 
 	router.Get("/filter/condition-options", r.FilterController.Options)
 	router.Get("/filter", r.FilterController.Index)
