@@ -1,14 +1,14 @@
 import { Filter } from './filter.interface';
 
 export interface Dashboard {
-    id: string;
+    id?: string;
     name: string;
     description?: string;
 }
 
 // Base interface – minden widget type implementálja
 export interface DashboardWidget {
-    id: string;
+    id?: string;
     dashboardId: string;
     type: string;
     title: string;

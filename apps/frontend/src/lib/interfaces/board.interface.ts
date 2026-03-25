@@ -1,7 +1,7 @@
 import { Status } from "./status.interface";
 
 export interface BoardColumn {
-    id: string;
+    id?: string;
     label: string;
     weight?: number;
     statuses: Status[]; // This should match the backend's StatusResponse structure
@@ -10,7 +10,7 @@ export interface BoardColumn {
 }
 
 export interface Board {
-    id: string;
+    id?: string;
     name: string;
     description: string;
     boardColumns: BoardColumn[];
