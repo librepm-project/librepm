@@ -1,8 +1,9 @@
 <template>
   <div>
-    <user-form 
-      :user="userStore.current" 
-      :onSubmit="handleSubmit" 
+    <user-form
+      v-if="userStore.current"
+      :user="userStore.current"
+      :onSubmit="handleSubmit"
       submitButtonText="global.update"
     />
   </div>

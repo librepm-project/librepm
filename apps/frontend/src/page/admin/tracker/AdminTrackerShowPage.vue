@@ -1,7 +1,8 @@
 <template>
-  <tracker-form 
-    :tracker="trackerStore.current" 
-    :onSubmit="handleSubmit" 
+  <tracker-form
+    v-if="trackerStore.current"
+    :tracker="trackerStore.current"
+    :onSubmit="handleSubmit"
     submitButtonText="global.update"
   />
 </template>

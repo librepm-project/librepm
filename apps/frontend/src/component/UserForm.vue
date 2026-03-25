@@ -100,7 +100,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { requiredRule } from '@/lib/formRule';
 import { useRouter } from 'vue-router';
 
@@ -120,16 +120,16 @@ const language = ref("");
 const country = ref("");
 const form = ref(null);
 
-onMounted(() => {
-    if (props.user) {
-        email.value = props.user.email || "";
-        firstName.value = props.user.firstName || "";
-        lastName.value = props.user.lastName || "";
-        phone.value = props.user.phone || "";
-        language.value = props.user.language || "";
-        country.value = props.user.country || "";
+watch(() => props.user, (user) => {
+    if (user) {
+        email.value = user.email || "";
+        firstName.value = user.firstName || "";
+        lastName.value = user.lastName || "";
+        phone.value = user.phone || "";
+        language.value = user.language || "";
+        country.value = user.country || "";
     }
-})
+}, { immediate: true })
 
 const submit = async () => {
     const { valid } = await form.value.validate();

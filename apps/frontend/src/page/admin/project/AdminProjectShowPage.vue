@@ -1,8 +1,9 @@
 <template>
   <div>
-    <project-form 
-      :project="projectStore.current" 
-      :onSubmit="handleSubmit" 
+    <project-form
+      v-if="projectStore.current"
+      :project="projectStore.current"
+      :onSubmit="handleSubmit"
       submitButtonText="global.update"
     />
   </div>

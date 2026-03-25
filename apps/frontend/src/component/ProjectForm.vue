@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { requiredRule } from '@/lib/formRule';
 import { useRouter } from 'vue-router';
 
@@ -74,12 +74,12 @@ const name = ref("");
 const codeName = ref("");
 const form = ref(null);
 
-onMounted(() => {
-    if (props.project) {
-        name.value = props.project.name || "";
-        codeName.value = props.project.codeName || "";
+watch(() => props.project, (project) => {
+    if (project) {
+        name.value = project.name || "";
+        codeName.value = project.codeName || "";
     }
-})
+}, { immediate: true })
 
 const submit = async () => {
     const { valid } = await form.value.validate();

@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { requiredRule } from '@/lib/formRule';
 import { useRouter } from 'vue-router';
 
@@ -79,12 +79,12 @@ const name = ref("");
 const color = ref("#3F51B5");
 const form = ref(null);
 
-onMounted(() => {
-    if (props.tracker) {
-        name.value = props.tracker.name || "";
-        color.value = props.tracker.color || "#3F51B5";
+watch(() => props.tracker, (tracker) => {
+    if (tracker) {
+        name.value = tracker.name || "";
+        color.value = tracker.color || "#3F51B5";
     }
-})
+}, { immediate: true })
 
 const submit = async () => {
     const { valid } = await form.value.validate();

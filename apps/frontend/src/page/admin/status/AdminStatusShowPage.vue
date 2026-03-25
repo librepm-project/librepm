@@ -1,7 +1,8 @@
 <template>
-  <status-form 
-    :status="statusStore.current" 
-    :onSubmit="handleSubmit" 
+  <status-form
+    v-if="statusStore.current"
+    :status="statusStore.current"
+    :onSubmit="handleSubmit"
     submitButtonText="global.update"
   />
 </template>
