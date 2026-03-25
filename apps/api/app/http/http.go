@@ -39,6 +39,9 @@ func StartHttpServer(domain domain.Domain) {
 		DashboardController: DashboardController{
 			DashboardService: domain.DashboardService,
 		},
+		DashboardWidgetController: DashboardWidgetController{
+			DashboardWidgetService: domain.DashboardWidgetService,
+		},
 		UserCurrentController: UserCurrentController{
 			UserService: domain.UserService,
 		},

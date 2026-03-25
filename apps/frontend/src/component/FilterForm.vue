@@ -34,22 +34,10 @@
             <v-divider class="my-6" />
 
             <v-card-subtitle class="px-0 mb-4 text-subtitle-2 font-weight-bold">
-                Filter Conditions (JSON)
+                {{ $t('filter.conditions') }}
             </v-card-subtitle>
 
-            <v-row>
-                <v-col cols="12">
-                    <v-textarea
-                        v-model="conditionsJson"
-                        label="Conditions (JSON format)"
-                        hint='e.g., [{"field":"status","op":"eq","value":"open"}]'
-                        outlined
-                        dense
-                        rows="6"
-                        monospace
-                    />
-                </v-col>
-            </v-row>
+            <filter-condition-builder v-model="conditions" />
 
             <v-divider class="my-6" />
 
@@ -82,46 +70,43 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { requiredRule } from '@/lib/formRule';
-import { useRouter } from 'vue-router';
-import { Filter } from '@/lib/interfaces/filter.interface';
-
-const router = useRouter();
+import { Filter, FilterCondition } from '@/lib/interfaces/filter.interface';
+import FilterConditionBuilder from '@/component/FilterConditionBuilder.vue';
 
 const props = defineProps({
     onSubmit: Function,
     submitButtonText: String,
     filter: Object as any,
-})
+});
 
-const name = ref("");
-const description = ref("");
-const conditionsJson = ref("[]");
+const name = ref('');
+const description = ref('');
+const conditions = ref<FilterCondition[]>([]);
 const form = ref(null);
 
-onMounted(() => {
-    if (props.filter) {
-        name.value = props.filter.name || "";
-        description.value = props.filter.description || "";
-        conditionsJson.value = JSON.stringify(props.filter.conditions || [], null, 2);
-    }
-})
+watch(
+    () => props.filter,
+    (filter) => {
+        if (filter) {
+            name.value = filter.name || '';
+            description.value = filter.description || '';
+            conditions.value = filter.conditions ? [...filter.conditions] : [];
+        }
+    },
+    { immediate: true },
+);
 
 const submit = async () => {
-    const { valid } = await form.value.validate();
+    const { valid } = await (form.value as any).validate();
     if (valid) {
-        try {
-            const conditions = JSON.parse(conditionsJson.value);
-            const filterData: Omit<Filter, 'id'> = {
-                name: name.value,
-                description: description.value,
-                conditions: conditions,
-            };
-            props.onSubmit(filterData);
-        } catch (error) {
-            alert("Invalid JSON in conditions: " + error);
-        }
+        const filterData: Omit<Filter, 'id'> = {
+            name: name.value,
+            description: description.value,
+            conditions: conditions.value,
+        };
+        props.onSubmit!(filterData);
     }
 };
 </script>
@@ -133,13 +118,5 @@ const submit = async () => {
 
 .gap-3 {
     gap: 1rem;
-}
-
-:deep(.v-field) {
-    background-color: rgba(255, 255, 255, 0.8) !important;
-}
-
-:deep(.v-field__input) {
-    font-family: 'Courier New', monospace;
 }
 </style>

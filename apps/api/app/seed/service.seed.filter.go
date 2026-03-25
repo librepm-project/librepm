@@ -22,8 +22,10 @@ func (s SeedService) createFilter(items []FilterData) error {
 
 		for _, conditionData := range item.Conditions {
 			condition := domain.FilterConditionModel{
-				Condition: conditionData.Condition,
-				FilterID:  filter.ID,
+				Field:    conditionData.Field,
+				Op:       conditionData.Op,
+				Value:    conditionData.Value,
+				FilterID: filter.ID,
 			}
 
 			err = s.FilterConditionRepository.Create(&condition)

@@ -2,6 +2,7 @@ package domain
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -9,6 +10,7 @@ import (
 
 type IssueRepositoryInterface interface {
 	All() (*[]IssueModel, error)
+	AllByFilter(conditions []FilterConditionModel) (*[]IssueModel, error)
 	FindByID(issue_id uuid.UUID) (*IssueModel, error)
 	Create(issue *IssueModel) error
 	Update(issue_id uuid.UUID, issue *IssueModel) error
@@ -28,6 +30,46 @@ func (r IssueRepository) All() (*[]IssueModel, error) {
 		fmt.Println(err)
 	}
 	return &issues, err
+}
+
+func (r IssueRepository) AllByFilter(conditions []FilterConditionModel) (*[]IssueModel, error) {
+	var issues []IssueModel
+	query := r.DB.Select("issue.*")
+
+	for _, c := range conditions {
+		switch c.Field {
+		case "project_id":
+			if c.Op == "eq" {
+				query = query.Where("issue.project_id = ?", c.Value)
+			} else if c.Op == "ne" {
+				query = query.Where("issue.project_id != ?", c.Value)
+			}
+		case "tracker_id":
+			if c.Op == "eq" {
+				query = query.Where("issue.tracker_id = ?", c.Value)
+			} else if c.Op == "ne" {
+				query = query.Where("issue.tracker_id != ?", c.Value)
+			}
+		case "status_id":
+			if c.Op == "eq" {
+				query = query.Where("issue.status_id = ?", c.Value)
+			} else if c.Op == "ne" {
+				query = query.Where("issue.status_id != ?", c.Value)
+			}
+		case "summary":
+			if c.Op == "contains" {
+				query = query.Where("issue.summary LIKE ?", "%"+strings.TrimSpace(c.Value)+"%")
+			} else if c.Op == "eq" {
+				query = query.Where("issue.summary = ?", c.Value)
+			}
+		}
+	}
+
+	if err := query.Preload("Project").Preload("Tracker").Preload("Status").Find(&issues).Error; err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return &issues, nil
 }
 
 func (r IssueRepository) FindByID(issue_id uuid.UUID) (*IssueModel, error) {

@@ -8,5 +8,7 @@ type FilterData struct {
 }
 
 type ConditionData struct {
-	Condition string `yaml:"condition" validate:"required"`
+	Field string `yaml:"field" validate:"required"`
+	Op    string `yaml:"op" validate:"required"`
+	Value string `yaml:"value" validate:"required"`
 }

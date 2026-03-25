@@ -21,19 +21,16 @@ type FilterRepository struct {
 
 func (r FilterRepository) All() (*[]FilterModel, error) {
 	var filters []FilterModel
-	var err error
-	query := r.DB.Select("filter.*")
-
-	if err := query.Find(&filters).Error; err != nil {
+	if err := r.DB.Preload("FilterConditions").Find(&filters).Error; err != nil {
 		fmt.Println(err)
+		return nil, err
 	}
-	return &filters, err
+	return &filters, nil
 }
 
 func (r FilterRepository) FindByID(filter_id uuid.UUID) (*FilterModel, error) {
 	var filter FilterModel
-	query := r.DB.Model(FilterModel{ID: filter_id}).Scan(&filter)
-
+	query := r.DB.Preload("FilterConditions").First(&filter, filter_id)
 	if query.Error != nil {
 		fmt.Println(query.Error)
 	}
@@ -43,23 +40,37 @@ func (r FilterRepository) FindByID(filter_id uuid.UUID) (*FilterModel, error) {
 func (r FilterRepository) Create(filter *FilterModel) error {
 	query := r.DB.Create(&filter)
 	if query.Error != nil {
-		fmt.Println(query)
+		fmt.Println(query.Error)
 	}
 	return query.Error
 }
 
 func (r FilterRepository) Update(filter_id uuid.UUID, filter *FilterModel) error {
-	query := r.DB.Model(FilterModel{}).Where("id", filter_id).Updates(&filter)
-	if query.Error != nil {
-		fmt.Println(query)
+	if err := r.DB.Where("filter_id = ?", filter_id).Delete(&FilterConditionModel{}).Error; err != nil {
+		return err
 	}
-	return query.Error
+	if err := r.DB.Model(FilterModel{}).Where("id = ?", filter_id).Updates(map[string]interface{}{
+		"name":        filter.Name,
+		"description": filter.Description,
+	}).Error; err != nil {
+		return err
+	}
+	if len(filter.FilterConditions) > 0 {
+		for i := range filter.FilterConditions {
+			filter.FilterConditions[i].FilterID = filter_id
+		}
+		if err := r.DB.Create(&filter.FilterConditions).Error; err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (r FilterRepository) Destroy(filter_id uuid.UUID) error {
-	query := r.DB.Model(FilterModel{}).Delete(FilterModel{}, filter_id)
+	r.DB.Where("filter_id = ?", filter_id).Delete(&FilterConditionModel{})
+	query := r.DB.Delete(FilterModel{}, filter_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		fmt.Println(query.Error)
 	}
 	return query.Error
 }

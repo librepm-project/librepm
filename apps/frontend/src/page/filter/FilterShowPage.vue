@@ -30,6 +30,7 @@ const handleSubmit = async (filter: Omit<Filter, 'id'>) => {
 };
 
 onMounted(async () => {
+  filterStore.current = null;
   const filterId = route.params.issueid as string;
   await filterStore.getFilter(filterId);
 });

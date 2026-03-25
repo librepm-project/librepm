@@ -15,12 +15,12 @@ const apiCall = (): AxiosInstance => {
 
     instance.interceptors.response.use(
       (response) => response,
-      (response) => {
-        if (response.code === "ERR_BAD_REQUEST") {
+      (error) => {
+        if (error.response?.status === 401) {
           window.localStorage.removeItem("accessToken");
-          window.location.href = "/";
+          window.location.href = "/login";
         }
-        return response;
+        return Promise.reject(error);
       }
     );
 

@@ -6,27 +6,65 @@ import (
 	"apps/api/app/domain"
 )
 
+type FilterConditionRequest struct {
+	Field string `json:"field"`
+	Op    string `json:"op"`
+	Value string `json:"value"`
+}
+
+type FilterConditionResponse struct {
+	ID    uuid.UUID `json:"id"`
+	Field string    `json:"field"`
+	Op    string    `json:"op"`
+	Value string    `json:"value"`
+}
+
 type FilterRequest struct {
-	Name string `json:"name"`
+	Name        string                   `json:"name"`
+	Description string                   `json:"description"`
+	Conditions  []FilterConditionRequest `json:"conditions"`
 }
 
 type FilterResponse struct {
-	ID   uuid.UUID `json:"id"`
-	Name string    `json:"name"`
+	ID          uuid.UUID                 `json:"id"`
+	Name        string                    `json:"name"`
+	Description string                    `json:"description"`
+	Conditions  []FilterConditionResponse `json:"conditions"`
 }
 
 type FilterSerializer struct{}
 
 func (s FilterSerializer) RequestToModel(filter_request FilterRequest) domain.FilterModel {
+	conditions := []domain.FilterConditionModel{}
+	for _, c := range filter_request.Conditions {
+		conditions = append(conditions, domain.FilterConditionModel{
+			Field: c.Field,
+			Op:    c.Op,
+			Value: c.Value,
+		})
+	}
 	return domain.FilterModel{
-		Name: filter_request.Name,
+		Name:             filter_request.Name,
+		Description:      filter_request.Description,
+		FilterConditions: conditions,
 	}
 }
 
 func (s FilterSerializer) ModelToResponse(filter domain.FilterModel) FilterResponse {
+	conditions := []FilterConditionResponse{}
+	for _, c := range filter.FilterConditions {
+		conditions = append(conditions, FilterConditionResponse{
+			ID:    c.ID,
+			Field: c.Field,
+			Op:    c.Op,
+			Value: c.Value,
+		})
+	}
 	return FilterResponse{
-		ID:   filter.ID,
-		Name: filter.Name,
+		ID:          filter.ID,
+		Name:        filter.Name,
+		Description: filter.Description,
+		Conditions:  conditions,
 	}
 }
 

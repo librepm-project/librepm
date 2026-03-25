@@ -11,3 +11,20 @@ export interface Filter {
     description?: string;
     conditions?: FilterCondition[];
 }
+
+export interface FilterConditionOperator {
+    key: string;
+    label: string;
+}
+
+export interface FilterConditionField {
+    key: string;
+    label: string;
+    valueType: 'text' | 'select';
+    valueEndpoint?: string;
+    operators: FilterConditionOperator[];
+}
+
+export interface FilterConditionOptions {
+    fields: FilterConditionField[];
+}

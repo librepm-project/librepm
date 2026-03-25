@@ -6,6 +6,7 @@ import (
 
 	"apps/api/app/domain"
 	"libs/http_utils"
+	"github.com/google/uuid"
 )
 
 type IssueControllerInterface interface {
@@ -21,6 +22,22 @@ type IssueController struct {
 }
 
 func (c IssueController) Index(w http.ResponseWriter, r *http.Request) {
+	filterIdStr := r.URL.Query().Get("filterId")
+	if filterIdStr != "" {
+		filterID, err := uuid.Parse(filterIdStr)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		issues, err := c.IssueService.AllByFilterID(filterID)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponseMany(*issues))
+		return
+	}
+
 	issues, err := c.IssueService.All()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

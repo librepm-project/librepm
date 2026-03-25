@@ -6,9 +6,11 @@ import (
 )
 
 type FilterConditionModel struct {
-	ID        uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Condition string    `gorm:"type:varchar(100);not null;uniqueIndex:condition_filter_id;"`
-	FilterID  uuid.UUID `gorm:"type:char(36) references filter;not null;uniqueIndex:condition_filter_id;"`
+	ID       uuid.UUID `gorm:"type:char(36);primary_key;"`
+	FilterID uuid.UUID `gorm:"type:char(36) references filter;not null;"`
+	Field    string    `gorm:"type:varchar(50);not null;"`
+	Op       string    `gorm:"type:varchar(20);not null;"`
+	Value    string    `gorm:"type:varchar(255);not null;"`
 
 	Filter FilterModel
 }

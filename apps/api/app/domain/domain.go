@@ -11,9 +11,10 @@ type Domain struct {
 
 	ProjectService      ProjectServiceInterface
 	IssueService        IssueServiceInterface
-	FilterService       FilterServiceInterface
-	BoardService        BoardServiceInterface
-	DashboardService    DashboardServiceInterface
+	FilterService              FilterServiceInterface
+	BoardService               BoardServiceInterface
+	DashboardService           DashboardServiceInterface
+	DashboardWidgetService     DashboardWidgetServiceInterface
 	UserService         UserService
 	UserSessionService  UserSessionService
 	UserRegisterService UserRegisterService
@@ -30,6 +31,7 @@ type Domain struct {
 	BoardColumnRepository          BoardColumnRepositoryInterface
 	BoardColumnStatusRepository    BoardColumnStatusRepositoryInterface
 	DashboardRepository            DashboardRepositoryInterface
+	DashboardWidgetRepository      DashboardWidgetRepositoryInterface
 	UserRepository                 UserRepositoryInterface
 	StatusRepository               StatusRepositoryInterface
 	TransitionRepository           TransitionRepositoryInterface
@@ -51,6 +53,7 @@ func NewDomain() Domain {
 	boardColumnRepository := BoardColumnRepository{DB: DB}
 	boardColumnStatusRepository := BoardColumnStatusRepository{DB: DB}
 	dashboardRepository := DashboardRepository{DB: DB}
+	dashboardWidgetRepository := DashboardWidgetRepository{DB: DB}
 	userRepository := UserRepository{DB: DB}
 	statusRepository := StatusRepository{DB: DB}
 	transitionRepository := TransitionRepository{DB: DB}
@@ -68,6 +71,7 @@ func NewDomain() Domain {
 		IssueService: IssueService{
 			IssueRepository:   issueRepository,
 			ProjectRepository: projectRepository,
+			FilterRepository:  filterRepository,
 		},
 		FilterService: FilterService{
 			FilterRepository: filterRepository,
@@ -77,6 +81,9 @@ func NewDomain() Domain {
 		},
 		DashboardService: DashboardService{
 			DashboardRepository: dashboardRepository,
+		},
+		DashboardWidgetService: DashboardWidgetService{
+			DashboardWidgetRepository: dashboardWidgetRepository,
 		},
 		UserService: UserService{
 			UserRepository: userRepository,
@@ -104,6 +111,7 @@ func NewDomain() Domain {
 		BoardColumnRepository:          boardColumnRepository,
 		BoardColumnStatusRepository:    boardColumnStatusRepository,
 		DashboardRepository:            dashboardRepository,
+		DashboardWidgetRepository:      dashboardWidgetRepository,
 		UserRepository:                 userRepository,
 		StatusRepository:               statusRepository,
 		TransitionRepository:           transitionRepository,

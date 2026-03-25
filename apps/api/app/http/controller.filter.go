@@ -15,6 +15,7 @@ type FilterControllerInterface interface {
 	Update(w http.ResponseWriter, r *http.Request)
 	Destroy(w http.ResponseWriter, r *http.Request)
 	Index(w http.ResponseWriter, r *http.Request)
+	Options(w http.ResponseWriter, r *http.Request)
 }
 
 type FilterController struct {
@@ -74,4 +75,63 @@ func (c FilterController) Destroy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
+}
+
+type filterConditionOperatorOption struct {
+	Key   string `json:"key"`
+	Label string `json:"label"`
+}
+
+type filterConditionFieldOption struct {
+	Key           string                           `json:"key"`
+	Label         string                           `json:"label"`
+	ValueType     string                           `json:"valueType"`
+	ValueEndpoint string                           `json:"valueEndpoint,omitempty"`
+	Operators     []filterConditionOperatorOption  `json:"operators"`
+}
+
+type filterConditionOptionsResponse struct {
+	Fields []filterConditionFieldOption `json:"fields"`
+}
+
+func (c FilterController) Options(w http.ResponseWriter, r *http.Request) {
+	eqNe := []filterConditionOperatorOption{
+		{Key: "eq", Label: "is"},
+		{Key: "ne", Label: "is not"},
+	}
+	options := filterConditionOptionsResponse{
+		Fields: []filterConditionFieldOption{
+			{
+				Key:           "project_id",
+				Label:         "Project",
+				ValueType:     "select",
+				ValueEndpoint: "/project",
+				Operators:     eqNe,
+			},
+			{
+				Key:           "tracker_id",
+				Label:         "Tracker",
+				ValueType:     "select",
+				ValueEndpoint: "/tracker",
+				Operators:     eqNe,
+			},
+			{
+				Key:           "status_id",
+				Label:         "Status",
+				ValueType:     "select",
+				ValueEndpoint: "/status",
+				Operators:     eqNe,
+			},
+			{
+				Key:       "summary",
+				Label:     "Summary",
+				ValueType: "text",
+				Operators: []filterConditionOperatorOption{
+					{Key: "contains", Label: "contains"},
+					{Key: "eq", Label: "equals"},
+				},
+			},
+		},
+	}
+	http_utils.RespondWithJSON(w, http.StatusOK, options)
 }

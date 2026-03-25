@@ -1,8 +1,8 @@
 import { Issue } from "@/lib/interfaces/issue.interface";
 import api from "@/api/api";
 
-const index = async (): Promise<Issue[]> => {
-    const response = await api.apiCall().get("/issue");
+const index = async (params?: { filterId?: string }): Promise<Issue[]> => {
+    const response = await api.apiCall().get("/issue", { params });
     return response.data as Issue[];
 }
 

@@ -8,6 +8,7 @@ import (
 
 type IssueServiceInterface interface {
 	All() (*[]IssueModel, error)
+	AllByFilterID(filter_id uuid.UUID) (*[]IssueModel, error)
 	Show(issue_id uuid.UUID) (*IssueModel, error)
 	Create(issue *IssueModel) error
 	Update(issue_id uuid.UUID, issue *IssueModel) error
@@ -17,11 +18,20 @@ type IssueServiceInterface interface {
 type IssueService struct {
 	IssueRepository   IssueRepositoryInterface
 	ProjectRepository ProjectRepositoryInterface
+	FilterRepository  FilterRepositoryInterface
 }
 
 func (s IssueService) All() (*[]IssueModel, error) {
 	issues, err := s.IssueRepository.All()
 	return issues, err
+}
+
+func (s IssueService) AllByFilterID(filter_id uuid.UUID) (*[]IssueModel, error) {
+	filter, err := s.FilterRepository.FindByID(filter_id)
+	if err != nil {
+		return nil, err
+	}
+	return s.IssueRepository.AllByFilter(filter.FilterConditions)
 }
 
 func (s IssueService) Show(issue_id uuid.UUID) (*IssueModel, error) {

@@ -161,31 +161,20 @@ dashboards:
     user_email: "testuser@example.com"
 
 filters:
-  - name: "High Priority Wedding Tasks"
-    description: "Filter for high priority wedding-related tasks"
+  - name: "Open Issues"
+    description: "All issues that are not closed"
     user_email: "testuser@example.com"
     conditions:
-      - condition: "High Priority"
-  - name: "Startup Critical Tasks"
-    description: "Filter for urgent tasks in company formation"
+      - field: "summary"
+        op: "contains"
+        value: ""
+  - name: "Wedding Tasks"
+    description: "Filter for wedding-related tasks"
     user_email: "testuser@example.com"
     conditions:
-      - condition: "Urgent"
-  - name: "Retro Gaming Party High Priority"
-    description: "Filter for high priority tasks for the retro gaming party"
-    user_email: "testuser@example.com"
-    conditions:
-      - condition: "High Priority"
-  - name: "Commodore 64 Restoration Critical Tasks"
-    description: "Filter for urgent tasks related to the Commodore 64 restoration"
-    user_email: "testuser@example.com"
-    conditions:
-      - condition: "Urgent"
-  - name: "London Trip Essentials"
-    description: "Filter for essential tasks for the London trip"
-    user_email: "testuser@example.com"
-    conditions:
-      - condition: "Essential"
+      - field: "summary"
+        op: "contains"
+        value: "wedding"
 
 projects:
   - name: Wedding Project

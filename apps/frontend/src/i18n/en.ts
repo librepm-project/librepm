@@ -51,6 +51,18 @@ export const en = {
     filter: {
         name: 'Name',
         description: 'Description',
+        conditions: 'Filter Conditions',
+        add_condition: 'Add Condition',
+        field: 'Field',
+        operator: 'Operator',
+        value: 'Value',
+    },
+    dashboard: {
+        add_widget: 'Add Widget',
+        widget_type: 'Widget Type',
+        widget_title: 'Title',
+        select_filter: 'Select Filter',
+        no_widgets: 'No widgets yet. Click "Add Widget" to get started.',
     },
     project: {
         codeName: 'Code name',

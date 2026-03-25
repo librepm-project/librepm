@@ -10,6 +10,7 @@ type Router struct {
 	FilterController               FilterControllerInterface
 	BoardController                BoardControllerInterface
 	DashboardController            DashboardControllerInterface
+	DashboardWidgetController      DashboardWidgetControllerInterface
 	UserCurrentController          UserCurrentControllerInterface
 	UserSessionController          UserSessionControllerInterface
 	UserRegisterController         UserRegisterControllerInterface
@@ -36,6 +37,7 @@ func (r Router) Init() *chi.Mux {
 	router.Put("/issue/{issue_id}", r.IssueController.Update)
 	router.Delete("/issue/{issue_id}", r.IssueController.Destroy)
 
+	router.Get("/filter/condition-options", r.FilterController.Options)
 	router.Get("/filter", r.FilterController.Index)
 	router.Post("/filter", r.FilterController.Create)
 	router.Get("/filter/{filter_id}", r.FilterController.Show)
@@ -53,6 +55,10 @@ func (r Router) Init() *chi.Mux {
 	router.Get("/dashboard/{dashboard_id}", r.DashboardController.Show)
 	router.Put("/dashboard/{dashboard_id}", r.DashboardController.Update)
 	router.Delete("/dashboard/{dashboard_id}", r.DashboardController.Destroy)
+
+	router.Get("/dashboard/{dashboard_id}/widget", r.DashboardWidgetController.Index)
+	router.Post("/dashboard/{dashboard_id}/widget", r.DashboardWidgetController.Create)
+	router.Delete("/dashboard/{dashboard_id}/widget/{widget_id}", r.DashboardWidgetController.Destroy)
 
 	router.Get("/user/current", r.UserCurrentController.Show)
 	router.Put("/user/current", r.UserCurrentController.Update)
