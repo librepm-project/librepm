@@ -21,6 +21,10 @@
         </thead>
       </template>
 
+      <template #item.name="{ item }">
+        <router-link :to="`/filter/${item.id}`">{{ item.name }}</router-link>
+      </template>
+
       <template #item.conditions="{ item }">
         <v-chip
           v-if="item.conditions && item.conditions.length > 0"

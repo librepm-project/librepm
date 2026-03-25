@@ -21,6 +21,10 @@
         </thead>
       </template>
 
+      <template #item.name="{ item }">
+        <router-link :to="`/admin/project/${item.id}`">{{ item.name }}</router-link>
+      </template>
+
       <template #item.codeName="{ item }">
         <v-chip variant="elevated" size="small" color="secondary">
           {{ item.codeName }}

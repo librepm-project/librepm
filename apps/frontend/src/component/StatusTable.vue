@@ -21,6 +21,10 @@
         </thead>
       </template>
 
+      <template #item.name="{ item }">
+        <router-link :to="`/admin/status/${item.id}`">{{ item.name }}</router-link>
+      </template>
+
       <template #item.color="{ item }">
         <v-chip
           :style="{ backgroundColor: item.color }"

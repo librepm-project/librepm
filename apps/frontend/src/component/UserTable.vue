@@ -21,6 +21,10 @@
         </thead>
       </template>
 
+      <template #item.email="{ item }">
+        <router-link :to="`/admin/user/${item.id}`">{{ item.email }}</router-link>
+      </template>
+
       <template #item.fullName="{ item }">
         <v-chip variant="elevated" size="small">
           {{ item.firstName }} {{ item.lastName }}

@@ -1,5 +1,9 @@
 <template>
   <v-data-table :items="items" :headers="headers">
+    <template #item.name="{ item }">
+      <router-link :to="`/board/${item.id}`">{{ item.name }}</router-link>
+    </template>
+
     <template #item.actions="{ item }">
       <general-record-actions :item="item" :onEdit="onEdit" :onDelete="onDelete" />
     </template>
