@@ -12,6 +12,7 @@ export const en = {
         delete: 'Delete',
         update: 'Update',
         delete_confirm: 'Are you sure you want to delete this item?',
+        actions: 'Actions',
     },
     title: {
         issueIndex: 'Issues',
@@ -42,6 +43,7 @@ export const en = {
         tracker: 'Tracker',
     },
     board: {
+        boards: 'Boards',
         columns: 'Columns',
         add_column: 'Add Column',
         column_label: 'Column Label',
@@ -81,6 +83,9 @@ export const en = {
         fullName: 'Full name',
         firstName: 'First name',
         lastName: 'Last name',
+        phone: 'Phone',
+        language: 'Language',
+        country: 'Country',
     },
     login: {
         submit: 'Login'
@@ -88,7 +93,7 @@ export const en = {
     rule: {
         email: "Invalid email format",
         required: "Required field",
-        minimLength: "Minimum length is %d"
+        minimumLength: "Minimum length is {len}"
     }
 }
 
