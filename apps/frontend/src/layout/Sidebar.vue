@@ -1,7 +1,15 @@
 <template>
     <v-col cols="12" md="2" class="pe-3">
         <v-sheet rounded="xl" elevation="2" color="surface" class="sidebar-sheet">
-            <v-list class="pa-2">
+            <!-- Custom component if set -->
+            <component 
+                v-if="layoutStore.sidebarComponent" 
+                :is="layoutStore.sidebarComponent"
+                v-bind="layoutStore.sidebarProps"
+            />
+            
+            <!-- Default navigation items -->
+            <v-list v-else class="pa-2">
                 <v-list-item
                     v-for="item in layoutStore.sidebarItems"
                     :key="item.key"

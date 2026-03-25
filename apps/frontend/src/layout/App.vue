@@ -4,7 +4,7 @@
     <v-main class="bg-surface">
       <v-container fluid class="pa-6">
         <v-row>
-          <Sidebar v-if="layoutStore.sidebarItems.length > 0" class="d-none d-md-flex" />
+          <Sidebar v-if="layoutStore.sidebarItems.length > 0 || layoutStore.sidebarComponent" class="d-none d-md-flex" />
           <Main />
         </v-row>
       </v-container>

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { Component } from 'vue';
 
 interface SidebarItem {
   key: string;
@@ -18,6 +19,8 @@ interface ActionButton {
 interface LayoutStore {
   sidebarItems: SidebarItem[];
   actionButtons: ActionButton[];
+  sidebarComponent: Component | null;
+  sidebarProps: Record<string, any>;
 }
 
 export const useLayoutStore = defineStore('sidebar', {
@@ -25,6 +28,8 @@ export const useLayoutStore = defineStore('sidebar', {
     return {
       sidebarItems: [],
       actionButtons: [],
+      sidebarComponent: null,
+      sidebarProps: {},
     };
   },
   actions: {
@@ -33,6 +38,14 @@ export const useLayoutStore = defineStore('sidebar', {
     },
     resetSidebar() {
       this.sidebarItems = [];
+    },
+    setSidebarComponent(component: Component | null, props: Record<string, any> = {}) {
+      this.sidebarComponent = component;
+      this.sidebarProps = props;
+    },
+    resetSidebarComponent() {
+      this.sidebarComponent = null;
+      this.sidebarProps = {};
     },
     setActions(items: ActionButton[]) {
       this.actionButtons = items;
