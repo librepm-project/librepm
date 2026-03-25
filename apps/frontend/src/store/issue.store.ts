@@ -17,7 +17,9 @@ export const useIssueStore = defineStore('issue', {
   },
   actions: {
     async getIssue(issueId: string) {
-      this.current = await issueApi.show(issueId);
+      this.current = null;
+      const issue = await issueApi.show(issueId);
+      this.current = issue;
     },
 
     async getIssues() {

@@ -13,6 +13,8 @@ export const en = {
         update: 'Update',
         delete_confirm: 'Are you sure you want to delete this item?',
         actions: 'Actions',
+        details: 'Details',
+        no_data: 'No data',
     },
     title: {
         issueIndex: 'Issues',

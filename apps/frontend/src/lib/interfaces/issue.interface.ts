@@ -11,6 +11,6 @@ export interface Issue {
     trackerId?: string;
     status?: Status;
     statusId?: string;
-    project?: Project;
+    project?: Project | null;
     projectId?: string;
 }

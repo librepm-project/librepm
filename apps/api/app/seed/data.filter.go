@@ -10,5 +10,5 @@ type FilterData struct {
 type ConditionData struct {
 	Field string `yaml:"field" validate:"required"`
 	Op    string `yaml:"op" validate:"required"`
-	Value string `yaml:"value" validate:"required"`
+	Value string `yaml:"value"`
 }
