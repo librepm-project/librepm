@@ -19,7 +19,7 @@ const layoutStore = useLayoutStore();
 const filterStore = useFilterStore();
 
 const handleEdit = (filter: Filter) => {
-  router.push(`/filter/${filter.id}`);
+  router.push(`/filter/${filter.id}/edit`);
 };
 
 const handleDelete = async (filter: Filter) => {

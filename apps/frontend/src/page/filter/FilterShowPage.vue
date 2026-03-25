@@ -1,8 +1,8 @@
 <template>
   <div>
-    <filter-form 
-      :filter="filterStore.current" 
-      :onSubmit="handleSubmit" 
+    <filter-form
+      :filter="filterStore.current"
+      :onSubmit="handleSubmit"
       submitButtonText="global.update"
     />
   </div>
@@ -21,9 +21,9 @@ const filterStore = useFilterStore();
 
 const handleSubmit = async (filter: Omit<Filter, 'id'>) => {
   try {
-    const filterId = route.params.issueid as string;
+    const filterId = route.params.filterId as string;
     await filterStore.putFilter(filterId, filter);
-    router.push('/filter');
+    router.push(`/filter/${filterId}`);
   } catch (error) {
     console.error('Error updating filter:', error);
   }
@@ -31,7 +31,7 @@ const handleSubmit = async (filter: Omit<Filter, 'id'>) => {
 
 onMounted(async () => {
   filterStore.current = null;
-  const filterId = route.params.issueid as string;
+  const filterId = route.params.filterId as string;
   await filterStore.getFilter(filterId);
 });
 </script>
