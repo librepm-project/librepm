@@ -29,7 +29,15 @@ const handleSubmit = async (tracker: Tracker) => {
 };
 
 onMounted(async () => {
-  const trackerId = route.params.trackerId as string;
-  await trackerStore.getTracker(trackerId);
+  const trackerId = route.params.trackerid as string;
+  const fromIndex = trackerStore.index.find(t => t.id === trackerId);
+  if (fromIndex) {
+    trackerStore.current = fromIndex;
+  }
+  try {
+    await trackerStore.getTracker(trackerId);
+  } catch (error) {
+    console.error('Error loading tracker:', error);
+  }
 });
 </script>

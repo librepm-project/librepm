@@ -33,6 +33,10 @@ export const en = {
         adminTrackerCreate: 'Create tracker',
         adminStatusCreate: 'Create status',
         adminUserIndex: 'Users',
+        adminStatusShow: 'Edit Status',
+        adminTrackerShow: 'Edit Tracker',
+        adminProjectShow: 'Edit Project',
+        adminUserShow: 'Edit User',
     },
     issue: {
         description: 'Description',
