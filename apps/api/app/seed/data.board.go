@@ -7,5 +7,6 @@ type BoardData struct {
 }
 
 type BoardColumnData struct {
-	Label string `yaml:"label" validate:"required"`
+	Label    string   `yaml:"label" validate:"required"`
+	Statuses []string `yaml:"statuses"`
 }

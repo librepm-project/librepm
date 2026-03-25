@@ -79,40 +79,59 @@ boards:
     description: "Manage wedding planning tasks"
     columns:
       - label: "Planned"
+        statuses: ["Planned"]
       - label: "Contacted"
+        statuses: ["Contacted"]
       - label: "Confirmed"
+        statuses: ["Confirmed"]
       - label: "Delivered"
+        statuses: ["Delivered"]
 
   - name: "Startup Launch Board"
     description: "Track tasks related to founding the company"
     columns:
       - label: "Not Started"
+        statuses: ["Not Started"]
       - label: "Researching"
+        statuses: ["Researching"]
       - label: "Pending Approval"
+        statuses: ["Pending Approval"]
       - label: "Launched"
+        statuses: ["Launched"]
 
   - name: "Retro Gaming Party Board"
     description: "Organize a retro gaming event"
     columns:
       - label: "To Do"
+        statuses: ["To Do"]
       - label: "In Progress"
+        statuses: ["In Progress"]
       - label: "Scheduled"
+        statuses: ["Scheduled"]
       - label: "Done"
+        statuses: ["Tested", "Done"]
 
   - name: "Commodore 64 Restoration Board"
     description: "Manage tasks related to restoring a Commodore 64"
     columns:
       - label: "Backlog"
+        statuses: ["Open", "To Do"]
       - label: "In Progress"
+        statuses: ["In Progress"]
       - label: "Completed"
+        statuses: ["Done", "Completed"]
 
   - name: "London Trip Board"
     description: "Track tasks for the London sightseeing trip"
     columns:
       - label: "Idea"
+        statuses: ["Idea"]
       - label: "Planned"
+        statuses: ["Planned"]
       - label: "Booked"
+        statuses: ["Booked", "Packed"]
       - label: "Completed"
+        statuses: ["Completed"]
 
 users:
   - email: "testuser@example.com"

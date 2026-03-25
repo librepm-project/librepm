@@ -10,6 +10,8 @@ func NewSeedService(domain domain.Domain) SeedService {
 		TrackerRepository:              domain.TrackerRepository,
 		StatusRepository:               domain.StatusRepository,
 		BoardRepository:                domain.BoardRepository,
+		BoardColumnRepository:          domain.BoardColumnRepository,
+		BoardColumnStatusRepository:    domain.BoardColumnStatusRepository,
 		UserRepository:                 domain.UserRepository,
 		DashboardRepository:            domain.DashboardRepository,
 		FilterRepository:               domain.FilterRepository,

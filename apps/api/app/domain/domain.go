@@ -27,6 +27,8 @@ type Domain struct {
 	IssueRepository                IssueRepositoryInterface
 	FilterRepository               FilterRepositoryInterface
 	BoardRepository                BoardRepositoryInterface
+	BoardColumnRepository          BoardColumnRepositoryInterface
+	BoardColumnStatusRepository    BoardColumnStatusRepositoryInterface
 	DashboardRepository            DashboardRepositoryInterface
 	UserRepository                 UserRepositoryInterface
 	StatusRepository               StatusRepositoryInterface
@@ -46,6 +48,8 @@ func NewDomain() Domain {
 	issueRepository := IssueRepository{DB: DB}
 	filterRepository := FilterRepository{DB: DB}
 	boardRepository := BoardRepository{DB: DB}
+	boardColumnRepository := BoardColumnRepository{DB: DB}
+	boardColumnStatusRepository := BoardColumnStatusRepository{DB: DB}
 	dashboardRepository := DashboardRepository{DB: DB}
 	userRepository := UserRepository{DB: DB}
 	statusRepository := StatusRepository{DB: DB}
@@ -97,6 +101,8 @@ func NewDomain() Domain {
 		IssueRepository:                issueRepository,
 		FilterRepository:               filterRepository,
 		BoardRepository:                boardRepository,
+		BoardColumnRepository:          boardColumnRepository,
+		BoardColumnStatusRepository:    boardColumnStatusRepository,
 		DashboardRepository:            dashboardRepository,
 		UserRepository:                 userRepository,
 		StatusRepository:               statusRepository,

@@ -19,6 +19,8 @@ func (board_column BoardColumnModel) TableName() string {
 }
 
 func (board_column *BoardColumnModel) BeforeCreate(tx *gorm.DB) (err error) {
-	board_column.ID = uuid.New()
+	if board_column.ID == uuid.Nil {
+		board_column.ID = uuid.New()
+	}
 	return
 }
