@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -25,17 +25,17 @@ func (r ProjectTrackerTransitionRepository) All() (*[]ProjectTrackerTransitionMo
 	query := r.DB.Select("project_tracker_transition.*")
 
 	if err := query.Find(&project_tracker_transitions).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch project tracker transitions", "error", err)
 	}
 	return &project_tracker_transitions, err
 }
 
 func (r ProjectTrackerTransitionRepository) FindByID(project_tracker_transition_id uuid.UUID) (*ProjectTrackerTransitionModel, error) {
 	var project_tracker_transition ProjectTrackerTransitionModel
-	query := r.DB.Model(ProjectTrackerTransitionModel{ID: project_tracker_transition_id}).Scan(&project_tracker_transition)
+	query := r.DB.First(&project_tracker_transition, project_tracker_transition_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find project tracker transition by id", "error", query.Error)
 	}
 	return &project_tracker_transition, query.Error
 }
@@ -43,7 +43,7 @@ func (r ProjectTrackerTransitionRepository) FindByID(project_tracker_transition_
 func (r ProjectTrackerTransitionRepository) Create(project_tracker_transition *ProjectTrackerTransitionModel) error {
 	query := r.DB.Create(&project_tracker_transition)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create project tracker transition", "error", query.Error)
 	}
 	return query.Error
 }
@@ -51,7 +51,7 @@ func (r ProjectTrackerTransitionRepository) Create(project_tracker_transition *P
 func (r ProjectTrackerTransitionRepository) Update(project_tracker_transition_id uuid.UUID, project_tracker_transition *ProjectTrackerTransitionModel) error {
 	query := r.DB.Model(ProjectTrackerTransitionModel{}).Where("id", project_tracker_transition_id).Updates(&project_tracker_transition)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to update project tracker transition", "error", query.Error)
 	}
 	return query.Error
 }
@@ -59,7 +59,7 @@ func (r ProjectTrackerTransitionRepository) Update(project_tracker_transition_id
 func (r ProjectTrackerTransitionRepository) Destroy(project_tracker_transition_id uuid.UUID) error {
 	query := r.DB.Model(ProjectTrackerTransitionModel{}).Delete(ProjectTrackerTransitionModel{}, project_tracker_transition_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to destroy project tracker transition", "error", query.Error)
 	}
 	return query.Error
 }

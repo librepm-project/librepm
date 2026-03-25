@@ -58,7 +58,7 @@ onBeforeMount(async () => {
 
 const remove = async () => {
   if (confirm(t('global.delete_confirm'))) {
-    await issueStore.remove(route.params.issueId.toString());
+    await issueStore.destroy(route.params.issueId.toString());
     router.push('/issue');
   }
 }

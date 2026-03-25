@@ -22,7 +22,7 @@ const onEdit = (item: Board) => {
 
 const onDelete = async (item: Board) => {
   if (confirm(t('global.delete_confirm'))) {
-    await boardStore.remove(item.id);
+    await boardStore.destroy(item.id);
     await boardStore.getBoards();
   }
 }

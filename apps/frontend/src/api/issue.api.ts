@@ -21,15 +21,14 @@ const update = async (issueId: string, issue: Partial<Issue>): Promise<Issue> =>
     return response.data as Issue;
 }
 
-const remove = async (issueId: string): Promise<void> => {
+const destroy = async (issueId: string): Promise<void> => {
     await api.apiCall().delete(`/issue/${issueId}`);
 }
-
 
 export default {
     index,
     show,
     create,
     update,
-    remove
+    destroy
 }

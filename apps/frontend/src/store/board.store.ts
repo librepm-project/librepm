@@ -31,8 +31,8 @@ export const useBoardStore = defineStore('board', {
       await boardApi.update(boardId, board);
     },
 
-    async remove(boardId: string) {
-      await boardApi.remove(boardId);
+    async destroy(boardId: string) {
+      await boardApi.destroy(boardId);
     }
   },
 });

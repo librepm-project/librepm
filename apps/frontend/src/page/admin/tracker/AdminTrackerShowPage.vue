@@ -19,7 +19,7 @@ const trackerStore = useTrackerStore();
 
 const handleSubmit = async (tracker: Tracker) => {
   try {
-    const trackerId = route.params.trackerid as string;
+    const trackerId = route.params.trackerId as string;
     await trackerStore.putTracker(trackerId, tracker);
     router.push('/admin/tracker');
   } catch (error) {
@@ -28,7 +28,7 @@ const handleSubmit = async (tracker: Tracker) => {
 };
 
 onMounted(async () => {
-  const trackerId = route.params.trackerid as string;
+  const trackerId = route.params.trackerId as string;
   await trackerStore.getTracker(trackerId);
 });
 </script>

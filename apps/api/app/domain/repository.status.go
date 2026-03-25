@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -26,17 +26,17 @@ func (r StatusRepository) All() (*[]StatusModel, error) {
 	query := r.DB.Select("status.*")
 
 	if err := query.Find(&statuses).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch statuses", "error", err)
 	}
 	return &statuses, err
 }
 
 func (r StatusRepository) FindByID(status_id uuid.UUID) (*StatusModel, error) {
 	var status StatusModel
-	query := r.DB.Model(StatusModel{ID: status_id}).Scan(&status)
+	query := r.DB.First(&status, status_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find status by id", "error", query.Error)
 	}
 	return &status, query.Error
 }
@@ -46,7 +46,7 @@ func (r StatusRepository) FindByName(name string) (*StatusModel, error) {
 	query := r.DB.Where("name = ?", name).First(&status)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find status by name", "error", query.Error)
 	}
 	return &status, query.Error
 }
@@ -54,7 +54,7 @@ func (r StatusRepository) FindByName(name string) (*StatusModel, error) {
 func (r StatusRepository) Create(status *StatusModel) error {
 	query := r.DB.Create(&status)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create status", "error", query.Error)
 	}
 	return query.Error
 }
@@ -62,7 +62,7 @@ func (r StatusRepository) Create(status *StatusModel) error {
 func (r StatusRepository) Update(status_id uuid.UUID, status *StatusModel) error {
 	query := r.DB.Model(StatusModel{}).Where("id", status_id).Updates(&status)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to update status", "error", query.Error)
 	}
 	return query.Error
 }
@@ -70,7 +70,7 @@ func (r StatusRepository) Update(status_id uuid.UUID, status *StatusModel) error
 func (r StatusRepository) Destroy(status_id uuid.UUID) error {
 	query := r.DB.Model(StatusModel{}).Delete(StatusModel{}, status_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to destroy status", "error", query.Error)
 	}
 	return query.Error
 }

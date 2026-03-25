@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -30,7 +30,7 @@ func (r ProjectIssuePropertyRepository) FindByProjectId(project_id uuid.UUID) (*
 		Scan(&result).Error
 
 	if err != nil {
-		fmt.Println(err.Error())
+		slog.Error("failed to fetch project issue properties", "error", err)
 	}
 
 	project_issue_property := &ProjectIssueProperty{}

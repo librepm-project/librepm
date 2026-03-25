@@ -15,9 +15,9 @@ type Domain struct {
 	BoardService               BoardServiceInterface
 	DashboardService           DashboardServiceInterface
 	DashboardWidgetService     DashboardWidgetServiceInterface
-	UserService         UserService
-	UserSessionService  UserSessionService
-	UserRegisterService UserRegisterService
+	UserService         UserServiceInterface
+	UserSessionService  UserSessionServiceInterface
+	UserRegisterService UserRegisterServiceInterface
 	StatusService       StatusServiceInterface
 	TransitionService   TransitionServiceInterface
 	TrackerService      TrackerServiceInterface

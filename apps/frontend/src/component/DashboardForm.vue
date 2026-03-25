@@ -24,7 +24,7 @@ const form = ref(null);
 const submit = async () => {
     const { valid } = await form.value.validate();
     if (valid) {
-        props.onSubmit({ name, codeName });
+        props.onSubmit({ name: name.value, description: description.value, public: isPublic.value });
     }
 };
 </script>

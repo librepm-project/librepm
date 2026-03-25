@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -25,17 +25,17 @@ func (r BoardColumnStatusRepository) All() (*[]BoardColumnStatusModel, error) {
 	query := r.DB.Select("board_column_status.*")
 
 	if err := query.Find(&board_column_statuses).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch board column statuses", "error", err)
 	}
 	return &board_column_statuses, err
 }
 
 func (r BoardColumnStatusRepository) FindByID(board_column_status_id uuid.UUID) (*BoardColumnStatusModel, error) {
 	var board_column_status BoardColumnStatusModel
-	query := r.DB.Model(BoardColumnStatusModel{ID: board_column_status_id}).Scan(&board_column_status)
+	query := r.DB.First(&board_column_status, board_column_status_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find board column status by id", "error", query.Error)
 	}
 	return &board_column_status, query.Error
 }
@@ -43,7 +43,7 @@ func (r BoardColumnStatusRepository) FindByID(board_column_status_id uuid.UUID) 
 func (r BoardColumnStatusRepository) Create(board_column_status *BoardColumnStatusModel) error {
 	query := r.DB.Create(&board_column_status)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create board column status", "error", query.Error)
 	}
 	return query.Error
 }
@@ -51,7 +51,7 @@ func (r BoardColumnStatusRepository) Create(board_column_status *BoardColumnStat
 func (r BoardColumnStatusRepository) Update(board_column_status_id uuid.UUID, board_column_status *BoardColumnStatusModel) error {
 	query := r.DB.Model(BoardColumnStatusModel{}).Where("id", board_column_status_id).Updates(&board_column_status)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to update board column status", "error", query.Error)
 	}
 	return query.Error
 }
@@ -59,7 +59,7 @@ func (r BoardColumnStatusRepository) Update(board_column_status_id uuid.UUID, bo
 func (r BoardColumnStatusRepository) Destroy(board_column_status_id uuid.UUID) error {
 	query := r.DB.Model(BoardColumnStatusModel{}).Delete(BoardColumnStatusModel{}, board_column_status_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to destroy board column status", "error", query.Error)
 	}
 	return query.Error
 }

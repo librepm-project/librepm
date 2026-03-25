@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -26,7 +26,7 @@ func (r UserRepository) All() (*[]UserModel, error) {
 	query := r.DB.Select("user.*")
 
 	if err := query.Find(&users).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch users", "error", err)
 	}
 
 	return &users, err
@@ -43,7 +43,7 @@ func (r UserRepository) FindByEmail(email string) (*UserModel, error) {
 
 func (r UserRepository) FindByID(user_id uuid.UUID) (*UserModel, error) {
 	var user UserModel
-	query := r.DB.Where("id", user_id).Find(&user)
+	query := r.DB.Where("id = ?", user_id).First(&user)
 	return &user, query.Error
 }
 

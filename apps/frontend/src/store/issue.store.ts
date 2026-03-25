@@ -32,8 +32,8 @@ export const useIssueStore = defineStore('issue', {
       this.current = await issueApi.update(issueId, issue);
     },
 
-    async remove(issueId: string) {
-      await issueApi.remove(issueId);
+    async destroy(issueId: string) {
+      await issueApi.destroy(issueId);
       this.current = null;
     }
   },

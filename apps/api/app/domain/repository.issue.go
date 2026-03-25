@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 	"strings"
 
 	"github.com/google/uuid"
@@ -27,7 +27,7 @@ func (r IssueRepository) All() (*[]IssueModel, error) {
 	query := r.DB.Select("issue.*")
 
 	if err := query.Preload("Project").Preload("Tracker").Preload("Status").Find(&issues).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch issues", "error", err)
 	}
 	return &issues, err
 }
@@ -66,7 +66,7 @@ func (r IssueRepository) AllByFilter(conditions []FilterConditionModel) (*[]Issu
 	}
 
 	if err := query.Preload("Project").Preload("Tracker").Preload("Status").Find(&issues).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch issues by filter", "error", err)
 		return nil, err
 	}
 	return &issues, nil
@@ -77,7 +77,7 @@ func (r IssueRepository) FindByID(issue_id uuid.UUID) (*IssueModel, error) {
 	query := r.DB.Preload("Project").Preload("Tracker").Preload("Status").First(&issue, issue_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find issue by id", "error", query.Error)
 	}
 	return &issue, query.Error
 }
@@ -85,7 +85,7 @@ func (r IssueRepository) FindByID(issue_id uuid.UUID) (*IssueModel, error) {
 func (r IssueRepository) Create(issue *IssueModel) error {
 	query := r.DB.Create(&issue)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create issue", "error", query.Error)
 	}
 	return query.Error
 }
@@ -93,7 +93,7 @@ func (r IssueRepository) Create(issue *IssueModel) error {
 func (r IssueRepository) Update(issue_id uuid.UUID, issue *IssueModel) error {
 	query := r.DB.Model(IssueModel{}).Where("id", issue_id).Updates(&issue)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to update issue", "error", query.Error)
 	}
 	return query.Error
 }
@@ -101,7 +101,7 @@ func (r IssueRepository) Update(issue_id uuid.UUID, issue *IssueModel) error {
 func (r IssueRepository) Destroy(issue_id uuid.UUID) error {
 	query := r.DB.Delete(&IssueModel{}, issue_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to destroy issue", "error", query.Error)
 	}
 	return query.Error
 }

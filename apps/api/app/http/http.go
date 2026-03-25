@@ -2,8 +2,8 @@ package http
 
 import (
 	"apps/api/app/domain"
-	"fmt"
 	"libs/http_utils"
+	"log/slog"
 )
 
 func StartHttpServer(domain domain.Domain) {
@@ -65,7 +65,7 @@ func StartHttpServer(domain domain.Domain) {
 		},
 	}.Init()
 
-	fmt.Println("API listen on port 80")
+	slog.Info("API listen on port 80")
 	http_utils.StartGenericHTTPServer(http_utils.StartGenericHTTPServerContext{
 		Router:                         router,
 		AuthorizationMiddlewareContext: authorization_middleware_context,

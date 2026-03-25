@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -23,7 +23,7 @@ func (r DashboardWidgetRepository) AllByDashboard(dashboard_id uuid.UUID) (*[]Da
 		Preload("Filter.FilterConditions").
 		Where("dashboard_id = ?", dashboard_id).
 		Find(&widgets).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch dashboard widgets", "error", err)
 		return nil, err
 	}
 	return &widgets, nil
@@ -32,7 +32,7 @@ func (r DashboardWidgetRepository) AllByDashboard(dashboard_id uuid.UUID) (*[]Da
 func (r DashboardWidgetRepository) Create(widget *DashboardWidgetModel) error {
 	query := r.DB.Create(&widget)
 	if query.Error != nil {
-		fmt.Println(query.Error)
+		slog.Error("failed to create dashboard widget", "error", query.Error)
 	}
 	return query.Error
 }
@@ -40,7 +40,7 @@ func (r DashboardWidgetRepository) Create(widget *DashboardWidgetModel) error {
 func (r DashboardWidgetRepository) Destroy(widget_id uuid.UUID) error {
 	query := r.DB.Delete(&DashboardWidgetModel{}, widget_id)
 	if query.Error != nil {
-		fmt.Println(query.Error)
+		slog.Error("failed to destroy dashboard widget", "error", query.Error)
 	}
 	return query.Error
 }

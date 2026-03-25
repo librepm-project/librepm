@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -22,7 +22,7 @@ type FilterRepository struct {
 func (r FilterRepository) All() (*[]FilterModel, error) {
 	var filters []FilterModel
 	if err := r.DB.Preload("FilterConditions").Find(&filters).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch filters", "error", err)
 		return nil, err
 	}
 	return &filters, nil
@@ -32,7 +32,7 @@ func (r FilterRepository) FindByID(filter_id uuid.UUID) (*FilterModel, error) {
 	var filter FilterModel
 	query := r.DB.Preload("FilterConditions").First(&filter, filter_id)
 	if query.Error != nil {
-		fmt.Println(query.Error)
+		slog.Error("failed to find filter by id", "error", query.Error)
 	}
 	return &filter, query.Error
 }
@@ -40,7 +40,7 @@ func (r FilterRepository) FindByID(filter_id uuid.UUID) (*FilterModel, error) {
 func (r FilterRepository) Create(filter *FilterModel) error {
 	query := r.DB.Create(&filter)
 	if query.Error != nil {
-		fmt.Println(query.Error)
+		slog.Error("failed to create filter", "error", query.Error)
 	}
 	return query.Error
 }
@@ -70,7 +70,7 @@ func (r FilterRepository) Destroy(filter_id uuid.UUID) error {
 	r.DB.Where("filter_id = ?", filter_id).Delete(&FilterConditionModel{})
 	query := r.DB.Delete(FilterModel{}, filter_id)
 	if query.Error != nil {
-		fmt.Println(query.Error)
+		slog.Error("failed to destroy filter", "error", query.Error)
 	}
 	return query.Error
 }

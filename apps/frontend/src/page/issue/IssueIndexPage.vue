@@ -24,7 +24,7 @@ const onEdit = (item: Issue) => {
 
 const onDelete = async (item: Issue) => {
   if (confirm(t('global.delete_confirm'))) {
-    await issueStore.remove(item.id);
+    await issueStore.destroy(item.id);
     await issueStore.getIssues();
   }
 }

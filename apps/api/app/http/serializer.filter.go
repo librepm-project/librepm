@@ -22,6 +22,7 @@ type FilterConditionResponse struct {
 type FilterRequest struct {
 	Name        string                   `json:"name"`
 	Description string                   `json:"description"`
+	Public      bool                     `json:"public"`
 	Conditions  []FilterConditionRequest `json:"conditions"`
 }
 
@@ -29,6 +30,7 @@ type FilterResponse struct {
 	ID          uuid.UUID                 `json:"id"`
 	Name        string                    `json:"name"`
 	Description string                    `json:"description"`
+	Public      bool                      `json:"public"`
 	Conditions  []FilterConditionResponse `json:"conditions"`
 }
 
@@ -46,6 +48,7 @@ func (s FilterSerializer) RequestToModel(filter_request FilterRequest) domain.Fi
 	return domain.FilterModel{
 		Name:             filter_request.Name,
 		Description:      filter_request.Description,
+		Public:           filter_request.Public,
 		FilterConditions: conditions,
 	}
 }
@@ -64,6 +67,7 @@ func (s FilterSerializer) ModelToResponse(filter domain.FilterModel) FilterRespo
 		ID:          filter.ID,
 		Name:        filter.Name,
 		Description: filter.Description,
+		Public:      filter.Public,
 		Conditions:  conditions,
 	}
 }

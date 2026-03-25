@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -25,17 +25,17 @@ func (r DashboardRepository) All() (*[]DashboardModel, error) {
 	query := r.DB.Select("dashboard.*")
 
 	if err := query.Find(&dashboards).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch dashboards", "error", err)
 	}
 	return &dashboards, err
 }
 
 func (r DashboardRepository) FindByID(dashboard_id uuid.UUID) (*DashboardModel, error) {
 	var dashboard DashboardModel
-	query := r.DB.Model(DashboardModel{ID: dashboard_id}).Scan(&dashboard)
+	query := r.DB.First(&dashboard, dashboard_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find dashboard by id", "error", query.Error)
 	}
 	return &dashboard, query.Error
 }
@@ -43,7 +43,7 @@ func (r DashboardRepository) FindByID(dashboard_id uuid.UUID) (*DashboardModel, 
 func (r DashboardRepository) Create(dashboard *DashboardModel) error {
 	query := r.DB.Create(&dashboard)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create dashboard", "error", query.Error)
 	}
 	return query.Error
 }
@@ -51,7 +51,7 @@ func (r DashboardRepository) Create(dashboard *DashboardModel) error {
 func (r DashboardRepository) Update(dashboard_id uuid.UUID, dashboard *DashboardModel) error {
 	query := r.DB.Model(DashboardModel{}).Where("id", dashboard_id).Updates(&dashboard)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to update dashboard", "error", query.Error)
 	}
 	return query.Error
 }
@@ -59,7 +59,7 @@ func (r DashboardRepository) Update(dashboard_id uuid.UUID, dashboard *Dashboard
 func (r DashboardRepository) Destroy(dashboard_id uuid.UUID) error {
 	query := r.DB.Model(DashboardModel{}).Delete(DashboardModel{}, dashboard_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to destroy dashboard", "error", query.Error)
 	}
 	return query.Error
 }

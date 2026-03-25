@@ -78,7 +78,12 @@ func (c IssueController) Update(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	updated, err := c.IssueService.Show(issue_id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*updated))
 }
 
 func (c IssueController) Destroy(w http.ResponseWriter, r *http.Request) {

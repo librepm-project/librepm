@@ -21,7 +21,7 @@ const projectStore = useProjectStore();
 
 const handleSubmit = async (project: Omit<Project, 'id'>) => {
   try {
-    const projectId = route.params.projectid as string;
+    const projectId = route.params.projectId as string;
     await projectStore.putProject(projectId, project);
     router.push('/admin/project');
   } catch (error) {
@@ -30,7 +30,7 @@ const handleSubmit = async (project: Omit<Project, 'id'>) => {
 };
 
 onMounted(async () => {
-  const projectId = route.params.projectid as string;
+  const projectId = route.params.projectId as string;
   await projectStore.getProject(projectId);
 });
 </script>

@@ -61,7 +61,12 @@ func (c ProjectController) Update(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	updated, err := c.ProjectService.Show(project_id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponse(*updated))
 }
 
 func (c ProjectController) Destroy(w http.ResponseWriter, r *http.Request) {

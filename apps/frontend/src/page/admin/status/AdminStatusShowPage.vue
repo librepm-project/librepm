@@ -19,7 +19,7 @@ const statusStore = useStatusStore();
 
 const handleSubmit = async (status: Status) => {
   try {
-    const statusId = route.params.statusid as string;
+    const statusId = route.params.statusId as string;
     await statusStore.putStatus(statusId, status);
     router.push('/admin/status');
   } catch (error) {
@@ -28,7 +28,7 @@ const handleSubmit = async (status: Status) => {
 };
 
 onMounted(async () => {
-  const statusId = route.params.statusid as string;
+  const statusId = route.params.statusId as string;
   await statusStore.getStatus(statusId);
 });
 </script>

@@ -15,7 +15,7 @@ export const adminProjectRouter: RouteRecordRaw[] = [
     component: AdminProjectCreatePage,
   },
   {
-    path: '/admin/project/:projectid',
+    path: '/admin/project/:projectId',
     name: 'adminProjectShow',
     component: AdminProjectShowPage,
   },

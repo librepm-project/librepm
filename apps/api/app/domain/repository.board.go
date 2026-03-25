@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -29,7 +29,7 @@ func (r BoardRepository) All() (*[]BoardModel, error) {
 		}).
 		Preload("BoardColumns.BoardColumnStatuses.Status").
 		Find(&boards).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch boards", "error", err)
 	}
 	return &boards, err
 }
@@ -44,7 +44,7 @@ func (r BoardRepository) FindByID(board_id uuid.UUID) (*BoardModel, error) {
 		First(&board, board_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find board by id", "error", query.Error)
 	}
 	return &board, query.Error
 }
@@ -52,7 +52,7 @@ func (r BoardRepository) FindByID(board_id uuid.UUID) (*BoardModel, error) {
 func (r BoardRepository) Create(board *BoardModel) error {
 	query := r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Create(&board)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create board", "error", query.Error)
 	}
 	return query.Error
 }

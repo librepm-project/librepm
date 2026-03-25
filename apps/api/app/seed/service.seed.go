@@ -3,6 +3,7 @@ package seed
 import (
 	"apps/api/app/domain"
 	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/go-playground/validator/v10"
@@ -68,7 +69,7 @@ func (s SeedService) Seed(filePath string) []error {
 	err = s.createIssue(seedData.Issues)
 	errors = append(errors, err)
 
-	fmt.Println("Seed completed successfully")
+	slog.Info("seed completed successfully")
 	return errors
 }
 

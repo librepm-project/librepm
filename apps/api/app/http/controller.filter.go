@@ -64,7 +64,12 @@ func (c FilterController) Update(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	updated, err := c.FilterService.Show(filter_id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	http_utils.RespondWithJSON(w, http.StatusOK, FilterSerializer{}.ModelToResponse(*updated))
 }
 
 func (c FilterController) Destroy(w http.ResponseWriter, r *http.Request) {

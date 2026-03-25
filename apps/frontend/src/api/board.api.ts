@@ -21,7 +21,7 @@ const update = async (boardId: string, board: Partial<Board>): Promise<Board> =>
     return response.data as Board;
 }
 
-const remove = async (boardId: string): Promise<void> => {
+const destroy = async (boardId: string): Promise<void> => {
     await api.apiCall().delete(`/board/${boardId}`);
 }
 
@@ -30,5 +30,5 @@ export default {
     show,
     create,
     update,
-    remove
+    destroy
 }

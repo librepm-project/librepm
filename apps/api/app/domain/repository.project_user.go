@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -25,17 +25,17 @@ func (r ProjectUserRepository) All() (*[]ProjectUserModel, error) {
 	query := r.DB.Select("project_user.*")
 
 	if err := query.Find(&project_users).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch project users", "error", err)
 	}
 	return &project_users, err
 }
 
 func (r ProjectUserRepository) FindByID(project_user_id uuid.UUID) (*ProjectUserModel, error) {
 	var project_user ProjectUserModel
-	query := r.DB.Model(ProjectUserModel{ID: project_user_id}).Scan(&project_user)
+	query := r.DB.First(&project_user, project_user_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find project user by id", "error", query.Error)
 	}
 	return &project_user, query.Error
 }
@@ -43,7 +43,7 @@ func (r ProjectUserRepository) FindByID(project_user_id uuid.UUID) (*ProjectUser
 func (r ProjectUserRepository) Create(project_user *ProjectUserModel) error {
 	query := r.DB.Create(&project_user)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create project user", "error", query.Error)
 	}
 	return query.Error
 }
@@ -51,7 +51,7 @@ func (r ProjectUserRepository) Create(project_user *ProjectUserModel) error {
 func (r ProjectUserRepository) Update(project_user_id uuid.UUID, project_user *ProjectUserModel) error {
 	query := r.DB.Model(ProjectUserModel{}).Where("id", project_user_id).Updates(&project_user)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to update project user", "error", query.Error)
 	}
 	return query.Error
 }
@@ -59,7 +59,7 @@ func (r ProjectUserRepository) Update(project_user_id uuid.UUID, project_user *P
 func (r ProjectUserRepository) Destroy(project_user_id uuid.UUID) error {
 	query := r.DB.Model(ProjectUserModel{}).Delete(ProjectUserModel{}, project_user_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to destroy project user", "error", query.Error)
 	}
 	return query.Error
 }

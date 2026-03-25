@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -25,17 +25,17 @@ func (r ProjectTrackerStatusRepository) All() (*[]ProjectTrackerStatusModel, err
 	query := r.DB.Select("project_tracker_status.*")
 
 	if err := query.Find(&project_tracker_statuses).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch project tracker statuses", "error", err)
 	}
 	return &project_tracker_statuses, err
 }
 
 func (r ProjectTrackerStatusRepository) FindByID(project_tracker_status_id uuid.UUID) (*ProjectTrackerStatusModel, error) {
 	var project_tracker_status ProjectTrackerStatusModel
-	query := r.DB.Model(ProjectTrackerStatusModel{ID: project_tracker_status_id}).Scan(&project_tracker_status)
+	query := r.DB.First(&project_tracker_status, project_tracker_status_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find project tracker status by id", "error", query.Error)
 	}
 	return &project_tracker_status, query.Error
 }
@@ -43,7 +43,7 @@ func (r ProjectTrackerStatusRepository) FindByID(project_tracker_status_id uuid.
 func (r ProjectTrackerStatusRepository) Create(project_tracker_status *ProjectTrackerStatusModel) error {
 	query := r.DB.Create(&project_tracker_status)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create project tracker status", "error", query.Error)
 	}
 	return query.Error
 }
@@ -51,7 +51,7 @@ func (r ProjectTrackerStatusRepository) Create(project_tracker_status *ProjectTr
 func (r ProjectTrackerStatusRepository) Update(project_tracker_status_id uuid.UUID, project_tracker_status *ProjectTrackerStatusModel) error {
 	query := r.DB.Model(ProjectTrackerStatusModel{}).Where("id", project_tracker_status_id).Updates(&project_tracker_status)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to update project tracker status", "error", query.Error)
 	}
 	return query.Error
 }
@@ -59,7 +59,7 @@ func (r ProjectTrackerStatusRepository) Update(project_tracker_status_id uuid.UU
 func (r ProjectTrackerStatusRepository) Destroy(project_tracker_status_id uuid.UUID) error {
 	query := r.DB.Model(ProjectTrackerStatusModel{}).Delete(ProjectTrackerStatusModel{}, project_tracker_status_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to destroy project tracker status", "error", query.Error)
 	}
 	return query.Error
 }

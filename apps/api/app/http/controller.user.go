@@ -61,7 +61,12 @@ func (c UserController) Update(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	updated, err := c.UserService.Show(user_id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*updated))
 }
 
 func (c UserController) Destroy(w http.ResponseWriter, r *http.Request) {

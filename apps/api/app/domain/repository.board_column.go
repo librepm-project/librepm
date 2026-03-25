@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -25,17 +25,17 @@ func (r BoardColumnRepository) All() (*[]BoardColumnModel, error) {
 	query := r.DB.Select("board_column.*")
 
 	if err := query.Find(&board_columns).Error; err != nil {
-		fmt.Println(err)
+		slog.Error("failed to fetch board columns", "error", err)
 	}
 	return &board_columns, err
 }
 
 func (r BoardColumnRepository) FindByID(board_column_id uuid.UUID) (*BoardColumnModel, error) {
 	var board_column BoardColumnModel
-	query := r.DB.Model(BoardColumnModel{ID: board_column_id}).Scan(&board_column)
+	query := r.DB.First(&board_column, board_column_id)
 
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to find board column by id", "error", query.Error)
 	}
 	return &board_column, query.Error
 }
@@ -43,7 +43,7 @@ func (r BoardColumnRepository) FindByID(board_column_id uuid.UUID) (*BoardColumn
 func (r BoardColumnRepository) Create(board_column *BoardColumnModel) error {
 	query := r.DB.Create(&board_column)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to create board column", "error", query.Error)
 	}
 	return query.Error
 }
@@ -51,7 +51,7 @@ func (r BoardColumnRepository) Create(board_column *BoardColumnModel) error {
 func (r BoardColumnRepository) Update(board_column_id uuid.UUID, board_column *BoardColumnModel) error {
 	query := r.DB.Model(BoardColumnModel{}).Where("id", board_column_id).Updates(&board_column)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to update board column", "error", query.Error)
 	}
 	return query.Error
 }
@@ -59,7 +59,7 @@ func (r BoardColumnRepository) Update(board_column_id uuid.UUID, board_column *B
 func (r BoardColumnRepository) Destroy(board_column_id uuid.UUID) error {
 	query := r.DB.Model(BoardColumnModel{}).Delete(BoardColumnModel{}, board_column_id)
 	if query.Error != nil {
-		fmt.Println(query)
+		slog.Error("failed to destroy board column", "error", query.Error)
 	}
 	return query.Error
 }

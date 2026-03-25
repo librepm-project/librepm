@@ -61,7 +61,12 @@ func (c TrackerController) Update(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	updated, err := c.TrackerService.Show(tracker_id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	http_utils.RespondWithJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponse(*updated))
 }
 
 func (c TrackerController) Destroy(w http.ResponseWriter, r *http.Request) {
