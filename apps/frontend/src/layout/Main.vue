@@ -1,5 +1,5 @@
 <template>
-    <v-col cols="12" md="10" class="px-3">
+    <v-col cols="12" :md="layoutStore.sidebarItems.length > 0 ? 10 : 12">
         <v-card elevation="2" class="rounded-xl overflow-hidden">
             <v-card-title class="bg-primary text-white d-flex justify-space-between align-center">
                 <div class="d-flex align-center gap-3">
@@ -8,9 +8,9 @@
                 </div>
                 <actions />
             </v-card-title>
-            
+
             <v-divider />
-            
+
             <v-card-text class="pa-6">
                 <RouterView />
             </v-card-text>
@@ -21,7 +21,9 @@
 <script lang="ts" setup>
 import Actions from '@/layout/Actions.vue';
 import { RouterView } from 'vue-router';
+import { useLayoutStore } from '@/store/layout.store';
 
+const layoutStore = useLayoutStore();
 </script>
 
 <style scoped>

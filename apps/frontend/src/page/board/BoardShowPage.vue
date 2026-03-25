@@ -1,8 +1,48 @@
 <template>
   <v-container fluid v-if="boardStore.current">
-    <div class="d-flex align-center mb-4">
-      <h2 class="text-h4">{{ boardStore.current.name }}</h2>
-      <v-spacer></v-spacer>
+    <div class="d-flex align-center mb-5">
+      <v-menu transition="slide-y-transition">
+        <template #activator="{ props, isActive }">
+          <v-btn
+            v-bind="props"
+            variant="tonal"
+            color="primary"
+            rounded="xl"
+            size="large"
+            prepend-icon="mdi-view-dashboard"
+            :append-icon="isActive ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+            class="board-switcher-btn"
+          >
+            {{ boardStore.current.name }}
+          </v-btn>
+        </template>
+        <v-card rounded="xl" elevation="4" min-width="240" class="mt-1">
+          <v-list>
+            <v-list-subheader class="text-caption font-weight-bold text-uppercase">
+              {{ t('board.boards') }}
+            </v-list-subheader>
+            <v-list-item
+              v-for="board in boardStore.index"
+              :key="board.id"
+              :to="`/board/${board.id}`"
+              rounded="lg"
+              :active="board.id === boardStore.current?.id"
+              active-color="primary"
+              class="mx-2 mb-1"
+            >
+              <template #prepend>
+                <v-icon :color="board.id === boardStore.current?.id ? 'primary' : undefined">
+                  mdi-view-dashboard-outline
+                </v-icon>
+              </template>
+              <v-list-item-title class="font-weight-medium">{{ board.name }}</v-list-item-title>
+              <template v-if="board.id === boardStore.current?.id" #append>
+                <v-icon size="small" color="primary">mdi-check</v-icon>
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
     </div>
 
     <v-row class="board-row flex-nowrap overflow-x-auto">
@@ -82,12 +122,6 @@ const loadData = async () => {
       boardStore.getBoards()
     ]);
 
-    layoutStore.setSidebar(boardStore.index.map(board => ({
-      key: board.id,
-      title: board.name,
-      link: `/board/${board.id}`,
-    })));
-
     layoutStore.setActions([
       {
         text: 'global.edit',
@@ -103,7 +137,6 @@ onMounted(loadData);
 watch(() => route.params.boardId, loadData);
 
 onUnmounted(() => {
-  layoutStore.resetSidebar();
   layoutStore.resetActions();
 });
 
@@ -198,6 +231,14 @@ const onColumnDrop = async (column: BoardColumn) => {
 </script>
 
 <style scoped>
+.board-switcher-btn {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  padding-inline: 20px;
+}
+
 .board-row {
   height: calc(100vh - 180px);
   min-height: 500px;
