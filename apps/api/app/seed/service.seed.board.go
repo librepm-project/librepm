@@ -22,12 +22,13 @@ func (s SeedService) createBoard(items []BoardData) error {
 			return err
 		}
 
-		for _, col := range item.Columns {
+		for i, col := range item.Columns {
 			columnID := uuid.New()
 			err = s.BoardColumnRepository.Create(&domain.BoardColumnModel{
 				ID:      columnID,
 				BoardID: boardID,
 				Label:   col.Label,
+				Weight:  i,
 			})
 			if err != nil {
 				return err

@@ -6,17 +6,33 @@
     </div>
 
     <v-row class="board-row flex-nowrap overflow-x-auto">
-      <v-col v-if="boardStore.current.boardColumns && boardStore.current.boardColumns.length > 0"
-        v-for="column in boardStore.current.boardColumns" :key="column.id" class="board-column" cols="12" sm="6" md="4" lg="3">
-        <v-card variant="flat" color="grey-lighten-4" class="h-100 d-flex flex-column">
+      <v-col v-if="sortedColumns.length > 0"
+        v-for="column in sortedColumns" :key="column.id" class="board-column" cols="12" sm="6" md="4" lg="3">
+        <v-card
+          variant="flat"
+          color="grey-lighten-4"
+          class="h-100 d-flex flex-column column-drop-zone"
+          :class="getColumnClass(column)"
+          @dragover="onColumnDragOver($event, column)"
+          @dragleave="onColumnDragLeave($event, column)"
+          @drop.prevent="onColumnDrop(column)"
+        >
           <v-card-title class="d-flex align-center py-2 bg-grey-lighten-3">
             <span class="text-subtitle-1 font-weight-bold">{{ column.label }}</span>
             <v-chip size="x-small" class="ms-2" variant="flat">{{ getIssuesForColumn(column).length }}</v-chip>
           </v-card-title>
-          
+
           <v-card-text class="flex-grow-1 pa-2 overflow-y-auto">
             <div v-for="issue in getIssuesForColumn(column)" :key="issue.id" class="mb-2">
-              <v-card variant="flat" class="pa-3 issue-card border" @click="router.push(`/issue/${issue.id}`)">
+              <v-card
+                variant="flat"
+                class="pa-3 issue-card border"
+                :class="{ 'is-dragging': draggingIssue?.id === issue.id }"
+                draggable="true"
+                @dragstart="onIssueDragStart($event, issue)"
+                @dragend="onIssueDragEnd"
+                @click="router.push(`/issue/${issue.id}`)"
+              >
                 <div class="d-flex justify-space-between align-start mb-1">
                   <span class="text-caption text-grey">{{ issue.key }}</span>
                   <tracker-chip :tracker="issue.tracker" size="x-small" />
@@ -39,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useBoardStore } from '@/store/board.store';
 import { useIssueStore } from '@/store/issue.store';
@@ -47,6 +63,8 @@ import { useLayoutStore } from '@/store/layout.store';
 import { useRoute, useRouter } from 'vue-router';
 import TrackerChip from '@/component/TrackerChip.vue';
 import { BoardColumn } from '@/lib/interfaces/board.interface';
+import { Issue } from '@/lib/interfaces/issue.interface';
+import issueApi from '@/api/issue.api';
 
 const boardStore = useBoardStore();
 const issueStore = useIssueStore();
@@ -63,9 +81,6 @@ const loadData = async () => {
       issueStore.getIssues(),
       boardStore.getBoards()
     ]);
-
-    console.log('Board Data:', JSON.stringify(boardStore.current)); // Log board data
-    console.log('Issue Data:', JSON.stringify(issueStore.index));   // Log issue data
 
     layoutStore.setSidebar(boardStore.index.map(board => ({
       key: board.id,
@@ -85,7 +100,6 @@ const loadData = async () => {
 };
 
 onMounted(loadData);
-
 watch(() => route.params.boardId, loadData);
 
 onUnmounted(() => {
@@ -93,11 +107,93 @@ onUnmounted(() => {
   layoutStore.resetActions();
 });
 
+const sortedColumns = computed(() =>
+  [...(boardStore.current?.boardColumns ?? [])].sort((a, b) => (a.weight ?? 0) - (b.weight ?? 0))
+);
+
 const getIssuesForColumn = (column: BoardColumn) => {
-  console.log('Column data for filtering:', JSON.stringify(column)); // Log column data
   if (!column.statuses || !issueStore.index) return [];
   const statusIds = column.statuses.map(s => s.id);
   return issueStore.index.filter(issue => issue.status && statusIds.includes(issue.status.id));
+};
+
+// --- Drag & Drop issue status change ---
+const draggingIssue = ref<Issue | null>(null);
+const dragOverColumnId = ref<string | null>(null);
+const dragOverValid = ref(false);
+
+const onIssueDragStart = (event: DragEvent, issue: Issue) => {
+  draggingIssue.value = issue;
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', issue.id || '');
+  }
+};
+
+const onIssueDragEnd = () => {
+  draggingIssue.value = null;
+  dragOverColumnId.value = null;
+  dragOverValid.value = false;
+};
+
+const isValidDrop = (column: BoardColumn): boolean => {
+  if (!draggingIssue.value) return false;
+  return column.statuses != null && column.statuses.length > 0;
+};
+
+const onColumnDragOver = (event: DragEvent, column: BoardColumn) => {
+  event.preventDefault();
+  dragOverColumnId.value = column.id;
+  dragOverValid.value = isValidDrop(column);
+  if (event.dataTransfer) {
+    event.dataTransfer.dropEffect = dragOverValid.value ? 'move' : 'none';
+  }
+};
+
+const onColumnDragLeave = (event: DragEvent, column: BoardColumn) => {
+  const relatedTarget = event.relatedTarget as Node | null;
+  if (relatedTarget && (event.currentTarget as Element).contains(relatedTarget)) return;
+  if (dragOverColumnId.value === column.id) {
+    dragOverColumnId.value = null;
+    dragOverValid.value = false;
+  }
+};
+
+const getColumnClass = (column: BoardColumn) => {
+  if (dragOverColumnId.value !== column.id) return '';
+  return dragOverValid.value ? 'drop-valid' : 'drop-invalid';
+};
+
+const onColumnDrop = async (column: BoardColumn) => {
+  dragOverColumnId.value = null;
+  dragOverValid.value = false;
+
+  const issue = draggingIssue.value;
+  draggingIssue.value = null;
+
+  if (!issue || !column.statuses || column.statuses.length === 0) return;
+
+  const newStatus = column.statuses[0];
+  if (issue.status?.id === newStatus.id) return;
+
+  // Optimistic update
+  const issueInIndex = issueStore.index.find(i => i.id === issue.id);
+  const prevStatus = issue.status;
+  const prevStatusId = issue.statusId;
+
+  if (issueInIndex) {
+    issueInIndex.status = newStatus;
+    issueInIndex.statusId = newStatus.id;
+  }
+
+  try {
+    await issueApi.update(issue.id!, { statusId: newStatus.id });
+  } catch {
+    if (issueInIndex) {
+      issueInIndex.status = prevStatus;
+      issueInIndex.statusId = prevStatusId;
+    }
+  }
 };
 </script>
 
@@ -113,13 +209,35 @@ const getIssuesForColumn = (column: BoardColumn) => {
 }
 
 .issue-card {
-  cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s;
+  cursor: grab;
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.15s;
+  user-select: none;
 }
 
 .issue-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.issue-card:active {
+  cursor: grabbing;
+}
+
+.issue-card.is-dragging {
+  opacity: 0.4;
+}
+
+.column-drop-zone {
+  transition: outline 0.1s, background-color 0.1s;
+}
+
+.drop-valid {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgba(var(--v-theme-primary), 0.04) !important;
+}
+
+.drop-invalid {
+  outline: 2px dashed rgb(var(--v-theme-error));
 }
 
 .line-clamp-2 {

@@ -9,6 +9,7 @@ import (
 type BoardColumnRequest struct {
 	ID        uuid.UUID   `json:"id"`
 	Label     string      `json:"label"`
+	Weight    int         `json:"weight"`
 	StatusIDs []uuid.UUID `json:"statusIds"`
 }
 
@@ -22,6 +23,7 @@ type BoardRequest struct {
 type BoardColumnResponse struct {
 	ID       uuid.UUID        `json:"id"`
 	Label    string           `json:"label"`
+	Weight   int              `json:"weight"`
 	Statuses []StatusResponse `json:"statuses"`
 }
 
@@ -47,6 +49,7 @@ func (s BoardSerializer) RequestToModel(board_request BoardRequest) domain.Board
 		columns = append(columns, domain.BoardColumnModel{
 			ID:                  col.ID,
 			Label:               col.Label,
+			Weight:              col.Weight,
 			BoardColumnStatuses: statuses,
 		})
 	}
@@ -68,6 +71,7 @@ func (s BoardSerializer) ModelToResponse(board domain.BoardModel) BoardResponse 
 		columns = append(columns, BoardColumnResponse{
 			ID:       col.ID,
 			Label:    col.Label,
+			Weight:   col.Weight,
 			Statuses: statuses,
 		})
 	}

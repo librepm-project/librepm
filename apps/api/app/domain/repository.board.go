@@ -22,9 +22,13 @@ type BoardRepository struct {
 func (r BoardRepository) All() (*[]BoardModel, error) {
 	var boards []BoardModel
 	var err error
-	query := r.DB.Select("board.*")
 
-	if err := query.Preload("BoardColumns.BoardColumnStatuses.Status").Find(&boards).Error; err != nil {
+	if err = r.DB.Select("board.*").
+		Preload("BoardColumns", func(db *gorm.DB) *gorm.DB {
+			return db.Order("board_column.weight ASC")
+		}).
+		Preload("BoardColumns.BoardColumnStatuses.Status").
+		Find(&boards).Error; err != nil {
 		fmt.Println(err)
 	}
 	return &boards, err
@@ -32,7 +36,12 @@ func (r BoardRepository) All() (*[]BoardModel, error) {
 
 func (r BoardRepository) FindByID(board_id uuid.UUID) (*BoardModel, error) {
 	var board BoardModel
-	query := r.DB.Preload("BoardColumns.BoardColumnStatuses.Status").First(&board, board_id)
+	query := r.DB.
+		Preload("BoardColumns", func(db *gorm.DB) *gorm.DB {
+			return db.Order("board_column.weight ASC")
+		}).
+		Preload("BoardColumns.BoardColumnStatuses.Status").
+		First(&board, board_id)
 
 	if query.Error != nil {
 		fmt.Println(query)
