@@ -19,7 +19,7 @@ const issueStore = useIssueStore();
 const layoutStore = useLayoutStore();
 
 const onEdit = (item: Issue) => {
-  router.push(`/issue/${item.id}/edit`);
+  router.push(`/issue/${item.id}`);
 }
 
 const onDelete = async (item: Issue) => {

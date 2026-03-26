@@ -15,6 +15,7 @@ export const en = {
         actions: 'Actions',
         details: 'Details',
         no_data: 'No data',
+        cancel: 'Cancel',
     },
     title: {
         issueIndex: 'Issues',
@@ -48,6 +49,8 @@ export const en = {
         project: 'Project',
         tracker: 'Tracker',
         related_issues: 'Related Issues',
+        add_relation: 'Add relation',
+        relation_type: 'Relation type',
         direction: {
             blocks: 'Blocks',
             blocked_by: 'Blocked By',

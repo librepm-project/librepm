@@ -45,7 +45,7 @@ func (s RelatedIssueService) Create(issueAID, issueBID uuid.UUID, relationType s
 		return nil, fmt.Errorf("failed to create relationship: %w", err)
 	}
 
-	return relation, nil
+	return s.RelatedIssueRepository.FindByID(relation.ID)
 }
 
 func (s RelatedIssueService) GetRelatedIssues(issueID uuid.UUID, relationType *string) (*[]RelatedIssueModel, error) {
