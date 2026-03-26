@@ -13,10 +13,11 @@ type DashboardRequest struct {
 }
 
 type DashboardResponse struct {
-	ID          uuid.UUID `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Public      bool      `json:"public"`
+	ID          uuid.UUID                  `json:"id"`
+	Name        string                     `json:"name"`
+	Description string                     `json:"description"`
+	Public      bool                       `json:"public"`
+	Widgets     []DashboardWidgetResponse `json:"widgets"`
 }
 
 type DashboardSerializer struct{}
@@ -30,11 +31,17 @@ func (s DashboardSerializer) RequestToModel(dashboard_request DashboardRequest) 
 }
 
 func (s DashboardSerializer) ModelToResponse(dashboard domain.DashboardModel) DashboardResponse {
+	widgets := []DashboardWidgetResponse{}
+	for _, w := range dashboard.Widgets {
+		widgets = append(widgets, DashboardWidgetSerializer{}.ModelToResponse(w))
+	}
+
 	return DashboardResponse{
 		ID:          dashboard.ID,
 		Name:        dashboard.Name,
 		Description: dashboard.Description,
 		Public:      dashboard.Public,
+		Widgets:     widgets,
 	}
 }
 

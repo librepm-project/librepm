@@ -34,6 +34,7 @@ type SeedService struct {
 	UserRepository                     domain.UserRepositoryInterface
 	RelatedIssueService                domain.RelatedIssueServiceInterface
 	RelatedIssueRepository             domain.RelatedIssueRepositoryInterface
+	DashboardWidgetRepository          domain.DashboardWidgetRepositoryInterface
 	PurgeRepository                    PurgeRepositoryInterface
 }
 
@@ -66,6 +67,9 @@ func (s SeedService) Seed(filePath string) []error {
 	errors = append(errors, err)
 
 	err = s.createFilter(seedData.Filters)
+	errors = append(errors, err)
+
+	err = s.createDashboardWidget(seedData.DashboardWidgets)
 	errors = append(errors, err)
 
 	err = s.createIssue(seedData.Issues)

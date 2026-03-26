@@ -16,7 +16,8 @@ type DashboardModel struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 
-	User UserModel
+	User    UserModel
+	Widgets []DashboardWidgetModel `gorm:"foreignKey:DashboardID"`
 }
 
 func (dashboard DashboardModel) TableName() string {

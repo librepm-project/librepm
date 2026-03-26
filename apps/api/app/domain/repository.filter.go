@@ -10,6 +10,7 @@ import (
 type FilterRepositoryInterface interface {
 	All() (*[]FilterModel, error)
 	FindByID(filter_id uuid.UUID) (*FilterModel, error)
+	FindByName(name string) (*FilterModel, error)
 	Create(filter *FilterModel) error
 	Update(filter_id uuid.UUID, filter *FilterModel) error
 	Destroy(filter_id uuid.UUID) error
@@ -33,6 +34,15 @@ func (r FilterRepository) FindByID(filter_id uuid.UUID) (*FilterModel, error) {
 	query := r.DB.Preload("FilterConditions").First(&filter, filter_id)
 	if query.Error != nil {
 		slog.Error("failed to find filter by id", "error", query.Error)
+	}
+	return &filter, query.Error
+}
+
+func (r FilterRepository) FindByName(name string) (*FilterModel, error) {
+	var filter FilterModel
+	query := r.DB.Preload("FilterConditions").Where("name = ?", name).First(&filter)
+	if query.Error != nil {
+		slog.Error("failed to find filter by name", "name", name, "error", query.Error)
 	}
 	return &filter, query.Error
 }

@@ -24,6 +24,7 @@ func (r PurgeRepository) Purge() {
 		&domain.ProjectTrackerModel{},
 		&domain.ProjectModel{},
 
+		&domain.DashboardWidgetModel{},
 		&domain.DashboardModel{},
 
 		&domain.BoardColumnModel{},

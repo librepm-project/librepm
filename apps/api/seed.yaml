@@ -176,6 +176,20 @@ filters:
         op: "contains"
         value: "wedding"
 
+dashboard_widgets:
+  - dashboard_name: "Wedding Dashboard"
+    filter_name: "Wedding Tasks"
+    type: "filter"
+    title: "Wedding Tasks"
+    weight: 1
+    width: "1/2"
+  - dashboard_name: "Wedding Dashboard"
+    filter_name: "Open Issues"
+    type: "filter"
+    title: "All Open Issues"
+    weight: 2
+    width: "1/2"
+
 projects:
   - name: Wedding Project
     description: Planning and organizing the full wedding event
