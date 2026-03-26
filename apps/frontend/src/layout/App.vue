@@ -1,8 +1,9 @@
 <template>
   <v-app id="librepm">
-    <Header />
+    <Header v-if="!layoutStore.hideLayout" />
     
     <v-navigation-drawer
+      v-if="!layoutStore.hideLayout"
       v-model="layoutStore.isDrawerOpen"
       temporary
       class="d-md-none"
@@ -60,14 +61,17 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="bg-surface">
-      <v-container fluid class="pa-2 pa-sm-6">
+    <v-main :class="layoutStore.hideLayout ? 'bg-minimal' : 'bg-surface'">
+      <v-container v-if="layoutStore.hideLayout" fluid class="fill-height pa-0">
+        <router-view />
+      </v-container>
+      <v-container v-else fluid class="pa-2 pa-sm-6">
         <v-row>
           <Sidebar v-if="layoutStore.hasSidebar" class="d-none d-md-flex" />
           <Main :cols="12" :md="layoutStore.hasSidebar ? 10 : 12" />
         </v-row>
       </v-container>
-      <Footer />
+      <Footer v-if="!layoutStore.hideLayout" />
     </v-main>
   </v-app>
 </template>
@@ -111,5 +115,9 @@ onMounted(async () => {
 
 .bg-surface {
   background-color: rgba(245, 247, 250, 0.5);
+}
+
+.bg-minimal {
+  background: none;
 }
 </style>

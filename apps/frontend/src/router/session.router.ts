@@ -7,6 +7,7 @@ export const sessionRouter: RouteRecordRaw[] = [
     path: '/login',
     name: 'login',
     component: LoginPage,
+    meta: { hideLayout: true },
   },
   {
     path: '/profile',

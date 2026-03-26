@@ -83,10 +83,6 @@
     </div>
 
     <v-divider class="my-4"></v-divider>
-
-    <p class="text-caption mb-0">
-      <strong>ID:</strong> {{ issueStore.current.id }}
-    </p>
   </div>
 </template>
 

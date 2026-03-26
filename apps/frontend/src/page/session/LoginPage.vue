@@ -1,7 +1,7 @@
 <template>
   <v-container class="fill-height d-flex align-center justify-center" fluid>
-    <v-col cols="12" sm="8" md="5" lg="4">
-      <v-card class="pa-8 rounded-xl" elevation="4">
+    <v-col cols="12" sm="9" md="6" lg="5">
+      <v-card class="pa-10 rounded-xl mx-auto" elevation="4" max-width="600">
         <div class="text-center mb-6">
           <v-icon size="48" color="primary" class="mb-3">mdi-bug-outline</v-icon>
           <h1 class="text-h5 font-weight-bold">LibrePM</h1>
@@ -26,6 +26,7 @@
             variant="outlined"
             density="comfortable"
             class="mb-3"
+            min-width="200px"
           />
           <v-text-field
             v-model="password"
@@ -36,6 +37,7 @@
             variant="outlined"
             density="comfortable"
             class="mb-5"
+            min-width="200px"
           />
           <v-btn
             type="submit"

@@ -28,6 +28,7 @@ interface LayoutStore {
   actionButtons: ActionButton[];
   sidebarComponent: Component | null;
   sidebarProps: Record<string, any>;
+  hideLayout: boolean;
 }
 
 export const useLayoutStore = defineStore('sidebar', {
@@ -44,6 +45,7 @@ export const useLayoutStore = defineStore('sidebar', {
       actionButtons: [],
       sidebarComponent: null,
       sidebarProps: {},
+      hideLayout: false,
     };
   },
   getters: {
@@ -90,6 +92,9 @@ export const useLayoutStore = defineStore('sidebar', {
     },
     resetActions() {
       this.actionButtons = [];
+    },
+    setHideLayout(value: boolean) {
+      this.hideLayout = value;
     },
   }
 });

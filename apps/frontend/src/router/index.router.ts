@@ -11,6 +11,7 @@ import { adminStatusRouter } from '@/router/admin.status.router';
 import { adminTrackerRouter } from '@/router/admin.tracker.router';
 import { authorizationMiddleware } from '@/router/middleware/authorization.middleware';
 import { pageTitleMiddleware } from '@/router/middleware/page-title.middleware';
+import { layoutMiddleware } from '@/router/middleware/layout.middleware';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,7 @@ const router = createRouter({
   ],
 });
 
+router.beforeEach(layoutMiddleware)
 router.beforeEach(pageTitleMiddleware)
 router.beforeEach(authorizationMiddleware);
 
