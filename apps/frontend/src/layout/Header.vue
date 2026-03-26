@@ -54,16 +54,6 @@
       <v-spacer />
 
       <div class="d-flex align-center gap-3">
-        <v-text-field
-          :label="t('global.search')"
-          density="compact"
-          variant="solo-filled"
-          single-line
-          hide-details
-          prepend-inner-icon="mdi-magnify"
-          class="search-field"
-        />
-
         <template v-if="userCurrentStore.current">
           <span class="text-white text-body2 text-no-wrap">
             {{ userCurrentStore.current.firstName }} {{ userCurrentStore.current.lastName }}
@@ -191,11 +181,6 @@ const links: Link[] = [
 </script>
 
 <style scoped>
-.search-field {
-  max-width: 300px;
-  background-color: rgba(255, 255, 255, 0.95) !important;
-}
-
 .gap-4 {
   gap: 1rem;
 }

@@ -1,56 +1,34 @@
 <template>
-  <v-data-table class="issue-table" :items="items" :headers="headers">
-    <template #item.summary="{ item }">
-      <router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link>
+  <v-data-table :items="items" :headers="headers">
+    <template #item.key="{ item }">
+      <router-link :to="`/issue/${item.id}`" class="key-link">{{ item.key }}</router-link>
     </template>
     <template #item.tracker="{ item }">
       <tracker-chip :tracker="item.tracker" />
     </template>
+    <template #item.summary="{ item }">
+      <router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link>
+    </template>
     <template #item.status="{ item }">
       <status-chip :status="item.status" />
-    </template>
-    <template #item.actions="{ item }">
-      <general-record-actions :item="item" :onEdit="onEdit" :onDelete="onDelete" />
     </template>
   </v-data-table>
 </template>
 
 <script setup lang="ts">
 import { Issue } from '@/lib/interfaces/issue.interface';
-import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n';
 import TrackerChip from './TrackerChip.vue';
 import StatusChip from './StatusChip.vue';
-import GeneralRecordActions from '@/component/GeneralRecordActions.vue';
 
 const { t } = useI18n();
 
-const props = defineProps<{
-  items: Issue[],
-  onEdit: (item: Issue) => void,
-  onDelete: (item: Issue) => void,
-}>()
+defineProps<{ items: Issue[] }>();
 
 const headers = [
-  { key: 'key', title: t('issue.key') },
-  { key: 'tracker', title: t('issue.tracker') },
+  { key: 'key',     title: t('issue.key'),     width: '1px', cellProps: { class: 'text-no-wrap' } },
+  { key: 'tracker', title: t('issue.tracker'),  width: '1px', cellProps: { class: 'text-no-wrap' } },
   { key: 'summary', title: t('issue.summary') },
-  { key: 'status', title: t('issue.status') },
-  { key: 'actions', title: '' },
-]
-
+  { key: 'status',  title: t('issue.status'),   width: '1px', align: 'end', cellProps: { class: 'text-no-wrap' } },
+];
 </script>
-
-<style scoped>
-.issue-table {
-  table-layout: auto;
-  width: 100%;
-}
-
-.summary-col {
-  width: 100%;
-}
-
-.key-col {
-  white-space: nowrap;
-}
-</style>
