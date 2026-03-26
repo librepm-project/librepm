@@ -111,6 +111,10 @@ export const en = {
         language: 'Language',
         country: 'Country',
     },
+    audit_log: {
+        history: 'History',
+        no_history: 'No changes recorded yet.',
+    },
     attachment: {
         attachments: 'Attachments',
         upload: 'Upload',

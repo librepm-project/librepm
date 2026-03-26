@@ -65,6 +65,12 @@
         :issue-id="issueStore.current.id || ''"
         :worklogs="worklogStore.worklogs"
       />
+
+      <!-- History Section -->
+      <issue-audit-log-panel
+        :issue-id="issueStore.current.id || ''"
+        :audit-logs="auditLogStore.auditLogs"
+      />
     </v-card>
   </v-container>
 </template>
@@ -75,6 +81,7 @@ import { useIssueStore } from '@/store/issue.store';
 import { useRelatedIssueStore } from '@/store/related-issue.store';
 import { useWorklogStore } from '@/store/worklog.store';
 import { useAttachmentStore } from '@/store/attachment.store';
+import { useIssueAuditLogStore } from '@/store/issue-audit-log.store';
 import { useLayoutStore } from '@/store/layout.store';
 import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount, onMounted, onUnmounted } from 'vue';
@@ -83,6 +90,7 @@ import IssueSidebar from '@/component/IssueSidebar.vue';
 import RelatedIssuesPanel from '@/component/RelatedIssuesPanel.vue';
 import WorklogPanel from '@/component/WorklogPanel.vue';
 import AttachmentPanel from '@/component/AttachmentPanel.vue';
+import IssueAuditLogPanel from '@/component/IssueAuditLogPanel.vue';
 import RichTextField from '@/component/RichTextField.vue';
 
 const { t } = useI18n();
@@ -92,6 +100,7 @@ const issueStore = useIssueStore();
 const relatedIssueStore = useRelatedIssueStore();
 const worklogStore = useWorklogStore();
 const attachmentStore = useAttachmentStore();
+const auditLogStore = useIssueAuditLogStore();
 const layoutStore = useLayoutStore();
 
 // Summary inline edit
@@ -145,6 +154,7 @@ onBeforeMount(async () => {
   await relatedIssueStore.getRelated(route.params.issueId.toString());
   await worklogStore.getWorklogs(route.params.issueId.toString());
   await attachmentStore.getAttachments(route.params.issueId.toString());
+  await auditLogStore.getAuditLogs(route.params.issueId.toString());
   route.meta.title = `${issueStore.current!.key} - ${issueStore.current!.summary}`;
   layoutStore.setSidebarComponent(IssueSidebar, {});
 });

@@ -5,6 +5,7 @@ import (
 
 	"apps/api/app/domain"
 	"libs/http_utils"
+	"libs/jwt_utils"
 
 	"github.com/google/uuid"
 )
@@ -19,7 +20,8 @@ type AttachmentControllerInterface interface {
 }
 
 type AttachmentController struct {
-	AttachmentService domain.AttachmentServiceInterface
+	AttachmentService    domain.AttachmentServiceInterface
+	IssueAuditLogService domain.IssueAuditLogServiceInterface
 }
 
 func (c AttachmentController) IndexByIssue(w http.ResponseWriter, r *http.Request) {
@@ -69,6 +71,8 @@ func (c AttachmentController) CreateForProject(w http.ResponseWriter, r *http.Re
 }
 
 func (c AttachmentController) createAttachment(w http.ResponseWriter, r *http.Request, entityType string, entityID uuid.UUID) {
+	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
+
 	r.ParseMultipartForm(32 << 20)
 	file, header, err := r.FormFile("file")
 	if err != nil {
@@ -94,6 +98,11 @@ func (c AttachmentController) createAttachment(w http.ResponseWriter, r *http.Re
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	if entityType == "issue" {
+		c.IssueAuditLogService.LogAttachmentAdded(user_id, attachment)
+	}
+
 	http_utils.RespondWithJSON(w, http.StatusCreated, AttachmentSerializer{}.ModelToResponse(attachment))
 }
 
@@ -119,9 +128,23 @@ func (c AttachmentController) Destroy(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
+	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
+
+	attachment, err := c.AttachmentService.FindByID(attachmentID)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
 	if err := c.AttachmentService.Destroy(attachmentID); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
+	if attachment.EntityType == "issue" {
+		c.IssueAuditLogService.LogAttachmentRemoved(user_id, *attachment)
+	}
+
 	w.WriteHeader(http.StatusNoContent)
 }

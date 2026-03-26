@@ -10,6 +10,7 @@ type RelatedIssueServiceInterface interface {
 	Create(issueAID, issueBID uuid.UUID, relationType string) (*RelatedIssueModel, error)
 	GetRelatedIssues(issueID uuid.UUID, relationType *string) (*[]RelatedIssueModel, error)
 	Delete(relatedIssueID uuid.UUID) error
+	FindByID(relatedIssueID uuid.UUID) (*RelatedIssueModel, error)
 }
 
 type RelatedIssueService struct {
@@ -54,4 +55,8 @@ func (s RelatedIssueService) GetRelatedIssues(issueID uuid.UUID, relationType *s
 
 func (s RelatedIssueService) Delete(relatedIssueID uuid.UUID) error {
 	return s.RelatedIssueRepository.Delete(relatedIssueID)
+}
+
+func (s RelatedIssueService) FindByID(relatedIssueID uuid.UUID) (*RelatedIssueModel, error) {
+	return s.RelatedIssueRepository.FindByID(relatedIssueID)
 }

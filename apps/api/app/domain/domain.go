@@ -24,6 +24,7 @@ type Domain struct {
 	TransitionService       TransitionServiceInterface
 	TrackerService          TrackerServiceInterface
 	AttachmentService       AttachmentServiceInterface
+	IssueAuditLogService    IssueAuditLogServiceInterface
 
 	ProjectRepository              ProjectRepositoryInterface
 	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
@@ -44,6 +45,7 @@ type Domain struct {
 	ProjectTrackerRepository       ProjectTrackerRepositoryInterface
 	FilterConditionRepository      FilterConditionRepositoryInterface
 	AttachmentRepository           AttachmentRepositoryInterface
+	IssueAuditLogRepository        IssueAuditLogRepositoryInterface
 }
 
 func NewDomain() Domain {
@@ -69,6 +71,7 @@ func NewDomain() Domain {
 	projectTrackerRepository := ProjectTrackerRepository{DB: DB}
 	filterConditionRepository := FilterConditionRepository{DB: DB}
 	attachmentRepository := AttachmentRepository{DB: DB}
+	issueAuditLogRepository := IssueAuditLogRepository{DB: DB}
 
 	return Domain{
 		DB: DB,
@@ -122,6 +125,9 @@ func NewDomain() Domain {
 		AttachmentService: AttachmentService{
 			AttachmentRepository: attachmentRepository,
 		},
+		IssueAuditLogService: IssueAuditLogService{
+			IssueAuditLogRepository: issueAuditLogRepository,
+		},
 
 		ProjectRepository:              projectRepository,
 		IssueRepository:                issueRepository,
@@ -142,5 +148,6 @@ func NewDomain() Domain {
 		ProjectTrackerStatusRepository: projectTrackerStatusRepository,
 		ProjectIssuePropertyRepository: projectIssuePropertyRepository,
 		AttachmentRepository:           attachmentRepository,
+		IssueAuditLogRepository:        issueAuditLogRepository,
 	}
 }

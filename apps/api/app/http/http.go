@@ -28,13 +28,16 @@ func StartHttpServer(domain domain.Domain) {
 			ProjectService: domain.ProjectService,
 		},
 		IssueController: IssueController{
-			IssueService: domain.IssueService,
+			IssueService:         domain.IssueService,
+			IssueAuditLogService: domain.IssueAuditLogService,
 		},
 		IssueWorklogController: IssueWorklogController{
-			IssueWorklogService: domain.IssueWorklogService,
+			IssueWorklogService:  domain.IssueWorklogService,
+			IssueAuditLogService: domain.IssueAuditLogService,
 		},
 		RelatedIssueController: RelatedIssueController{
-			RelatedIssueService: domain.RelatedIssueService,
+			RelatedIssueService:  domain.RelatedIssueService,
+			IssueAuditLogService: domain.IssueAuditLogService,
 		},
 		FilterController: FilterController{
 			FilterService: domain.FilterService,
@@ -70,7 +73,11 @@ func StartHttpServer(domain domain.Domain) {
 			TransitionService: domain.TransitionService,
 		},
 		AttachmentController: AttachmentController{
-			AttachmentService: domain.AttachmentService,
+			AttachmentService:    domain.AttachmentService,
+			IssueAuditLogService: domain.IssueAuditLogService,
+		},
+		IssueAuditLogController: IssueAuditLogController{
+			IssueAuditLogService: domain.IssueAuditLogService,
 		},
 	}.Init()
 

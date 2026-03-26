@@ -6,6 +6,8 @@ import (
 
 	"apps/api/app/domain"
 	"libs/http_utils"
+	"libs/jwt_utils"
+
 	"github.com/google/uuid"
 )
 
@@ -18,7 +20,8 @@ type IssueControllerInterface interface {
 }
 
 type IssueController struct {
-	IssueService domain.IssueServiceInterface
+	IssueService         domain.IssueServiceInterface
+	IssueAuditLogService domain.IssueAuditLogServiceInterface
 }
 
 func (c IssueController) Index(w http.ResponseWriter, r *http.Request) {
@@ -70,10 +73,18 @@ func (c IssueController) Create(w http.ResponseWriter, r *http.Request) {
 
 func (c IssueController) Update(w http.ResponseWriter, r *http.Request) {
 	issue_id, _ := http_utils.GetParamUUID(r, "issue_id")
+	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
+
+	oldIssue, err := c.IssueService.Show(issue_id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	var issue_request IssueRequest
 	json.NewDecoder(r.Body).Decode(&issue_request)
 	issue := IssueSerializer{}.RequestToModel(issue_request)
-	err := c.IssueService.Update(issue_id, &issue)
+	err = c.IssueService.Update(issue_id, &issue)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -83,6 +94,9 @@ func (c IssueController) Update(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	c.IssueAuditLogService.LogFieldChanges(issue_id, user_id, *oldIssue, *updated)
+
 	http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*updated))
 }
 
