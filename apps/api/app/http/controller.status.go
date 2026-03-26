@@ -1,11 +1,9 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
 )
 
 type StatusControllerInterface interface {
@@ -23,58 +21,76 @@ type StatusController struct {
 func (c StatusController) Index(w http.ResponseWriter, r *http.Request) {
 	statuses, err := c.StatusService.All()
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponseMany(*statuses))
+	RespondJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponseMany(*statuses))
 }
 
 func (c StatusController) Show(w http.ResponseWriter, r *http.Request) {
-	var status_id, _ = http_utils.GetParamUUID(r, "status_id")
-	status, err := c.StatusService.Show(status_id)
+	status_id, err := GetParamUUID(r, "status_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponse(*status))
+	status, err := c.StatusService.Show(status_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponse(*status))
 }
 
 func (c StatusController) Create(w http.ResponseWriter, r *http.Request) {
 	var status_request StatusRequest
-	json.NewDecoder(r.Body).Decode(&status_request)
+	if err := DecodeJSON(r, &status_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 	status := StatusSerializer{}.RequestToModel(status_request)
 	err := c.StatusService.Create(&status)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusCreated, StatusSerializer{}.ModelToResponse(status))
+	RespondJSON(w, http.StatusCreated, StatusSerializer{}.ModelToResponse(status))
 }
 
 func (c StatusController) Update(w http.ResponseWriter, r *http.Request) {
-	status_id, _ := http_utils.GetParamUUID(r, "status_id")
-	var status_request StatusRequest
-	json.NewDecoder(r.Body).Decode(&status_request)
-	status := StatusSerializer{}.RequestToModel(status_request)
-	err := c.StatusService.Update(status_id, &status)
+	status_id, err := GetParamUUID(r, "status_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
+		return
+	}
+	var status_request StatusRequest
+	if err := DecodeJSON(r, &status_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	status := StatusSerializer{}.RequestToModel(status_request)
+	err = c.StatusService.Update(status_id, &status)
+	if err != nil {
+		RespondBadRequest(w)
 		return
 	}
 	updated, err := c.StatusService.Show(status_id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		RespondInternalError(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponse(*updated))
+	RespondJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponse(*updated))
 }
 
 func (c StatusController) Destroy(w http.ResponseWriter, r *http.Request) {
-	status_id, _ := http_utils.GetParamUUID(r, "status_id")
-	err := c.StatusService.Destroy(status_id)
+	status_id, err := GetParamUUID(r, "status_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	err = c.StatusService.Destroy(status_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondNoContent(w)
 }

@@ -1,11 +1,9 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
 )
 
 type ProjectControllerInterface interface {
@@ -23,58 +21,76 @@ type ProjectController struct {
 func (c ProjectController) Index(w http.ResponseWriter, r *http.Request) {
 	projects, err := c.ProjectService.All()
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponseMany(*projects))
+	RespondJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponseMany(*projects))
 }
 
 func (c ProjectController) Show(w http.ResponseWriter, r *http.Request) {
-	var project_id, _ = http_utils.GetParamUUID(r, "project_id")
-	project, err := c.ProjectService.Show(project_id)
+	project_id, err := GetParamUUID(r, "project_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponse(*project))
+	project, err := c.ProjectService.Show(project_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponse(*project))
 }
 
 func (c ProjectController) Create(w http.ResponseWriter, r *http.Request) {
 	var project_request ProjectRequest
-	json.NewDecoder(r.Body).Decode(&project_request)
+	if err := DecodeJSON(r, &project_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 	project := ProjectSerializer{}.RequestToModel(project_request)
 	err := c.ProjectService.Create(&project)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusCreated, ProjectSerializer{}.ModelToResponse(project))
+	RespondJSON(w, http.StatusCreated, ProjectSerializer{}.ModelToResponse(project))
 }
 
 func (c ProjectController) Update(w http.ResponseWriter, r *http.Request) {
-	project_id, _ := http_utils.GetParamUUID(r, "project_id")
-	var project_request ProjectRequest
-	json.NewDecoder(r.Body).Decode(&project_request)
-	project := ProjectSerializer{}.RequestToModel(project_request)
-	err := c.ProjectService.Update(project_id, &project)
+	project_id, err := GetParamUUID(r, "project_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
+		return
+	}
+	var project_request ProjectRequest
+	if err := DecodeJSON(r, &project_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	project := ProjectSerializer{}.RequestToModel(project_request)
+	err = c.ProjectService.Update(project_id, &project)
+	if err != nil {
+		RespondBadRequest(w)
 		return
 	}
 	updated, err := c.ProjectService.Show(project_id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		RespondInternalError(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponse(*updated))
+	RespondJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponse(*updated))
 }
 
 func (c ProjectController) Destroy(w http.ResponseWriter, r *http.Request) {
-	project_id, _ := http_utils.GetParamUUID(r, "project_id")
-	err := c.ProjectService.Destroy(project_id)
+	project_id, err := GetParamUUID(r, "project_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	err = c.ProjectService.Destroy(project_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondNoContent(w)
 }

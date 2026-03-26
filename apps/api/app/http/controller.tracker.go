@@ -1,11 +1,9 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
 )
 
 type TrackerControllerInterface interface {
@@ -23,58 +21,76 @@ type TrackerController struct {
 func (c TrackerController) Index(w http.ResponseWriter, r *http.Request) {
 	trackers, err := c.TrackerService.All()
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponseMany(*trackers))
+	RespondJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponseMany(*trackers))
 }
 
 func (c TrackerController) Show(w http.ResponseWriter, r *http.Request) {
-	var tracker_id, _ = http_utils.GetParamUUID(r, "tracker_id")
-	tracker, err := c.TrackerService.Show(tracker_id)
+	tracker_id, err := GetParamUUID(r, "tracker_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponse(*tracker))
+	tracker, err := c.TrackerService.Show(tracker_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponse(*tracker))
 }
 
 func (c TrackerController) Create(w http.ResponseWriter, r *http.Request) {
 	var tracker_request TrackerRequest
-	json.NewDecoder(r.Body).Decode(&tracker_request)
+	if err := DecodeJSON(r, &tracker_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 	tracker := TrackerSerializer{}.RequestToModel(tracker_request)
 	err := c.TrackerService.Create(&tracker)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusCreated, TrackerSerializer{}.ModelToResponse(tracker))
+	RespondJSON(w, http.StatusCreated, TrackerSerializer{}.ModelToResponse(tracker))
 }
 
 func (c TrackerController) Update(w http.ResponseWriter, r *http.Request) {
-	tracker_id, _ := http_utils.GetParamUUID(r, "tracker_id")
-	var tracker_request TrackerRequest
-	json.NewDecoder(r.Body).Decode(&tracker_request)
-	tracker := TrackerSerializer{}.RequestToModel(tracker_request)
-	err := c.TrackerService.Update(tracker_id, &tracker)
+	tracker_id, err := GetParamUUID(r, "tracker_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
+		return
+	}
+	var tracker_request TrackerRequest
+	if err := DecodeJSON(r, &tracker_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	tracker := TrackerSerializer{}.RequestToModel(tracker_request)
+	err = c.TrackerService.Update(tracker_id, &tracker)
+	if err != nil {
+		RespondBadRequest(w)
 		return
 	}
 	updated, err := c.TrackerService.Show(tracker_id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		RespondInternalError(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponse(*updated))
+	RespondJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponse(*updated))
 }
 
 func (c TrackerController) Destroy(w http.ResponseWriter, r *http.Request) {
-	tracker_id, _ := http_utils.GetParamUUID(r, "tracker_id")
-	err := c.TrackerService.Destroy(tracker_id)
+	tracker_id, err := GetParamUUID(r, "tracker_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	err = c.TrackerService.Destroy(tracker_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondNoContent(w)
 }

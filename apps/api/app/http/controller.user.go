@@ -1,11 +1,9 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
 )
 
 type UserControllerInterface interface {
@@ -23,58 +21,76 @@ type UserController struct {
 func (c UserController) Index(w http.ResponseWriter, r *http.Request) {
 	users, err := c.UserService.All()
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponseMany(*users))
+	RespondJSON(w, http.StatusOK, UserSerializer{}.ModelToResponseMany(*users))
 }
 
 func (c UserController) Show(w http.ResponseWriter, r *http.Request) {
-	var user_id, _ = http_utils.GetParamUUID(r, "user_id")
-	user, err := c.UserService.Show(user_id)
+	user_id, err := GetParamUUID(r, "user_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*user))
+	user, err := c.UserService.Show(user_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*user))
 }
 
 func (c UserController) Create(w http.ResponseWriter, r *http.Request) {
 	var user_request UserRequest
-	json.NewDecoder(r.Body).Decode(&user_request)
+	if err := DecodeJSON(r, &user_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 	user := UserSerializer{}.RequestToModel(user_request)
 	err := c.UserService.Create(&user)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusCreated, UserSerializer{}.ModelToResponse(user))
+	RespondJSON(w, http.StatusCreated, UserSerializer{}.ModelToResponse(user))
 }
 
 func (c UserController) Update(w http.ResponseWriter, r *http.Request) {
-	user_id, _ := http_utils.GetParamUUID(r, "user_id")
-	var user_request UserRequest
-	json.NewDecoder(r.Body).Decode(&user_request)
-	user := UserSerializer{}.RequestToModel(user_request)
-	err := c.UserService.Update(user_id, &user)
+	user_id, err := GetParamUUID(r, "user_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
+		return
+	}
+	var user_request UserRequest
+	if err := DecodeJSON(r, &user_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	user := UserSerializer{}.RequestToModel(user_request)
+	err = c.UserService.Update(user_id, &user)
+	if err != nil {
+		RespondBadRequest(w)
 		return
 	}
 	updated, err := c.UserService.Show(user_id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		RespondInternalError(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*updated))
+	RespondJSON(w, http.StatusOK, UserSerializer{}.ModelToResponse(*updated))
 }
 
 func (c UserController) Destroy(w http.ResponseWriter, r *http.Request) {
-	user_id, _ := http_utils.GetParamUUID(r, "user_id")
-	err := c.UserService.Destroy(user_id)
+	user_id, err := GetParamUUID(r, "user_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	err = c.UserService.Destroy(user_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondNoContent(w)
 }

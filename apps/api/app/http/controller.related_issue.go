@@ -1,13 +1,9 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
-	"libs/jwt_utils"
-
 	"github.com/google/uuid"
 )
 
@@ -23,7 +19,11 @@ type RelatedIssueController struct {
 }
 
 func (c RelatedIssueController) GetRelated(w http.ResponseWriter, r *http.Request) {
-	issueID, _ := http_utils.GetParamUUID(r, "issue_id")
+	issueID, err := GetParamUUID(r, "issue_id")
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
 	typeFilter := r.URL.Query().Get("type")
 
 	var typeFilterPtr *string
@@ -33,35 +33,39 @@ func (c RelatedIssueController) GetRelated(w http.ResponseWriter, r *http.Reques
 
 	relations, err := c.RelatedIssueService.GetRelatedIssues(issueID, typeFilterPtr)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
 	serializer := RelatedIssueSerializer{}
 	responses := serializer.ModelToResponseMany(relations, issueID)
 
-	http_utils.RespondWithJSON(w, http.StatusOK, responses)
+	RespondJSON(w, http.StatusOK, responses)
 }
 
 func (c RelatedIssueController) Create(w http.ResponseWriter, r *http.Request) {
-	issueID, _ := http_utils.GetParamUUID(r, "issue_id")
-	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
+	issueID, err := GetParamUUID(r, "issue_id")
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	user_id := GetUserIDFromRequest(r)
 
 	var req RelatedIssueRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+	if err := DecodeJSON(r, &req); err != nil {
+		RespondBadRequest(w)
 		return
 	}
 
 	targetID, err := uuid.Parse(req.TargetIssueId)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
 	relation, err := c.RelatedIssueService.Create(issueID, targetID, req.Type)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
@@ -70,25 +74,29 @@ func (c RelatedIssueController) Create(w http.ResponseWriter, r *http.Request) {
 	serializer := RelatedIssueSerializer{}
 	response := serializer.ModelToResponse(relation, issueID)
 
-	http_utils.RespondWithJSON(w, http.StatusCreated, response)
+	RespondJSON(w, http.StatusCreated, response)
 }
 
 func (c RelatedIssueController) Delete(w http.ResponseWriter, r *http.Request) {
-	relatedIssueID, _ := http_utils.GetParamUUID(r, "related_issue_id")
-	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
+	relatedIssueID, err := GetParamUUID(r, "related_issue_id")
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	user_id := GetUserIDFromRequest(r)
 
 	relation, err := c.RelatedIssueService.FindByID(relatedIssueID)
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
+		RespondNotFound(w)
 		return
 	}
 
 	if err := c.RelatedIssueService.Delete(relatedIssueID); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
 	c.IssueAuditLogService.LogRelatedIssueRemoved(relation.IssueAID, user_id, *relation, relation.IssueB)
 
-	w.WriteHeader(http.StatusNoContent)
+	RespondNoContent(w)
 }

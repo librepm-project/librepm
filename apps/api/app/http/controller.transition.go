@@ -1,11 +1,9 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
 )
 
 type TransitionControllerInterface interface {
@@ -23,53 +21,71 @@ type TransitionController struct {
 func (c TransitionController) Index(w http.ResponseWriter, r *http.Request) {
 	transitions, err := c.TransitionService.All()
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponseMany(*transitions))
+	RespondJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponseMany(*transitions))
 }
 
 func (c TransitionController) Show(w http.ResponseWriter, r *http.Request) {
-	var transition_id, err = http_utils.GetParamUUID(r, "transition_id")
-	transition, _ := c.TransitionService.Show(transition_id)
+	transition_id, err := GetParamUUID(r, "transition_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponse(*transition))
+	transition, err := c.TransitionService.Show(transition_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponse(*transition))
 }
 
 func (c TransitionController) Create(w http.ResponseWriter, r *http.Request) {
 	var transition_request TransitionRequest
-	json.NewDecoder(r.Body).Decode(&transition_request)
+	if err := DecodeJSON(r, &transition_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 	transition := TransitionSerializer{}.RequestToModel(transition_request)
 	err := c.TransitionService.Create(&transition)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusCreated, TransitionSerializer{}.ModelToResponse(transition))
+	RespondJSON(w, http.StatusCreated, TransitionSerializer{}.ModelToResponse(transition))
 }
 
 func (c TransitionController) Update(w http.ResponseWriter, r *http.Request) {
-	transition_id, _ := http_utils.GetParamUUID(r, "transition_id")
-	var transition_request TransitionRequest
-	json.NewDecoder(r.Body).Decode(&transition_request)
-	transition := TransitionSerializer{}.RequestToModel(transition_request)
-	err := c.TransitionService.Update(transition_id, &transition)
+	transition_id, err := GetParamUUID(r, "transition_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	var transition_request TransitionRequest
+	if err := DecodeJSON(r, &transition_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	transition := TransitionSerializer{}.RequestToModel(transition_request)
+	err = c.TransitionService.Update(transition_id, &transition)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, TransitionSerializer{}.ModelToResponse(transition))
 }
 
 func (c TransitionController) Destroy(w http.ResponseWriter, r *http.Request) {
-	transition_id, _ := http_utils.GetParamUUID(r, "transition_id")
-	err := c.TransitionService.Destroy(transition_id)
+	transition_id, err := GetParamUUID(r, "transition_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	err = c.TransitionService.Destroy(transition_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondNoContent(w)
 }
