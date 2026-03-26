@@ -17,6 +17,12 @@ interface ActionButton {
 }
 
 interface LayoutStore {
+  title: string;
+  onTitleClick: (() => void) | null;
+  isEditingTitle: boolean;
+  titleDraft: string;
+  onTitleSave: ((newTitle: string) => void) | null;
+  onTitleCancel: (() => void) | null;
   sidebarItems: SidebarItem[];
   actionButtons: ActionButton[];
   sidebarComponent: Component | null;
@@ -26,6 +32,12 @@ interface LayoutStore {
 export const useLayoutStore = defineStore('sidebar', {
   state: (): LayoutStore => {
     return {
+      title: '',
+      onTitleClick: null,
+      isEditingTitle: false,
+      titleDraft: '',
+      onTitleSave: null,
+      onTitleCancel: null,
       sidebarItems: [],
       actionButtons: [],
       sidebarComponent: null,
@@ -36,6 +48,24 @@ export const useLayoutStore = defineStore('sidebar', {
     hasSidebar: (state) => state.sidebarItems.length > 0 || state.sidebarComponent !== null,
   },
   actions: {
+    setTitle(title: string, onTitleClick: (() => void) | null = null) {
+      this.title = title;
+      this.onTitleClick = onTitleClick;
+    },
+    setTitleEditing(isEditing: boolean, draft: string = '', onSave: ((newTitle: string) => void) | null = null, onCancel: (() => void) | null = null) {
+      this.isEditingTitle = isEditing;
+      this.titleDraft = draft;
+      this.onTitleSave = onSave;
+      this.onTitleCancel = onCancel;
+    },
+    resetTitle() {
+      this.title = '';
+      this.onTitleClick = null;
+      this.isEditingTitle = false;
+      this.titleDraft = '';
+      this.onTitleSave = null;
+      this.onTitleCancel = null;
+    },
     setSidebar(items: SidebarItem[]) {
       this.sidebarItems = items;
     },
