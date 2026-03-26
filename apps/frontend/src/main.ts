@@ -1,5 +1,5 @@
-import '@/theme/styles.scss';
 import 'vuetify/styles';
+import '@/theme/styles.scss';
 
 import { createApp } from 'vue';
 import { createVuetify } from 'vuetify';
@@ -23,7 +23,27 @@ const vuetify = createVuetify({
       librepm: theme,
     },
   },
-  defaults: {},
+  defaults: {
+    VChip: {
+      variant: 'outlined',
+      class: 'border-opacity-100',
+    },
+    VTextField: {
+      variant: 'outlined',
+      density: 'compact',
+    },
+    VTextarea: {
+      variant: 'outlined',
+      density: 'compact',
+    },
+    VSelect: {
+      variant: 'outlined',
+      density: 'compact',
+    },
+    VDataTable: {
+      class: 'border-thin rounded-xl',
+    },
+  },
 });
 
 const pinia = createPinia();

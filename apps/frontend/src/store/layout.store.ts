@@ -23,6 +23,7 @@ interface LayoutStore {
   titleDraft: string;
   onTitleSave: ((newTitle: string) => void) | null;
   onTitleCancel: (() => void) | null;
+  isDrawerOpen: boolean;
   sidebarItems: SidebarItem[];
   actionButtons: ActionButton[];
   sidebarComponent: Component | null;
@@ -38,6 +39,7 @@ export const useLayoutStore = defineStore('sidebar', {
       titleDraft: '',
       onTitleSave: null,
       onTitleCancel: null,
+      isDrawerOpen: false,
       sidebarItems: [],
       actionButtons: [],
       sidebarComponent: null,
@@ -48,6 +50,9 @@ export const useLayoutStore = defineStore('sidebar', {
     hasSidebar: (state) => state.sidebarItems.length > 0 || state.sidebarComponent !== null,
   },
   actions: {
+    toggleDrawer(value: boolean | null = null) {
+      this.isDrawerOpen = value !== null ? value : !this.isDrawerOpen;
+    },
     setTitle(title: string, onTitleClick: (() => void) | null = null) {
       this.title = title;
       this.onTitleClick = onTitleClick;

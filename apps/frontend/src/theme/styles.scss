@@ -40,3 +40,59 @@ pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace;
 }
+
+// Global visual improvements - Professional visible borders
+.v-table, .v-data-table {
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  border-radius: 12px !important;
+  
+  .v-table__wrapper > table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    
+    td, th {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+    }
+  }
+
+  .v-data-table-header th {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15) !important;
+    font-weight: 700 !important;
+    color: rgba(0, 0, 0, 0.8) !important;
+  }
+}
+
+// Ensure outlined chips have a solid, visible border
+.v-chip.v-chip--variant-outlined {
+  border: 1.5px solid rgba(0, 0, 0, 0.25) !important;
+  background-color: white !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
+// Stronger borders for ALL input fields
+.v-field.v-field--variant-outlined {
+  .v-field__outline {
+    --v-field-border-opacity: 0.25 !important;
+    
+    .v-field__outline__start,
+    .v-field__outline__notch,
+    .v-field__outline__end {
+      border-width: 1.5px !important;
+    }
+  }
+  
+  &.v-field--focused {
+    .v-field__outline {
+      --v-field-border-opacity: 1 !important;
+      color: rgb(var(--v-theme-primary)) !important;
+      
+      .v-field__outline__start,
+      .v-field__outline__notch,
+      .v-field__outline__end {
+        border-width: 2px !important;
+      }
+    }
+  }
+}

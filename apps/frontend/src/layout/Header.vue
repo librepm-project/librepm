@@ -1,15 +1,19 @@
 <template>
   <v-app-bar elevation="4" color="primary" class="px-6">
+    <v-app-bar-nav-icon 
+      class="d-md-none text-white mr-2" 
+      @click.stop="layoutStore.toggleDrawer()"
+    />
     <v-container class="d-flex align-center justify-space-between" fluid>
-      <div class="d-flex align-center gap-4">
+      <div class="d-flex align-center gap-4 cursor-pointer" @click="router.push('/')">
         <v-img :src="logo" alt="LibrePM" height="50" width="50" contain />
-        <span class="text-h6 font-weight-bold text-white">LibrePM</span>
+        <span class="text-h6 font-weight-bold text-white d-none d-sm-flex">LibrePM</span>
       </div>
 
       <v-spacer />
 
       <nav v-if="userCurrentStore.current" class="d-none d-md-flex align-center gap-2">
-        <template v-for="link in links" :key="link.key">
+        <template v-for="link in navigationLinks" :key="link.key">
           <v-btn
             v-if="!link.sublinks"
             :prepend-icon="link.icon"
@@ -89,95 +93,19 @@ import { useRouter } from 'vue-router';
 import logo from '@/assets/logo.png';
 import { useUserCurrentStore } from '@/store/userCurrent.store';
 import { useUserSessionStore } from '@/store/userSession.store';
+import { useLayoutStore } from '@/store/layout.store';
+import { navigationLinks } from '@/lib/navigation';
 
 const { t } = useI18n();
 const router = useRouter();
 const userCurrentStore = useUserCurrentStore();
 const userSessionStore = useUserSessionStore();
+const layoutStore = useLayoutStore();
 
 const logout = () => {
   userSessionStore.logout();
   router.push('/login');
 };
-
-interface Sublink {
-  text: string;
-  key: string;
-  to: string;
-  icon: string;
-}
-
-interface Link {
-  text: string;
-  key: string;
-  to?: string;
-  icon: string;
-  sublinks?: Sublink[];
-}
-
-const links: Link[] = [
-  {
-    text: 'Dashboard',
-    key: 'dashboard',
-    to: '/',
-    icon: 'mdi-view-dashboard-outline',
-  },
-  {
-    text: 'Issues',
-    key: 'issues',
-    to: '/issue',
-    icon: 'mdi-bug-outline',
-  },
-  {
-    text: 'Boards',
-    key: 'boards',
-    to: '/board',
-    icon: 'mdi-table-large',
-  },
-  {
-    text: 'Filters',
-    key: 'filters',
-    to: '/filter',
-    icon: 'mdi-filter-outline',
-  },
-  {
-    text: 'Administration',
-    key: 'admin',
-    icon: 'mdi-cog-outline',
-    sublinks: [
-      {
-        text: 'Projects',
-        key: 'projects',
-        to: '/admin/project',
-        icon: 'mdi-folder-outline',
-      },
-      {
-        text: 'Statuses',
-        key: 'statuses',
-        to: '/admin/status',
-        icon: 'mdi-layers-outline',
-      },
-      {
-        text: 'Trackers',
-        key: 'trackers',
-        to: '/admin/tracker',
-        icon: 'mdi-compass-outline',
-      },
-      {
-        text: 'Users',
-        key: 'users',
-        to: '/admin/user',
-        icon: 'mdi-account-multiple',
-      },
-      {
-        text: 'Boards',
-        key: 'boards',
-        to: '/admin/board',
-        icon: 'mdi-table-large',
-      },
-    ],
-  },
-];
 </script>
 
 <style scoped>
