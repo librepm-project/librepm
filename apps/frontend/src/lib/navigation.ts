@@ -73,6 +73,12 @@ export const navigationLinks: Link[] = [
         to: '/admin/board',
         icon: 'mdi-table-large',
       },
+      {
+        text: 'Settings',
+        key: 'settings',
+        to: '/admin/settings',
+        icon: 'mdi-cog',
+      },
     ],
   },
 ];

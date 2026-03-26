@@ -12,6 +12,7 @@ import { adminTrackerRouter } from '@/router/admin.tracker.router';
 import { authorizationMiddleware } from '@/router/middleware/authorization.middleware';
 import { pageTitleMiddleware } from '@/router/middleware/page-title.middleware';
 import { layoutMiddleware } from '@/router/middleware/layout.middleware';
+import AdminSettingPage from '@/page/admin/setting/AdminSettingPage.vue'; // Import the new page
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,12 @@ const router = createRouter({
     ...adminTrackerRouter,
     ...adminUserRouter,
     ...adminBoardRouter,
+    { // Add the settings route
+      path: '/admin/settings',
+      name: 'admin-settings',
+      component: AdminSettingPage,
+      meta: { title: 'admin.settings' },
+    },
   ],
 });
 

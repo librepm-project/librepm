@@ -32,6 +32,7 @@ type Domain struct {
 	AttachmentService       AttachmentServiceInterface
 	IssueAuditLogService    IssueAuditLogServiceInterface
 	CommentService          CommentServiceInterface
+	SettingService          SettingServiceInterface
 
 	ProjectRepository              ProjectRepositoryInterface
 	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
@@ -54,6 +55,7 @@ type Domain struct {
 	AttachmentRepository           AttachmentRepositoryInterface
 	IssueAuditLogRepository        IssueAuditLogRepositoryInterface
 	CommentRepository              CommentRepositoryInterface
+	SettingRepository              SettingRepositoryInterface
 }
 
 func NewDomain() Domain {
@@ -81,6 +83,8 @@ func NewDomain() Domain {
 	attachmentRepository := AttachmentRepository{DB: DB}
 	issueAuditLogRepository := IssueAuditLogRepository{DB: DB}
 	commentRepository := CommentRepository{DB: DB}
+	settingRepository := SettingRepository{DB: DB}
+	settingRepository.Seed()
 
 	return Domain{
 		DB: DB,
@@ -140,6 +144,9 @@ func NewDomain() Domain {
 		CommentService: CommentService{
 			CommentRepository: commentRepository,
 		},
+		SettingService: SettingService{
+			SettingRepository: settingRepository,
+		},
 
 		ProjectRepository:              projectRepository,
 		IssueRepository:                issueRepository,
@@ -162,5 +169,6 @@ func NewDomain() Domain {
 		AttachmentRepository:           attachmentRepository,
 		IssueAuditLogRepository:        issueAuditLogRepository,
 		CommentRepository:              commentRepository,
+		SettingRepository:              settingRepository,
 	}
 }

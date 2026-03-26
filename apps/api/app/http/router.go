@@ -24,6 +24,7 @@ type Router struct {
 	AttachmentController           AttachmentControllerInterface
 	IssueAuditLogController        IssueAuditLogControllerInterface
 	CommentController              CommentControllerInterface
+	SettingController              SettingControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
@@ -120,6 +121,9 @@ func (r Router) Init() *chi.Mux {
 	router.Get("/transition/{transition_id}", r.TransitionController.Show)
 	router.Put("/transition/{transition_id}", r.TransitionController.Update)
 	router.Delete("/transition/{transition_id}", r.TransitionController.Destroy)
+
+	router.Get("/setting", r.SettingController.Index)
+	router.Put("/setting/{key}", r.SettingController.Update)
 
 	return router
 }
