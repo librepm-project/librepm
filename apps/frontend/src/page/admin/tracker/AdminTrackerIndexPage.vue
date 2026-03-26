@@ -2,7 +2,6 @@
   <tracker-table 
     :items="trackerStore.index" 
     :onEdit="handleEdit" 
-    :onDelete="handleDelete"
   />
 </template>
 
@@ -20,16 +19,6 @@ const trackerStore = useTrackerStore();
 
 const handleEdit = (tracker: Tracker) => {
   router.push(`/admin/tracker/${tracker.id}`);
-};
-
-const handleDelete = async (tracker: Tracker) => {
-  if (confirm('Are you sure?')) {
-    try {
-      await trackerStore.deleteTracker(tracker.id);
-    } catch (error) {
-      console.error('Error deleting tracker:', error);
-    }
-  }
 };
 
 onMounted(async () => {

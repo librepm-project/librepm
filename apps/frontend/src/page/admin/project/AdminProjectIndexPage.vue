@@ -2,7 +2,6 @@
   <project-table 
     :items="projectStore.index" 
     :onEdit="handleEdit" 
-    :onDelete="handleDelete"
   />
 </template>
 
@@ -20,16 +19,6 @@ const projectStore = useProjectStore();
 
 const handleEdit = (project: Project) => {
   router.push(`/admin/project/${project.id}`);
-};
-
-const handleDelete = async (project: Project) => {
-  if (confirm('Are you sure?')) {
-    try {
-      await projectStore.deleteProject(project.id!);
-    } catch (error) {
-      console.error('Error deleting project:', error);
-    }
-  }
 };
 
 onMounted(async () => {

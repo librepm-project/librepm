@@ -1,5 +1,5 @@
 <template>
-  <board-table :items="boardStore.index" :onEdit="onEdit" :onDelete="onDelete" />
+  <board-table :items="boardStore.index" :onEdit="onEdit" />
 </template>
 
 <script lang="ts" setup>
@@ -18,13 +18,6 @@ const boardStore = useBoardStore();
 
 const onEdit = (item: Board) => {
   router.push(`/admin/board/${item.id}/edit`);
-}
-
-const onDelete = async (item: Board) => {
-  if (confirm(t('global.delete_confirm'))) {
-    await boardStore.destroy(item.id);
-    await boardStore.getBoards();
-  }
 }
 
 onMounted(async () => {

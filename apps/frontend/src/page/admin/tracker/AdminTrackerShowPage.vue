@@ -3,6 +3,7 @@
     v-if="trackerStore.current"
     :tracker="trackerStore.current"
     :onSubmit="handleSubmit"
+    :onDelete="handleDelete"
     submitButtonText="global.update"
   />
 </template>
@@ -28,8 +29,20 @@ const handleSubmit = async (tracker: Tracker) => {
   }
 };
 
+const handleDelete = async () => {
+  if (confirm('Are you sure you want to delete this tracker?')) {
+    try {
+      const trackerId = route.params.trackerId as string;
+      await trackerStore.deleteTracker(trackerId);
+      router.push('/admin/tracker');
+    } catch (error) {
+      console.error('Error deleting tracker:', error);
+    }
+  }
+};
+
 onMounted(async () => {
-  const trackerId = route.params.trackerid as string;
+  const trackerId = route.params.trackerId as string;
   const fromIndex = trackerStore.index.find(t => t.id === trackerId);
   if (fromIndex) {
     trackerStore.current = fromIndex;

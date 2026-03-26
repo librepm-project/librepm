@@ -253,6 +253,9 @@ const onColumnDrop = async (column: BoardColumn) => {
   cursor: grab;
   transition: transform 0.1s, box-shadow 0.1s, opacity 0.15s;
   user-select: none;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  background-color: white !important;
 }
 
 .issue-card:hover {

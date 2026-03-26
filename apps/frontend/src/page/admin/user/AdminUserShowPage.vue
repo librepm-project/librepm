@@ -4,6 +4,7 @@
       v-if="userStore.current"
       :user="userStore.current"
       :onSubmit="handleSubmit"
+      :onDelete="handleDelete"
       submitButtonText="global.update"
     />
   </div>
@@ -27,6 +28,18 @@ const handleSubmit = async (user: User) => {
     router.push('/admin/user');
   } catch (error) {
     console.error('Error updating user:', error);
+  }
+};
+
+const handleDelete = async () => {
+  if (confirm('Are you sure you want to delete this user?')) {
+    try {
+      const userId = route.params.userId as string;
+      await userStore.deleteUser(userId);
+      router.push('/admin/user');
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   }
 };
 

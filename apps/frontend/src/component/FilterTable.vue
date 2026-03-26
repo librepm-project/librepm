@@ -4,8 +4,9 @@
       :items="items"
       :headers="headers"
       density="comfortable"
-      class="transparent-table"
+      class="transparent-table clickable-rows"
       item-key="id"
+      @click:row="(e, { item }) => onEdit(item)"
     >
       <template #header>
         <thead class="bg-primary text-white">
@@ -22,7 +23,7 @@
       </template>
 
       <template #item.name="{ item }">
-        <router-link :to="`/filter/${item.id}`">{{ item.name }}</router-link>
+        {{ item.name }}
       </template>
 
       <template #item.conditions="{ item }">
@@ -37,16 +38,11 @@
           No conditions
         </v-chip>
       </template>
-
-      <template #item.actions="{ item }">
-        <general-record-actions :item="item" :onEdit="onEdit" :onDelete="onDelete" />
-      </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import GeneralRecordActions from '@/component/GeneralRecordActions.vue';
 import { Filter } from '@/lib/interfaces/filter.interface';
 import { useI18n } from 'vue-i18n';
 
@@ -55,18 +51,20 @@ const { t } = useI18n();
 defineProps<{
   items: Filter[],
   onEdit: (item: Filter) => void,
-  onDelete: (item: Filter) => void,
 }>();
 
 const headers = [
   { key: 'name', title: t('filter.name') },
   { key: 'description', title: t('global.description') },
   { key: 'conditions', title: 'Conditions' },
-  { key: 'actions', title: t('global.actions') || 'Actions', align: 'end' },
 ];
 </script>
 
 <style scoped>
+.clickable-rows :deep(tbody tr) {
+  cursor: pointer;
+}
+
 .transparent-table {
   background-color: transparent !important;
 }

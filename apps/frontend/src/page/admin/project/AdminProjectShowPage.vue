@@ -4,6 +4,7 @@
       v-if="projectStore.current"
       :project="projectStore.current"
       :onSubmit="handleSubmit"
+      :onDelete="handleDelete"
       submitButtonText="global.update"
     />
   </div>
@@ -27,6 +28,18 @@ const handleSubmit = async (project: Omit<Project, 'id'>) => {
     router.push('/admin/project');
   } catch (error) {
     console.error('Error updating project:', error);
+  }
+};
+
+const handleDelete = async () => {
+  if (confirm('Are you sure you want to delete this project?')) {
+    try {
+      const projectId = route.params.projectId as string;
+      await projectStore.deleteProject(projectId);
+      router.push('/admin/project');
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    }
   }
 };
 

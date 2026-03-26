@@ -4,8 +4,9 @@
       :items="items"
       :headers="headers"
       density="comfortable"
-      class="transparent-table"
+      class="transparent-table clickable-rows"
       item-key="id"
+      @click:row="(e, { item }) => onEdit(item)"
     >
       <template #header>
         <thead class="bg-primary text-white">
@@ -22,29 +23,22 @@
       </template>
 
       <template #item.name="{ item }">
-        <router-link :to="`/admin/status/${item.id}`">{{ item.name }}</router-link>
+        {{ item.name }}
       </template>
 
       <template #item.color="{ item }">
-        <v-chip
-          :style="{ backgroundColor: item.color }"
-          text-color="white"
-          size="small"
-          label
-        >
-          {{ item.name }}
-        </v-chip>
-      </template>
-
-      <template #item.actions="{ item }">
-        <general-record-actions :item="item" :onEdit="onEdit" :onDelete="onDelete" />
+        <div class="d-flex justify-end">
+          <div
+            class="color-box"
+            :style="{ backgroundColor: item.color }"
+          ></div>
+        </div>
       </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import GeneralRecordActions from '@/component/GeneralRecordActions.vue';
 import { Status } from '@/lib/interfaces/status.interface';
 import { useI18n } from 'vue-i18n'
 
@@ -53,18 +47,27 @@ const { t } = useI18n();
 defineProps<{
   items: Status[];
   onEdit: (item: Status) => void;
-  onDelete: (item: Status) => void;
 }>()
 
 const headers = [
   { key: 'name', title: t('status.name') },
-  { key: 'color', title: t('status.color') },
-  { key: 'actions', title: t('global.actions') || 'Actions', align: 'end' },
+  { key: 'color', title: t('status.color'), align: 'end' },
 ]
 
 </script>
 
 <style scoped>
+.color-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.clickable-rows :deep(tbody tr) {
+  cursor: pointer;
+}
+
 .transparent-table {
   background-color: transparent !important;
 }

@@ -4,8 +4,9 @@
       :items="items"
       :headers="headers"
       density="comfortable"
-      class="transparent-table"
+      class="transparent-table clickable-rows"
       item-key="id"
+      @click:row="(e, { item }) => onEdit(item)"
     >
       <template #header>
         <thead class="bg-primary text-white">
@@ -22,7 +23,7 @@
       </template>
 
       <template #item.email="{ item }">
-        <router-link :to="`/admin/user/${item.id}`">{{ item.email }}</router-link>
+        {{ item.email }}
       </template>
 
       <template #item.fullName="{ item }">
@@ -30,16 +31,11 @@
           {{ item.firstName }} {{ item.lastName }}
         </v-chip>
       </template>
-
-      <template #item.actions="{ item }">
-        <general-record-actions :item="item" :onEdit="onEdit" :onDelete="onDelete" />
-      </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import GeneralRecordActions from '@/component/GeneralRecordActions.vue';
 import { User } from '@/lib/interfaces/user.interface';
 import { useI18n } from 'vue-i18n'
 
@@ -48,19 +44,21 @@ const { t } = useI18n();
 defineProps<{
   items: User[];
   onEdit: (item: User) => void;
-  onDelete: (item: User) => void;
 }>()
 
 const headers = [
   { key: 'email', title: t('user.email') },
   { key: 'firstName', title: t('user.firstName') },
   { key: 'lastName', title: t('user.lastName') },
-  { key: 'actions', title: t('global.actions') || 'Actions', align: 'end' },
 ]
 
 </script>
 
 <style scoped>
+.clickable-rows :deep(tbody tr) {
+  cursor: pointer;
+}
+
 .transparent-table {
   background-color: transparent !important;
 }

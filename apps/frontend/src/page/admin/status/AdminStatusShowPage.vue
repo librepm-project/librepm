@@ -3,6 +3,7 @@
     v-if="statusStore.current"
     :status="statusStore.current"
     :onSubmit="handleSubmit"
+    :onDelete="handleDelete"
     submitButtonText="global.update"
   />
 </template>
@@ -25,6 +26,18 @@ const handleSubmit = async (status: Status) => {
     router.push('/admin/status');
   } catch (error) {
     console.error('Error updating status:', error);
+  }
+};
+
+const handleDelete = async () => {
+  if (confirm('Are you sure you want to delete this status?')) {
+    try {
+      const statusId = route.params.statusId as string;
+      await statusStore.deleteStatus(statusId);
+      router.push('/admin/status');
+    } catch (error) {
+      console.error('Error deleting status:', error);
+    }
   }
 };
 

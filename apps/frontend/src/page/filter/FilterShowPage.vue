@@ -3,6 +3,7 @@
     <filter-form
       :filter="filterStore.current"
       :onSubmit="handleSubmit"
+      :onDelete="handleDelete"
       submitButtonText="global.update"
     />
   </div>
@@ -26,6 +27,18 @@ const handleSubmit = async (filter: Omit<Filter, 'id'>) => {
     router.push(`/filter/${filterId}`);
   } catch (error) {
     console.error('Error updating filter:', error);
+  }
+};
+
+const handleDelete = async () => {
+  if (confirm('Are you sure you want to delete this filter?')) {
+    try {
+      const filterId = route.params.filterId as string;
+      await filterStore.deleteFilter(filterId);
+      router.push('/filter');
+    } catch (error) {
+      console.error('Error deleting filter:', error);
+    }
   }
 };
 

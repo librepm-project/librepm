@@ -2,7 +2,6 @@
   <filter-table 
     :items="filterStore.index" 
     :onEdit="handleEdit" 
-    :onDelete="handleDelete"
   />
 </template>
 
@@ -20,16 +19,6 @@ const filterStore = useFilterStore();
 
 const handleEdit = (filter: Filter) => {
   router.push(`/filter/${filter.id}/edit`);
-};
-
-const handleDelete = async (filter: Filter) => {
-  if (confirm('Are you sure?')) {
-    try {
-      await filterStore.deleteFilter(filter.id!);
-    } catch (error) {
-      console.error('Error deleting filter:', error);
-    }
-  }
 };
 
 onMounted(async () => {

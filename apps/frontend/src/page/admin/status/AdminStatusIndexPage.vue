@@ -2,7 +2,6 @@
   <status-table 
     :items="statusStore.index" 
     :onEdit="handleEdit" 
-    :onDelete="handleDelete"
   />
 </template>
 
@@ -22,16 +21,6 @@ const statusStore = useStatusStore();
 
 const handleEdit = (status: Status) => {
   router.push(`/admin/status/${status.id}`);
-};
-
-const handleDelete = async (status: Status) => {
-  if (confirm('Are you sure?')) {
-    try {
-      await statusStore.deleteStatus(status.id);
-    } catch (error) {
-      console.error('Error deleting status:', error);
-    }
-  }
 };
 
 onMounted(async () => {

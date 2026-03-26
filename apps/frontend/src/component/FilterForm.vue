@@ -42,7 +42,7 @@
             <v-divider class="my-6" />
 
             <v-row class="mt-4">
-                <v-col cols="12" class="d-flex gap-3">
+                <v-col cols="12" class="d-flex gap-3 align-center">
                     <v-btn
                         type="submit"
                         color="primary"
@@ -53,6 +53,20 @@
                     >
                         {{ $t(props.submitButtonText) }}
                     </v-btn>
+                    <v-btn
+                        v-if="onDelete"
+                        type="button"
+                        color="error"
+                        variant="text"
+                        size="large"
+                        prepend-icon="mdi-delete"
+                        rounded="lg"
+                        class="font-weight-bold"
+                        @click="onDelete"
+                    >
+                        {{ $t('global.delete') }}
+                    </v-btn>
+                    <v-spacer />
                     <v-btn
                         type="button"
                         variant="outlined"
@@ -77,6 +91,7 @@ import FilterConditionBuilder from '@/component/FilterConditionBuilder.vue';
 
 const props = defineProps({
     onSubmit: Function,
+    onDelete: Function as any,
     submitButtonText: String,
     filter: Object as any,
 });
