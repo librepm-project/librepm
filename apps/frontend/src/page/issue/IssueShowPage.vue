@@ -60,17 +60,34 @@
         :current-issue-id="issueStore.current.id || ''"
       />
 
-      <!-- Worklog Section -->
-      <worklog-panel
-        :issue-id="issueStore.current.id || ''"
-        :worklogs="worklogStore.worklogs"
-      />
+      <v-divider class="my-4"></v-divider>
 
-      <!-- History Section -->
-      <issue-audit-log-panel
-        :issue-id="issueStore.current.id || ''"
-        :audit-logs="auditLogStore.auditLogs"
-      />
+      <!-- Tabs: Comments | History | Work Log -->
+      <v-tabs v-model="activeTab" density="compact" class="mb-2">
+        <v-tab value="comments">{{ t('comment.comments') }}</v-tab>
+        <v-tab value="audit">{{ t('audit_log.history') }}</v-tab>
+        <v-tab value="worklogs">{{ t('worklog.work_log') }}</v-tab>
+      </v-tabs>
+      <v-window v-model="activeTab">
+        <v-window-item value="comments">
+          <comment-panel
+            :issue-id="issueStore.current.id || ''"
+            :comments="commentStore.comments"
+          />
+        </v-window-item>
+        <v-window-item value="audit">
+          <issue-audit-log-panel
+            :issue-id="issueStore.current.id || ''"
+            :audit-logs="auditLogStore.auditLogs"
+          />
+        </v-window-item>
+        <v-window-item value="worklogs">
+          <worklog-panel
+            :issue-id="issueStore.current.id || ''"
+            :worklogs="worklogStore.worklogs"
+          />
+        </v-window-item>
+      </v-window>
     </v-card>
   </v-container>
 </template>
@@ -82,6 +99,7 @@ import { useRelatedIssueStore } from '@/store/related-issue.store';
 import { useWorklogStore } from '@/store/worklog.store';
 import { useAttachmentStore } from '@/store/attachment.store';
 import { useIssueAuditLogStore } from '@/store/issue-audit-log.store';
+import { useCommentStore } from '@/store/comment.store';
 import { useLayoutStore } from '@/store/layout.store';
 import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount, onMounted, onUnmounted } from 'vue';
@@ -91,6 +109,7 @@ import RelatedIssuesPanel from '@/component/RelatedIssuesPanel.vue';
 import WorklogPanel from '@/component/WorklogPanel.vue';
 import AttachmentPanel from '@/component/AttachmentPanel.vue';
 import IssueAuditLogPanel from '@/component/IssueAuditLogPanel.vue';
+import CommentPanel from '@/component/CommentPanel.vue';
 import RichTextField from '@/component/RichTextField.vue';
 
 const { t } = useI18n();
@@ -101,7 +120,10 @@ const relatedIssueStore = useRelatedIssueStore();
 const worklogStore = useWorklogStore();
 const attachmentStore = useAttachmentStore();
 const auditLogStore = useIssueAuditLogStore();
+const commentStore = useCommentStore();
 const layoutStore = useLayoutStore();
+
+const activeTab = ref('comments');
 
 // Summary inline edit
 const editingSummary = ref(false);
@@ -155,6 +177,7 @@ onBeforeMount(async () => {
   await worklogStore.getWorklogs(route.params.issueId.toString());
   await attachmentStore.getAttachments(route.params.issueId.toString());
   await auditLogStore.getAuditLogs(route.params.issueId.toString());
+  await commentStore.getComments(route.params.issueId.toString());
   route.meta.title = `${issueStore.current!.key} - ${issueStore.current!.summary}`;
   layoutStore.setSidebarComponent(IssueSidebar, {});
 });

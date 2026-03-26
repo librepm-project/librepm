@@ -79,6 +79,9 @@ func StartHttpServer(domain domain.Domain) {
 		IssueAuditLogController: IssueAuditLogController{
 			IssueAuditLogService: domain.IssueAuditLogService,
 		},
+		CommentController: CommentController{
+			CommentService: domain.CommentService,
+		},
 	}.Init()
 
 	slog.Info("API listen on port 80")

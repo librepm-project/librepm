@@ -23,6 +23,7 @@ type Router struct {
 	ProjectIssuePropertyController ProjectIssuePropertyController
 	AttachmentController           AttachmentControllerInterface
 	IssueAuditLogController        IssueAuditLogControllerInterface
+	CommentController              CommentControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
@@ -56,6 +57,11 @@ func (r Router) Init() *chi.Mux {
 	router.Delete("/attachment/{attachment_id}", r.AttachmentController.Destroy)
 
 	router.Get("/issue/{issue_id}/audit-log", r.IssueAuditLogController.Index)
+
+	router.Get("/issue/{issue_id}/comment", r.CommentController.IndexByIssue)
+	router.Post("/issue/{issue_id}/comment", r.CommentController.Create)
+	router.Put("/comment/{comment_id}", r.CommentController.Update)
+	router.Delete("/comment/{comment_id}", r.CommentController.Destroy)
 
 	router.Delete("/related-issue/{related_issue_id}", r.RelatedIssueController.Delete)
 

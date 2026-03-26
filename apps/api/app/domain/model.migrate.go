@@ -27,6 +27,7 @@ func MigrateProductDatabase(db *gorm.DB) {
 		UserModel{},
 		AttachmentModel{},
 		IssueAuditLogModel{},
+		CommentModel{},
 	)
 
 	// A régi filter_condition schema cleanup:

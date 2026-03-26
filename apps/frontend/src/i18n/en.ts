@@ -111,6 +111,12 @@ export const en = {
         language: 'Language',
         country: 'Country',
     },
+    comment: {
+        comments: 'Comments',
+        add_comment: 'Add Comment',
+        no_comments: 'No comments yet.',
+        save: 'Save',
+    },
     audit_log: {
         history: 'History',
         no_history: 'No changes recorded yet.',
