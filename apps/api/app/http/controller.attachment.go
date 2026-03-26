@@ -4,9 +4,6 @@ import (
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
-	"libs/jwt_utils"
-
 	"github.com/google/uuid"
 )
 
@@ -25,58 +22,58 @@ type AttachmentController struct {
 }
 
 func (c AttachmentController) IndexByIssue(w http.ResponseWriter, r *http.Request) {
-	issueID, err := http_utils.GetParamUUID(r, "issue_id")
+	issueID, err := GetParamUUID(r, "issue_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	attachments, err := c.AttachmentService.AllByEntity("issue", issueID)
+	attachments, err := c.AttachmentService.AllByEntity(domain.EntityTypeIssue, issueID)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, AttachmentSerializer{}.ModelToResponseMany(*attachments))
+	RespondJSON(w, http.StatusOK, AttachmentSerializer{}.ModelToResponseMany(*attachments))
 }
 
 func (c AttachmentController) IndexByProject(w http.ResponseWriter, r *http.Request) {
-	projectID, err := http_utils.GetParamUUID(r, "project_id")
+	projectID, err := GetParamUUID(r, "project_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	attachments, err := c.AttachmentService.AllByEntity("project", projectID)
+	attachments, err := c.AttachmentService.AllByEntity(domain.EntityTypeProject, projectID)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, AttachmentSerializer{}.ModelToResponseMany(*attachments))
+	RespondJSON(w, http.StatusOK, AttachmentSerializer{}.ModelToResponseMany(*attachments))
 }
 
 func (c AttachmentController) CreateForIssue(w http.ResponseWriter, r *http.Request) {
-	issueID, err := http_utils.GetParamUUID(r, "issue_id")
+	issueID, err := GetParamUUID(r, "issue_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	c.createAttachment(w, r, "issue", issueID)
+	c.createAttachment(w, r, domain.EntityTypeIssue, issueID)
 }
 
 func (c AttachmentController) CreateForProject(w http.ResponseWriter, r *http.Request) {
-	projectID, err := http_utils.GetParamUUID(r, "project_id")
+	projectID, err := GetParamUUID(r, "project_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	c.createAttachment(w, r, "project", projectID)
+	c.createAttachment(w, r, domain.EntityTypeProject, projectID)
 }
 
 func (c AttachmentController) createAttachment(w http.ResponseWriter, r *http.Request, entityType string, entityID uuid.UUID) {
-	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
+	user_id := GetUserIDFromRequest(r)
 
 	r.ParseMultipartForm(32 << 20)
 	file, header, err := r.FormFile("file")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 	defer file.Close()
@@ -95,26 +92,26 @@ func (c AttachmentController) createAttachment(w http.ResponseWriter, r *http.Re
 	}
 
 	if err := c.AttachmentService.Create(&attachment, file); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		RespondInternalError(w)
 		return
 	}
 
-	if entityType == "issue" {
+	if entityType == domain.EntityTypeIssue {
 		c.IssueAuditLogService.LogAttachmentAdded(user_id, attachment)
 	}
 
-	http_utils.RespondWithJSON(w, http.StatusCreated, AttachmentSerializer{}.ModelToResponse(attachment))
+	RespondJSON(w, http.StatusCreated, AttachmentSerializer{}.ModelToResponse(attachment))
 }
 
 func (c AttachmentController) Download(w http.ResponseWriter, r *http.Request) {
-	attachmentID, err := http_utils.GetParamUUID(r, "attachment_id")
+	attachmentID, err := GetParamUUID(r, "attachment_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 	attachment, err := c.AttachmentService.FindByID(attachmentID)
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
+		RespondNotFound(w)
 		return
 	}
 	w.Header().Set("Content-Disposition", "attachment; filename=\""+attachment.Filename+"\"")
@@ -123,28 +120,28 @@ func (c AttachmentController) Download(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c AttachmentController) Destroy(w http.ResponseWriter, r *http.Request) {
-	attachmentID, err := http_utils.GetParamUUID(r, "attachment_id")
+	attachmentID, err := GetParamUUID(r, "attachment_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
-	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
+	user_id := GetUserIDFromRequest(r)
 
 	attachment, err := c.AttachmentService.FindByID(attachmentID)
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
+		RespondNotFound(w)
 		return
 	}
 
 	if err := c.AttachmentService.Destroy(attachmentID); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
-	if attachment.EntityType == "issue" {
+	if attachment.EntityType == domain.EntityTypeIssue {
 		c.IssueAuditLogService.LogAttachmentRemoved(user_id, *attachment)
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	RespondNoContent(w)
 }

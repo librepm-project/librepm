@@ -27,6 +27,24 @@ func (s IssueAuditLogService) AllByIssue(issueID uuid.UUID) (*[]IssueAuditLogMod
 	return s.IssueAuditLogRepository.AllByIssue(issueID)
 }
 
+// logEntry creates and persists an audit log entry
+func (s IssueAuditLogService) logEntry(issueID, userID uuid.UUID, eventType, oldValue, newValue string, meta map[string]interface{}) error {
+	var metaStr string
+	if meta != nil {
+		metaBytes, _ := json.Marshal(meta)
+		metaStr = string(metaBytes)
+	}
+	entry := IssueAuditLogModel{
+		IssueID:   issueID,
+		UserID:    userID,
+		EventType: eventType,
+		OldValue:  oldValue,
+		NewValue:  newValue,
+		Meta:      metaStr,
+	}
+	return s.IssueAuditLogRepository.Create(&entry)
+}
+
 func (s IssueAuditLogService) LogFieldChanges(issueID, userID uuid.UUID, old, new IssueModel) error {
 	type fieldDiff struct {
 		name     string
@@ -61,15 +79,7 @@ func (s IssueAuditLogService) LogFieldChanges(issueID, userID uuid.UUID, old, ne
 	}
 
 	for _, diff := range diffs {
-		entry := IssueAuditLogModel{
-			IssueID:   issueID,
-			UserID:    userID,
-			EventType: AuditEventFieldChanged,
-			Field:     diff.name,
-			OldValue:  diff.oldValue,
-			NewValue:  diff.newValue,
-		}
-		if err := s.IssueAuditLogRepository.Create(&entry); err != nil {
+		if err := s.logEntry(issueID, userID, AuditEventFieldChanged, diff.oldValue, diff.newValue, map[string]interface{}{"field": diff.name}); err != nil {
 			return err
 		}
 	}
@@ -77,106 +87,98 @@ func (s IssueAuditLogService) LogFieldChanges(issueID, userID uuid.UUID, old, ne
 }
 
 func (s IssueAuditLogService) LogAttachmentAdded(userID uuid.UUID, attachment AttachmentModel) error {
-	meta, _ := json.Marshal(map[string]interface{}{
-		"filename": attachment.Filename,
-		"size":     attachment.Size,
-	})
-	entry := IssueAuditLogModel{
-		IssueID:   attachment.EntityID,
-		UserID:    userID,
-		EventType: AuditEventAttachmentAdded,
-		NewValue:  attachment.Filename,
-		Meta:      string(meta),
-	}
-	return s.IssueAuditLogRepository.Create(&entry)
+	return s.logEntry(
+		attachment.EntityID,
+		userID,
+		AuditEventAttachmentAdded,
+		"",
+		attachment.Filename,
+		map[string]interface{}{
+			"filename": attachment.Filename,
+			"size":     attachment.Size,
+		},
+	)
 }
 
 func (s IssueAuditLogService) LogAttachmentRemoved(userID uuid.UUID, attachment AttachmentModel) error {
-	meta, _ := json.Marshal(map[string]interface{}{
-		"filename": attachment.Filename,
-		"size":     attachment.Size,
-	})
-	entry := IssueAuditLogModel{
-		IssueID:   attachment.EntityID,
-		UserID:    userID,
-		EventType: AuditEventAttachmentRemoved,
-		OldValue:  attachment.Filename,
-		Meta:      string(meta),
-	}
-	return s.IssueAuditLogRepository.Create(&entry)
+	return s.logEntry(
+		attachment.EntityID,
+		userID,
+		AuditEventAttachmentRemoved,
+		attachment.Filename,
+		"",
+		map[string]interface{}{
+			"filename": attachment.Filename,
+			"size":     attachment.Size,
+		},
+	)
 }
 
 func (s IssueAuditLogService) LogWorklogAdded(userID uuid.UUID, worklog IssueWorklogModel) error {
-	meta, _ := json.Marshal(map[string]interface{}{
-		"comment": worklog.Comment,
-	})
-	entry := IssueAuditLogModel{
-		IssueID:   worklog.IssueID,
-		UserID:    userID,
-		EventType: AuditEventWorklogAdded,
-		NewValue:  fmt.Sprint(worklog.Seconds),
-		Meta:      string(meta),
-	}
-	return s.IssueAuditLogRepository.Create(&entry)
+	return s.logEntry(
+		worklog.IssueID,
+		userID,
+		AuditEventWorklogAdded,
+		"",
+		fmt.Sprint(worklog.Seconds),
+		map[string]interface{}{
+			"comment": worklog.Comment,
+		},
+	)
 }
 
 func (s IssueAuditLogService) LogWorklogUpdated(userID uuid.UUID, old, new IssueWorklogModel) error {
-	meta, _ := json.Marshal(map[string]interface{}{
-		"comment": new.Comment,
-	})
-	entry := IssueAuditLogModel{
-		IssueID:   new.IssueID,
-		UserID:    userID,
-		EventType: AuditEventWorklogUpdated,
-		OldValue:  fmt.Sprint(old.Seconds),
-		NewValue:  fmt.Sprint(new.Seconds),
-		Meta:      string(meta),
-	}
-	return s.IssueAuditLogRepository.Create(&entry)
+	return s.logEntry(
+		new.IssueID,
+		userID,
+		AuditEventWorklogUpdated,
+		fmt.Sprint(old.Seconds),
+		fmt.Sprint(new.Seconds),
+		map[string]interface{}{
+			"comment": new.Comment,
+		},
+	)
 }
 
 func (s IssueAuditLogService) LogWorklogRemoved(userID uuid.UUID, worklog IssueWorklogModel) error {
-	meta, _ := json.Marshal(map[string]interface{}{
-		"comment": worklog.Comment,
-	})
-	entry := IssueAuditLogModel{
-		IssueID:   worklog.IssueID,
-		UserID:    userID,
-		EventType: AuditEventWorklogRemoved,
-		OldValue:  fmt.Sprint(worklog.Seconds),
-		Meta:      string(meta),
-	}
-	return s.IssueAuditLogRepository.Create(&entry)
+	return s.logEntry(
+		worklog.IssueID,
+		userID,
+		AuditEventWorklogRemoved,
+		fmt.Sprint(worklog.Seconds),
+		"",
+		map[string]interface{}{
+			"comment": worklog.Comment,
+		},
+	)
 }
 
 func (s IssueAuditLogService) LogRelatedIssueAdded(issueID, userID uuid.UUID, relation RelatedIssueModel, other IssueModel) error {
-	meta, _ := json.Marshal(map[string]interface{}{
-		"issue_key":     other.Key,
-		"issue_summary": other.Summary,
-		"relation_type": relation.Type,
-	})
-	entry := IssueAuditLogModel{
-		IssueID:   issueID,
-		UserID:    userID,
-		EventType: AuditEventRelatedIssueAdded,
-		NewValue:  relation.Type,
-		Meta:      string(meta),
-	}
-	return s.IssueAuditLogRepository.Create(&entry)
+	return s.logEntry(
+		issueID,
+		userID,
+		AuditEventRelatedIssueAdded,
+		"",
+		relation.Type,
+		map[string]interface{}{
+			"issue_key":     other.Key,
+			"issue_summary": other.Summary,
+			"relation_type": relation.Type,
+		},
+	)
 }
 
 func (s IssueAuditLogService) LogRelatedIssueRemoved(issueID, userID uuid.UUID, relation RelatedIssueModel, other IssueModel) error {
-	meta, _ := json.Marshal(map[string]interface{}{
-		"issue_key":     other.Key,
-		"issue_summary": other.Summary,
-		"relation_type": relation.Type,
-	})
-	entry := IssueAuditLogModel{
-		IssueID:   issueID,
-		UserID:    userID,
-		EventType: AuditEventRelatedIssueRemoved,
-		OldValue:  relation.Type,
-		Meta:      string(meta),
-	}
-	return s.IssueAuditLogRepository.Create(&entry)
+	return s.logEntry(
+		issueID,
+		userID,
+		AuditEventRelatedIssueRemoved,
+		relation.Type,
+		"",
+		map[string]interface{}{
+			"issue_key":     other.Key,
+			"issue_summary": other.Summary,
+			"relation_type": relation.Type,
+		},
+	)
 }

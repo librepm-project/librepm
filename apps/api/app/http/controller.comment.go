@@ -1,12 +1,9 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
-	"libs/jwt_utils"
 )
 
 type CommentControllerInterface interface {
@@ -21,83 +18,89 @@ type CommentController struct {
 }
 
 func (c CommentController) IndexByIssue(w http.ResponseWriter, r *http.Request) {
-	issueID, err := http_utils.GetParamUUID(r, "issue_id")
+	issueID, err := GetParamUUID(r, "issue_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	comments, err := c.CommentService.AllByEntity("issue", issueID)
+	comments, err := c.CommentService.AllByEntity(domain.EntityTypeIssue, issueID)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, CommentSerializer{}.ModelToResponseMany(*comments))
+	RespondJSON(w, http.StatusOK, CommentSerializer{}.ModelToResponseMany(*comments))
 }
 
 func (c CommentController) Create(w http.ResponseWriter, r *http.Request) {
-	issueID, err := http_utils.GetParamUUID(r, "issue_id")
+	issueID, err := GetParamUUID(r, "issue_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	userID := jwt_utils.GetTokenInfoFromRequest(r).UserID
+	userID := GetUserIDFromRequest(r)
 
 	var req CommentRequest
-	json.NewDecoder(r.Body).Decode(&req)
+	if err := DecodeJSON(r, &req); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 
 	comment := domain.CommentModel{
-		EntityType: "issue",
+		EntityType: domain.EntityTypeIssue,
 		EntityID:   issueID,
 		UserID:     userID,
 		Content:    req.Content,
 	}
 
 	if err := c.CommentService.Create(&comment); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
 	created, err := c.CommentService.FindByID(comment.ID)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		RespondInternalError(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusCreated, CommentSerializer{}.ModelToResponse(*created))
+	RespondJSON(w, http.StatusCreated, CommentSerializer{}.ModelToResponse(*created))
 }
 
 func (c CommentController) Update(w http.ResponseWriter, r *http.Request) {
-	commentID, err := http_utils.GetParamUUID(r, "comment_id")
+	commentID, err := GetParamUUID(r, "comment_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
 	var req CommentRequest
-	json.NewDecoder(r.Body).Decode(&req)
+	if err := DecodeJSON(r, &req); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 
 	patch := domain.CommentModel{Content: req.Content}
 	if err := c.CommentService.Update(commentID, &patch); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
 	updated, err := c.CommentService.FindByID(commentID)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		RespondInternalError(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, CommentSerializer{}.ModelToResponse(*updated))
+	RespondJSON(w, http.StatusOK, CommentSerializer{}.ModelToResponse(*updated))
 }
 
 func (c CommentController) Destroy(w http.ResponseWriter, r *http.Request) {
-	commentID, err := http_utils.GetParamUUID(r, "comment_id")
+	commentID, err := GetParamUUID(r, "comment_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 	if err := c.CommentService.Destroy(commentID); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	RespondNoContent(w)
 }

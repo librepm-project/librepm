@@ -1,13 +1,9 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
-	"libs/http_utils"
-	"libs/jwt_utils"
-
 	"github.com/google/uuid"
 )
 
@@ -29,83 +25,101 @@ func (c IssueController) Index(w http.ResponseWriter, r *http.Request) {
 	if filterIdStr != "" {
 		filterID, err := uuid.Parse(filterIdStr)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
+			RespondBadRequest(w)
 			return
 		}
 		issues, err := c.IssueService.AllByFilterID(filterID)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
+			RespondBadRequest(w)
 			return
 		}
-		http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponseMany(*issues))
+		RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponseMany(*issues))
 		return
 	}
 
 	issues, err := c.IssueService.All()
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponseMany(*issues))
+	RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponseMany(*issues))
 }
 
 func (c IssueController) Show(w http.ResponseWriter, r *http.Request) {
-	var issue_id, _ = http_utils.GetParamUUID(r, "issue_id")
-	issue, err := c.IssueService.Show(issue_id)
+	issue_id, err := GetParamUUID(r, "issue_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*issue))
+	issue, err := c.IssueService.Show(issue_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*issue))
 }
 
 func (c IssueController) Create(w http.ResponseWriter, r *http.Request) {
 	var issue_request IssueRequest
-	json.NewDecoder(r.Body).Decode(&issue_request)
+	if err := DecodeJSON(r, &issue_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 	issue := IssueSerializer{}.RequestToModel(issue_request)
 	err := c.IssueService.Create(&issue)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	http_utils.RespondWithJSON(w, http.StatusCreated, IssueSerializer{}.ModelToResponse(issue))
+	RespondJSON(w, http.StatusCreated, IssueSerializer{}.ModelToResponse(issue))
 }
 
 func (c IssueController) Update(w http.ResponseWriter, r *http.Request) {
-	issue_id, _ := http_utils.GetParamUUID(r, "issue_id")
-	user_id := jwt_utils.GetTokenInfoFromRequest(r).UserID
+	issue_id, err := GetParamUUID(r, "issue_id")
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	user_id := GetUserIDFromRequest(r)
 
 	oldIssue, err := c.IssueService.Show(issue_id)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 
 	var issue_request IssueRequest
-	json.NewDecoder(r.Body).Decode(&issue_request)
+	if err := DecodeJSON(r, &issue_request); err != nil {
+		RespondBadRequest(w)
+		return
+	}
 	issue := IssueSerializer{}.RequestToModel(issue_request)
 	err = c.IssueService.Update(issue_id, &issue)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
 	updated, err := c.IssueService.Show(issue_id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		RespondInternalError(w)
 		return
 	}
 
 	c.IssueAuditLogService.LogFieldChanges(issue_id, user_id, *oldIssue, *updated)
 
-	http_utils.RespondWithJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*updated))
+	RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*updated))
 }
 
 func (c IssueController) Destroy(w http.ResponseWriter, r *http.Request) {
-	issue_id, _ := http_utils.GetParamUUID(r, "issue_id")
-	err := c.IssueService.Destroy(issue_id)
+	issue_id, err := GetParamUUID(r, "issue_id")
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		RespondBadRequest(w)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	err = c.IssueService.Destroy(issue_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondNoContent(w)
 }

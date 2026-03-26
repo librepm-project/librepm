@@ -6,6 +6,12 @@ import (
 	"gorm.io/gorm"
 )
 
+// Entity type constants
+const (
+	EntityTypeIssue   = "issue"
+	EntityTypeProject = "project"
+)
+
 type Domain struct {
 	DB *gorm.DB
 
