@@ -42,6 +42,16 @@ const vuetify = createVuetify({
     },
     VDataTable: {
       class: 'border-thin rounded-xl',
+      density: 'compact',
+    },
+    VList: {
+      density: 'compact',
+    },
+    VListItem: {
+      density: 'compact',
+    },
+    VBtn: {
+      density: 'comfortable',
     },
   },
 });

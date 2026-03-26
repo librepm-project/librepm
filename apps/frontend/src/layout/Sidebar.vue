@@ -9,13 +9,13 @@
             />
             
             <!-- Default navigation items -->
-            <v-list v-else class="pa-2">
+            <v-list v-else class="pa-1">
                 <v-list-item
                     v-for="item in layoutStore.sidebarItems"
                     :key="item.key"
                     :to="item.link"
                     rounded="lg"
-                    class="mb-1"
+                    class="mb-0"
                     active-color="primary"
                 >
                     <template v-slot:prepend>

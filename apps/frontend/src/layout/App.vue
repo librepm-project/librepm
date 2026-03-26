@@ -65,10 +65,10 @@
       <v-container v-if="layoutStore.hideLayout" fluid class="fill-height pa-0">
         <router-view />
       </v-container>
-      <v-container v-else fluid class="pa-2 pa-sm-6">
-        <v-row>
-          <Sidebar v-if="layoutStore.hasSidebar" class="d-none d-md-flex" />
-          <Main :cols="12" :md="layoutStore.hasSidebar ? 10 : 12" />
+      <v-container v-else fluid class="pa-1 pa-sm-3">
+        <v-row class="ma-0">
+          <Sidebar v-if="layoutStore.hasSidebar" class="d-none d-md-flex pa-1" />
+          <Main :cols="12" :md="layoutStore.hasSidebar ? 10 : 12" class="pa-1" />
         </v-row>
       </v-container>
       <Footer v-if="!layoutStore.hideLayout" />

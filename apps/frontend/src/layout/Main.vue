@@ -1,11 +1,11 @@
 <template>
-    <v-col :cols="props.cols || 12" :md="props.md || (layoutStore.hasSidebar ? 10 : 12)">
+    <v-col :cols="props.cols || 12" :md="props.md || (layoutStore.hasSidebar ? 10 : 12)" class="pa-1">
         <v-card elevation="2" class="rounded-xl overflow-hidden">
-            <v-card-title class="bg-primary text-white d-flex justify-space-between align-center">
-                <div class="d-flex align-center gap-3 flex-grow-1 mr-4">
-                    <v-icon size="large">mdi-file-document</v-icon>
+            <v-card-title class="bg-primary text-white d-flex justify-space-between align-center py-1 px-3">
+                <div class="d-flex align-center gap-2 flex-grow-1 mr-4">
+                    <v-icon size="small">mdi-file-document</v-icon>
                     <div v-if="!layoutStore.isEditingTitle" 
-                         class="text-h5 m-0 cursor-pointer flex-grow-1" 
+                         class="text-h6 m-0 cursor-pointer flex-grow-1 font-weight-bold" 
                          @click="layoutStore.onTitleClick?.()"
                     >
                         {{ layoutStore.title || $route.meta.title }}
@@ -29,7 +29,7 @@
 
             <v-divider />
 
-            <v-card-text class="pa-6">
+            <v-card-text class="pa-3">
                 <RouterView />
             </v-card-text>
         </v-card>
@@ -50,14 +50,14 @@ const props = defineProps<{
 </script>
 
 <style scoped>
-.gap-3 {
-    gap: 1rem;
+.gap-2 {
+    gap: 0.5rem;
 }
 
 .title-edit-field :deep(input) {
     color: white !important;
-    font-size: 1.5rem;
-    font-weight: 400;
+    font-size: 1.25rem;
+    font-weight: 500;
 }
 
 :deep(.v-card) {

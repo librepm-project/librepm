@@ -1,12 +1,12 @@
 <template>
-  <v-app-bar elevation="4" color="primary" class="px-6">
+  <v-app-bar elevation="4" color="primary" class="px-3" density="compact">
     <v-app-bar-nav-icon 
-      class="d-md-none text-white mr-2" 
+      class="d-md-none text-white mr-1" 
       @click.stop="layoutStore.toggleDrawer()"
     />
-    <v-container class="d-flex align-center justify-space-between" fluid>
-      <div class="d-flex align-center gap-4 cursor-pointer" @click="router.push('/')">
-        <v-img :src="logo" alt="LibrePM" height="50" width="50" contain />
+    <v-container class="d-flex align-center justify-space-between pa-0" fluid>
+      <div class="d-flex align-center gap-2 cursor-pointer" @click="router.push('/')">
+        <v-img :src="logo" alt="LibrePM" height="32" width="32" contain />
         <span class="text-h6 font-weight-bold text-white d-none d-sm-flex">LibrePM</span>
       </div>
 
