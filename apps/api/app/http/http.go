@@ -30,6 +30,9 @@ func StartHttpServer(domain domain.Domain) {
 		IssueController: IssueController{
 			IssueService: domain.IssueService,
 		},
+		IssueWorklogController: IssueWorklogController{
+			IssueWorklogService: domain.IssueWorklogService,
+		},
 		RelatedIssueController: RelatedIssueController{
 			RelatedIssueService: domain.RelatedIssueService,
 		},

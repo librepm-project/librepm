@@ -1,11 +1,12 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { getToken, removeToken } from '@/lib/cookie';
 
 const apiCall = (): AxiosInstance => {
     const config: AxiosRequestConfig = {
       baseURL: '/api/',
     };
 
-    const accessToken = window.localStorage.getItem("accessToken");
+    const accessToken = getToken();
     if (accessToken) {
       config.headers = {
         Authorization: `Bearer ${accessToken}`,
@@ -17,7 +18,7 @@ const apiCall = (): AxiosInstance => {
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
-          window.localStorage.removeItem("accessToken");
+          removeToken();
           window.location.href = "/login";
         }
         return Promise.reject(error);

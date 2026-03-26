@@ -11,6 +11,7 @@ type Domain struct {
 
 	ProjectService          ProjectServiceInterface
 	IssueService            IssueServiceInterface
+	IssueWorklogService     IssueWorklogServiceInterface
 	RelatedIssueService     RelatedIssueServiceInterface
 	FilterService           FilterServiceInterface
 	BoardService            BoardServiceInterface
@@ -27,6 +28,7 @@ type Domain struct {
 	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
 	ProjectIssuePropertyRepository ProjectIssuePropertyRepositoryInterface
 	IssueRepository                IssueRepositoryInterface
+	IssueWorklogRepository         IssueWorklogRepositoryInterface
 	RelatedIssueRepository         RelatedIssueRepositoryInterface
 	FilterRepository               FilterRepositoryInterface
 	BoardRepository                BoardRepositoryInterface
@@ -50,6 +52,7 @@ func NewDomain() Domain {
 	projectTrackerStatusRepository := ProjectTrackerStatusRepository{DB: DB}
 	projectIssuePropertyRepository := ProjectIssuePropertyRepository{DB: DB}
 	issueRepository := IssueRepository{DB: DB}
+	issueWorklogRepository := IssueWorklogRepository{DB: DB}
 	relatedIssueRepository := RelatedIssueRepository{DB: DB}
 	filterRepository := FilterRepository{DB: DB}
 	boardRepository := BoardRepository{DB: DB}
@@ -75,6 +78,9 @@ func NewDomain() Domain {
 			IssueRepository:   issueRepository,
 			ProjectRepository: projectRepository,
 			FilterRepository:  filterRepository,
+		},
+		IssueWorklogService: IssueWorklogService{
+			IssueWorklogRepository: issueWorklogRepository,
 		},
 		RelatedIssueService: RelatedIssueService{
 			RelatedIssueRepository: relatedIssueRepository,
@@ -113,6 +119,7 @@ func NewDomain() Domain {
 
 		ProjectRepository:              projectRepository,
 		IssueRepository:                issueRepository,
+		IssueWorklogRepository:         issueWorklogRepository,
 		RelatedIssueRepository:         relatedIssueRepository,
 		FilterRepository:               filterRepository,
 		BoardRepository:                boardRepository,

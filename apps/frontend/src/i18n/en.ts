@@ -111,8 +111,20 @@ export const en = {
         language: 'Language',
         country: 'Country',
     },
+    worklog: {
+        work_log: 'Work Log',
+        total: 'Total',
+        add_worklog: 'Add Work Log',
+        hours: 'Hours',
+        minutes: 'Minutes',
+        comment: 'Comment',
+        logged_at: 'Logged At',
+        no_worklogs: 'No work logged yet.',
+    },
     login: {
-        submit: 'Login'
+        submit: 'Login',
+        logout: 'Logout',
+        invalid_credentials: 'Invalid email or password.',
     },
     rule: {
         email: "Invalid email format",

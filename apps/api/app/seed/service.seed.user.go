@@ -2,6 +2,7 @@ package seed
 
 import (
 	"apps/api/app/domain"
+	"libs/password_utils"
 	"time"
 )
 
@@ -9,9 +10,13 @@ func (s SeedService) createUser(items []UserData) error {
 	var err error
 	var user domain.UserModel
 	for _, item := range items {
+		hashedPassword, err := password_utils.HashPassword(item.PasswordHash)
+		if err != nil {
+			return err
+		}
 		user = domain.UserModel{
 			Email:        item.Email,
-			PasswordHash: item.PasswordHash,
+			PasswordHash: hashedPassword,
 			FirstName:    item.FirstName,
 			LastName:     item.LastName,
 			Phone:        item.Phone,

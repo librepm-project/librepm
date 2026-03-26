@@ -8,7 +8,7 @@
 
       <v-spacer />
 
-      <nav class="d-none d-md-flex align-center gap-2">
+      <nav v-if="userCurrentStore.current" class="d-none d-md-flex align-center gap-2">
         <template v-for="link in links" :key="link.key">
           <v-btn
             v-if="!link.sublinks"
@@ -53,24 +53,62 @@
 
       <v-spacer />
 
-      <v-text-field
-        :label="t('global.search')"
-        density="compact"
-        variant="solo-filled"
-        single-line
-        hide-details
-        prepend-inner-icon="mdi-magnify"
-        class="search-field"
-      />
+      <div class="d-flex align-center gap-3">
+        <v-text-field
+          :label="t('global.search')"
+          density="compact"
+          variant="solo-filled"
+          single-line
+          hide-details
+          prepend-inner-icon="mdi-magnify"
+          class="search-field"
+        />
+
+        <template v-if="userCurrentStore.current">
+          <span class="text-white text-body2 text-no-wrap">
+            {{ userCurrentStore.current.firstName }} {{ userCurrentStore.current.lastName }}
+          </span>
+          <v-btn
+            icon
+            variant="text"
+            class="text-white"
+            :title="t('login.logout')"
+            @click="logout"
+          >
+            <v-icon>mdi-logout</v-icon>
+          </v-btn>
+        </template>
+        <template v-else>
+          <v-btn
+            to="/login"
+            prepend-icon="mdi-login"
+            variant="text"
+            class="text-white"
+          >
+            {{ t('login.submit') }}
+          </v-btn>
+        </template>
+      </div>
     </v-container>
   </v-app-bar>
 </template>
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import logo from '@/assets/logo.png'
+import { useRouter } from 'vue-router';
+import logo from '@/assets/logo.png';
+import { useUserCurrentStore } from '@/store/userCurrent.store';
+import { useUserSessionStore } from '@/store/userSession.store';
 
 const { t } = useI18n();
+const router = useRouter();
+const userCurrentStore = useUserCurrentStore();
+const userSessionStore = useUserSessionStore();
+
+const logout = () => {
+  userSessionStore.logout();
+  router.push('/login');
+};
 
 interface Sublink {
   text: string;
@@ -164,5 +202,9 @@ const links: Link[] = [
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
 }
 </style>

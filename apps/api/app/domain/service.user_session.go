@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"errors"
+
 	"libs/jwt_utils"
 	"libs/password_utils"
 )
@@ -21,8 +23,11 @@ type UserSessionCreateReturn struct {
 func (s UserSessionService) Create(email string, password string) (*UserSessionCreateReturn, error) {
 	user, err := s.UserRepository.FindByEmail(email)
 
-	if err != nil || !password_utils.CheckPasswordHash(password, user.PasswordHash) {
+	if err != nil {
 		return nil, err
+	}
+	if !password_utils.CheckPasswordHash(password, user.PasswordHash) {
+		return nil, errors.New("invalid credentials")
 	}
 
 	jwt_token := jwt_utils.GenerateToken(user.ID, user.Email)

@@ -16,7 +16,7 @@ export const useUserCurrentStore = defineStore('userCurrent', {
     async getUser() {
       this.current = await userCurrentApi.getCurrent();
     },
-    setUser(user: User) {
+    setUser(user: User | null) {
       this.current = user;
     }
   },

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
@@ -21,13 +22,14 @@ func keyFunc(token *jwt.Token) (interface{}, error) {
 
 func GetTokenInfo(token string) *TokenInfo {
 	token_obj, _ := jwt.ParseWithClaims(token, &TokenInfo{}, keyFunc)
+	if token_obj == nil {
+		return nil
+	}
 	token_info, ok := token_obj.Claims.(*TokenInfo)
-
 	if ok && token_obj.Valid {
 		return token_info
-	} else {
-		return &TokenInfo{}
 	}
+	return nil
 }
 
 func GetTokenInfoFromRequest(r *http.Request) *TokenInfo {
@@ -50,7 +52,8 @@ func GenerateToken(user_id uuid.UUID, email string) string {
 }
 
 func GetTokenString(r *http.Request) string {
-	return r.Header.Get("Authorization")
+	auth := r.Header.Get("Authorization")
+	return strings.TrimPrefix(auth, "Bearer ")
 }
 
 func getSecret() []byte {

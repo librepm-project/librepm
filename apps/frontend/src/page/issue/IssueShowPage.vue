@@ -53,6 +53,12 @@
         :relations="relatedIssueStore.relations"
         :current-issue-id="issueStore.current.id || ''"
       />
+
+      <!-- Worklog Section -->
+      <worklog-panel
+        :issue-id="issueStore.current.id || ''"
+        :worklogs="worklogStore.worklogs"
+      />
     </v-card>
   </v-container>
 </template>
@@ -61,12 +67,14 @@
 import { ref } from 'vue';
 import { useIssueStore } from '@/store/issue.store';
 import { useRelatedIssueStore } from '@/store/related-issue.store';
+import { useWorklogStore } from '@/store/worklog.store';
 import { useLayoutStore } from '@/store/layout.store';
 import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import IssueSidebar from '@/component/IssueSidebar.vue';
 import RelatedIssuesPanel from '@/component/RelatedIssuesPanel.vue';
+import WorklogPanel from '@/component/WorklogPanel.vue';
 import RichTextField from '@/component/RichTextField.vue';
 
 const { t } = useI18n();
@@ -74,6 +82,7 @@ const route = useRoute();
 const router = useRouter();
 const issueStore = useIssueStore();
 const relatedIssueStore = useRelatedIssueStore();
+const worklogStore = useWorklogStore();
 const layoutStore = useLayoutStore();
 
 // Summary inline edit
@@ -125,6 +134,7 @@ const remove = async () => {
 onBeforeMount(async () => {
   await issueStore.getIssue(route.params.issueId.toString());
   await relatedIssueStore.getRelated(route.params.issueId.toString());
+  await worklogStore.getWorklogs(route.params.issueId.toString());
   route.meta.title = `${issueStore.current!.key} - ${issueStore.current!.summary}`;
   layoutStore.setSidebarComponent(IssueSidebar, {});
 });

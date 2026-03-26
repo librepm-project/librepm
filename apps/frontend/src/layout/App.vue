@@ -14,14 +14,23 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue';
 import Header from '@/layout/Header.vue';
 import Sidebar from '@/layout/Sidebar.vue';
 import Main from '@/layout/Main.vue';
 import Footer from '@/layout/Footer.vue';
 import { useLayoutStore } from '@/store/layout.store';
+import { useUserCurrentStore } from '@/store/userCurrent.store';
+import { getToken } from '@/lib/cookie';
 
 const layoutStore = useLayoutStore();
+const userCurrentStore = useUserCurrentStore();
 
+onMounted(async () => {
+  if (getToken()) {
+    await userCurrentStore.getUser();
+  }
+});
 </script>
 
 <style scoped>

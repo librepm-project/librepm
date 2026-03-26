@@ -3,16 +3,16 @@ import {
     RouteLocationNormalized,
     RouteLocationNormalizedLoaded,
   } from 'vue-router';
+import { getToken } from '@/lib/cookie';
 
 export const authorizationMiddleware = (
     to: RouteLocationNormalized,
     _from: RouteLocationNormalizedLoaded,
     next: NavigationGuardNext
   ) => {
-  const accessToken = localStorage.getItem('accessToken');
-  const requiresAuth = to.matched.some((record) => record.meta.authRequired);
-  if (requiresAuth && !accessToken) {
-    next('login');
+  const accessToken = getToken();
+  if (to.name !== 'login' && !accessToken) {
+    next({ name: 'login' });
   } else {
     next();
   }

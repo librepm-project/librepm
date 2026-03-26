@@ -25,12 +25,12 @@ func AuthorizationMiddleware(ctx AuthorizationMiddlewareContext) func(next http.
 					return
 				}
 			}
-			token := r.Header.Get("Authorization")
+			token := jwt_utils.GetTokenString(r)
 			if token == "" {
 				unauthorized(w)
 				return
 			}
-			token_info := jwt_utils.GetTokenInfo((token))
+			token_info := jwt_utils.GetTokenInfo(token)
 			if token_info == nil {
 				unauthorized(w)
 				return
