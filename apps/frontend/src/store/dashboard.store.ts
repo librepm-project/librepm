@@ -37,6 +37,18 @@ export const useDashboardStore = defineStore('dashboard', {
             return created;
         },
 
+        async updateWidgetWidth(dashboardId: string, widgetId: string, width: string) {
+            const w = this.widgets.find(w => w.id === widgetId);
+            if (w) w.width = width;
+            await dashboardWidgetApi.update(dashboardId, widgetId, { width });
+        },
+
+        async reorderWidgets(dashboardId: string, ordered: AnyDashboardWidget[]) {
+            const items = ordered.map((w, i) => ({ id: w.id!, weight: i }));
+            this.widgets = ordered.map((w, i) => ({ ...w, weight: i }));
+            await dashboardWidgetApi.reorder(dashboardId, items);
+        },
+
         async removeWidget(dashboardId: string, widgetId: string) {
             await dashboardWidgetApi.destroy(dashboardId, widgetId);
             this.widgets = this.widgets.filter(w => w.id !== widgetId);

@@ -12,6 +12,8 @@ export interface DashboardWidget {
     dashboardId: string;
     type: string;
     title: string;
+    weight: number;
+    width: string;
 }
 
 // Filter widget – implementálja a DashboardWidget-et

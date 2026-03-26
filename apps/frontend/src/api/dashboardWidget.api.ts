@@ -12,6 +12,14 @@ export default {
         return response.data;
     },
 
+    async update(dashboardId: string, widgetId: string, fields: { width?: string }): Promise<void> {
+        await api.apiCall().patch(`/dashboard/${dashboardId}/widget/${widgetId}`, fields);
+    },
+
+    async reorder(dashboardId: string, items: { id: string; weight: number }[]): Promise<void> {
+        await api.apiCall().put(`/dashboard/${dashboardId}/widget/reorder`, items);
+    },
+
     async destroy(dashboardId: string, widgetId: string): Promise<void> {
         await api.apiCall().delete(`/dashboard/${dashboardId}/widget/${widgetId}`);
     },

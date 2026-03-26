@@ -13,6 +13,8 @@ type DashboardWidgetModel struct {
 	FilterID    *uuid.UUID `gorm:"type:char(36) references filter;"`
 	Type        string     `gorm:"type:varchar(50);not null;"`
 	Title       string     `gorm:"type:varchar(100);not null;"`
+	Weight      int        `gorm:"default:0;"`
+	Width       string     `gorm:"type:varchar(10);default:'1/3';"`
 	CreatedAt   time.Time
 
 	Dashboard DashboardModel

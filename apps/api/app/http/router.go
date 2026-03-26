@@ -63,6 +63,8 @@ func (r Router) Init() *chi.Mux {
 
 	router.Get("/dashboard/{dashboard_id}/widget", r.DashboardWidgetController.Index)
 	router.Post("/dashboard/{dashboard_id}/widget", r.DashboardWidgetController.Create)
+	router.Put("/dashboard/{dashboard_id}/widget/reorder", r.DashboardWidgetController.Reorder)
+	router.Patch("/dashboard/{dashboard_id}/widget/{widget_id}", r.DashboardWidgetController.Update)
 	router.Delete("/dashboard/{dashboard_id}/widget/{widget_id}", r.DashboardWidgetController.Destroy)
 
 	router.Get("/user/current", r.UserCurrentController.Show)

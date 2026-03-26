@@ -79,11 +79,16 @@ export const en = {
         value: 'Value',
     },
     dashboard: {
+        dashboards: 'Dashboards',
         add_widget: 'Add Widget',
         widget_type: 'Widget Type',
         widget_title: 'Title',
         select_filter: 'Select Filter',
         no_widgets: 'No widgets yet. Click "Add Widget" to get started.',
+        width_third: '1/3 width',
+        width_half: '1/2 width',
+        width_two_thirds: '2/3 width',
+        width_full: 'Full width',
     },
     project: {
         codeName: 'Code name',
