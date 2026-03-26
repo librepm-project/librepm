@@ -11,6 +11,11 @@ const show = async (issueId: string): Promise<Issue> => {
     return response.data as Issue;
 }
 
+const showByKey = async (key: string): Promise<Issue> => {
+    const response = await api.apiCall().get(`/issue/key/${key}`);
+    return response.data as Issue;
+}
+
 const create = async (issue: Partial<Issue>): Promise<Issue> => {
     const response = await api.apiCall().post(`/issue`, issue);
     return response.data as Issue;
@@ -28,6 +33,7 @@ const destroy = async (issueId: string): Promise<void> => {
 export default {
     index,
     show,
+    showByKey,
     create,
     update,
     destroy

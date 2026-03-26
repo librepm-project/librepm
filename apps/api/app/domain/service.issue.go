@@ -10,6 +10,7 @@ type IssueServiceInterface interface {
 	All() (*[]IssueModel, error)
 	AllByFilterID(filter_id uuid.UUID) (*[]IssueModel, error)
 	Show(issue_id uuid.UUID) (*IssueModel, error)
+	ShowByKey(key string) (*IssueModel, error)
 	Create(issue *IssueModel) error
 	Update(issue_id uuid.UUID, issue *IssueModel) error
 	Destroy(issue_id uuid.UUID) error
@@ -36,6 +37,10 @@ func (s IssueService) AllByFilterID(filter_id uuid.UUID) (*[]IssueModel, error) 
 
 func (s IssueService) Show(issue_id uuid.UUID) (*IssueModel, error) {
 	return s.IssueRepository.FindByID(issue_id)
+}
+
+func (s IssueService) ShowByKey(key string) (*IssueModel, error) {
+	return s.IssueRepository.FindByKey(key)
 }
 
 func (s IssueService) Create(issue *IssueModel) error {

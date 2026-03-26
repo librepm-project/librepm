@@ -84,10 +84,10 @@ onUnmounted(() => {
 });
 
 const handleEditIssue = (issue: Issue) => {
-  router.push(`/issue/${issue.id}/edit`);
+  router.push(`/issue/key/${issue.key}/edit`);
 };
 
 const handleDeleteIssue = async (issue: Issue) => {
-  router.push(`/issue/${issue.id}`);
+  router.push(`/issue/key/${issue.key}`);
 };
 </script>

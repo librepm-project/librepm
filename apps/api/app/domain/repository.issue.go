@@ -12,6 +12,7 @@ type IssueRepositoryInterface interface {
 	All() (*[]IssueModel, error)
 	AllByFilter(conditions []FilterConditionModel) (*[]IssueModel, error)
 	FindByID(issue_id uuid.UUID) (*IssueModel, error)
+	FindByKey(key string) (*IssueModel, error)
 	Create(issue *IssueModel) error
 	Update(issue_id uuid.UUID, issue *IssueModel) error
 	Destroy(issue_id uuid.UUID) error
@@ -78,6 +79,16 @@ func (r IssueRepository) FindByID(issue_id uuid.UUID) (*IssueModel, error) {
 
 	if query.Error != nil {
 		slog.Error("failed to find issue by id", "error", query.Error)
+	}
+	return &issue, query.Error
+}
+
+func (r IssueRepository) FindByKey(key string) (*IssueModel, error) {
+	var issue IssueModel
+	query := r.DB.Preload("Project").Preload("Tracker").Preload("Status").Where("`key` = ?", key).First(&issue)
+
+	if query.Error != nil {
+		slog.Error("failed to find issue by key", "error", query.Error)
 	}
 	return &issue, query.Error
 }

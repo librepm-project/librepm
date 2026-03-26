@@ -9,6 +9,7 @@ import (
 
 type IssueControllerInterface interface {
 	Show(w http.ResponseWriter, r *http.Request)
+	ShowByKey(w http.ResponseWriter, r *http.Request)
 	Create(w http.ResponseWriter, r *http.Request)
 	Update(w http.ResponseWriter, r *http.Request)
 	Destroy(w http.ResponseWriter, r *http.Request)
@@ -54,6 +55,20 @@ func (c IssueController) Show(w http.ResponseWriter, r *http.Request) {
 	issue, err := c.IssueService.Show(issue_id)
 	if err != nil {
 		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*issue))
+}
+
+func (c IssueController) ShowByKey(w http.ResponseWriter, r *http.Request) {
+	key := GetParam(r, "key")
+	if key == "" {
+		RespondBadRequest(w)
+		return
+	}
+	issue, err := c.IssueService.ShowByKey(key)
+	if err != nil {
+		RespondNotFound(w)
 		return
 	}
 	RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*issue))

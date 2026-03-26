@@ -71,7 +71,7 @@
                 draggable="true"
                 @dragstart="onIssueDragStart($event, issue)"
                 @dragend="onIssueDragEnd"
-                @click="router.push(`/issue/${issue.id}`)"
+                @click="router.push(`/issue/key/${issue.key}`)"
               >
                 <div class="d-flex justify-space-between align-start mb-1">
                   <span class="text-caption text-grey">{{ issue.key }}</span>

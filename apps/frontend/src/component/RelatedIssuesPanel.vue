@@ -68,13 +68,13 @@
             size="small"
             variant="outlined"
             class="font-weight-bold cursor-pointer"
-            @click="navigateToIssue(item.issue.id)"
+            @click="navigateToIssue(item.issue.key)"
           >
             {{ item.issue.key }}
           </v-chip>
           <span
             class="text-body2 flex-grow-1 cursor-pointer"
-            @click="navigateToIssue(item.issue.id)"
+            @click="navigateToIssue(item.issue.key)"
           >
             {{ item.issue.summary }}
           </span>
@@ -199,8 +199,8 @@ const getSortOrder = (direction: string): number => {
   return order[direction] || 99;
 };
 
-const navigateToIssue = (issueId: string | undefined) => {
-  if (issueId) router.push(`/issue/${issueId}`);
+const navigateToIssue = (issueKey: string | undefined) => {
+  if (issueKey) router.push(`/issue/key/${issueKey}`);
 };
 </script>
 

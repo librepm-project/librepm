@@ -18,7 +18,7 @@ const issueStore = useIssueStore();
 const create = async (issue: Partial<Issue>) => {
   const record = await issueStore.create(issue);
   console.log("REDIREKT");
-  router.push(`/issue/${record.id}`);
+  router.push(`/issue/key/${record.key}`);
 }
 
 </script>

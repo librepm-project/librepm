@@ -130,16 +130,17 @@ const editingSummary = ref(false);
 const summaryDraft = ref('');
 
 const startEditSummary = () => {
-  summaryDraft.value = issueStore.current!.summary;
+  if (!issueStore.current) return;
+  summaryDraft.value = issueStore.current.summary;
   editingSummary.value = true;
 };
 
 const saveSummary = async () => {
-  if (!editingSummary.value) return;
+  if (!editingSummary.value || !issueStore.current) return;
   editingSummary.value = false;
-  if (summaryDraft.value && summaryDraft.value !== issueStore.current!.summary) {
-    await issueStore.update(issueStore.current!.id!, { summary: summaryDraft.value });
-    route.meta.title = `${issueStore.current!.key} - ${issueStore.current!.summary}`;
+  if (summaryDraft.value && summaryDraft.value !== issueStore.current.summary) {
+    await issueStore.update(issueStore.current.id, { summary: summaryDraft.value });
+    route.meta.title = `${issueStore.current.key} - ${issueStore.current.summary}`;
   }
 };
 
@@ -152,34 +153,59 @@ const editingDescription = ref(false);
 const descriptionDraft = ref('');
 
 const startEditDescription = () => {
-  descriptionDraft.value = issueStore.current!.description || '';
+  if (!issueStore.current) return;
+  descriptionDraft.value = issueStore.current.description || '';
   editingDescription.value = true;
 };
 
 const saveDescription = async () => {
-  if (!editingDescription.value) return;
+  if (!editingDescription.value || !issueStore.current) return;
   editingDescription.value = false;
-  if (descriptionDraft.value !== issueStore.current!.description) {
-    await issueStore.update(issueStore.current!.id!, { description: descriptionDraft.value });
+  if (descriptionDraft.value !== issueStore.current.description) {
+    await issueStore.update(issueStore.current.id, { description: descriptionDraft.value });
   }
 };
 
 const remove = async () => {
+  if (!issueStore.current) return;
   if (confirm(t('global.delete_confirm'))) {
-    await issueStore.destroy(route.params.issueId.toString());
+    await issueStore.destroy(issueStore.current.id);
     router.push('/issue');
   }
 };
 
+const loadData = async () => {
+  const key = route.params.key;
+  const issueId = route.params.issueId;
+  
+  editingSummary.value = false;
+  editingDescription.value = false;
+
+  if (key) {
+    // Load by key (e.g., /issue/key/PROJ-123)
+    await issueStore.getIssueByKey(key.toString());
+  } else if (issueId) {
+    // Load by ID (backward compatibility)
+    await issueStore.getIssue(issueId.toString());
+  }
+  
+  if (issueStore.current) {
+    const currentId = issueStore.current.id;
+    await Promise.all([
+      relatedIssueStore.getRelated(currentId),
+      worklogStore.getWorklogs(currentId),
+      attachmentStore.getAttachments(currentId),
+      auditLogStore.getAuditLogs(currentId),
+      commentStore.getComments(currentId)
+    ]);
+    
+    route.meta.title = `${issueStore.current.key} - ${issueStore.current.summary}`;
+    layoutStore.setSidebarComponent(IssueSidebar, {});
+  }
+};
+
 onBeforeMount(async () => {
-  await issueStore.getIssue(route.params.issueId.toString());
-  await relatedIssueStore.getRelated(route.params.issueId.toString());
-  await worklogStore.getWorklogs(route.params.issueId.toString());
-  await attachmentStore.getAttachments(route.params.issueId.toString());
-  await auditLogStore.getAuditLogs(route.params.issueId.toString());
-  await commentStore.getComments(route.params.issueId.toString());
-  route.meta.title = `${issueStore.current!.key} - ${issueStore.current!.summary}`;
-  layoutStore.setSidebarComponent(IssueSidebar, {});
+  await loadData();
 });
 
 onMounted(() => {
@@ -192,6 +218,11 @@ onMounted(() => {
     },
   ]);
 });
+
+import { watch } from 'vue';
+watch(() => route.params, async () => {
+  await loadData();
+}, { deep: true });
 
 onUnmounted(() => {
   layoutStore.resetActions();

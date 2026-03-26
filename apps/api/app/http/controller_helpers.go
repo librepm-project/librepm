@@ -45,6 +45,11 @@ func DecodeJSON(r *http.Request, v interface{}) error {
 	return json.NewDecoder(r.Body).Decode(v)
 }
 
+// GetParam extracts a string parameter from the request URL
+func GetParam(r *http.Request, key string) string {
+	return http_utils.GetParam(r, key)
+}
+
 // GetParamUUID extracts a UUID parameter from the request URL
 func GetParamUUID(r *http.Request, key string) (uuid.UUID, error) {
 	return http_utils.GetParamUUID(r, key)

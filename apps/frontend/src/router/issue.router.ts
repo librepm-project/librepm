@@ -16,6 +16,11 @@ export const issueRouter: RouteRecordRaw[] = [
   },
   {
     path: '/issue/:issueId',
+    name: 'issueShowById',
+    component: IssueShowPage,
+  },
+  {
+    path: '/issue/key/:key',
     name: 'issueShow',
     component: IssueShowPage,
   },

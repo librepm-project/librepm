@@ -38,6 +38,7 @@ func (r Router) Init() *chi.Mux {
 
 	router.Get("/issue", r.IssueController.Index)
 	router.Post("/issue", r.IssueController.Create)
+	router.Get("/issue/key/{key}", r.IssueController.ShowByKey)
 	router.Get("/issue/{issue_id}", r.IssueController.Show)
 	router.Put("/issue/{issue_id}", r.IssueController.Update)
 	router.Delete("/issue/{issue_id}", r.IssueController.Destroy)

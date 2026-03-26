@@ -1,13 +1,13 @@
 <template>
   <v-data-table :items="items" :headers="headers">
     <template #item.key="{ item }">
-      <router-link :to="`/issue/${item.id}`" class="key-link">{{ item.key }}</router-link>
+      <router-link :to="`/issue/key/${item.key}`" class="key-link">{{ item.key }}</router-link>
     </template>
     <template #item.tracker="{ item }">
       <tracker-chip :tracker="item.tracker" />
     </template>
     <template #item.summary="{ item }">
-      <router-link :to="`/issue/${item.id}`">{{ item.summary }}</router-link>
+      <router-link :to="`/issue/key/${item.key}`">{{ item.summary }}</router-link>
     </template>
     <template #item.status="{ item }">
       <status-chip :status="item.status" />

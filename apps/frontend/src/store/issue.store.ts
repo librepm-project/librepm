@@ -22,6 +22,12 @@ export const useIssueStore = defineStore('issue', {
       this.current = issue;
     },
 
+    async getIssueByKey(key: string) {
+      this.current = null;
+      const issue = await issueApi.showByKey(key);
+      this.current = issue;
+    },
+
     async getIssues() {
       this.index = await issueApi.index()
     },

@@ -61,7 +61,7 @@
                 <v-list-item
                     v-for="issue in issues"
                     :key="issue.id"
-                    :to="`/issue/${issue.id}`"
+                    :to="`/issue/key/${issue.key}`"
                     rounded="lg"
                     class="mx-2 mb-1"
                 >
