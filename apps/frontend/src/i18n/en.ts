@@ -111,6 +111,11 @@ export const en = {
         language: 'Language',
         country: 'Country',
     },
+    attachment: {
+        attachments: 'Attachments',
+        upload: 'Upload',
+        no_attachments: 'No attachments yet.',
+    },
     worklog: {
         work_log: 'Work Log',
         total: 'Total',

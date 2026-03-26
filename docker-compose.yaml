@@ -81,11 +81,12 @@ services:
       - "traefik.http.services.api.loadbalancer.server.port=80"
       - "traefik.http.middlewares.api-strip-prefix.stripPrefix.prefixes=/api"
       - "traefik.http.routers.api.middlewares=api-strip-prefix"
-      - "traefik.http.routers.api.entrypoints=web"   
+      - "traefik.http.routers.api.entrypoints=web"
     ports:
       - '3000:80'
     volumes:
       - .:/app
+      - api-uploads:/app/apps/api/uploads
     networks:
       - nx-network
     depends_on:
@@ -165,3 +166,4 @@ networks:
 
 volumes:
   db-data:
+  api-uploads:

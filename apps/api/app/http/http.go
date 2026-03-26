@@ -69,6 +69,9 @@ func StartHttpServer(domain domain.Domain) {
 		TransitionController: TransitionController{
 			TransitionService: domain.TransitionService,
 		},
+		AttachmentController: AttachmentController{
+			AttachmentService: domain.AttachmentService,
+		},
 	}.Init()
 
 	slog.Info("API listen on port 80")
