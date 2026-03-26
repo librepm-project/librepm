@@ -2,7 +2,7 @@
   <div v-if="relations.length > 0" class="mb-6">
     <p class="text-subtitle2 font-weight-medium mb-3">
       <v-icon x-small class="mr-1">mdi-link-variant</v-icon>
-      Related Issues
+      {{ t('issue.related_issues') }}
     </p>
 
     <div v-for="group in groupedByDirection" :key="group.direction" class="mb-4">
@@ -33,7 +33,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { RelatedIssue } from '@/lib/interfaces/related-issue.interface';
+import { Issue } from '@/lib/interfaces/issue.interface';
 
 interface Props {
   relations: RelatedIssue[];
@@ -42,9 +44,10 @@ interface Props {
 
 const props = defineProps<Props>();
 const router = useRouter();
+const { t } = useI18n();
 
 const groupedByDirection = computed(() => {
-  const grouped: Record<string, any[]> = {};
+  const grouped: Record<string, Issue[]> = {};
 
   props.relations.forEach(relation => {
     const direction = relation.directionFromCurrent || relation.type;
@@ -62,16 +65,9 @@ const groupedByDirection = computed(() => {
 });
 
 const getDirectionLabel = (direction: string): string => {
-  const labels: Record<string, string> = {
-    'blocks': 'Blocks',
-    'blocked_by': 'Blocked By',
-    'implements': 'Implements',
-    'implemented_by': 'Implemented By',
-    'duplicates': 'Duplicates',
-    'is_duplicated_by': 'Duplicated By',
-    'related': 'Related',
-  };
-  return labels[direction] || direction;
+  const key = `issue.direction.${direction}`;
+  const translated = t(key);
+  return translated !== key ? translated : direction;
 };
 
 const getSortOrder = (direction: string): number => {

@@ -32,6 +32,9 @@ export const useLayoutStore = defineStore('sidebar', {
       sidebarProps: {},
     };
   },
+  getters: {
+    hasSidebar: (state) => state.sidebarItems.length > 0 || state.sidebarComponent !== null,
+  },
   actions: {
     setSidebar(items: SidebarItem[]) {
       this.sidebarItems = items;

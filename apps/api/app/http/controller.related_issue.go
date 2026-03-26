@@ -9,6 +9,12 @@ import (
 	"github.com/google/uuid"
 )
 
+type RelatedIssueControllerInterface interface {
+	GetRelated(w http.ResponseWriter, r *http.Request)
+	Create(w http.ResponseWriter, r *http.Request)
+	Delete(w http.ResponseWriter, r *http.Request)
+}
+
 type RelatedIssueController struct {
 	RelatedIssueService domain.RelatedIssueServiceInterface
 }

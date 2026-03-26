@@ -35,7 +35,7 @@ func (s RelatedIssueSerializer) ModelToResponse(model *domain.RelatedIssueModel,
 }
 
 func (s RelatedIssueSerializer) ModelToResponseMany(models *[]domain.RelatedIssueModel, currentIssueID uuid.UUID) []RelatedIssueResponse {
-	var responses []RelatedIssueResponse
+	responses := make([]RelatedIssueResponse, 0, len(*models))
 	for _, model := range *models {
 		responses = append(responses, s.ModelToResponse(&model, currentIssueID))
 	}

@@ -47,6 +47,16 @@ export const en = {
         key: 'Key',
         project: 'Project',
         tracker: 'Tracker',
+        related_issues: 'Related Issues',
+        direction: {
+            blocks: 'Blocks',
+            blocked_by: 'Blocked By',
+            implements: 'Implements',
+            implemented_by: 'Implemented By',
+            duplicates: 'Duplicates',
+            is_duplicated_by: 'Duplicated By',
+            related: 'Related',
+        },
     },
     board: {
         boards: 'Boards',

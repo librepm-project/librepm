@@ -32,6 +32,7 @@ type SeedService struct {
 	TrackerRepository                  domain.TrackerRepositoryInterface
 	TransitionRepository               domain.TransitionRepositoryInterface
 	UserRepository                     domain.UserRepositoryInterface
+	RelatedIssueService                domain.RelatedIssueServiceInterface
 	RelatedIssueRepository             domain.RelatedIssueRepositoryInterface
 	PurgeRepository                    PurgeRepositoryInterface
 }

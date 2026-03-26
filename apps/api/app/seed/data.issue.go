@@ -10,7 +10,7 @@ type IssueData struct {
 }
 
 type RelatedIssueData struct {
-IssueSummaryA string `yaml:"issue_a" validate:"required"`
-IssueSummaryB string `yaml:"issue_b" validate:"required"`
-Type          string `yaml:"type" validate:"required"`
+	IssueSummaryA string `yaml:"issue_a" validate:"required"`
+	IssueSummaryB string `yaml:"issue_b" validate:"required"`
+	Type          string `yaml:"type" validate:"required"`
 }

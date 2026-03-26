@@ -1,5 +1,5 @@
 <template>
-    <v-col cols="12" :md="layoutStore.sidebarItems.length > 0 || layoutStore.sidebarComponent ? 10 : 12">
+    <v-col cols="12" :md="layoutStore.hasSidebar ? 10 : 12">
         <v-card elevation="2" class="rounded-xl overflow-hidden">
             <v-card-title class="bg-primary text-white d-flex justify-space-between align-center">
                 <div class="d-flex align-center gap-3">

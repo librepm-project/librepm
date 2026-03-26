@@ -23,7 +23,7 @@ import { useIssueStore } from '@/store/issue.store';
 import { useRelatedIssueStore } from '@/store/related-issue.store';
 import { useLayoutStore } from '@/store/layout.store';
 import { useRoute, useRouter } from 'vue-router';
-import { onBeforeMount, onMounted, onUnmounted, watch } from 'vue';
+import { onBeforeMount, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import IssueSidebar from '@/component/IssueSidebar.vue';
 import RelatedIssuesPanel from '@/component/RelatedIssuesPanel.vue';
@@ -46,14 +46,6 @@ onBeforeMount(async () => {
     issue: issueStore.current,
   });
 });
-
-watch(() => issueStore.current, (newIssue) => {
-  if (newIssue) {
-    layoutStore.setSidebarComponent(IssueSidebar, {
-      issue: newIssue,
-    });
-  }
-}, { deep: true });
 
 const remove = async () => {
   if (confirm(t('global.delete_confirm'))) {

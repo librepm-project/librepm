@@ -7,7 +7,7 @@ import (
 type Router struct {
 	ProjectController              ProjectControllerInterface
 	IssueController                IssueControllerInterface
-	RelatedIssueController         RelatedIssueController
+	RelatedIssueController         RelatedIssueControllerInterface
 	FilterController               FilterControllerInterface
 	BoardController                BoardControllerInterface
 	DashboardController            DashboardControllerInterface

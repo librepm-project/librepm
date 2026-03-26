@@ -19,12 +19,6 @@ func (s SeedService) createRelatedIssues(items []RelatedIssueData) error {
 		issueMap[(*allIssues)[i].Summary] = &(*allIssues)[i]
 	}
 
-	// Create relationships
-	relatedIssueService := domain.RelatedIssueService{
-		RelatedIssueRepository: s.RelatedIssueRepository,
-		IssueRepository:        s.IssueRepository,
-	}
-
 	for _, item := range items {
 		issueA, okA := issueMap[item.IssueSummaryA]
 		issueB, okB := issueMap[item.IssueSummaryB]
@@ -38,7 +32,7 @@ func (s SeedService) createRelatedIssues(items []RelatedIssueData) error {
 			continue
 		}
 
-		_, err := relatedIssueService.Create(issueA.ID, issueB.ID, item.Type)
+		_, err := s.RelatedIssueService.Create(issueA.ID, issueB.ID, item.Type)
 		if err != nil {
 			slog.Warn("failed to create related issue relationship", "error", err)
 		}
