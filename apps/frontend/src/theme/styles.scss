@@ -100,18 +100,7 @@ pre {
   font-weight: 500 !important;
 }
 
-// Stronger borders for ALL input fields
+// No border for outlined input fields
 .v-field.v-field--variant-outlined {
-  --v-field-border-opacity: 0.25 !important;
-  
-  .v-field__outline {
-    border-width: 1.5px !important;
-  }
-  
-  &.v-field--focused {
-    --v-field-border-opacity: 1 !important;
-    .v-field__outline {
-      border-width: 2px !important;
-    }
-  }
+  --v-field-border-opacity: 0 !important;
 }

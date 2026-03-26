@@ -25,6 +25,7 @@ export const useSettingStore = defineStore('setting', {
                     key: item.Key || item.key,
                     value: item.Value || item.value,
                     valueType: item.ValueType || item.valueType,
+                    options: item.Options || item.options,
                 }));
             } catch (error: any) {
                 this.error = error.message || 'Failed to fetch settings';

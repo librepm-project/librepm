@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"encoding/json"
 	"log/slog"
 
 	"gorm.io/gorm"
@@ -46,13 +47,21 @@ func (r SettingRepository) Seed() error {
 	predefined := GetPredefinedSettings()
 	for _, s := range predefined {
 		var existing SettingModel
-		if err := r.DB.Where("`key` = ?", s.Key).First(&existing).Error; err != nil {
-			if err == gorm.ErrRecordNotFound {
-				if err := r.DB.Create(&s).Error; err != nil {
-					slog.Error("failed to seed setting", "key", s.Key, "error", err)
-				}
-			} else {
-				slog.Error("failed to check setting during seed", "key", s.Key, "error", err)
+		err := r.DB.Where("`key` = ?", s.Key).First(&existing).Error
+		if err == gorm.ErrRecordNotFound {
+			if err := r.DB.Create(&s).Error; err != nil {
+				slog.Error("failed to seed setting", "key", s.Key, "error", err)
+			}
+		} else if err != nil {
+			slog.Error("failed to check setting during seed", "key", s.Key, "error", err)
+		} else {
+			optionsJSON, err := json.Marshal(s.Options)
+			if err != nil {
+				slog.Error("failed to marshal setting options", "key", s.Key, "error", err)
+				continue
+			}
+			if err := r.DB.Exec("UPDATE `setting` SET `options` = ? WHERE `key` = ?", string(optionsJSON), s.Key).Error; err != nil {
+				slog.Error("failed to update setting options", "key", s.Key, "error", err)
 			}
 		}
 	}

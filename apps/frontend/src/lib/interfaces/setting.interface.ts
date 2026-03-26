@@ -2,4 +2,5 @@ export interface Setting {
     key: string;
     value: string;
     valueType: string;
+    options?: string[];
 }

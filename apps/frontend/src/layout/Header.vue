@@ -22,36 +22,6 @@
             variant="text"
             class="text-white"
           />
-          <template v-else>
-            <v-menu open-on-hover location="bottom">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  :prepend-icon="link.icon"
-                  v-bind="props"
-                  variant="text"
-                  class="text-white"
-                >
-                  {{ link.text }}
-                </v-btn>
-              </template>
-
-              <v-list>
-                <v-list-item
-                  v-for="(sublink, index) in link.sublinks"
-                  :key="index"
-                  :to="sublink.to"
-                  class="rounded-lg ma-1"
-                >
-                  <template v-slot:prepend>
-                    <v-icon size="small">{{ sublink.icon }}</v-icon>
-                  </template>
-                  <v-list-item-title class="font-weight-medium">
-                    {{ sublink.text }}
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </template>
         </template>
       </nav>
 
@@ -59,6 +29,26 @@
 
       <div class="d-flex align-center gap-3">
         <template v-if="userCurrentStore.current">
+          <v-menu v-for="link in navigationLinks.filter(l => l.sublinks)" :key="link.key" open-on-hover location="bottom">
+            <template v-slot:activator="{ props }">
+              <v-btn icon variant="text" class="text-white" v-bind="props">
+                <v-icon>{{ link.icon }}</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(sublink, index) in link.sublinks"
+                :key="index"
+                :to="sublink.to"
+                class="rounded-lg ma-1"
+              >
+                <template v-slot:prepend>
+                  <v-icon size="small">{{ sublink.icon }}</v-icon>
+                </template>
+                <v-list-item-title class="font-weight-medium">{{ sublink.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <span class="text-white text-body2 text-no-wrap">
             {{ userCurrentStore.current.firstName }} {{ userCurrentStore.current.lastName }}
           </span>

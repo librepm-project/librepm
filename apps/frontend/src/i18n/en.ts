@@ -5,6 +5,7 @@ export const en = {
         select: 'Select',
         search: 'Search',
         create: 'Create',
+        save: 'Save',
         name: 'Name',
         description: 'Description',
         public: 'Public',
@@ -40,6 +41,7 @@ export const en = {
         adminTrackerShow: 'Edit Tracker',
         adminProjectShow: 'Edit Project',
         adminUserShow: 'Edit User',
+        'admin-settings': 'Settings',
     },
     issue: {
         description: 'Description',
@@ -140,6 +142,14 @@ export const en = {
         submit: 'Login',
         logout: 'Logout',
         invalid_credentials: 'Invalid email or password.',
+    },
+    admin: {
+        settings: 'Settings',
+    },
+    settings: {
+        site_title: 'Site Title',
+        dark_mode: 'Dark Mode',
+        no_settings_found: 'No settings found.',
     },
     rule: {
         email: "Invalid email format",
