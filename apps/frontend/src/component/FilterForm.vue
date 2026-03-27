@@ -1,148 +1,150 @@
 <template>
     <v-form @submit.prevent="submit" ref="form" class="form-container">
-        <v-card elevation="0" class="rounded-xl pa-6 mb-6">
-            <v-card-title class="pa-0 mb-6 text-h6 font-weight-bold">
-                {{ props.submitButtonText === 'global.create' ? 'New Filter' : 'Edit Filter' }}
-            </v-card-title>
+        <v-container>
+            <v-card elevation="0" class="rounded-xl pa-6 mb-6">
+                <v-card-title class="pa-0 mb-6 text-h6 font-weight-bold">
+                    {{ props.submitButtonText === 'global.create' ? 'New Filter' : 'Edit Filter' }}
+                </v-card-title>
 
-            <v-row>
-                <v-col cols="12" md="8">
-                    <v-text-field
-                        v-model="name"
-                        :rules="[requiredRule]"
-                        :label="$t('filter.name')"
-                        hint="e.g., Open Issues, High Priority"
-                        outlined
-                        dense
-                    />
-                </v-col>
-            </v-row>
-
-            <v-row>
-                <v-col cols="12">
-                    <v-textarea
-                        v-model="description"
-                        :label="$t('global.description')"
-                        hint="Describe what this filter is used for"
-                        outlined
-                        dense
-                        rows="3"
-                    />
-                </v-col>
-            </v-row>
-
-            <v-divider class="my-6" />
-
-            <v-card-title class="d-flex align-center justify-space-between px-0 mb-4">
-                <span class="text-subtitle-2 font-weight-bold">Display Options</span>
-                <v-btn
-                    icon
-                    size="small"
-                    variant="text"
-                    color="primary"
-                    @click="showDisplayOptions = !showDisplayOptions"
-                    :title="showDisplayOptions ? 'Hide display options' : 'Show display options'"
-                >
-                    <v-icon>{{ showDisplayOptions ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                </v-btn>
-            </v-card-title>
-
-            <v-expand-transition>
-                <v-row v-if="showDisplayOptions" class="gap-4">
-                    <v-col cols="12" md="6">
-                        <label class="text-body2 font-weight-medium mb-2 d-block">Columns (drag to reorder)</label>
-                        <div class="columns-container d-flex flex-column gap-2 mb-3">
-                            <div
-                                v-for="(column, index) in columnList"
-                                :key="`col-${column}`"
-                                draggable="true"
-                                @dragstart="dragStart($event, index)"
-                                @dragover.prevent="dragOver($event, index)"
-                                @drop="dragDrop($event, index)"
-                                @dragend="dragEnd"
-                                class="column-item pa-2 rounded d-flex align-center justify-space-between"
-                                :style="{ background: draggedIndex === index ? 'rgba(63, 81, 181, 0.2)' : 'rgba(0,0,0,0.04)' }"
-                            >
-                                <span class="text-body2 text-truncate flex-grow-1">{{ getColumnLabel(column) }}</span>
-                                <v-icon size="x-small" class="text-medium-emphasis ms-2">mdi-drag</v-icon>
-                                <v-btn
-                                    icon
-                                    size="x-small"
-                                    variant="text"
-                                    color="error"
-                                    @click="removeColumn(index)"
-                                    class="ms-1"
-                                >
-                                    <v-icon size="x-small">mdi-close</v-icon>
-                                </v-btn>
-                            </div>
-                        </div>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                        <v-select
-                            v-model="columnToAdd"
-                            :items="columnsNotSelected"
-                            label="Add Column"
-                            item-title="label"
-                            item-value="key"
-                            dense
-                            @update:model-value="addColumn"
-                        />
-                        <v-select
-                            v-model="groupBy"
-                            :items="groupByOptions"
-                            label="Group By"
+                <v-row>
+                    <v-col cols="12" md="8">
+                        <v-text-field
+                            v-model="name"
+                            :rules="[requiredRule]"
+                            :label="$t('filter.name')"
+                            hint="e.g., Open Issues, High Priority"
+                            outlined
                             dense
                         />
                     </v-col>
                 </v-row>
-            </v-expand-transition>
 
-            <v-divider class="my-6" />
+                <v-row>
+                    <v-col cols="12">
+                        <v-textarea
+                            v-model="description"
+                            :label="$t('global.description')"
+                            hint="Describe what this filter is used for"
+                            outlined
+                            dense
+                            rows="3"
+                        />
+                    </v-col>
+                </v-row>
 
-            <filter-condition-builder v-model="conditions" />
+                <v-divider class="my-6" />
 
-            <v-divider class="my-6" />
-
-            <v-row class="mt-4">
-                <v-col cols="12" class="d-flex gap-3 align-center">
+                <v-card-title class="d-flex align-center justify-space-between px-0 mb-4">
+                    <span class="text-subtitle-2 font-weight-bold">Display Options</span>
                     <v-btn
-                        type="submit"
-                        color="primary"
-                        size="large"
-                        prepend-icon="mdi-check"
-                        rounded="lg"
-                        class="font-weight-bold"
-                    >
-                        {{ $t(props.submitButtonText) }}
-                    </v-btn>
-                    <v-btn
-                        v-if="onDelete"
-                        type="button"
-                        color="error"
+                        icon
+                        size="small"
                         variant="text"
-                        size="large"
-                        prepend-icon="mdi-delete"
-                        rounded="lg"
-                        class="font-weight-bold"
-                        @click="onDelete"
+                        color="primary"
+                        @click="showDisplayOptions = !showDisplayOptions"
+                        :title="showDisplayOptions ? 'Hide display options' : 'Show display options'"
                     >
-                        {{ $t('global.delete') }}
+                        <v-icon>{{ showDisplayOptions ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                     </v-btn>
-                    <v-spacer />
-                    <v-btn
-                        type="button"
-                        variant="outlined"
-                        color="default"
-                        size="large"
-                        rounded="lg"
-                        @click="$router.back()"
-                    >
-                        Cancel
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-card>
+                </v-card-title>
+
+                <v-expand-transition>
+                    <v-row v-if="showDisplayOptions" class="gap-4">
+                        <v-col cols="12" md="6">
+                            <label class="text-body2 font-weight-medium mb-2 d-block">Columns (drag to reorder)</label>
+                            <div class="columns-container d-flex flex-column gap-2 mb-3">
+                                <div
+                                    v-for="(column, index) in columnList"
+                                    :key="`col-${column}`"
+                                    draggable="true"
+                                    @dragstart="dragStart($event, index)"
+                                    @dragover.prevent="dragOver($event, index)"
+                                    @drop="dragDrop($event, index)"
+                                    @dragend="dragEnd"
+                                    class="column-item pa-2 rounded d-flex align-center justify-space-between"
+                                    :style="{ background: draggedIndex === index ? 'rgba(63, 81, 181, 0.2)' : 'rgba(0,0,0,0.04)' }"
+                                >
+                                    <span class="text-body2 text-truncate flex-grow-1">{{ getColumnLabel(column) }}</span>
+                                    <v-icon size="x-small" class="text-medium-emphasis ms-2">mdi-drag</v-icon>
+                                    <v-btn
+                                        icon
+                                        size="x-small"
+                                        variant="text"
+                                        color="error"
+                                        @click="removeColumn(index)"
+                                        class="ms-1"
+                                    >
+                                        <v-icon size="x-small">mdi-close</v-icon>
+                                    </v-btn>
+                                </div>
+                            </div>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-select
+                                v-model="columnToAdd"
+                                :items="columnsNotSelected"
+                                label="Add Column"
+                                item-title="label"
+                                item-value="key"
+                                dense
+                                @update:model-value="addColumn"
+                            />
+                            <v-select
+                                v-model="groupBy"
+                                :items="groupByOptions"
+                                label="Group By"
+                                dense
+                            />
+                        </v-col>
+                    </v-row>
+                </v-expand-transition>
+
+                <v-divider class="my-6" />
+
+                <filter-condition-builder v-model="conditions" />
+
+                <v-divider class="my-6" />
+
+                <v-row class="mt-4">
+                    <v-col cols="12" class="d-flex gap-3 align-center">
+                        <v-btn
+                            type="submit"
+                            color="primary"
+                            size="large"
+                            prepend-icon="mdi-check"
+                            rounded="lg"
+                            class="font-weight-bold"
+                        >
+                            {{ $t(props.submitButtonText) }}
+                        </v-btn>
+                        <v-btn
+                            v-if="onDelete"
+                            type="button"
+                            color="error"
+                            variant="text"
+                            size="large"
+                            prepend-icon="mdi-delete"
+                            rounded="lg"
+                            class="font-weight-bold"
+                            @click="onDelete"
+                        >
+                            {{ $t('global.delete') }}
+                        </v-btn>
+                        <v-spacer />
+                        <v-btn
+                            type="button"
+                            variant="outlined"
+                            color="default"
+                            size="large"
+                            rounded="lg"
+                            @click="$router.back()"
+                        >
+                            Cancel
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-card>
+        </v-container>
     </v-form>
 </template>
 
@@ -248,6 +250,7 @@ watch(
                 }
             }
             groupBy.value = filter.groupBy || '';
+            showDisplayOptions.value = true; // <-- Set to true when editing
         }
     },
     { immediate: true },

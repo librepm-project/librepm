@@ -1,7 +1,8 @@
 <template>
-  <filter-table 
-    :items="filterStore.index" 
-    :onEdit="handleEdit" 
+  <filter-table
+    :items="filterStore.index"
+    :onEdit="handleEdit"
+    :onView="handleView"
   />
 </template>
 
@@ -19,6 +20,10 @@ const filterStore = useFilterStore();
 
 const handleEdit = (filter: Filter) => {
   router.push(`/filter/${filter.id}/edit`);
+};
+
+const handleView = (filter: Filter) => {
+  router.push(`/filter/${filter.id}`); // Navigate to view page
 };
 
 onMounted(async () => {

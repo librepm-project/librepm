@@ -4,9 +4,9 @@
       :items="items"
       :headers="headers"
       density="comfortable"
-      class="transparent-table clickable-rows"
+      class="transparent-table"
       item-key="id"
-      @click:row="(e, { item }) => onEdit(item)"
+      @click:row="(e, { item }) => onView(item)"
     >
       <template #header>
         <thead class="bg-primary text-white">
@@ -14,6 +14,7 @@
             <th
               v-for="header in headers"
               :key="header.key"
+              :class="header.align ? `text-${header.align}` : ''"
               class="text-white font-weight-bold"
             >
               {{ header.title }}
@@ -38,6 +39,12 @@
           No conditions
         </v-chip>
       </template>
+
+      <template #item.actions="{ item }">
+        <div class="d-flex justify-end">
+          <v-icon @click="onEdit(item)" icon="mdi-pencil" class="cursor-pointer" />
+        </div>
+      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -51,20 +58,18 @@ const { t } = useI18n();
 defineProps<{
   items: Filter[],
   onEdit: (item: Filter) => void,
+  onView: (item: Filter) => void, // New prop for viewing
 }>();
 
 const headers = [
   { key: 'name', title: t('filter.name') },
   { key: 'description', title: t('global.description') },
   { key: 'conditions', title: 'Conditions' },
+  { key: 'actions', title: '', align: 'right' }, // Added actions header
 ];
 </script>
 
 <style scoped>
-.clickable-rows :deep(tbody tr) {
-  cursor: pointer;
-}
-
 .transparent-table {
   background-color: transparent !important;
 }
@@ -83,5 +88,9 @@ const headers = [
 
 :deep(.v-data-table td) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 </style>
