@@ -5,12 +5,12 @@
         icon
         variant="tonal"
         color="primary"
+        class="ml-auto"
         @click="showSettings = !showSettings"
-        :title="showSettings ? 'Hide display settings' : 'Show display settings'"
+        :title="showSettings ? 'Settings are visible' : 'Toggle display settings'"
       >
-        <v-icon>{{ showSettings ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+        <v-icon>mdi-cog</v-icon>
       </v-btn>
-      <span class="text-body2 text-medium-emphasis">Display Settings</span>
     </div>
 
     <v-expand-transition>
