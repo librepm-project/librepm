@@ -18,6 +18,10 @@ export const useUserCurrentStore = defineStore('userCurrent', {
     },
     setUser(user: User | null) {
       this.current = user;
-    }
+    },
+    async updateCurrent(user: Partial<User>) {
+      await userCurrentApi.updateCurrent(user);
+      await this.getUser();
+    },
   },
 });

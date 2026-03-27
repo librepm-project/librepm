@@ -42,6 +42,7 @@ export const en = {
         adminProjectShow: 'Edit Project',
         adminUserShow: 'Edit User',
         'admin-settings': 'Settings',
+        profile: 'My Profile',
     },
     issue: {
         description: 'Description',

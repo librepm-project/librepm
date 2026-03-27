@@ -49,9 +49,14 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <span class="text-white text-body2 text-no-wrap">
+          <v-btn
+            variant="text"
+            class="text-white text-body2 text-no-wrap text-capitalize"
+            to="/profile"
+            :ripple="false"
+          >
             {{ userCurrentStore.current.firstName }} {{ userCurrentStore.current.lastName }}
-          </span>
+          </v-btn>
           <v-btn
             icon
             variant="text"

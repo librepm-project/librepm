@@ -6,6 +6,11 @@ const getCurrent = async (): Promise<User> => {
     return response.data as User;
 }
 
+const updateCurrent = async (user: Partial<User>): Promise<void> => {
+    await api.apiCall().put("/user/current", user);
+}
+
 export default {
-    getCurrent
+    getCurrent,
+    updateCurrent,
 }
