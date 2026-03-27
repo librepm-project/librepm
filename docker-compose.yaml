@@ -55,6 +55,7 @@ services:
       DB_USER: api
       DB_PASSWORD: apipass
       DB_NAME: api
+      JWT_SECRET: secret
     networks:
       - nx-network
     volumes:

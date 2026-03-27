@@ -25,3 +25,10 @@ seed:
 
 purge:
 	docker compose --profile cli exec cli go run apps/api purge
+
+login:
+ifndef EMAIL
+	@echo "Usage: make login EMAIL=<email>"
+	@exit 1
+endif
+	docker compose --profile cli exec cli go run apps/api generate-login-link $(EMAIL)

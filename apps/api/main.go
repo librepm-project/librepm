@@ -4,7 +4,11 @@ import (
 	"apps/api/app/domain"
 	"apps/api/app/http"
 	"apps/api/app/seed"
+	"fmt"
+	"libs/jwt_utils"
 	"os"
+
+	"github.com/google/uuid"
 )
 
 func main() {
@@ -16,15 +20,27 @@ func main() {
 	if len(os.Args) > 2 {
 		subcommand = os.Args[2]
 	}
-	domain := domain.NewDomain()
+	d := domain.NewDomain()
 	switch command {
 	case "server":
-		http.StartHttpServer(domain)
+		http.StartHttpServer(d)
 	case "seed":
-		seed.NewSeedService(domain).Seed(subcommand)
+		seed.NewSeedService(d).Seed(subcommand)
 	case "purge":
-		seed.NewSeedService(domain).Purge()
+		seed.NewSeedService(d).Purge()
+	case "generate-login-link":
+		if subcommand == "" {
+			fmt.Fprintln(os.Stderr, "Usage: go run apps/api generate-login-link <email>")
+			os.Exit(1)
+		}
+		user, err := d.UserRepository.FindByEmail(subcommand)
+		if err != nil || user.ID == uuid.Nil {
+			fmt.Fprintf(os.Stderr, "User not found: %s\n", subcommand)
+			os.Exit(1)
+		}
+		token := jwt_utils.GenerateToken(user.ID, user.Email)
+		fmt.Printf("http://localhost:8081/login?token=%s\n", token)
 	default:
-		http.StartHttpServer(domain)
+		http.StartHttpServer(d)
 	}
 }

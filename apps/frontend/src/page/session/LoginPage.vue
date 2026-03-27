@@ -55,15 +55,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { emailRule, requiredRule } from '@/lib/formRule';
 import { useUserSessionStore } from '@/store/userSession.store';
+import { setToken } from '@/lib/cookie';
 
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute();
 const userSessionStore = useUserSessionStore();
+
+onMounted(() => {
+  const token = route.query.token as string | undefined;
+  if (token) {
+    setToken(token);
+    router.replace('/dashboard');
+  }
+});
 
 const email = ref('');
 const password = ref('');
