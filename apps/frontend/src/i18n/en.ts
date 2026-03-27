@@ -168,6 +168,8 @@ export const en = {
         dismiss: 'Dismiss',
         type: {
             issue_assigned: 'Issue assigned to you',
+            issue_created: 'New issue created',
+            issue_updated: 'Issue updated',
             comment_added: 'New comment on issue',
             mention: 'You were mentioned',
             issue_status_changed: 'Issue status changed',

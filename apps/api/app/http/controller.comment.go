@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"apps/api/app/domain"
+	"github.com/google/uuid"
 )
 
 type CommentControllerInterface interface {
@@ -14,7 +15,9 @@ type CommentControllerInterface interface {
 }
 
 type CommentController struct {
-	CommentService domain.CommentServiceInterface
+	CommentService      domain.CommentServiceInterface
+	IssueService        domain.IssueServiceInterface
+	NotificationService domain.NotificationServiceInterface
 }
 
 func (c CommentController) IndexByIssue(w http.ResponseWriter, r *http.Request) {
@@ -62,6 +65,26 @@ func (c CommentController) Create(w http.ResponseWriter, r *http.Request) {
 		RespondInternalError(w)
 		return
 	}
+
+	if issue, err := c.IssueService.Show(issueID); err == nil {
+		entityType := domain.EntityTypeIssue
+		recipients := map[uuid.UUID]bool{}
+		if issue.ReporterUserID != nil && *issue.ReporterUserID != userID {
+			recipients[*issue.ReporterUserID] = true
+		}
+		if issue.AssignedUserID != nil && *issue.AssignedUserID != userID {
+			recipients[*issue.AssignedUserID] = true
+		}
+		for recipientID := range recipients {
+			c.NotificationService.Create(&domain.NotificationModel{
+				UserID:     recipientID,
+				Type:       "comment_added",
+				EntityType: &entityType,
+				EntityID:   &issueID,
+			})
+		}
+	}
+
 	RespondJSON(w, http.StatusCreated, CommentSerializer{}.ModelToResponse(*created))
 }
 

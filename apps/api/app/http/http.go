@@ -30,6 +30,7 @@ func StartHttpServer(domain domain.Domain) {
 		IssueController: IssueController{
 			IssueService:         domain.IssueService,
 			IssueAuditLogService: domain.IssueAuditLogService,
+			NotificationService:  domain.NotificationService,
 		},
 		IssueWorklogController: IssueWorklogController{
 			IssueWorklogService:  domain.IssueWorklogService,
@@ -83,7 +84,9 @@ func StartHttpServer(domain domain.Domain) {
 			IssueAuditLogService: domain.IssueAuditLogService,
 		},
 		CommentController: CommentController{
-			CommentService: domain.CommentService,
+			CommentService:      domain.CommentService,
+			IssueService:        domain.IssueService,
+			NotificationService: domain.NotificationService,
 		},
 		SettingController: SettingController{
 			SettingService: domain.SettingService,

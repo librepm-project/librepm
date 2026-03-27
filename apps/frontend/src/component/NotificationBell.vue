@@ -82,6 +82,8 @@ const onOpen = () => {
 const typeIcon = (type: string): string => {
   const icons: Record<string, string> = {
     issue_assigned: 'mdi-account-arrow-right',
+    issue_created: 'mdi-ticket-outline',
+    issue_updated: 'mdi-pencil-outline',
     comment_added: 'mdi-comment-outline',
     mention: 'mdi-at',
     issue_status_changed: 'mdi-swap-horizontal',
@@ -92,6 +94,8 @@ const typeIcon = (type: string): string => {
 const typeColor = (type: string): string => {
   const colors: Record<string, string> = {
     issue_assigned: 'primary',
+    issue_created: 'primary',
+    issue_updated: 'info',
     comment_added: 'success',
     mention: 'warning',
     issue_status_changed: 'info',
