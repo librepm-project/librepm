@@ -29,6 +29,15 @@
 
       <div class="d-flex align-center gap-3">
         <template v-if="userCurrentStore.current">
+          <v-btn
+            to="/issue/create"
+            prepend-icon="mdi-plus"
+            variant="outlined"
+            class="text-white"
+            size="small"
+          >
+            {{ t('title.issueCreate') }}
+          </v-btn>
           <notification-bell />
           <v-menu v-for="link in navigationLinks.filter(l => l.sublinks)" :key="link.key" open-on-hover location="bottom">
             <template v-slot:activator="{ props }">
