@@ -23,162 +23,79 @@
     </div>
 
     <!-- Priority inline edit -->
-    <div class="mb-6">
-      <p class="text-subtitle2 font-weight-medium mb-2">
-        <v-icon x-small class="mr-1">mdi-flag-outline</v-icon>
-        {{ t('issue.priority') }}
-      </p>
-      <priority-chip
-        v-if="!editingPriority && issueStore.current.priority"
-        :priority="issueStore.current.priority"
-        class="cursor-pointer"
-        @click="editingPriority = true"
-      />
-      <span
-        v-else-if="!editingPriority"
-        class="text-medium-emphasis cursor-pointer"
-        @click="editingPriority = true"
-      >—</span>
-      <div
-        v-else
-        v-click-outside="{ handler: () => editingPriority = false, include: getOverlayContents }"
-      >
-        <v-select
-          :model-value="issueStore.current.priorityId"
-          :items="priorities"
-          item-title="name"
-          item-value="id"
-          density="compact"
-          variant="underlined"
-          hide-details
-          clearable
-          autofocus
-          @update:model-value="savePriority"
-        />
-      </div>
-    </div>
+    <inline-sidebar-edit
+      :label="t('issue.priority')"
+      icon="mdi-flag-outline"
+      :model-value="issueStore.current.priorityId"
+      :items="priorities"
+      item-title="name"
+      item-value="id"
+      clearable
+      @update:model-value="savePriority"
+    >
+      <priority-chip v-if="issueStore.current.priority" :priority="issueStore.current.priority" />
+      <span v-else class="text-medium-emphasis">—</span>
+    </inline-sidebar-edit>
 
     <!-- Tracker inline edit -->
-    <div class="mb-6">
-      <p class="text-subtitle2 font-weight-medium mb-2">
-        <v-icon x-small class="mr-1">mdi-lightning-bolt-outline</v-icon>
-        {{ t('issue.tracker') }}
-      </p>
-      <tracker-chip
-        v-if="!editingTracker"
-        :tracker="issueStore.current.tracker"
-        class="cursor-pointer"
-        @click="editingTracker = true"
-      />
-      <div
-        v-else
-        v-click-outside="{ handler: () => editingTracker = false, include: getOverlayContents }"
-      >
-        <v-select
-          :model-value="issueStore.current.tracker?.id"
-          :items="trackers"
-          item-title="name"
-          item-value="id"
-          density="compact"
-          variant="underlined"
-          hide-details
-          autofocus
-          @update:model-value="saveTracker"
-        />
-      </div>
-    </div>
+    <inline-sidebar-edit
+      :label="t('issue.tracker')"
+      icon="mdi-lightning-bolt-outline"
+      :model-value="issueStore.current.tracker?.id"
+      :items="trackers"
+      item-title="name"
+      item-value="id"
+      @update:model-value="saveTracker"
+    >
+      <tracker-chip :tracker="issueStore.current.tracker" />
+    </inline-sidebar-edit>
 
     <!-- Status inline edit -->
-    <div class="mb-6">
-      <p class="text-subtitle2 font-weight-medium mb-2">
-        <v-icon x-small class="mr-1">mdi-circle-outline</v-icon>
-        {{ t('issue.status') }}
-      </p>
-      <status-chip
-        v-if="!editingStatus"
-        :status="issueStore.current.status"
-        class="cursor-pointer"
-        @click="editingStatus = true"
-      />
-      <div
-        v-else
-        v-click-outside="{ handler: () => editingStatus = false, include: getOverlayContents }"
-      >
-        <v-select
-          :model-value="issueStore.current.status?.id"
-          :items="statuses"
-          item-title="name"
-          item-value="id"
-          density="compact"
-          variant="underlined"
-          hide-details
-          autofocus
-          @update:model-value="saveStatus"
-        />
-      </div>
-    </div>
+    <inline-sidebar-edit
+      :label="t('issue.status')"
+      icon="mdi-circle-outline"
+      :model-value="issueStore.current.status?.id"
+      :items="statuses"
+      item-title="name"
+      item-value="id"
+      @update:model-value="saveStatus"
+    >
+      <status-chip :status="issueStore.current.status" />
+    </inline-sidebar-edit>
 
     <!-- Assignee inline edit -->
-    <div class="mb-6">
-      <p class="text-subtitle2 font-weight-medium mb-2">
-        <v-icon x-small class="mr-1">mdi-account-outline</v-icon>
-        {{ t('issue.assignee') }}
-      </p>
-      <div v-if="!editingAssignee" class="cursor-pointer" @click="editingAssignee = true">
-        <span v-if="issueStore.current.assignedUser">
-          {{ issueStore.current.assignedUser.firstName }} {{ issueStore.current.assignedUser.lastName }}
-        </span>
-        <span v-else class="text-medium-emphasis">—</span>
-      </div>
-      <div
-        v-else
-        v-click-outside="{ handler: () => editingAssignee = false, include: getOverlayContents }"
-      >
-        <v-select
-          :model-value="issueStore.current.assignedUserId"
-          :items="users"
-          :item-title="(u: any) => `${u.firstName} ${u.lastName}`"
-          item-value="id"
-          density="compact"
-          variant="underlined"
-          hide-details
-          clearable
-          autofocus
-          @update:model-value="saveAssignee"
-        />
-      </div>
-    </div>
+    <inline-sidebar-edit
+      :label="t('issue.assignee')"
+      icon="mdi-account-outline"
+      :model-value="issueStore.current.assignedUserId"
+      :items="users"
+      :item-title="(u: any) => `${u.firstName} ${u.lastName}`"
+      item-value="id"
+      clearable
+      @update:model-value="saveAssignee"
+    >
+      <span v-if="issueStore.current.assignedUser">
+        {{ issueStore.current.assignedUser.firstName }} {{ issueStore.current.assignedUser.lastName }}
+      </span>
+      <span v-else class="text-medium-emphasis">—</span>
+    </inline-sidebar-edit>
 
     <!-- Reporter inline edit -->
-    <div class="mb-6">
-      <p class="text-subtitle2 font-weight-medium mb-2">
-        <v-icon x-small class="mr-1">mdi-account-edit-outline</v-icon>
-        {{ t('issue.reporter') }}
-      </p>
-      <div v-if="!editingReporter" class="cursor-pointer" @click="editingReporter = true">
-        <span v-if="issueStore.current.reporterUser">
-          {{ issueStore.current.reporterUser.firstName }} {{ issueStore.current.reporterUser.lastName }}
-        </span>
-        <span v-else class="text-medium-emphasis">—</span>
-      </div>
-      <div
-        v-else
-        v-click-outside="{ handler: () => editingReporter = false, include: getOverlayContents }"
-      >
-        <v-select
-          :model-value="issueStore.current.reporterUserId"
-          :items="users"
-          :item-title="(u: any) => `${u.firstName} ${u.lastName}`"
-          item-value="id"
-          density="compact"
-          variant="underlined"
-          hide-details
-          clearable
-          autofocus
-          @update:model-value="saveReporter"
-        />
-      </div>
-    </div>
+    <inline-sidebar-edit
+      :label="t('issue.reporter')"
+      icon="mdi-account-edit-outline"
+      :model-value="issueStore.current.reporterUserId"
+      :items="users"
+      :item-title="(u: any) => `${u.firstName} ${u.lastName}`"
+      item-value="id"
+      clearable
+      @update:model-value="saveReporter"
+    >
+      <span v-if="issueStore.current.reporterUser">
+        {{ issueStore.current.reporterUser.firstName }} {{ issueStore.current.reporterUser.lastName }}
+      </span>
+      <span v-else class="text-medium-emphasis">—</span>
+    </inline-sidebar-edit>
 
     <v-divider class="my-4"></v-divider>
   </div>
@@ -194,6 +111,7 @@ import { usePriorityStore } from '@/store/priority.store';
 import StatusChip from '@/component/StatusChip.vue';
 import TrackerChip from '@/component/TrackerChip.vue';
 import PriorityChip from '@/component/PriorityChip.vue';
+import InlineSidebarEdit from '@/component/InlineSidebarEdit.vue';
 
 const { t } = useI18n();
 const issueStore = useIssueStore();
@@ -201,17 +119,10 @@ const projectStore = useProjectStore();
 const userStore = useUserStore();
 const priorityStore = usePriorityStore();
 
-const editingTracker = ref(false);
-const editingStatus = ref(false);
-const editingAssignee = ref(false);
-const editingReporter = ref(false);
-const editingPriority = ref(false);
 const trackers = ref<any[]>([]);
 const statuses = ref<any[]>([]);
 const users = ref<any[]>([]);
 const priorities = ref<any[]>([]);
-
-const getOverlayContents = () => Array.from(document.querySelectorAll('.v-overlay__content'));
 
 onMounted(async () => {
   const projectId = issueStore.current?.project?.id;
@@ -235,43 +146,33 @@ watch(() => issueStore.current?.tracker?.id, (newTrackerId) => {
 });
 
 const saveTracker = async (trackerId: string) => {
-  editingTracker.value = false;
   if (trackerId !== issueStore.current?.tracker?.id) {
     await issueStore.update(issueStore.current!.id!, { trackerId });
   }
 };
 
 const saveStatus = async (statusId: string) => {
-  editingStatus.value = false;
   if (statusId !== issueStore.current?.status?.id) {
     await issueStore.update(issueStore.current!.id!, { statusId });
   }
 };
 
 const saveAssignee = async (assignedUserId: string | null) => {
-  editingAssignee.value = false;
   if (assignedUserId !== issueStore.current?.assignedUserId) {
     await issueStore.update(issueStore.current!.id!, { assignedUserId });
   }
 };
 
 const saveReporter = async (reporterUserId: string | null) => {
-  editingReporter.value = false;
   if (reporterUserId !== issueStore.current?.reporterUserId) {
     await issueStore.update(issueStore.current!.id!, { reporterUserId });
   }
 };
 
 const savePriority = async (priorityId: string | null) => {
-  editingPriority.value = false;
   if (priorityId !== issueStore.current?.priorityId) {
     await issueStore.update(issueStore.current!.id!, { priorityId });
   }
 };
 </script>
 
-<style scoped>
-.cursor-pointer {
-  cursor: pointer;
-}
-</style>

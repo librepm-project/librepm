@@ -89,15 +89,7 @@ func (c IssueController) Create(w http.ResponseWriter, r *http.Request) {
 		RespondBadRequest(w)
 		return
 	}
-	entityType := domain.EntityTypeIssue
-	if issue.AssignedUserID != nil && *issue.AssignedUserID != reporterID {
-		c.NotificationService.Create(&domain.NotificationModel{
-			UserID:     *issue.AssignedUserID,
-			Type:       "issue_created",
-			EntityType: &entityType,
-			EntityID:   &issue.ID,
-		})
-	}
+	c.NotificationService.NotifyIssueParticipants(&issue, "issue_created", reporterID)
 	RespondJSON(w, http.StatusCreated, IssueSerializer{}.ModelToResponse(issue))
 }
 
@@ -133,23 +125,7 @@ func (c IssueController) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	c.IssueAuditLogService.LogFieldChanges(issue_id, user_id, *oldIssue, *updated)
-
-	entityType := domain.EntityTypeIssue
-	recipients := map[uuid.UUID]bool{}
-	if updated.ReporterUserID != nil && *updated.ReporterUserID != user_id {
-		recipients[*updated.ReporterUserID] = true
-	}
-	if updated.AssignedUserID != nil && *updated.AssignedUserID != user_id {
-		recipients[*updated.AssignedUserID] = true
-	}
-	for recipientID := range recipients {
-		c.NotificationService.Create(&domain.NotificationModel{
-			UserID:     recipientID,
-			Type:       "issue_updated",
-			EntityType: &entityType,
-			EntityID:   &issue_id,
-		})
-	}
+	c.NotificationService.NotifyIssueParticipants(updated, "issue_updated", user_id)
 
 	RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*updated))
 }

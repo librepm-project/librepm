@@ -22,12 +22,16 @@ type IssueRepository struct {
 	DB *gorm.DB
 }
 
+func (r IssueRepository) withAssociations(query *gorm.DB) *gorm.DB {
+	return query.Preload("Project").Preload("Tracker").Preload("Status").Preload("AssignedUser").Preload("ReporterUser").Preload("Priority")
+}
+
 func (r IssueRepository) All() (*[]IssueModel, error) {
 	var issues []IssueModel
 	var err error
 	query := r.DB.Select("issue.*")
 
-	if err := query.Preload("Project").Preload("Tracker").Preload("Status").Preload("AssignedUser").Preload("ReporterUser").Preload("Priority").Find(&issues).Error; err != nil {
+	if err := r.withAssociations(query).Find(&issues).Error; err != nil {
 		slog.Error("failed to fetch issues", "error", err)
 	}
 	return &issues, err
@@ -84,7 +88,7 @@ func (r IssueRepository) AllByFilter(conditions []FilterConditionModel) (*[]Issu
 		}
 	}
 
-	if err := query.Preload("Project").Preload("Tracker").Preload("Status").Preload("AssignedUser").Preload("ReporterUser").Preload("Priority").Find(&issues).Error; err != nil {
+	if err := r.withAssociations(query).Find(&issues).Error; err != nil {
 		slog.Error("failed to fetch issues by filter", "error", err)
 		return nil, err
 	}
@@ -93,7 +97,7 @@ func (r IssueRepository) AllByFilter(conditions []FilterConditionModel) (*[]Issu
 
 func (r IssueRepository) FindByID(issue_id uuid.UUID) (*IssueModel, error) {
 	var issue IssueModel
-	query := r.DB.Preload("Project").Preload("Tracker").Preload("Status").Preload("AssignedUser").Preload("ReporterUser").Preload("Priority").First(&issue, issue_id)
+	query := r.withAssociations(r.DB).First(&issue, issue_id)
 
 	if query.Error != nil {
 		slog.Error("failed to find issue by id", "error", query.Error)
@@ -103,7 +107,7 @@ func (r IssueRepository) FindByID(issue_id uuid.UUID) (*IssueModel, error) {
 
 func (r IssueRepository) FindByKey(key string) (*IssueModel, error) {
 	var issue IssueModel
-	query := r.DB.Preload("Project").Preload("Tracker").Preload("Status").Preload("AssignedUser").Preload("ReporterUser").Preload("Priority").Where("`key` = ?", key).First(&issue)
+	query := r.withAssociations(r.DB).Where("`key` = ?", key).First(&issue)
 
 	if query.Error != nil {
 		slog.Error("failed to find issue by key", "error", query.Error)

@@ -52,33 +52,26 @@ func (s IssueSerializer) RequestToModel(issue_request IssueRequest) domain.Issue
 	}
 }
 
+func serializeNullable[M any, R any](model *M, fn func(M) R) *R {
+	if model == nil {
+		return nil
+	}
+	r := fn(*model)
+	return &r
+}
+
 func (s IssueSerializer) ModelToResponse(issue domain.IssueModel) IssueResponse {
-	var assignedUser *UserResponse
-	if issue.AssignedUser != nil {
-		r := UserSerializer{}.ModelToResponse(*issue.AssignedUser)
-		assignedUser = &r
-	}
-	var reporterUser *UserResponse
-	if issue.ReporterUser != nil {
-		r := UserSerializer{}.ModelToResponse(*issue.ReporterUser)
-		reporterUser = &r
-	}
-	var priority *PriorityResponse
-	if issue.Priority != nil {
-		r := PrioritySerializer{}.ModelToResponse(*issue.Priority)
-		priority = &r
-	}
 	return IssueResponse{
 		ID:              issue.ID,
 		Key:             issue.Key,
 		Summary:         issue.Summary,
 		Description:     issue.Description,
 		AssignedUserID:  issue.AssignedUserID,
-		AssignedUser:    assignedUser,
+		AssignedUser:    serializeNullable(issue.AssignedUser, UserSerializer{}.ModelToResponse),
 		ReporterUserID:  issue.ReporterUserID,
-		ReporterUser:    reporterUser,
+		ReporterUser:    serializeNullable(issue.ReporterUser, UserSerializer{}.ModelToResponse),
 		PriorityID:      issue.PriorityID,
-		Priority:        priority,
+		Priority:        serializeNullable(issue.Priority, PrioritySerializer{}.ModelToResponse),
 		Project:        ProjectSerializer{}.ModelToResponse(issue.Project),
 		Status:         StatusSerializer{}.ModelToResponse(issue.Status),
 		Tracker:        TrackerSerializer{}.ModelToResponse(issue.Tracker),

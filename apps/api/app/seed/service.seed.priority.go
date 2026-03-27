@@ -7,13 +7,14 @@ import (
 )
 
 func (s SeedService) createPriority(items []PriorityData) error {
-	var err error
 	for _, item := range items {
-		err = s.PriorityRepository.Create(&domain.PriorityModel{
+		if err := s.PriorityRepository.Create(&domain.PriorityModel{
 			ID:    uuid.New(),
 			Name:  item.Name,
 			Color: item.Color,
-		})
+		}); err != nil {
+			return err
+		}
 	}
-	return err
+	return nil
 }
