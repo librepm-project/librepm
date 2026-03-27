@@ -31,4 +31,11 @@ ifndef EMAIL
 	@echo "Usage: make login EMAIL=<email>"
 	@exit 1
 endif
-	docker compose --profile cli exec cli go run apps/api generate-login-link $(EMAIL)
+	@URL="$$(docker compose --profile cli exec -T cli go run apps/api generate-login-link $(EMAIL) | tail -n1)"; \
+	if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \
+		xdg-open "$$URL"; \
+	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
+		open "$$URL"; \
+	else \
+		echo "Unsupported OS. Please open the URL manually: $$URL"; \
+	fi
