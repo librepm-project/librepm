@@ -29,14 +29,14 @@
     <issue-table
       v-else
       :items="issues"
-      :onEdit="handleEditIssue"
-      :onDelete="handleDeleteIssue"
+      :columns="filterColumns"
+      :groupBy="filterGroupBy"
     />
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useFilterStore } from '@/store/filter.store';
 import { useLayoutStore } from '@/store/layout.store';
@@ -53,6 +53,21 @@ const layoutStore = useLayoutStore();
 const filter = ref<Filter | null>(null);
 const issues = ref<Issue[]>([]);
 const loading = ref(true);
+
+const filterColumns = computed(() => {
+  if (!filter.value?.columnList) {
+    return ['key', 'tracker', 'priority', 'summary', 'assignee', 'status'];
+  }
+  try {
+    return JSON.parse(filter.value.columnList);
+  } catch {
+    return ['key', 'tracker', 'priority', 'summary', 'assignee', 'status'];
+  }
+});
+
+const filterGroupBy = computed(() => {
+  return filter.value?.groupBy || '';
+});
 
 onMounted(async () => {
   const filterId = route.params.filterId as string;
@@ -82,12 +97,4 @@ onMounted(async () => {
 onUnmounted(() => {
   layoutStore.resetActions();
 });
-
-const handleEditIssue = (issue: Issue) => {
-  router.push(`/issue/key/${issue.key}/edit`);
-};
-
-const handleDeleteIssue = async (issue: Issue) => {
-  router.push(`/issue/key/${issue.key}`);
-};
 </script>

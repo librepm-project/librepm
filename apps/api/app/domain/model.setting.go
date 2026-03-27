@@ -14,6 +14,8 @@ func (setting SettingModel) TableName() string {
 const (
 	SettingKeySiteTitle = "site_title"
 	SettingKeyDarkMode  = "dark_mode"
+	SettingKeyDefaultIssueDisplayColumns = "default_issue_display_columns"
+	SettingKeyDefaultIssueDisplayGroupBy = "default_issue_display_group_by"
 )
 
 func GetPredefinedSettings() []SettingModel {
@@ -28,6 +30,17 @@ func GetPredefinedSettings() []SettingModel {
 			Value:     "auto",
 			ValueType: "string",
 			Options:   []string{"auto", "on", "off"},
+		},
+		{
+			Key:       SettingKeyDefaultIssueDisplayColumns,
+			Value:     `["key", "tracker", "priority", "summary", "assignee", "status"]`,
+			ValueType: "json",
+		},
+		{
+			Key:       SettingKeyDefaultIssueDisplayGroupBy,
+			Value:     "",
+			ValueType: "string",
+			Options:   []string{"", "status", "priority", "assignee", "project"},
 		},
 	}
 }

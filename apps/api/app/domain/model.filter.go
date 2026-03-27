@@ -12,6 +12,8 @@ type FilterModel struct {
 	Name        string    `gorm:"type:varchar(100);not null;uniqueIndex:name_user_id;"`
 	Description string    `gorm:"type:varchar(255);"`
 	Public      bool
+	ColumnList  string    `gorm:"type:json;default:'[\"key\", \"tracker\", \"priority\", \"summary\", \"assignee\", \"status\"]'"`
+	GroupBy     string    `gorm:"type:varchar(50);default:''"`
 	UserID      uuid.UUID `gorm:"type:char(36) references user;not null;uniqueIndex:name_user_id;"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

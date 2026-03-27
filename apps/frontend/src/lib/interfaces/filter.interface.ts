@@ -9,6 +9,8 @@ export interface Filter {
     id?: string;
     name: string;
     description?: string;
+    columnList?: string;
+    groupBy?: string;
     conditions?: FilterCondition[];
 }
 

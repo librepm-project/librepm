@@ -23,6 +23,8 @@ type FilterRequest struct {
 	Name        string                   `json:"name"`
 	Description string                   `json:"description"`
 	Public      bool                     `json:"public"`
+	ColumnList  string                   `json:"columnList"`
+	GroupBy     string                   `json:"groupBy"`
 	Conditions  []FilterConditionRequest `json:"conditions"`
 }
 
@@ -31,6 +33,8 @@ type FilterResponse struct {
 	Name        string                    `json:"name"`
 	Description string                    `json:"description"`
 	Public      bool                      `json:"public"`
+	ColumnList  string                    `json:"columnList"`
+	GroupBy     string                    `json:"groupBy"`
 	Conditions  []FilterConditionResponse `json:"conditions"`
 }
 
@@ -49,6 +53,8 @@ func (s FilterSerializer) RequestToModel(filter_request FilterRequest) domain.Fi
 		Name:             filter_request.Name,
 		Description:      filter_request.Description,
 		Public:           filter_request.Public,
+		ColumnList:       filter_request.ColumnList,
+		GroupBy:          filter_request.GroupBy,
 		FilterConditions: conditions,
 	}
 }
@@ -68,6 +74,8 @@ func (s FilterSerializer) ModelToResponse(filter domain.FilterModel) FilterRespo
 		Name:        filter.Name,
 		Description: filter.Description,
 		Public:      filter.Public,
+		ColumnList:  filter.ColumnList,
+		GroupBy:     filter.GroupBy,
 		Conditions:  conditions,
 	}
 }
