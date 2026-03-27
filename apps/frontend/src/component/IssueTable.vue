@@ -12,6 +12,10 @@
     <template #item.status="{ item }">
       <status-chip :status="item.status" />
     </template>
+    <template #item.assignee="{ item }">
+      <span v-if="item.assignedUser">{{ item.assignedUser.firstName }} {{ item.assignedUser.lastName }}</span>
+      <span v-else class="text-medium-emphasis">—</span>
+    </template>
   </v-data-table>
 </template>
 
@@ -29,6 +33,7 @@ const headers = [
   { key: 'key',     title: t('issue.key'),     width: '1px', cellProps: { class: 'text-no-wrap' } },
   { key: 'tracker', title: t('issue.tracker'),  width: '1px', cellProps: { class: 'text-no-wrap' } },
   { key: 'summary', title: t('issue.summary') },
+  { key: 'assignee', title: t('issue.assignee'), width: '1px', cellProps: { class: 'text-no-wrap' } },
   { key: 'status',  title: t('issue.status'),   width: '1px', align: 'end', cellProps: { class: 'text-no-wrap' } },
 ];
 </script>

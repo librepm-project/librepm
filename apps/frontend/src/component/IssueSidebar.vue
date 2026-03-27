@@ -82,6 +82,37 @@
       </div>
     </div>
 
+    <!-- Assignee inline edit -->
+    <div class="mb-6">
+      <p class="text-subtitle2 font-weight-medium mb-2">
+        <v-icon x-small class="mr-1">mdi-account-outline</v-icon>
+        {{ t('issue.assignee') }}
+      </p>
+      <div v-if="!editingAssignee" class="cursor-pointer" @click="editingAssignee = true">
+        <span v-if="issueStore.current.assignedUser">
+          {{ issueStore.current.assignedUser.firstName }} {{ issueStore.current.assignedUser.lastName }}
+        </span>
+        <span v-else class="text-medium-emphasis">—</span>
+      </div>
+      <div
+        v-else
+        v-click-outside="{ handler: () => editingAssignee = false, include: getOverlayContents }"
+      >
+        <v-select
+          :model-value="issueStore.current.assignedUserId"
+          :items="users"
+          :item-title="(u: any) => `${u.firstName} ${u.lastName}`"
+          item-value="id"
+          density="compact"
+          variant="underlined"
+          hide-details
+          clearable
+          autofocus
+          @update:model-value="saveAssignee"
+        />
+      </div>
+    </div>
+
     <v-divider class="my-4"></v-divider>
   </div>
 </template>
@@ -91,28 +122,35 @@ import { ref, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useIssueStore } from '@/store/issue.store';
 import { useProjectStore } from '@/store/project.store';
+import { useUserStore } from '@/store/user.store';
 import StatusChip from '@/component/StatusChip.vue';
 import TrackerChip from '@/component/TrackerChip.vue';
 
 const { t } = useI18n();
 const issueStore = useIssueStore();
 const projectStore = useProjectStore();
+const userStore = useUserStore();
 
 const editingTracker = ref(false);
 const editingStatus = ref(false);
+const editingAssignee = ref(false);
 const trackers = ref<any[]>([]);
 const statuses = ref<any[]>([]);
+const users = ref<any[]>([]);
 
 const getOverlayContents = () => Array.from(document.querySelectorAll('.v-overlay__content'));
 
 onMounted(async () => {
   const projectId = issueStore.current?.project?.id;
-  if (!projectId) return;
-  await projectStore.getIssueProperty(projectId);
+  await Promise.all([
+    projectId ? projectStore.getIssueProperty(projectId) : Promise.resolve(),
+    userStore.getAllItems(),
+  ]);
   trackers.value = projectStore.currentIssueProperty?.trackers || [];
   const currentTrackerId = issueStore.current?.tracker?.id;
   const tracker = trackers.value.find(t => t.id === currentTrackerId);
   statuses.value = tracker?.statuses || [];
+  users.value = userStore.index;
 });
 
 watch(() => issueStore.current?.tracker?.id, (newTrackerId) => {
@@ -132,6 +170,13 @@ const saveStatus = async (statusId: string) => {
   editingStatus.value = false;
   if (statusId !== issueStore.current?.status?.id) {
     await issueStore.update(issueStore.current!.id!, { statusId });
+  }
+};
+
+const saveAssignee = async (assignedUserId: string | null) => {
+  editingAssignee.value = false;
+  if (assignedUserId !== issueStore.current?.assignedUserId) {
+    await issueStore.update(issueStore.current!.id!, { assignedUserId });
   }
 };
 </script>

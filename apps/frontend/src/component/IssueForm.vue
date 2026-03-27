@@ -16,6 +16,11 @@
                     <v-select v-model="form.statusId" :label="t('issue.status')" :items="statuses" item-title="name"
                         item-value="id" required></v-select>
                 </v-col>
+                <v-col cols="12" md="4">
+                    <v-select v-model="form.assignedUserId" :label="t('issue.assignee')" :items="userStore.index"
+                        :item-title="(u: any) => `${u.firstName} ${u.lastName}`" item-value="id" clearable></v-select>
+                </v-col>
+
                 <v-col cols="12">
                     <v-text-field v-model="form.summary" :label="t('issue.summary')" required></v-text-field>
                 </v-col>
@@ -32,6 +37,7 @@
 <script lang="ts" setup>
 import { Issue } from '@/lib/interfaces/issue.interface';
 import { useProjectStore } from '@/store/project.store';
+import { useUserStore } from '@/store/user.store';
 import RichTextField from '@/component/RichTextField.vue';
 import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -46,6 +52,7 @@ const props = defineProps<{
 }>();
 
 const projectStore = useProjectStore();
+const userStore = useUserStore();
 
 const initForm = () => ({
     description: '',
@@ -53,7 +60,7 @@ const initForm = () => ({
 })
 
 onMounted(async () => {
-    await projectStore.getProjects();
+    await Promise.all([projectStore.getProjects(), userStore.getAllItems()]);
     if (props.initialData?.projectId) {
         await projectStore.getIssueProperty(props.initialData.projectId);
         trackers.value = projectStore.currentIssueProperty?.trackers || [];

@@ -68,6 +68,7 @@ import filterApi from '@/api/filter.api';
 import { useProjectStore } from '@/store/project.store';
 import { useTrackerStore } from '@/store/tracker.store';
 import { useStatusStore } from '@/store/status.store';
+import { useUserStore } from '@/store/user.store';
 import { FilterCondition, FilterConditionField, FilterConditionOptions } from '@/lib/interfaces/filter.interface';
 
 const props = defineProps<{
@@ -87,6 +88,7 @@ const conditionOptions = ref<FilterConditionOptions>({ fields: [] });
 const projectStore = useProjectStore();
 const trackerStore = useTrackerStore();
 const statusStore = useStatusStore();
+const userStore = useUserStore();
 
 onMounted(async () => {
     const [opts] = await Promise.all([
@@ -94,6 +96,7 @@ onMounted(async () => {
         projectStore.getAllItems(),
         trackerStore.getAllItems(),
         statusStore.getAllItems(),
+        userStore.getAllItems(),
     ]);
     conditionOptions.value = opts;
 });
@@ -114,6 +117,7 @@ function getValueOptions(fieldKey: string): any[] {
     if (def.valueEndpoint === '/project') return projectStore.index;
     if (def.valueEndpoint === '/tracker') return trackerStore.index;
     if (def.valueEndpoint === '/status') return statusStore.index;
+    if (def.valueEndpoint === '/user') return userStore.index.map(u => ({ id: u.id, name: `${u.firstName} ${u.lastName}` }));
     return [];
 }
 

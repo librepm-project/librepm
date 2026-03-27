@@ -136,6 +136,13 @@ func (c FilterController) Options(w http.ResponseWriter, r *http.Request) {
 					{Key: "eq", Label: "equals"},
 				},
 			},
+			{
+				Key:           "assigned_user_id",
+				Label:         "Assignee",
+				ValueType:     "select",
+				ValueEndpoint: "/user",
+				Operators:     eqNe,
+			},
 		},
 	}
 	http_utils.RespondWithJSON(w, http.StatusOK, options)
