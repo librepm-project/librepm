@@ -39,3 +39,6 @@ Thumbs.db
 
 # File uploads
 apps/api/uploads/
+
+# AI Tools
+NOTES_*
