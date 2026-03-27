@@ -62,6 +62,12 @@ export const navigationLinks: Link[] = [
         icon: 'mdi-compass-outline',
       },
       {
+        text: 'Priorities',
+        key: 'priorities',
+        to: '/admin/priority',
+        icon: 'mdi-flag-outline',
+      },
+      {
         text: 'Users',
         key: 'users',
         to: '/admin/user',

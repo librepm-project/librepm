@@ -1,4 +1,5 @@
 import { Project } from "@/lib/interfaces/project.interface";
+import { Priority } from "@/lib/interfaces/priority.interface";
 import { Status } from "@/lib/interfaces/status.interface";
 import { Tracker } from "@/lib/interfaces/tracker.interface";
 import { User } from "@/lib/interfaces/user.interface";
@@ -18,4 +19,6 @@ export interface Issue {
     assignedUserId?: string | null;
     reporterUser?: User | null;
     reporterUserId?: string | null;
+    priority?: Priority | null;
+    priorityId?: string | null;
 }

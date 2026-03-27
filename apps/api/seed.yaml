@@ -34,6 +34,14 @@ trackers:
   - name: "Checklist"
     color: "#1ABC9C"
 
+priorities:
+  - name: "High"
+    color: "#F44336"
+  - name: "Normal"
+    color: "#FFC107"
+  - name: "Low"
+    color: "#4CAF50"
+
 statuses:
   - name: "Planned"
     color: "#9E9E9E"

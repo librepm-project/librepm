@@ -27,6 +27,7 @@ type Domain struct {
 	UserSessionService      UserSessionServiceInterface
 	UserRegisterService     UserRegisterServiceInterface
 	StatusService           StatusServiceInterface
+	PriorityService         PriorityServiceInterface
 	TransitionService       TransitionServiceInterface
 	TrackerService          TrackerServiceInterface
 	AttachmentService       AttachmentServiceInterface
@@ -49,6 +50,7 @@ type Domain struct {
 	DashboardWidgetRepository      DashboardWidgetRepositoryInterface
 	UserRepository                 UserRepositoryInterface
 	StatusRepository               StatusRepositoryInterface
+	PriorityRepository             PriorityRepositoryInterface
 	TransitionRepository           TransitionRepositoryInterface
 	TrackerRepository              TrackerRepositoryInterface
 	ProjectTrackerRepository       ProjectTrackerRepositoryInterface
@@ -78,6 +80,7 @@ func NewDomain() Domain {
 	dashboardWidgetRepository := DashboardWidgetRepository{DB: DB}
 	userRepository := UserRepository{DB: DB}
 	statusRepository := StatusRepository{DB: DB}
+	priorityRepository := PriorityRepository{DB: DB}
 	transitionRepository := TransitionRepository{DB: DB}
 	trackerRepository := TrackerRepository{DB: DB}
 	projectTrackerRepository := ProjectTrackerRepository{DB: DB}
@@ -132,6 +135,9 @@ func NewDomain() Domain {
 		StatusService: StatusService{
 			StatusRepository: statusRepository,
 		},
+		PriorityService: PriorityService{
+			PriorityRepository: priorityRepository,
+		},
 		TransitionService: TransitionService{
 			TransitionRepository: transitionRepository,
 		},
@@ -166,6 +172,7 @@ func NewDomain() Domain {
 		DashboardWidgetRepository:      dashboardWidgetRepository,
 		UserRepository:                 userRepository,
 		StatusRepository:               statusRepository,
+		PriorityRepository:             priorityRepository,
 		TransitionRepository:           transitionRepository,
 		TrackerRepository:              trackerRepository,
 		ProjectTrackerRepository:       projectTrackerRepository,

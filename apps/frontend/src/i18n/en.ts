@@ -41,8 +41,15 @@ export const en = {
         adminTrackerShow: 'Edit Tracker',
         adminProjectShow: 'Edit Project',
         adminUserShow: 'Edit User',
+        adminPriorityIndex: 'Priorities',
+        adminPriorityCreate: 'Create Priority',
+        adminPriorityShow: 'Edit Priority',
         'admin-settings': 'Settings',
         profile: 'My Profile',
+    },
+    priority: {
+        name: 'Name',
+        color: 'Color',
     },
     issue: {
         description: 'Description',
@@ -52,6 +59,7 @@ export const en = {
         project: 'Project',
         tracker: 'Tracker',
         assignee: 'Assignee',
+        priority: 'Priority',
         reporter: 'Reporter',
         related_issues: 'Related Issues',
         add_relation: 'Add relation',

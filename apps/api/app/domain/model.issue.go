@@ -22,12 +22,14 @@ type IssueModel struct {
 
 	AssignedUserID  *uuid.UUID `gorm:"type:char(36) references user;"`
 	ReporterUserID  *uuid.UUID `gorm:"type:char(36) references user;"`
+	PriorityID      *uuid.UUID `gorm:"type:char(36) references priority;"`
 
 	Project      ProjectModel
 	Tracker      TrackerModel
 	Status       StatusModel
 	AssignedUser *UserModel
 	ReporterUser *UserModel
+	Priority     *PriorityModel
 
 	Parent *IssueModel
 }

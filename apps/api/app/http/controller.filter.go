@@ -150,6 +150,13 @@ func (c FilterController) Options(w http.ResponseWriter, r *http.Request) {
 				ValueEndpoint: "/user",
 				Operators:     eqNe,
 			},
+			{
+				Key:           "priority_id",
+				Label:         "Priority",
+				ValueType:     "select",
+				ValueEndpoint: "/priority",
+				Operators:     eqNe,
+			},
 		},
 	}
 	http_utils.RespondWithJSON(w, http.StatusOK, options)

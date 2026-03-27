@@ -22,6 +22,42 @@
       </p>
     </div>
 
+    <!-- Priority inline edit -->
+    <div class="mb-6">
+      <p class="text-subtitle2 font-weight-medium mb-2">
+        <v-icon x-small class="mr-1">mdi-flag-outline</v-icon>
+        {{ t('issue.priority') }}
+      </p>
+      <priority-chip
+        v-if="!editingPriority && issueStore.current.priority"
+        :priority="issueStore.current.priority"
+        class="cursor-pointer"
+        @click="editingPriority = true"
+      />
+      <span
+        v-else-if="!editingPriority"
+        class="text-medium-emphasis cursor-pointer"
+        @click="editingPriority = true"
+      >—</span>
+      <div
+        v-else
+        v-click-outside="{ handler: () => editingPriority = false, include: getOverlayContents }"
+      >
+        <v-select
+          :model-value="issueStore.current.priorityId"
+          :items="priorities"
+          item-title="name"
+          item-value="id"
+          density="compact"
+          variant="underlined"
+          hide-details
+          clearable
+          autofocus
+          @update:model-value="savePriority"
+        />
+      </div>
+    </div>
+
     <!-- Tracker inline edit -->
     <div class="mb-6">
       <p class="text-subtitle2 font-weight-medium mb-2">
@@ -154,21 +190,26 @@ import { useI18n } from 'vue-i18n';
 import { useIssueStore } from '@/store/issue.store';
 import { useProjectStore } from '@/store/project.store';
 import { useUserStore } from '@/store/user.store';
+import { usePriorityStore } from '@/store/priority.store';
 import StatusChip from '@/component/StatusChip.vue';
 import TrackerChip from '@/component/TrackerChip.vue';
+import PriorityChip from '@/component/PriorityChip.vue';
 
 const { t } = useI18n();
 const issueStore = useIssueStore();
 const projectStore = useProjectStore();
 const userStore = useUserStore();
+const priorityStore = usePriorityStore();
 
 const editingTracker = ref(false);
 const editingStatus = ref(false);
 const editingAssignee = ref(false);
 const editingReporter = ref(false);
+const editingPriority = ref(false);
 const trackers = ref<any[]>([]);
 const statuses = ref<any[]>([]);
 const users = ref<any[]>([]);
+const priorities = ref<any[]>([]);
 
 const getOverlayContents = () => Array.from(document.querySelectorAll('.v-overlay__content'));
 
@@ -177,12 +218,14 @@ onMounted(async () => {
   await Promise.all([
     projectId ? projectStore.getIssueProperty(projectId) : Promise.resolve(),
     userStore.getAllItems(),
+    priorityStore.getPriorities(),
   ]);
   trackers.value = projectStore.currentIssueProperty?.trackers || [];
   const currentTrackerId = issueStore.current?.tracker?.id;
   const tracker = trackers.value.find(t => t.id === currentTrackerId);
   statuses.value = tracker?.statuses || [];
   users.value = userStore.index;
+  priorities.value = priorityStore.index;
 });
 
 watch(() => issueStore.current?.tracker?.id, (newTrackerId) => {
@@ -216,6 +259,13 @@ const saveReporter = async (reporterUserId: string | null) => {
   editingReporter.value = false;
   if (reporterUserId !== issueStore.current?.reporterUserId) {
     await issueStore.update(issueStore.current!.id!, { reporterUserId });
+  }
+};
+
+const savePriority = async (priorityId: string | null) => {
+  editingPriority.value = false;
+  if (priorityId !== issueStore.current?.priorityId) {
+    await issueStore.update(issueStore.current!.id!, { priorityId });
   }
 };
 </script>

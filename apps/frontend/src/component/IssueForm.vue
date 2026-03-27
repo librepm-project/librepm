@@ -17,6 +17,11 @@
                         item-value="id" required></v-select>
                 </v-col>
                 <v-col cols="12" md="4">
+                    <v-select v-model="form.priorityId" :label="t('issue.priority')" :items="priorityStore.index"
+                        item-title="name" item-value="id" clearable></v-select>
+                </v-col>
+
+                <v-col cols="12" md="4">
                     <v-select v-model="form.assignedUserId" :label="t('issue.assignee')" :items="userStore.index"
                         :item-title="(u: any) => `${u.firstName} ${u.lastName}`" item-value="id" clearable></v-select>
                 </v-col>
@@ -38,6 +43,7 @@
 import { Issue } from '@/lib/interfaces/issue.interface';
 import { useProjectStore } from '@/store/project.store';
 import { useUserStore } from '@/store/user.store';
+import { usePriorityStore } from '@/store/priority.store';
 import RichTextField from '@/component/RichTextField.vue';
 import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -53,6 +59,7 @@ const props = defineProps<{
 
 const projectStore = useProjectStore();
 const userStore = useUserStore();
+const priorityStore = usePriorityStore();
 
 const initForm = () => ({
     description: '',
@@ -60,7 +67,7 @@ const initForm = () => ({
 })
 
 onMounted(async () => {
-    await Promise.all([projectStore.getProjects(), userStore.getAllItems()]);
+    await Promise.all([projectStore.getProjects(), userStore.getAllItems(), priorityStore.getPriorities()]);
     if (props.initialData?.projectId) {
         await projectStore.getIssueProperty(props.initialData.projectId);
         trackers.value = projectStore.currentIssueProperty?.trackers || [];

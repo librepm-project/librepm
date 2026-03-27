@@ -9,6 +9,7 @@ import { filterRouter } from '@/router/filter.router';
 import { sessionRouter } from '@/router/session.router';
 import { adminStatusRouter } from '@/router/admin.status.router';
 import { adminTrackerRouter } from '@/router/admin.tracker.router';
+import { adminPriorityRouter } from '@/router/admin.priority.router';
 import { authorizationMiddleware } from '@/router/middleware/authorization.middleware';
 import { pageTitleMiddleware } from '@/router/middleware/page-title.middleware';
 import { layoutMiddleware } from '@/router/middleware/layout.middleware';
@@ -25,6 +26,7 @@ const router = createRouter({
     ...adminProjectRouter,
     ...adminStatusRouter,
     ...adminTrackerRouter,
+    ...adminPriorityRouter,
     ...adminUserRouter,
     ...adminBoardRouter,
     { // Add the settings route

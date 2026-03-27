@@ -66,6 +66,9 @@ func StartHttpServer(domain domain.Domain) {
 		StatusController: StatusController{
 			StatusService: domain.StatusService,
 		},
+		PriorityController: PriorityController{
+			PriorityService: domain.PriorityService,
+		},
 		TrackerController: TrackerController{
 			TrackerService: domain.TrackerService,
 		},

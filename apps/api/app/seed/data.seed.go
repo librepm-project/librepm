@@ -3,6 +3,7 @@ package seed
 type SeedData struct {
 	Trackers       []TrackerData       `yaml:"trackers" validate:"required,dive"`
 	Statuses       []StatusData        `yaml:"statuses" validate:"required,dive"`
+	Priorities     []PriorityData      `yaml:"priorities" validate:"dive"`
 	Boards         []BoardData         `yaml:"boards" validate:"required,dive"`
 	Users          []UserData          `yaml:"users" validate:"required,dive"`
 	Dashboards       []DashboardData       `yaml:"dashboards" validate:"required,dive"`

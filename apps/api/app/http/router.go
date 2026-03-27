@@ -19,6 +19,7 @@ type Router struct {
 	UserController                 UserControllerInterface
 	TrackerController              TrackerControllerInterface
 	StatusController               StatusControllerInterface
+	PriorityController             PriorityControllerInterface
 	TransitionController           TransitionControllerInterface
 	ProjectIssuePropertyController ProjectIssuePropertyController
 	AttachmentController           AttachmentControllerInterface
@@ -116,6 +117,12 @@ func (r Router) Init() *chi.Mux {
 	router.Get("/status/{status_id}", r.StatusController.Show)
 	router.Put("/status/{status_id}", r.StatusController.Update)
 	router.Delete("/status/{status_id}", r.StatusController.Destroy)
+
+	router.Get("/priority", r.PriorityController.Index)
+	router.Post("/priority", r.PriorityController.Create)
+	router.Get("/priority/{priority_id}", r.PriorityController.Show)
+	router.Put("/priority/{priority_id}", r.PriorityController.Update)
+	router.Delete("/priority/{priority_id}", r.PriorityController.Destroy)
 
 	router.Get("/transition", r.TransitionController.Index)
 	router.Post("/transition", r.TransitionController.Create)

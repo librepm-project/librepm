@@ -29,6 +29,7 @@ type SeedService struct {
 	ProjectTrackerTransitionRepository domain.ProjectTrackerTransitionRepositoryInterface
 	ProjectUserRepository              domain.ProjectUserRepositoryInterface
 	StatusRepository                   domain.StatusRepositoryInterface
+	PriorityRepository                 domain.PriorityRepositoryInterface
 	TrackerRepository                  domain.TrackerRepositoryInterface
 	TransitionRepository               domain.TransitionRepositoryInterface
 	UserRepository                     domain.UserRepositoryInterface
@@ -53,6 +54,9 @@ func (s SeedService) Seed(filePath string) []error {
 	errors = append(errors, err)
 
 	err = s.createStatus(seedData.Statuses)
+	errors = append(errors, err)
+
+	err = s.createPriority(seedData.Priorities)
 	errors = append(errors, err)
 
 	err = s.createUser(seedData.Users)
