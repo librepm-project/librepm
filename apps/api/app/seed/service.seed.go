@@ -35,6 +35,7 @@ type SeedService struct {
 	RelatedIssueService                domain.RelatedIssueServiceInterface
 	RelatedIssueRepository             domain.RelatedIssueRepositoryInterface
 	DashboardWidgetRepository          domain.DashboardWidgetRepositoryInterface
+	NotificationRepository             domain.NotificationRepositoryInterface
 	PurgeRepository                    PurgeRepositoryInterface
 }
 
@@ -76,6 +77,9 @@ func (s SeedService) Seed(filePath string) []error {
 	errors = append(errors, err)
 
 	err = s.createRelatedIssues(seedData.RelatedIssues)
+	errors = append(errors, err)
+
+	err = s.createNotification(seedData.Notifications)
 	errors = append(errors, err)
 
 	slog.Info("seed completed successfully")

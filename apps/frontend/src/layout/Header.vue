@@ -29,6 +29,7 @@
 
       <div class="d-flex align-center gap-3">
         <template v-if="userCurrentStore.current">
+          <notification-bell />
           <v-menu v-for="link in navigationLinks.filter(l => l.sublinks)" :key="link.key" open-on-hover location="bottom">
             <template v-slot:activator="{ props }">
               <v-btn icon variant="text" class="text-white" v-bind="props">
@@ -86,6 +87,7 @@
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import logo from '@/assets/logo.png';
+import NotificationBell from '@/component/NotificationBell.vue';
 import { useUserCurrentStore } from '@/store/userCurrent.store';
 import { useUserSessionStore } from '@/store/userSession.store';
 import { useLayoutStore } from '@/store/layout.store';

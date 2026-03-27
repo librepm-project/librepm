@@ -36,6 +36,7 @@ func (r PurgeRepository) Purge() {
 		&domain.StatusModel{},
 		&domain.TrackerModel{},
 
+		&domain.NotificationModel{},
 		&domain.UserModel{},
 	}
 	if err := r.DB.Exec("SET FOREIGN_KEY_CHECKS = 0;").Error; err != nil {

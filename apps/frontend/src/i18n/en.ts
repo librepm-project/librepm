@@ -152,6 +152,17 @@ export const en = {
         dark_mode: 'Dark Mode',
         no_settings_found: 'No settings found.',
     },
+    notification: {
+        title: 'Notifications',
+        empty: 'No new notifications.',
+        dismiss: 'Dismiss',
+        type: {
+            issue_assigned: 'Issue assigned to you',
+            comment_added: 'New comment on issue',
+            mention: 'You were mentioned',
+            issue_status_changed: 'Issue status changed',
+        },
+    },
     rule: {
         email: "Invalid email format",
         required: "Required field",

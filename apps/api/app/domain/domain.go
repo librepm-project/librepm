@@ -33,6 +33,7 @@ type Domain struct {
 	IssueAuditLogService    IssueAuditLogServiceInterface
 	CommentService          CommentServiceInterface
 	SettingService          SettingServiceInterface
+	NotificationService     NotificationServiceInterface
 
 	ProjectRepository              ProjectRepositoryInterface
 	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
@@ -56,6 +57,7 @@ type Domain struct {
 	IssueAuditLogRepository        IssueAuditLogRepositoryInterface
 	CommentRepository              CommentRepositoryInterface
 	SettingRepository              SettingRepositoryInterface
+	NotificationRepository         NotificationRepositoryInterface
 }
 
 func NewDomain() Domain {
@@ -85,6 +87,7 @@ func NewDomain() Domain {
 	commentRepository := CommentRepository{DB: DB}
 	settingRepository := SettingRepository{DB: DB}
 	settingRepository.Seed()
+	notificationRepository := NotificationRepository{DB: DB}
 
 	return Domain{
 		DB: DB,
@@ -147,6 +150,9 @@ func NewDomain() Domain {
 		SettingService: SettingService{
 			SettingRepository: settingRepository,
 		},
+		NotificationService: NotificationService{
+			NotificationRepository: notificationRepository,
+		},
 
 		ProjectRepository:              projectRepository,
 		IssueRepository:                issueRepository,
@@ -170,5 +176,6 @@ func NewDomain() Domain {
 		IssueAuditLogRepository:        issueAuditLogRepository,
 		CommentRepository:              commentRepository,
 		SettingRepository:              settingRepository,
+		NotificationRepository:         notificationRepository,
 	}
 }

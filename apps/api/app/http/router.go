@@ -25,6 +25,7 @@ type Router struct {
 	IssueAuditLogController        IssueAuditLogControllerInterface
 	CommentController              CommentControllerInterface
 	SettingController              SettingControllerInterface
+	NotificationController         NotificationControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
@@ -124,6 +125,9 @@ func (r Router) Init() *chi.Mux {
 
 	router.Get("/setting", r.SettingController.Index)
 	router.Put("/setting/{key}", r.SettingController.Update)
+
+	router.Get("/notification", r.NotificationController.Index)
+	router.Patch("/notification/{notification_id}/read", r.NotificationController.MarkRead)
 
 	return router
 }

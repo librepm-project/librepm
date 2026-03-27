@@ -21,6 +21,7 @@ func NewSeedService(domain domain.Domain) SeedService {
 		RelatedIssueService:            domain.RelatedIssueService,
 		RelatedIssueRepository:         domain.RelatedIssueRepository,
 		DashboardWidgetRepository:      domain.DashboardWidgetRepository,
+		NotificationRepository:         domain.NotificationRepository,
 		PurgeRepository: PurgeRepository{
 			DB: domain.DB,
 		},

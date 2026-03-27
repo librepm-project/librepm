@@ -29,6 +29,7 @@ func MigrateProductDatabase(db *gorm.DB) {
 		IssueAuditLogModel{},
 		CommentModel{},
 		SettingModel{},
+		NotificationModel{},
 	)
 
 	// A régi filter_condition schema cleanup:
