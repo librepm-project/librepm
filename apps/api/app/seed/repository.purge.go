@@ -35,6 +35,7 @@ func (r PurgeRepository) Purge() {
 
 		&domain.StatusModel{},
 		&domain.TrackerModel{},
+		&domain.PriorityModel{},
 
 		&domain.NotificationModel{},
 		&domain.UserModel{},

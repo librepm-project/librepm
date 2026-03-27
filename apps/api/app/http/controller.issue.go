@@ -1,6 +1,7 @@
 package http
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"apps/api/app/domain"
@@ -20,6 +21,7 @@ type IssueController struct {
 	IssueService         domain.IssueServiceInterface
 	IssueAuditLogService domain.IssueAuditLogServiceInterface
 	NotificationService  domain.NotificationServiceInterface
+	Hub                  *Hub
 }
 
 func (c IssueController) Index(w http.ResponseWriter, r *http.Request) {
@@ -126,6 +128,7 @@ func (c IssueController) Update(w http.ResponseWriter, r *http.Request) {
 
 	c.IssueAuditLogService.LogFieldChanges(issue_id, user_id, *oldIssue, *updated)
 	c.NotificationService.NotifyIssueParticipants(updated, "issue_updated", user_id)
+	c.broadcastIssueUpdate(issue_id, updated)
 
 	RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*updated))
 }
@@ -142,4 +145,22 @@ func (c IssueController) Destroy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	RespondNoContent(w)
+}
+
+func (c IssueController) broadcastIssueUpdate(issueID uuid.UUID, issue *domain.IssueModel) {
+	if c.Hub == nil {
+		return
+	}
+	channel := "issue:" + issueID.String()
+	msg, err := json.Marshal(WsMessage{
+		Type:    "entity_update",
+		Channel: channel,
+		Entity:  "issue",
+		ID:      issueID.String(),
+		Data:    IssueSerializer{}.ModelToResponse(*issue),
+	})
+	if err != nil {
+		return
+	}
+	c.Hub.Broadcast(channel, msg)
 }

@@ -67,6 +67,8 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { wsService } from '@/lib/websocket';
+import { Issue } from '@/lib/interfaces/issue.interface';
 import { useIssueStore } from '@/store/issue.store';
 import { useRelatedIssueStore } from '@/store/related-issue.store';
 import { useWorklogStore } from '@/store/worklog.store';
@@ -143,10 +145,20 @@ const remove = async () => {
   }
 };
 
+let currentWsChannel: string | null = null;
+const onIssueUpdate = (data: unknown) => {
+  issueStore.$patch({ current: data as Issue });
+};
+
 const loadData = async () => {
+  if (currentWsChannel) {
+    wsService.unsubscribe(currentWsChannel, onIssueUpdate);
+    currentWsChannel = null;
+  }
+
   const key = route.params.key;
   const issueId = route.params.issueId;
-  
+
   editingDescription.value = false;
 
   if (key) {
@@ -156,7 +168,7 @@ const loadData = async () => {
     // Load by ID (backward compatibility)
     await issueStore.getIssue(issueId.toString());
   }
-  
+
   if (issueStore.current) {
     const currentId = issueStore.current.id;
     await Promise.all([
@@ -166,9 +178,12 @@ const loadData = async () => {
       auditLogStore.getAuditLogs(currentId),
       commentStore.getComments(currentId)
     ]);
-    
+
     layoutStore.setTitle(`${issueStore.current.key} - ${issueStore.current.summary}`, startEditSummary);
     layoutStore.setSidebarComponent(IssueSidebar, {});
+
+    currentWsChannel = `issue:${currentId}`;
+    wsService.subscribe(currentWsChannel, onIssueUpdate);
   }
 };
 
@@ -193,6 +208,9 @@ watch(() => route.params, async () => {
 }, { deep: true });
 
 onUnmounted(() => {
+  if (currentWsChannel) {
+    wsService.unsubscribe(currentWsChannel, onIssueUpdate);
+  }
   layoutStore.resetActions();
   layoutStore.resetSidebarComponent();
   layoutStore.resetTitle();

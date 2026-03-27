@@ -18,5 +18,8 @@ export const useNotificationStore = defineStore('notification', {
       await notificationApi.markAsRead(id);
       this.items = this.items.filter((n) => n.id !== id);
     },
+    addFromWs(notification: Notification) {
+      this.items.unshift(notification);
+    },
   },
 });

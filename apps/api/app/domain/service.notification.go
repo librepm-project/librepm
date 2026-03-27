@@ -2,15 +2,25 @@ package domain
 
 import "github.com/google/uuid"
 
+type NotificationPusher interface {
+	PushToUser(userID uuid.UUID, notification *NotificationModel)
+}
+
 type NotificationServiceInterface interface {
 	AllUnread(userID uuid.UUID) (*[]NotificationModel, error)
 	MarkAsRead(id uuid.UUID) error
 	Create(notification *NotificationModel) error
 	NotifyIssueParticipants(issue *IssueModel, notifType string, actorID uuid.UUID)
+	SetPusher(p NotificationPusher)
 }
 
 type NotificationService struct {
 	NotificationRepository NotificationRepositoryInterface
+	Pusher                 NotificationPusher
+}
+
+func (s *NotificationService) SetPusher(p NotificationPusher) {
+	s.Pusher = p
 }
 
 func (s NotificationService) AllUnread(userID uuid.UUID) (*[]NotificationModel, error) {
@@ -35,11 +45,14 @@ func (s NotificationService) NotifyIssueParticipants(issue *IssueModel, notifTyp
 		recipients[*issue.AssignedUserID] = true
 	}
 	for recipientID := range recipients {
-		s.NotificationRepository.Create(&NotificationModel{
+		n := &NotificationModel{
 			UserID:     recipientID,
 			Type:       notifType,
 			EntityType: &entityType,
 			EntityID:   &issue.ID,
-		})
+		}
+		if err := s.NotificationRepository.Create(n); err == nil && s.Pusher != nil {
+			s.Pusher.PushToUser(recipientID, n)
+		}
 	}
 }

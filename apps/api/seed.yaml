@@ -150,6 +150,14 @@ users:
     language: "en"
     country: "US"
     blocked: false
+  - email: "testuser2@example.com"
+    password_hash: "password123"
+    first_name: "Jane"
+    last_name: "Doe"
+    phone: "123-456-7891"
+    language: "en"
+    country: "US"
+    blocked: false
 
 dashboards:
   - name: "Wedding Dashboard"

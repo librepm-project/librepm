@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import Header from '@/layout/Header.vue';
 import Sidebar from '@/layout/Sidebar.vue';
 import Main from '@/layout/Main.vue';
@@ -85,6 +85,9 @@ import Footer from '@/layout/Footer.vue';
 import { useLayoutStore } from '@/store/layout.store';
 import { useUserCurrentStore } from '@/store/userCurrent.store';
 import { useUserSessionStore } from '@/store/userSession.store';
+import { useNotificationStore } from '@/store/notification.store';
+import { Notification } from '@/lib/interfaces/notification.interface';
+import { wsService } from '@/lib/websocket';
 import { getToken } from '@/lib/cookie';
 import { navigationLinks } from '@/lib/navigation';
 import { useRouter } from 'vue-router';
@@ -92,6 +95,7 @@ import { useRouter } from 'vue-router';
 const layoutStore = useLayoutStore();
 const userCurrentStore = useUserCurrentStore();
 const userSessionStore = useUserSessionStore();
+const notificationStore = useNotificationStore();
 const router = useRouter();
 
 const logout = () => {
@@ -100,10 +104,20 @@ const logout = () => {
   layoutStore.toggleDrawer(false);
 };
 
+const onWsNotification = (data: unknown) => notificationStore.addFromWs(data as Notification);
+
 onMounted(async () => {
-  if (getToken()) {
+  const token = getToken();
+  if (token) {
     await userCurrentStore.getUser();
+    wsService.connect(token);
+    wsService.on('notification', onWsNotification);
   }
+});
+
+onUnmounted(() => {
+  wsService.off('notification', onWsNotification);
+  wsService.disconnect();
 });
 </script>
 

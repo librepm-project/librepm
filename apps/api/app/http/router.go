@@ -27,6 +27,7 @@ type Router struct {
 	CommentController              CommentControllerInterface
 	SettingController              SettingControllerInterface
 	NotificationController         NotificationControllerInterface
+	WebSocketController            WebSocketControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
@@ -135,6 +136,8 @@ func (r Router) Init() *chi.Mux {
 
 	router.Get("/notification", r.NotificationController.Index)
 	router.Patch("/notification/{notification_id}/read", r.NotificationController.MarkRead)
+
+	router.Get("/ws", r.WebSocketController.Connect)
 
 	return router
 }

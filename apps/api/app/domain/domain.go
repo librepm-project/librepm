@@ -156,7 +156,7 @@ func NewDomain() Domain {
 		SettingService: SettingService{
 			SettingRepository: settingRepository,
 		},
-		NotificationService: NotificationService{
+		NotificationService: &NotificationService{
 			NotificationRepository: notificationRepository,
 		},
 

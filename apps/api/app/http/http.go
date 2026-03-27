@@ -6,7 +6,10 @@ import (
 	"log/slog"
 )
 
-func StartHttpServer(domain domain.Domain) {
+func StartHttpServer(d domain.Domain) {
+	hub := NewHub()
+	d.NotificationService.SetPusher(hub)
+
 	authorization_middleware_context := http_utils.AuthorizationMiddlewareContext{
 		Whitelist: []http_utils.Endpoint{
 			{
@@ -17,82 +20,90 @@ func StartHttpServer(domain domain.Domain) {
 				Method: "POST",
 				Path:   "/user/register",
 			},
+			{
+				Method: "GET",
+				Path:   "/ws",
+			},
 		},
 	}
 
 	router := Router{
 		ProjectController: ProjectController{
-			ProjectService: domain.ProjectService,
+			ProjectService: d.ProjectService,
 		},
 		ProjectIssuePropertyController: ProjectIssuePropertyController{
-			ProjectService: domain.ProjectService,
+			ProjectService: d.ProjectService,
 		},
 		IssueController: IssueController{
-			IssueService:         domain.IssueService,
-			IssueAuditLogService: domain.IssueAuditLogService,
-			NotificationService:  domain.NotificationService,
+			IssueService:         d.IssueService,
+			IssueAuditLogService: d.IssueAuditLogService,
+			NotificationService:  d.NotificationService,
+			Hub:                  hub,
 		},
 		IssueWorklogController: IssueWorklogController{
-			IssueWorklogService:  domain.IssueWorklogService,
-			IssueAuditLogService: domain.IssueAuditLogService,
+			IssueWorklogService:  d.IssueWorklogService,
+			IssueAuditLogService: d.IssueAuditLogService,
 		},
 		RelatedIssueController: RelatedIssueController{
-			RelatedIssueService:  domain.RelatedIssueService,
-			IssueAuditLogService: domain.IssueAuditLogService,
+			RelatedIssueService:  d.RelatedIssueService,
+			IssueAuditLogService: d.IssueAuditLogService,
 		},
 		FilterController: FilterController{
-			FilterService: domain.FilterService,
+			FilterService: d.FilterService,
 		},
 		BoardController: BoardController{
-			BoardService: domain.BoardService,
+			BoardService: d.BoardService,
 		},
 		DashboardController: DashboardController{
-			DashboardService: domain.DashboardService,
+			DashboardService: d.DashboardService,
 		},
 		DashboardWidgetController: DashboardWidgetController{
-			DashboardWidgetService: domain.DashboardWidgetService,
+			DashboardWidgetService: d.DashboardWidgetService,
 		},
 		UserCurrentController: UserCurrentController{
-			UserService: domain.UserService,
+			UserService: d.UserService,
 		},
 		UserSessionController: UserSessionController{
-			UserSessionService: domain.UserSessionService,
+			UserSessionService: d.UserSessionService,
 		},
 		UserRegisterController: UserRegisterController{
-			UserRegisterService: domain.UserRegisterService,
+			UserRegisterService: d.UserRegisterService,
 		},
 		UserController: UserController{
-			UserService: domain.UserService,
+			UserService: d.UserService,
 		},
 		StatusController: StatusController{
-			StatusService: domain.StatusService,
+			StatusService: d.StatusService,
 		},
 		PriorityController: PriorityController{
-			PriorityService: domain.PriorityService,
+			PriorityService: d.PriorityService,
 		},
 		TrackerController: TrackerController{
-			TrackerService: domain.TrackerService,
+			TrackerService: d.TrackerService,
 		},
 		TransitionController: TransitionController{
-			TransitionService: domain.TransitionService,
+			TransitionService: d.TransitionService,
 		},
 		AttachmentController: AttachmentController{
-			AttachmentService:    domain.AttachmentService,
-			IssueAuditLogService: domain.IssueAuditLogService,
+			AttachmentService:    d.AttachmentService,
+			IssueAuditLogService: d.IssueAuditLogService,
 		},
 		IssueAuditLogController: IssueAuditLogController{
-			IssueAuditLogService: domain.IssueAuditLogService,
+			IssueAuditLogService: d.IssueAuditLogService,
 		},
 		CommentController: CommentController{
-			CommentService:      domain.CommentService,
-			IssueService:        domain.IssueService,
-			NotificationService: domain.NotificationService,
+			CommentService:      d.CommentService,
+			IssueService:        d.IssueService,
+			NotificationService: d.NotificationService,
 		},
 		SettingController: SettingController{
-			SettingService: domain.SettingService,
+			SettingService: d.SettingService,
 		},
 		NotificationController: NotificationController{
-			NotificationService: domain.NotificationService,
+			NotificationService: d.NotificationService,
+		},
+		WebSocketController: WebSocketController{
+			Hub: hub,
 		},
 	}.Init()
 
