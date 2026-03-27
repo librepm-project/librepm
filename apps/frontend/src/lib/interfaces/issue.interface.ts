@@ -16,4 +16,6 @@ export interface Issue {
     projectId?: string;
     assignedUser?: User | null;
     assignedUserId?: string | null;
+    reporterUser?: User | null;
+    reporterUserId?: string | null;
 }

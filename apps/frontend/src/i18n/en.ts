@@ -52,6 +52,7 @@ export const en = {
         project: 'Project',
         tracker: 'Tracker',
         assignee: 'Assignee',
+        reporter: 'Reporter',
         related_issues: 'Related Issues',
         add_relation: 'Add relation',
         relation_type: 'Relation type',

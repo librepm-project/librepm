@@ -20,12 +20,14 @@ type IssueModel struct {
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
 
-	AssignedUserID *uuid.UUID `gorm:"type:char(36) references user;"`
+	AssignedUserID  *uuid.UUID `gorm:"type:char(36) references user;"`
+	ReporterUserID  *uuid.UUID `gorm:"type:char(36) references user;"`
 
 	Project      ProjectModel
 	Tracker      TrackerModel
 	Status       StatusModel
 	AssignedUser *UserModel
+	ReporterUser *UserModel
 
 	Parent *IssueModel
 }

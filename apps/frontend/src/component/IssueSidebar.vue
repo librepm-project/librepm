@@ -113,6 +113,37 @@
       </div>
     </div>
 
+    <!-- Reporter inline edit -->
+    <div class="mb-6">
+      <p class="text-subtitle2 font-weight-medium mb-2">
+        <v-icon x-small class="mr-1">mdi-account-edit-outline</v-icon>
+        {{ t('issue.reporter') }}
+      </p>
+      <div v-if="!editingReporter" class="cursor-pointer" @click="editingReporter = true">
+        <span v-if="issueStore.current.reporterUser">
+          {{ issueStore.current.reporterUser.firstName }} {{ issueStore.current.reporterUser.lastName }}
+        </span>
+        <span v-else class="text-medium-emphasis">—</span>
+      </div>
+      <div
+        v-else
+        v-click-outside="{ handler: () => editingReporter = false, include: getOverlayContents }"
+      >
+        <v-select
+          :model-value="issueStore.current.reporterUserId"
+          :items="users"
+          :item-title="(u: any) => `${u.firstName} ${u.lastName}`"
+          item-value="id"
+          density="compact"
+          variant="underlined"
+          hide-details
+          clearable
+          autofocus
+          @update:model-value="saveReporter"
+        />
+      </div>
+    </div>
+
     <v-divider class="my-4"></v-divider>
   </div>
 </template>
@@ -134,6 +165,7 @@ const userStore = useUserStore();
 const editingTracker = ref(false);
 const editingStatus = ref(false);
 const editingAssignee = ref(false);
+const editingReporter = ref(false);
 const trackers = ref<any[]>([]);
 const statuses = ref<any[]>([]);
 const users = ref<any[]>([]);
@@ -177,6 +209,13 @@ const saveAssignee = async (assignedUserId: string | null) => {
   editingAssignee.value = false;
   if (assignedUserId !== issueStore.current?.assignedUserId) {
     await issueStore.update(issueStore.current!.id!, { assignedUserId });
+  }
+};
+
+const saveReporter = async (reporterUserId: string | null) => {
+  editingReporter.value = false;
+  if (reporterUserId !== issueStore.current?.reporterUserId) {
+    await issueStore.update(issueStore.current!.id!, { reporterUserId });
   }
 };
 </script>

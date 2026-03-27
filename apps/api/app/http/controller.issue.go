@@ -81,6 +81,8 @@ func (c IssueController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	issue := IssueSerializer{}.RequestToModel(issue_request)
+	reporterID := GetUserIDFromRequest(r)
+	issue.ReporterUserID = &reporterID
 	err := c.IssueService.Create(&issue)
 	if err != nil {
 		RespondBadRequest(w)

@@ -143,6 +143,13 @@ func (c FilterController) Options(w http.ResponseWriter, r *http.Request) {
 				ValueEndpoint: "/user",
 				Operators:     eqNe,
 			},
+			{
+				Key:           "reporter_user_id",
+				Label:         "Reporter",
+				ValueType:     "select",
+				ValueEndpoint: "/user",
+				Operators:     eqNe,
+			},
 		},
 	}
 	http_utils.RespondWithJSON(w, http.StatusOK, options)
