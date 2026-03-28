@@ -11,11 +11,15 @@ type ProjectServiceInterface interface {
 	Update(project_id uuid.UUID, project *ProjectModel) error
 	Destroy(project_id uuid.UUID) error
 	ShowIssuePropertyById(project_id uuid.UUID) (*ProjectIssueProperty, error)
+	TrackersByProject(project_id uuid.UUID) (*[]TrackerModel, error)
+	StatusesByProject(project_id uuid.UUID) (*[]StatusModel, error)
 }
 
 type ProjectService struct {
 	ProjectRepository              ProjectRepositoryInterface
 	ProjectIssuePropertyRepository ProjectIssuePropertyRepositoryInterface
+	ProjectTrackerRepository       ProjectTrackerRepositoryInterface
+	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
 }
 
 func (s ProjectService) All() (*[]ProjectModel, error) {
@@ -41,4 +45,12 @@ func (s ProjectService) Destroy(project_id uuid.UUID) error {
 
 func (s ProjectService) ShowIssuePropertyById(project_id uuid.UUID) (*ProjectIssueProperty, error) {
 	return s.ProjectIssuePropertyRepository.FindByProjectId(project_id)
+}
+
+func (s ProjectService) TrackersByProject(project_id uuid.UUID) (*[]TrackerModel, error) {
+	return s.ProjectTrackerRepository.FindTrackersByProjectID(project_id)
+}
+
+func (s ProjectService) StatusesByProject(project_id uuid.UUID) (*[]StatusModel, error) {
+	return s.ProjectTrackerStatusRepository.FindStatusesByProjectID(project_id)
 }

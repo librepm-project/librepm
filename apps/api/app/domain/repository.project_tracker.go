@@ -10,6 +10,7 @@ import (
 type ProjectTrackerRepositoryInterface interface {
 	All() (*[]ProjectTrackerModel, error)
 	FindByID(project_tracker_id uuid.UUID) (*ProjectTrackerModel, error)
+	FindTrackersByProjectID(project_id uuid.UUID) (*[]TrackerModel, error)
 	Create(project_tracker *ProjectTrackerModel) error
 	Update(project_tracker_id uuid.UUID, project_tracker *ProjectTrackerModel) error
 	Destroy(project_tracker_id uuid.UUID) error
@@ -28,6 +29,18 @@ func (r ProjectTrackerRepository) All() (*[]ProjectTrackerModel, error) {
 		slog.Error("failed to fetch project trackers", "error", err)
 	}
 	return &project_trackers, err
+}
+
+func (r ProjectTrackerRepository) FindTrackersByProjectID(project_id uuid.UUID) (*[]TrackerModel, error) {
+	var trackers []TrackerModel
+	err := r.DB.
+		Joins("JOIN project_tracker pt ON pt.tracker_id = tracker.id").
+		Where("pt.project_id = ?", project_id).
+		Find(&trackers).Error
+	if err != nil {
+		slog.Error("failed to find trackers by project id", "error", err)
+	}
+	return &trackers, err
 }
 
 func (r ProjectTrackerRepository) FindByID(project_tracker_id uuid.UUID) (*ProjectTrackerModel, error) {

@@ -98,6 +98,8 @@ func NewDomain() Domain {
 		ProjectService: ProjectService{
 			ProjectRepository:              projectRepository,
 			ProjectIssuePropertyRepository: projectIssuePropertyRepository,
+			ProjectTrackerRepository:       projectTrackerRepository,
+			ProjectTrackerStatusRepository: projectTrackerStatusRepository,
 		},
 		IssueService: IssueService{
 			IssueRepository:   issueRepository,

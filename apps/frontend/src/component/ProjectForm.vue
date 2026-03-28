@@ -29,7 +29,7 @@
 
             <v-divider class="my-6" />
 
-            <v-row>
+            <v-row v-if="props.project?.id">
                 <v-col cols="12" md="6">
                     <v-select
                         v-model="defaultStatusId"
@@ -99,11 +99,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { requiredRule } from '@/lib/formRule';
 import { useRouter } from 'vue-router';
-import statusApi from '@/api/status.api';
-import trackerApi from '@/api/tracker.api';
+import projectApi from '@/api/project.api';
 import { Status } from '@/lib/interfaces/status.interface';
 import { Tracker } from '@/lib/interfaces/tracker.interface';
 
@@ -125,21 +124,21 @@ const form = ref(null);
 const statuses = ref<Status[]>([]);
 const trackers = ref<Tracker[]>([]);
 
-onMounted(async () => {
-    const [s, t] = await Promise.all([
-        statusApi.index(),
-        trackerApi.index()
-    ]);
-    statuses.value = s;
-    trackers.value = t;
-});
-
-watch(() => props.project, (project) => {
+watch(() => props.project, async (project) => {
     if (project) {
         name.value = project.name || "";
         codeName.value = project.codeName || "";
         defaultStatusId.value = project.defaultStatusId || null;
         defaultTrackerId.value = project.defaultTrackerId || null;
+
+        if (project.id) {
+            const [s, t] = await Promise.all([
+                projectApi.statuses(project.id),
+                projectApi.trackers(project.id),
+            ]);
+            statuses.value = s;
+            trackers.value = t;
+        }
     }
 }, { immediate: true })
 

@@ -39,6 +39,8 @@ func (r Router) Init() *chi.Mux {
 	router.Put("/project/{project_id}", r.ProjectController.Update)
 	router.Delete("/project/{project_id}", r.ProjectController.Destroy)
 	router.Get("/project/{project_id}/issue-property", r.ProjectIssuePropertyController.Index)
+	router.Get("/project/{project_id}/tracker", r.ProjectController.IndexTrackers)
+	router.Get("/project/{project_id}/status", r.ProjectController.IndexStatuses)
 
 	router.Get("/issue", r.IssueController.Index)
 	router.Post("/issue", r.IssueController.Create)

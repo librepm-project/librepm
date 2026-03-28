@@ -13,6 +13,8 @@ type ProjectControllerInterface interface {
 	Update(w http.ResponseWriter, r *http.Request)
 	Destroy(w http.ResponseWriter, r *http.Request)
 	Index(w http.ResponseWriter, r *http.Request)
+	IndexTrackers(w http.ResponseWriter, r *http.Request)
+	IndexStatuses(w http.ResponseWriter, r *http.Request)
 }
 
 type ProjectController struct {
@@ -81,6 +83,34 @@ func (c ProjectController) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	RespondJSON(w, http.StatusOK, ProjectSerializer{}.ModelToResponse(*updated))
+}
+
+func (c ProjectController) IndexTrackers(w http.ResponseWriter, r *http.Request) {
+	project_id, err := GetParamUUID(r, "project_id")
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	trackers, err := c.ProjectService.TrackersByProject(project_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, TrackerSerializer{}.ModelToResponseMany(*trackers))
+}
+
+func (c ProjectController) IndexStatuses(w http.ResponseWriter, r *http.Request) {
+	project_id, err := GetParamUUID(r, "project_id")
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	statuses, err := c.ProjectService.StatusesByProject(project_id)
+	if err != nil {
+		RespondBadRequest(w)
+		return
+	}
+	RespondJSON(w, http.StatusOK, StatusSerializer{}.ModelToResponseMany(*statuses))
 }
 
 func (c ProjectController) Destroy(w http.ResponseWriter, r *http.Request) {
