@@ -26,7 +26,7 @@ RUN npx nx run frontend:build
 # ─── Stage 3: Production runtime ─────────────────────────────────────────────
 FROM nginx:1.27-alpine
 
-RUN apk add --no-cache supervisor
+RUN apk add --no-cache supervisor && mkdir -p /etc/supervisor/conf.d
 
 # API binary
 COPY --from=go-builder /api-server /usr/local/bin/api-server

@@ -33,9 +33,10 @@ func MigrateProductDatabase(db *gorm.DB) {
 		NotificationModel{},
 	)
 
-	// Projekt alapértelmezett értékek kényszerítése, ha az AutoMigrate valamiért kihagyná:
-	db.Exec("ALTER TABLE `project` ADD COLUMN IF NOT EXISTS `default_status_id` CHAR(36) REFERENCES `status`(`id`) ON DELETE SET NULL")
-	db.Exec("ALTER TABLE `project` ADD COLUMN IF NOT EXISTS `default_tracker_id` CHAR(36) REFERENCES `tracker`(`id`) ON DELETE SET NULL")
+	// Foreign key constraints for project default values (added separately because
+	// inline REFERENCES in GORM type tags is not valid MariaDB syntax):
+	db.Exec("ALTER TABLE `project` ADD CONSTRAINT `fk_project_default_status` FOREIGN KEY (`default_status_id`) REFERENCES `status`(`id`) ON DELETE SET NULL")
+	db.Exec("ALTER TABLE `project` ADD CONSTRAINT `fk_project_default_tracker` FOREIGN KEY (`default_tracker_id`) REFERENCES `tracker`(`id`) ON DELETE SET NULL")
 
 	// A régi filter_condition schema cleanup:
 	// Az eredeti condition_filter_id composite unique index (condition + filter_id)
