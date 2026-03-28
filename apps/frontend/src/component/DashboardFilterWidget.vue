@@ -56,6 +56,7 @@
             <issue-list
                 :filter-id="widget.filterId"
                 persist-mode="filter"
+                show-settings-toggle
             />
         </v-card-text>
     </v-card>
