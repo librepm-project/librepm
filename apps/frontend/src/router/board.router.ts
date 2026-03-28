@@ -1,7 +1,8 @@
 import { RouteRecordRaw } from 'vue-router';
 import BoardShowPage from '@/page/board/BoardShowPage.vue';
 import BoardCreatePage from '@/page/board/BoardCreatePage.vue';
-import { useBoardStore } from '@/store/board.store'; // Import the store
+import { useBoardStore } from '@/store/board.store';
+import { useSettingStore } from '@/store/setting.store';
 
 export const boardRouter: RouteRecordRaw[] = [
   {
@@ -9,9 +10,17 @@ export const boardRouter: RouteRecordRaw[] = [
     name: 'boardRedirect',
     beforeEnter: async (to, from, next) => {
       const boardStore = useBoardStore();
-      await boardStore.getBoards(); // Fetch boards to populate the store
+      const settingStore = useSettingStore();
+      
+      await Promise.all([
+        boardStore.getBoards(),
+        settingStore.fetchSettings()
+      ]);
 
-      if (boardStore.index && boardStore.index.length > 0) {
+      const defaultBoardId = settingStore.getSettingValue('default_board_id');
+      if (defaultBoardId && boardStore.index.some(b => b.id === defaultBoardId)) {
+        next({ name: 'boardShow', params: { boardId: defaultBoardId } });
+      } else if (boardStore.index && boardStore.index.length > 0) {
         // Redirect to the first board if boards exist
         next({ name: 'boardShow', params: { boardId: boardStore.index[0].id } });
       } else {

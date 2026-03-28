@@ -105,6 +105,8 @@ export const en = {
     },
     project: {
         codeName: 'Code name',
+        default_status: 'Default Status',
+        default_tracker: 'Default Tracker',
     },
     status: {
         name: 'Name',
@@ -160,6 +162,10 @@ export const en = {
     settings: {
         site_title: 'Site Title',
         dark_mode: 'Dark Mode',
+        default_issue_display_columns: 'Default Issue Display Columns',
+        default_issue_display_group_by: 'Default Issue Display Group By',
+        default_board_id: 'Default Board',
+        default_dashboard_id: 'Default Dashboard',
         no_settings_found: 'No settings found.',
     },
     notification: {

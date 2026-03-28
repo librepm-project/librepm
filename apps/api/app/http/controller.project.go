@@ -1,6 +1,7 @@
 package http
 
 import (
+	"log/slog"
 	"net/http"
 
 	"apps/api/app/domain"
@@ -70,6 +71,7 @@ func (c ProjectController) Update(w http.ResponseWriter, r *http.Request) {
 	project := ProjectSerializer{}.RequestToModel(project_request)
 	err = c.ProjectService.Update(project_id, &project)
 	if err != nil {
+		slog.Error("failed to update project", "error", err)
 		RespondBadRequest(w)
 		return
 	}

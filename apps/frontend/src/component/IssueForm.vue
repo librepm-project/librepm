@@ -91,9 +91,18 @@ watch(() => form.value.projectId, async (newProjectId, oldProjectId) => {
     await projectStore.getIssueProperty(newProjectId);
     trackers.value = projectStore.currentIssueProperty?.trackers || [];
     
+    // Set default tracker if it exists and we're creating a new issue (no initial trackerId)
+    const project = projectStore.index.find(p => p.id === newProjectId);
+    if (project && !props.initialData?.trackerId && project.defaultTrackerId) {
+        form.value.trackerId = project.defaultTrackerId;
+    }
+
     // Only reset if it's a real change by the user, not initial load
     if (oldProjectId !== undefined) {
-        delete form.value.trackerId;
+        // If the new project doesn't have a default tracker that we just set, or if we didn't set one, clear it
+        if (!project?.defaultTrackerId || form.value.trackerId !== project.defaultTrackerId) {
+             delete form.value.trackerId;
+        }
         delete form.value.statusId;
         statuses.value = [];
     }
@@ -106,9 +115,21 @@ watch(() => form.value.trackerId, async (newTrackerId, oldTrackerId) => {
     const tracker = projectStore.currentIssueProperty.trackers.find(t => t.id === newTrackerId);
     statuses.value = tracker?.statuses || [];
     
+    // Set default status if it exists and we're creating a new issue
+    const project = projectStore.index.find(p => p.id === form.value.projectId);
+    if (project && !props.initialData?.statusId && project.defaultStatusId) {
+        // Verify if the default status is valid for this tracker
+        const statusIsValid = statuses.value.find(s => s.id === project.defaultStatusId);
+        if (statusIsValid) {
+            form.value.statusId = project.defaultStatusId;
+        }
+    }
+
     // Only reset if it's a real change by the user
     if (oldTrackerId !== undefined) {
-        delete form.value.statusId;
+        if (!project?.defaultStatusId || form.value.statusId !== project.defaultStatusId) {
+            delete form.value.statusId;
+        }
     }
 });
 

@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 
 	"libs/http_utils"
@@ -42,7 +43,11 @@ func RespondJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 
 // DecodeJSON decodes JSON from request body into the given struct
 func DecodeJSON(r *http.Request, v interface{}) error {
-	return json.NewDecoder(r.Body).Decode(v)
+	err := json.NewDecoder(r.Body).Decode(v)
+	if err != nil {
+		slog.Error("failed to decode JSON", "error", err)
+	}
+	return err
 }
 
 // GetParam extracts a string parameter from the request URL

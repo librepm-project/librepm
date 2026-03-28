@@ -29,6 +29,33 @@
 
             <v-divider class="my-6" />
 
+            <v-row>
+                <v-col cols="12" md="6">
+                    <v-select
+                        v-model="defaultStatusId"
+                        :items="statuses"
+                        item-title="name"
+                        item-value="id"
+                        :label="$t('project.default_status')"
+                        variant="outlined"
+                        clearable
+                        dense
+                    />
+                </v-col>
+                <v-col cols="12" md="6">
+                    <v-select
+                        v-model="defaultTrackerId"
+                        :items="trackers"
+                        item-title="name"
+                        item-value="id"
+                        :label="$t('project.default_tracker')"
+                        variant="outlined"
+                        clearable
+                        dense
+                    />
+                </v-col>
+            </v-row>
+
             <v-row class="mt-4">
                 <v-col cols="12" class="d-flex gap-3 align-center">
                     <v-btn
@@ -72,14 +99,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { requiredRule } from '@/lib/formRule';
 import { useRouter } from 'vue-router';
+import statusApi from '@/api/status.api';
+import trackerApi from '@/api/tracker.api';
+import { Status } from '@/lib/interfaces/status.interface';
+import { Tracker } from '@/lib/interfaces/tracker.interface';
 
 const router = useRouter();
 
 const props = defineProps({
-    onSubmit: Function,
+    onSubmit: { type: Function, required: true },
     onDelete: Function as any,
     submitButtonText: String,
     project: Object as any,
@@ -87,19 +118,40 @@ const props = defineProps({
 
 const name = ref("");
 const codeName = ref("");
+const defaultStatusId = ref<string | null>(null);
+const defaultTrackerId = ref<string | null>(null);
 const form = ref(null);
+
+const statuses = ref<Status[]>([]);
+const trackers = ref<Tracker[]>([]);
+
+onMounted(async () => {
+    const [s, t] = await Promise.all([
+        statusApi.index(),
+        trackerApi.index()
+    ]);
+    statuses.value = s;
+    trackers.value = t;
+});
 
 watch(() => props.project, (project) => {
     if (project) {
         name.value = project.name || "";
         codeName.value = project.codeName || "";
+        defaultStatusId.value = project.defaultStatusId || null;
+        defaultTrackerId.value = project.defaultTrackerId || null;
     }
 }, { immediate: true })
 
 const submit = async () => {
-    const { valid } = await form.value.validate();
+    const { valid } = await (form.value as any).validate();
     if (valid) {
-        props.onSubmit({ name: name.value, codeName: codeName.value });
+        props.onSubmit({ 
+            name: name.value, 
+            codeName: codeName.value,
+            defaultStatusId: defaultStatusId.value,
+            defaultTrackerId: defaultTrackerId.value
+        });
     }
 };
 </script>

@@ -61,7 +61,12 @@ func (r ProjectRepository) Create(project *ProjectModel) error {
 }
 
 func (r ProjectRepository) Update(project_id uuid.UUID, project *ProjectModel) error {
-	query := r.DB.Model(ProjectModel{}).Where("id", project_id).Updates(&project)
+	query := r.DB.Model(ProjectModel{}).Where("id", project_id).Updates(map[string]interface{}{
+		"name":               project.Name,
+		"code_name":          project.CodeName,
+		"default_status_id":  project.DefaultStatusID,
+		"default_tracker_id": project.DefaultTrackerID,
+	})
 	if query.Error != nil {
 		slog.Error("failed to update project", "error", query.Error)
 	}

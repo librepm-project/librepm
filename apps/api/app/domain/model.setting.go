@@ -12,10 +12,12 @@ func (setting SettingModel) TableName() string {
 }
 
 const (
-	SettingKeySiteTitle = "site_title"
-	SettingKeyDarkMode  = "dark_mode"
+	SettingKeySiteTitle                  = "site_title"
+	SettingKeyDarkMode                   = "dark_mode"
 	SettingKeyDefaultIssueDisplayColumns = "default_issue_display_columns"
 	SettingKeyDefaultIssueDisplayGroupBy = "default_issue_display_group_by"
+	SettingKeyDefaultBoardID             = "default_board_id"
+	SettingKeyDefaultDashboardID         = "default_dashboard_id"
 )
 
 func GetPredefinedSettings() []SettingModel {
@@ -41,6 +43,16 @@ func GetPredefinedSettings() []SettingModel {
 			Value:     "",
 			ValueType: "string",
 			Options:   []string{"", "status", "priority", "assignee", "project"},
+		},
+		{
+			Key:       SettingKeyDefaultBoardID,
+			Value:     "",
+			ValueType: "string",
+		},
+		{
+			Key:       SettingKeyDefaultDashboardID,
+			Value:     "",
+			ValueType: "string",
 		},
 	}
 }

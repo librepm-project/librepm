@@ -53,6 +53,15 @@ func (s IssueService) Create(issue *IssueModel) error {
 		return err
 	}
 	issue.Key = project.CodeName + "-" + fmt.Sprint(project.LastIssueKeyNumber)
+
+	// Alapértelmezett értékek alkalmazása a projektből, ha nincsenek megadva:
+	if issue.TrackerID == uuid.Nil && project.DefaultTrackerID != nil {
+		issue.TrackerID = *project.DefaultTrackerID
+	}
+	if issue.StatusID == uuid.Nil && project.DefaultStatusID != nil {
+		issue.StatusID = *project.DefaultStatusID
+	}
+
 	return s.IssueRepository.Create(issue)
 }
 

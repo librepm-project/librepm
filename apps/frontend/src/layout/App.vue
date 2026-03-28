@@ -92,10 +92,13 @@ import { getToken } from '@/lib/cookie';
 import { navigationLinks } from '@/lib/navigation';
 import { useRouter } from 'vue-router';
 
+import { useSettingStore } from '@/store/setting.store';
+
 const layoutStore = useLayoutStore();
 const userCurrentStore = useUserCurrentStore();
 const userSessionStore = useUserSessionStore();
 const notificationStore = useNotificationStore();
+const settingStore = useSettingStore();
 const router = useRouter();
 
 const logout = () => {
@@ -109,7 +112,10 @@ const onWsNotification = (data: unknown) => notificationStore.addFromWs(data as 
 onMounted(async () => {
   const token = getToken();
   if (token) {
-    await userCurrentStore.getUser();
+    await Promise.all([
+      userCurrentStore.getUser(),
+      settingStore.fetchSettings(),
+    ]);
     wsService.connect(token);
     wsService.on('notification', onWsNotification);
   }

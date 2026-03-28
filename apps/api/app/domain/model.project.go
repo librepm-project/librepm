@@ -8,10 +8,12 @@ import (
 )
 
 type ProjectModel struct {
-	ID                 uuid.UUID `gorm:"type:char(36);primary_key;"`
-	Name               string    `gorm:"type:varchar(100); not null;unique;"`
-	CodeName           string    `gorm:"type:varchar(5); not null;"`
-	LastIssueKeyNumber int       `gorm:"type:int; not null;default:0"`
+	ID                 uuid.UUID  `gorm:"type:char(36);primary_key;"`
+	Name               string     `gorm:"type:varchar(100); not null;unique;"`
+	CodeName           string     `gorm:"type:varchar(5); not null;"`
+	LastIssueKeyNumber int        `gorm:"type:int; not null;default:0"`
+	DefaultStatusID    *uuid.UUID `gorm:"type:char(36) references status;"`
+	DefaultTrackerID   *uuid.UUID `gorm:"type:char(36) references tracker;"`
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
 	DeletedAt          *time.Time `sql:"index"`

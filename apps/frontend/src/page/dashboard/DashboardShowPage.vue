@@ -139,6 +139,7 @@ import { useI18n } from 'vue-i18n';
 import { useDashboardStore } from '@/store/dashboard.store';
 import { useFilterStore } from '@/store/filter.store';
 import { useLayoutStore } from '@/store/layout.store';
+import { useSettingStore } from '@/store/setting.store';
 import { AnyDashboardWidget } from '@/lib/interfaces/dashboard.interface';
 import DashboardFilterWidgetComponent from '@/component/DashboardFilterWidget.vue';
 
@@ -148,6 +149,7 @@ const router = useRouter();
 const dashboardStore = useDashboardStore();
 const filterStore = useFilterStore();
 const layoutStore = useLayoutStore();
+const settingStore = useSettingStore();
 
 const widgetComponents: Record<string, Component> = {
     filter: DashboardFilterWidgetComponent,
@@ -234,7 +236,11 @@ function onDrop(targetIndex: number) {
 const loadDashboard = async () => {
     const dashboardId = route.params.dashboardId as string | undefined;
 
-    await dashboardStore.getDashboards();
+    await Promise.all([
+        dashboardStore.getDashboards(),
+        settingStore.fetchSettings(),
+    ]);
+
     layoutStore.setActions([
         {
             text: 'global.create',
@@ -248,8 +254,24 @@ const loadDashboard = async () => {
         await dashboardStore.getDashboard(dashboardId);
         await dashboardStore.loadWidgets(dashboardId);
         await filterStore.getFilters();
-    } else if (dashboardStore.index.length > 0) {
-        router.replace(`/dashboard/${dashboardStore.index[0].id}`);
+    } else {
+        // Alapértelmezett oldal választása
+        const defaultBoardId = settingStore.getSettingValue('default_board_id');
+        const defaultDashboardId = settingStore.getSettingValue('default_dashboard_id');
+
+        if (defaultBoardId) {
+            router.replace(`/board/${defaultBoardId}`);
+            return;
+        }
+
+        if (defaultDashboardId) {
+            router.replace(`/dashboard/${defaultDashboardId}`);
+            return;
+        }
+
+        if (dashboardStore.index.length > 0) {
+            router.replace(`/dashboard/${dashboardStore.index[0].id}`);
+        }
     }
 };
 
