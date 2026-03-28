@@ -62,6 +62,9 @@ func (r FilterRepository) Update(filter_id uuid.UUID, filter *FilterModel) error
 	if err := r.DB.Model(FilterModel{}).Where("id = ?", filter_id).Updates(map[string]interface{}{
 		"name":        filter.Name,
 		"description": filter.Description,
+		"public":      filter.Public,
+		"column_list": filter.ColumnList,
+		"group_by":    filter.GroupBy,
 	}).Error; err != nil {
 		return err
 	}
