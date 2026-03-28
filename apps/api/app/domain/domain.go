@@ -1,8 +1,6 @@
 package domain
 
 import (
-	"libs/mysql_utils"
-
 	"gorm.io/gorm"
 )
 
@@ -62,10 +60,7 @@ type Domain struct {
 	NotificationRepository         NotificationRepositoryInterface
 }
 
-func NewDomain() Domain {
-	DB := mysql_utils.Init()
-	MigrateProductDatabase(DB)
-
+func NewDomain(DB *gorm.DB) Domain {
 	projectRepository := ProjectRepository{DB: DB}
 	projectTrackerStatusRepository := ProjectTrackerStatusRepository{DB: DB}
 	projectIssuePropertyRepository := ProjectIssuePropertyRepository{DB: DB}

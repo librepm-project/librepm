@@ -3,9 +3,11 @@ package main
 import (
 	"apps/api/app/domain"
 	"apps/api/app/http"
+	"apps/api/app/migration"
 	"apps/api/app/seed"
 	"fmt"
 	"libs/jwt_utils"
+	"libs/mysql_utils"
 	"os"
 
 	"github.com/google/uuid"
@@ -20,7 +22,9 @@ func main() {
 	if len(os.Args) > 2 {
 		subcommand = os.Args[2]
 	}
-	d := domain.NewDomain()
+	db := mysql_utils.Init()
+	migration.Run(db)
+	d := domain.NewDomain(db)
 	switch command {
 	case "server":
 		http.StartHttpServer(d)

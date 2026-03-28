@@ -48,12 +48,13 @@ This document defines the structural rules, naming conventions, and architectura
 
 ### Package Structure
 
-The API application has three packages under `apps/api/app/`:
+The API application has four packages under `apps/api/app/`:
 
 | Package | Path | Purpose |
 |---------|------|---------|
 | `domain` | `app/domain/` | Business logic: models, repositories, services, domain wiring |
 | `http` | `app/http/` | HTTP layer: controllers, serializers, router, server setup |
+| `migration` | `app/migration/` | Database migrations (gormigrate), one file per model |
 | `seed` | `app/seed/` | Database seeding: data structures, seed services |
 
 ### Backend File Naming
@@ -67,9 +68,10 @@ Files use a `{type}.{entity}.go` pattern, lowercase, dot-separated.
 | Service | `service.{entity}.go` | `service.project.go` |
 | Controller | `controller.{entity}.go` | `controller.project.go` |
 | Serializer | `serializer.{entity}.go` | `serializer.project.go` |
+| Migration | `migration.{entity}.go` | `migration.project.go` |
 | Seed service | `service.seed.{entity}.go` | `service.seed.project.go` |
 | Seed data | `data.{entity}.go` | `data.project.go` |
-| Singleton files | exact name | `router.go`, `domain.go`, `http.go` |
+| Singleton files | exact name | `router.go`, `domain.go`, `http.go`, `migrate.go` |
 
 Multi-word entities use underscores: `model.project_tracker.go`, `repository.project_tracker_status.go`.
 
@@ -314,8 +316,7 @@ type Domain struct {
     // ... all repositories
 }
 
-func NewDomain() Domain {
-    DB := mysql_utils.Init()
+func NewDomain(DB *gorm.DB) Domain {
     projectRepository := ProjectRepository{DB: DB}
     // ...
     return Domain{
@@ -325,6 +326,14 @@ func NewDomain() Domain {
         // ...
     }
 }
+```
+
+The database connection is created in `main.go` and passed in:
+
+```go
+db := mysql_utils.Init()
+migration.Run(db)
+d := domain.NewDomain(db)
 ```
 
 `http.go` receives the `Domain` and constructs the `Router` with controllers:
@@ -342,7 +351,52 @@ Controllers receive service interfaces, not concrete types. Services receive rep
 
 ### Database & Migrations
 
-`model.migrate.go` calls `DB.AutoMigrate` for all models and adds any explicit foreign key constraints. All models must be listed here.
+Migrations live in the `migration` package (`app/migration/`), separate from the domain. The library used is [go-gormigrate](https://github.com/go-gormigrate/gormigrate).
+
+```
+app/migration/
+├── migrate.go              # Run(db) — registers and executes all migrations
+├── migration.user.go
+├── migration.project.go
+└── migration.{entity}.go   # One file per model
+```
+
+Each migration file defines one or more `*gormigrate.Migration` values via a private function:
+
+```go
+// migration.project.go
+func migrationProject() *gormigrate.Migration {
+    return &gormigrate.Migration{
+        ID: "20240101000010",
+        Migrate: func(tx *gorm.DB) error {
+            return tx.AutoMigrate(&domain.ProjectModel{})
+        },
+    }
+}
+```
+
+`migrate.go` collects all migrations in dependency order (FK dependencies must be created before the tables that reference them) and runs them:
+
+```go
+func Run(db *gorm.DB) {
+    m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
+        migrationUser(),
+        migrationProject(),
+        // ...
+    })
+    if err := m.Migrate(); err != nil {
+        log.Fatalf("migration failed: %v", err)
+    }
+}
+```
+
+`migration.Run(db)` is called from `main.go` before `domain.NewDomain(db)`. `NewDomain` receives the already-initialized `*gorm.DB` — it no longer creates its own connection.
+
+Rules:
+- Migration IDs are sequential timestamps: `YYYYMMDDHHMMSS`
+- Each model gets exactly one migration file and one migration function
+- Schema fixups (FK constraints, column cleanup) get their own numbered migration, in the same file as the model they concern
+- The `migration` package imports `domain` for model types; `domain` must not import `migration`
 
 ### Seed Data
 
