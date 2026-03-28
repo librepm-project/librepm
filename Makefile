@@ -1,3 +1,15 @@
+VERSION := $(shell node -p "require('./package.json').version")
+
+build:
+	docker build -f Dockerfile.production \
+		-t ghcr.io/librepm-project/librepm:latest \
+		-t ghcr.io/librepm-project/librepm:$(VERSION) \
+		.
+
+push:
+	docker push ghcr.io/librepm-project/librepm:latest
+	docker push ghcr.io/librepm-project/librepm:$(VERSION)
+
 install:
 	docker compose --profile install up
 

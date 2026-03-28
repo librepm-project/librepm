@@ -48,10 +48,10 @@ For detailed commands or specific services, you can explore the `Makefile` in th
 
 The production image runs the Go API and the compiled Vue frontend in a single container behind nginx.
 
-### Build the image
+### Pull the image
 
 ```bash
-docker build -f Dockerfile.production -t librepm:latest .
+docker pull ghcr.io/librepm-project/librepm:latest
 ```
 
 ### Example docker-compose.production.yaml
@@ -59,7 +59,7 @@ docker build -f Dockerfile.production -t librepm:latest .
 ```yaml
 services:
   app:
-    image: librepm:latest
+    image: ghcr.io/librepm-project/librepm:latest
     restart: unless-stopped
     ports:
       - "80:80"
