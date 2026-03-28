@@ -15,7 +15,7 @@ const filterStore = useFilterStore();
 
 const handleSubmit = async (filter: Omit<Filter, 'id'>) => {
   try {
-    await filterStore.postFilter(filter);
+    await filterStore.post(filter);
     router.push('/filter');
   } catch (error) {
     console.error('Error creating filter:', error);

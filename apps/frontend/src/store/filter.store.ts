@@ -17,26 +17,5 @@ export const useFilterStore = defineStore('filter', {
   },
   actions: {
     ...createCrudActions<Filter>(filterApi),
-
-    // Alias methods for backward compatibility
-    async getFilter(filterId: string) {
-      return this.getCurrentItem(filterId);
-    },
-
-    async getFilters() {
-      return this.getAllItems();
-    },
-
-    async postFilter(filter: Omit<Filter, 'id'>) {
-      return this.createItem(filter);
-    },
-
-    async putFilter(filterId: string, filter: Omit<Filter, 'id'>) {
-      return this.updateItem(filterId, filter);
-    },
-
-    async deleteFilter(filterId: string) {
-      return this.deleteItem(filterId);
-    },
   },
 });

@@ -17,26 +17,5 @@ export const useStatusStore = defineStore('status', {
   },
   actions: {
     ...createCrudActions<Status>(statusApi),
-
-    // Alias methods for backward compatibility
-    async getStatus(statusId: string) {
-      return this.getCurrentItem(statusId);
-    },
-
-    async getStatuses() {
-      return this.getAllItems();
-    },
-
-    async postStatus(status: Omit<Status, 'id'>) {
-      return this.createItem(status);
-    },
-
-    async putStatus(statusId: string, status: Omit<Status, 'id'>) {
-      return this.updateItem(statusId, status);
-    },
-
-    async deleteStatus(statusId: string) {
-      return this.deleteItem(statusId);
-    },
   },
 });

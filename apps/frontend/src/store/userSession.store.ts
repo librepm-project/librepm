@@ -11,12 +11,12 @@ export const useUserSessionStore = defineStore('userSession', {
       const session = await userSessionApi.create(data);
       setToken(session.token);
       const userCurrentStore = useUserCurrentStore();
-      userCurrentStore.setUser(session.user);
+      userCurrentStore.set(session.user);
     },
     logout() {
       removeToken();
       const userCurrentStore = useUserCurrentStore();
-      userCurrentStore.setUser(null);
+      userCurrentStore.set(null);
     },
   },
 });

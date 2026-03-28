@@ -22,7 +22,7 @@ const handleEdit = (project: Project) => {
 };
 
 onMounted(async () => {
-  await projectStore.getProjects();
+  await projectStore.getAll();
   layoutStore.setActions([
     {
       text: 'global.create',

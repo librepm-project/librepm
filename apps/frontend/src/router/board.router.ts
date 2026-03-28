@@ -13,11 +13,11 @@ export const boardRouter: RouteRecordRaw[] = [
       const settingStore = useSettingStore();
       
       await Promise.all([
-        boardStore.getBoards(),
-        settingStore.fetchSettings()
+        boardStore.getAll(),
+        settingStore.fetch()
       ]);
 
-      const defaultBoardId = settingStore.getSettingValue('default_board_id');
+      const defaultBoardId = settingStore.getValue('default_board_id');
       if (defaultBoardId && boardStore.index.some(b => b.id === defaultBoardId)) {
         next({ name: 'boardShow', params: { boardId: defaultBoardId } });
       } else if (boardStore.index && boardStore.index.length > 0) {

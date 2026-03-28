@@ -13,15 +13,15 @@ export const useUserCurrentStore = defineStore('userCurrent', {
     };
   },
   actions: {
-    async getUser() {
+    async get() {
       this.current = await userCurrentApi.getCurrent();
     },
-    setUser(user: User | null) {
+    set(user: User | null) {
       this.current = user;
     },
     async updateCurrent(user: Partial<User>) {
       await userCurrentApi.updateCurrent(user);
-      await this.getUser();
+      await this.get();
     },
   },
 });

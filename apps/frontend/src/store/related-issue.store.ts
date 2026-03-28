@@ -11,7 +11,7 @@ export const useRelatedIssueStore = defineStore('relatedIssue', {
         relations: [],
     }),
     actions: {
-        async getRelated(issueId: string, type?: string) {
+        async get(issueId: string, type?: string) {
             this.relations = await relatedIssueApi.getRelated(issueId, type);
         },
         async create(issueId: string, targetIssueId: string, type: string) {

@@ -95,11 +95,11 @@ const priorityStore = usePriorityStore();
 onMounted(async () => {
     const [opts] = await Promise.all([
         filterApi.conditionOptions(),
-        projectStore.getAllItems(),
-        trackerStore.getAllItems(),
-        statusStore.getAllItems(),
-        userStore.getAllItems(),
-        priorityStore.getPriorities(),
+        projectStore.getAll(),
+        trackerStore.getAll(),
+        statusStore.getAll(),
+        userStore.getAll(),
+        priorityStore.getAll(),
     ]);
     conditionOptions.value = opts;
 });

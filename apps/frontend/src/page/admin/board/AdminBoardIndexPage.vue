@@ -21,7 +21,7 @@ const onEdit = (item: Board) => {
 }
 
 onMounted(async () => {
-  await boardStore.getBoards();
+  await boardStore.getAll();
   layoutStore.setActions([
     {
       text: 'global.create',

@@ -22,7 +22,7 @@ const trackerStore = useTrackerStore();
 const handleSubmit = async (tracker: Tracker) => {
   try {
     const trackerId = route.params.trackerId as string;
-    await trackerStore.putTracker(trackerId, tracker);
+    await trackerStore.put(trackerId, tracker);
     router.push('/admin/tracker');
   } catch (error) {
     console.error('Error updating tracker:', error);
@@ -33,7 +33,7 @@ const handleDelete = async () => {
   if (confirm('Are you sure you want to delete this tracker?')) {
     try {
       const trackerId = route.params.trackerId as string;
-      await trackerStore.deleteTracker(trackerId);
+      await trackerStore.delete(trackerId);
       router.push('/admin/tracker');
     } catch (error) {
       console.error('Error deleting tracker:', error);
@@ -48,7 +48,7 @@ onMounted(async () => {
     trackerStore.current = fromIndex;
   }
   try {
-    await trackerStore.getTracker(trackerId);
+    await trackerStore.get(trackerId);
   } catch (error) {
     console.error('Error loading tracker:', error);
   }

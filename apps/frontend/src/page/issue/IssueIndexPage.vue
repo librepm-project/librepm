@@ -16,7 +16,7 @@ const issueStore = useIssueStore();
 const layoutStore = useLayoutStore();
 
 onMounted(async () => {
-  await issueStore.getIssues();
+  await issueStore.getAll();
   
   layoutStore.setActions([
     {

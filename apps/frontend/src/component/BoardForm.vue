@@ -122,7 +122,7 @@ if (props.initialData?.boardColumns) {
 }
 
 onMounted(async () => {
-    await statusStore.getStatuses();
+    await statusStore.getAll();
 });
 
 const addColumn = () => {

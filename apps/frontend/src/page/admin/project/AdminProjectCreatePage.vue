@@ -15,7 +15,7 @@ const projectStore = useProjectStore();
 
 const handleSubmit = async (project: Omit<Project, 'id'>) => {
   try {
-    await projectStore.postProject(project);
+    await projectStore.post(project);
     router.push('/admin/project');
   } catch (error) {
     console.error('Error creating project:', error);

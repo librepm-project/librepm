@@ -22,7 +22,7 @@ const handleEdit = (tracker: Tracker) => {
 };
 
 onMounted(async () => {
-  await trackerStore.getTrackers();
+  await trackerStore.getAll();
   layoutStore.setActions([
   {
     text: 'global.create',

@@ -24,7 +24,7 @@ const projectStore = useProjectStore();
 const handleSubmit = async (project: Omit<Project, 'id'>) => {
   try {
     const projectId = route.params.projectId as string;
-    await projectStore.putProject(projectId, project);
+    await projectStore.put(projectId, project);
     router.push('/admin/project');
   } catch (error) {
     console.error('Error updating project:', error);
@@ -35,7 +35,7 @@ const handleDelete = async () => {
   if (confirm('Are you sure you want to delete this project?')) {
     try {
       const projectId = route.params.projectId as string;
-      await projectStore.deleteProject(projectId);
+      await projectStore.delete(projectId);
       router.push('/admin/project');
     } catch (error) {
       console.error('Error deleting project:', error);
@@ -45,6 +45,6 @@ const handleDelete = async () => {
 
 onMounted(async () => {
   const projectId = route.params.projectId as string;
-  await projectStore.getProject(projectId);
+  await projectStore.get(projectId);
 });
 </script>

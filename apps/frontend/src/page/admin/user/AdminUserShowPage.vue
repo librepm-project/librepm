@@ -24,7 +24,7 @@ const userStore = useUserStore();
 const handleSubmit = async (user: User) => {
   try {
     const userId = route.params.userId as string;
-    await userStore.putUser(userId, user);
+    await userStore.put(userId, user);
     router.push('/admin/user');
   } catch (error) {
     console.error('Error updating user:', error);
@@ -35,7 +35,7 @@ const handleDelete = async () => {
   if (confirm('Are you sure you want to delete this user?')) {
     try {
       const userId = route.params.userId as string;
-      await userStore.deleteUser(userId);
+      await userStore.delete(userId);
       router.push('/admin/user');
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -45,7 +45,7 @@ const handleDelete = async () => {
 
 onMounted(async () => {
   const userId = route.params.userId as string;
-  await userStore.getUser(userId);
+  await userStore.get(userId);
 });
 </script>
   

@@ -17,26 +17,5 @@ export const useTrackerStore = defineStore('tracker', {
   },
   actions: {
     ...createCrudActions<Tracker>(trackerApi),
-
-    // Alias methods for backward compatibility
-    async getTracker(trackerId: string) {
-      return this.getCurrentItem(trackerId);
-    },
-
-    async getTrackers() {
-      return this.getAllItems();
-    },
-
-    async postTracker(tracker: Omit<Tracker, 'id'>) {
-      return this.createItem(tracker);
-    },
-
-    async putTracker(trackerId: string, tracker: Omit<Tracker, 'id'>) {
-      return this.updateItem(trackerId, tracker);
-    },
-
-    async deleteTracker(trackerId: string) {
-      return this.deleteItem(trackerId);
-    },
   },
 });

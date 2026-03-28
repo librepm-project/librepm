@@ -113,8 +113,8 @@ onMounted(async () => {
   const token = getToken();
   if (token) {
     await Promise.all([
-      userCurrentStore.getUser(),
-      settingStore.fetchSettings(),
+      userCurrentStore.get(),
+      settingStore.fetch(),
     ]);
     wsService.connect(token);
     wsService.on('notification', onWsNotification);

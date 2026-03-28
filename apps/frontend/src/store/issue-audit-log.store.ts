@@ -11,7 +11,7 @@ export const useIssueAuditLogStore = defineStore('issueAuditLog', {
     auditLogs: [],
   }),
   actions: {
-    async getAuditLogs(issueId: string) {
+    async get(issueId: string) {
       this.auditLogs = await issueAuditLogApi.index(issueId);
     },
   },

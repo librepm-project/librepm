@@ -145,7 +145,7 @@ const availableIssues = computed(() => {
 
 const openAddForm = async () => {
   if (issueStore.index.length === 0) {
-    await issueStore.getIssues();
+    await issueStore.getAll();
   }
   showAddForm.value = true;
 };

@@ -237,8 +237,8 @@ const loadDashboard = async () => {
     const dashboardId = route.params.dashboardId as string | undefined;
 
     await Promise.all([
-        dashboardStore.getDashboards(),
-        settingStore.fetchSettings(),
+        dashboardStore.getAll(),
+        settingStore.fetch(),
     ]);
 
     layoutStore.setActions([
@@ -251,13 +251,13 @@ const loadDashboard = async () => {
     ]);
 
     if (dashboardId) {
-        await dashboardStore.getDashboard(dashboardId);
+        await dashboardStore.get(dashboardId);
         await dashboardStore.loadWidgets(dashboardId);
-        await filterStore.getFilters();
+        await filterStore.getAll();
     } else {
         // Alapértelmezett oldal választása
-        const defaultBoardId = settingStore.getSettingValue('default_board_id');
-        const defaultDashboardId = settingStore.getSettingValue('default_dashboard_id');
+        const defaultBoardId = settingStore.getValue('default_board_id');
+        const defaultDashboardId = settingStore.getValue('default_dashboard_id');
 
         if (defaultBoardId) {
             router.replace(`/board/${defaultBoardId}`);

@@ -15,11 +15,11 @@ export const useBoardStore = defineStore('board', {
     };
   },
   actions: {
-    async getBoard(boardId: string) {
+    async get(boardId: string) {
       this.current = await boardApi.show(boardId);
     },
 
-    async getBoards() {
+    async getAll() {
       this.index = await boardApi.index();
     },
 

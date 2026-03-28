@@ -163,20 +163,20 @@ const loadData = async () => {
 
   if (key) {
     // Load by key (e.g., /issue/key/PROJ-123)
-    await issueStore.getIssueByKey(key.toString());
+    await issueStore.getByKey(key.toString());
   } else if (issueId) {
     // Load by ID (backward compatibility)
-    await issueStore.getIssue(issueId.toString());
+    await issueStore.get(issueId.toString());
   }
 
   if (issueStore.current) {
     const currentId = issueStore.current.id;
     await Promise.all([
-      relatedIssueStore.getRelated(currentId),
-      worklogStore.getWorklogs(currentId),
-      attachmentStore.getAttachments(currentId),
-      auditLogStore.getAuditLogs(currentId),
-      commentStore.getComments(currentId)
+      relatedIssueStore.get(currentId),
+      worklogStore.get(currentId),
+      attachmentStore.get(currentId),
+      auditLogStore.get(currentId),
+      commentStore.get(currentId)
     ]);
 
     layoutStore.setTitle(`${issueStore.current.key} - ${issueStore.current.summary}`, startEditSummary);

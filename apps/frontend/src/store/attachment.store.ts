@@ -11,7 +11,7 @@ export const useAttachmentStore = defineStore('attachment', {
     attachments: [],
   }),
   actions: {
-    async getAttachments(issueId: string) {
+    async get(issueId: string) {
       this.attachments = await attachmentApi.indexByIssue(issueId);
     },
     async create(issueId: string, file: File) {

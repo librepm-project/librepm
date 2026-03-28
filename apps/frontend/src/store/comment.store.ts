@@ -11,7 +11,7 @@ export const useCommentStore = defineStore('comment', {
     comments: [],
   }),
   actions: {
-    async getComments(issueId: string) {
+    async get(issueId: string) {
       this.comments = await commentApi.indexByIssue(issueId);
     },
     async create(issueId: string, content: string) {

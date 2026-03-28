@@ -47,7 +47,7 @@ const filterId = computed(() => route.params.filterId as string);
 
 onMounted(async () => {
   filterStore.current = null;
-  await filterStore.getFilter(filterId.value);
+  await filterStore.get(filterId.value);
   filter.value = filterStore.current;
 
   route.meta.title = filter.value?.name ?? 'Filter';

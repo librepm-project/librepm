@@ -110,9 +110,9 @@ const saveSettings = async () => {
       if (setting.valueType === 'boolean') {
         valueToSend = String(setting.value);
       }
-      await settingStore.updateSetting(setting.key, valueToSend);
+      await settingStore.update(setting.key, valueToSend);
     }
-    await settingStore.fetchSettings();
+    await settingStore.fetch();
   }
 };
 
@@ -123,7 +123,7 @@ onMounted(async () => {
       boardApi.index(),
       dashboardApi.index(),
     ]);
-    await settingStore.fetchSettings();
+    await settingStore.fetch();
     boards.value = fetchedBoards;
     dashboards.value = fetchedDashboards;
   } finally {

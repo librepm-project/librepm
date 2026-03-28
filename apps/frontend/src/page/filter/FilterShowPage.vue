@@ -23,7 +23,7 @@ const filterStore = useFilterStore();
 const handleSubmit = async (filter: Omit<Filter, 'id'>) => {
   try {
     const filterId = route.params.filterId as string;
-    await filterStore.putFilter(filterId, filter);
+    await filterStore.put(filterId, filter);
     router.push(`/filter/${filterId}`);
   } catch (error) {
     console.error('Error updating filter:', error);
@@ -34,7 +34,7 @@ const handleDelete = async () => {
   if (confirm('Are you sure you want to delete this filter?')) {
     try {
       const filterId = route.params.filterId as string;
-      await filterStore.deleteFilter(filterId);
+      await filterStore.delete(filterId);
       router.push('/filter');
     } catch (error) {
       console.error('Error deleting filter:', error);
@@ -45,6 +45,6 @@ const handleDelete = async () => {
 onMounted(async () => {
   filterStore.current = null;
   const filterId = route.params.filterId as string;
-  await filterStore.getFilter(filterId);
+  await filterStore.get(filterId);
 });
 </script>

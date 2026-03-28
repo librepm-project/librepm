@@ -16,7 +16,7 @@ export const useSettingStore = defineStore('setting', {
     }),
 
     actions: {
-        async fetchSettings() {
+        async fetch() {
             this.loading = true;
             this.error = null;
             try {
@@ -35,7 +35,7 @@ export const useSettingStore = defineStore('setting', {
             }
         },
 
-        async updateSetting(key: string, value: string) {
+        async update(key: string, value: string) {
             this.loading = true;
             this.error = null;
             try {
@@ -54,7 +54,7 @@ export const useSettingStore = defineStore('setting', {
         },
 
         // Helper to get a setting value by key
-        getSettingValue(key: string): string | undefined {
+        getValue(key: string): string | undefined {
             const setting = this.settings.find(s => s.key === key);
             return setting?.value;
         },

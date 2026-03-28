@@ -16,7 +16,7 @@ const route = useRoute();
 const boardStore = useBoardStore();
 
 onMounted(async () => {
-    await boardStore.getBoard(route.params.boardId.toString());
+    await boardStore.get(route.params.boardId.toString());
 });
 
 const update = async (board: Partial<Board>) => {

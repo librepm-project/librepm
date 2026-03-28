@@ -15,25 +15,5 @@ export const usePriorityStore = defineStore('priority', {
   }),
   actions: {
     ...createCrudActions<Priority>(priorityApi),
-
-    async getPriority(priorityId: string) {
-      return this.getCurrentItem(priorityId);
-    },
-
-    async getPriorities() {
-      return this.getAllItems();
-    },
-
-    async postPriority(priority: Omit<Priority, 'id'>) {
-      return this.createItem(priority);
-    },
-
-    async putPriority(priorityId: string, priority: Omit<Priority, 'id'>) {
-      return this.updateItem(priorityId, priority);
-    },
-
-    async deletePriority(priorityId: string) {
-      return this.deleteItem(priorityId);
-    },
   },
 });

@@ -19,14 +19,6 @@ export const useDashboardStore = defineStore('dashboard', {
     actions: {
         ...createCrudActions<Dashboard>(dashboardApi),
 
-        async getDashboard(dashboardId: string) {
-            return this.getCurrentItem(dashboardId);
-        },
-
-        async getDashboards() {
-            return this.getAllItems();
-        },
-
         async loadWidgets(dashboardId: string) {
             this.widgets = await dashboardWidgetApi.index(dashboardId);
         },

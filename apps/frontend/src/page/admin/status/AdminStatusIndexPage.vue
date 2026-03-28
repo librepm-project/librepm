@@ -24,7 +24,7 @@ const handleEdit = (status: Status) => {
 };
 
 onMounted(async () => {
-  await statusStore.getStatuses();
+  await statusStore.getAll();
   layoutStore.setActions([
   {
     text: 'global.create',

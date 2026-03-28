@@ -17,26 +17,5 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     ...createCrudActions<User>(userApi),
-
-    // Alias methods for backward compatibility
-    async getUser(userId: string) {
-      return this.getCurrentItem(userId);
-    },
-
-    async getUsers() {
-      return this.getAllItems();
-    },
-
-    async postUser(user: Omit<User, 'id'>) {
-      return this.createItem(user);
-    },
-
-    async putUser(userId: string, user: Omit<User, 'id'>) {
-      return this.updateItem(userId, user);
-    },
-
-    async deleteUser(userId: string) {
-      return this.deleteItem(userId);
-    },
   },
 });

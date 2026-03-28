@@ -23,7 +23,7 @@ const handleSubmit = async (user: User) => {
 
 onMounted(async () => {
   if (!userCurrentStore.current) {
-    await userCurrentStore.getUser();
+    await userCurrentStore.get();
   }
 });
 </script>

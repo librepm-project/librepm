@@ -67,7 +67,7 @@ const initForm = () => ({
 })
 
 onMounted(async () => {
-    await Promise.all([projectStore.getProjects(), userStore.getAllItems(), priorityStore.getPriorities()]);
+    await Promise.all([projectStore.getAll(), userStore.getAll(), priorityStore.getAll()]);
     if (props.initialData?.projectId) {
         await projectStore.getIssueProperty(props.initialData.projectId);
         trackers.value = projectStore.currentIssueProperty?.trackers || [];

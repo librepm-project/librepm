@@ -128,8 +128,8 @@ onMounted(async () => {
   const projectId = issueStore.current?.project?.id;
   await Promise.all([
     projectId ? projectStore.getIssueProperty(projectId) : Promise.resolve(),
-    userStore.getAllItems(),
-    priorityStore.getPriorities(),
+    userStore.getAll(),
+    priorityStore.getAll(),
   ]);
   trackers.value = projectStore.currentIssueProperty?.trackers || [];
   const currentTrackerId = issueStore.current?.tracker?.id;

@@ -222,9 +222,9 @@ const loadData = async () => {
       console.error("Failed to load filter settings", error);
     }
   } else if (props.persistMode === 'global') {
-    await settingStore.fetchSettings();
-    const defaultColumns = settingStore.getSettingValue('default_issue_display_columns');
-    const defaultGroupBy = settingStore.getSettingValue('default_issue_display_group_by');
+    await settingStore.fetch();
+    const defaultColumns = settingStore.getValue('default_issue_display_columns');
+    const defaultGroupBy = settingStore.getValue('default_issue_display_group_by');
     
     if (defaultColumns) {
       try {
@@ -251,9 +251,9 @@ watch(() => props.filterId, loadData);
 
 async function persistDisplaySetting(patch: { columnList?: string; groupBy?: string }, globalKey: string, globalValue: string) {
   if (props.persistMode === 'global') {
-    await settingStore.updateSetting(globalKey, globalValue);
+    await settingStore.update(globalKey, globalValue);
   } else if (props.persistMode === 'filter' && props.filterId && filterData.value) {
-    await filterStore.putFilter(props.filterId, { ...filterData.value, ...patch });
+    await filterStore.put(props.filterId, { ...filterData.value, ...patch });
   }
 }
 

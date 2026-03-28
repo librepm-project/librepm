@@ -117,9 +117,9 @@ const loadData = async () => {
   const boardId = route.params.boardId?.toString();
   if (boardId) {
     await Promise.all([
-      boardStore.getBoard(boardId),
-      issueStore.getIssues(),
-      boardStore.getBoards()
+      boardStore.get(boardId),
+      issueStore.getAll(),
+      boardStore.getAll()
     ]);
 
     layoutStore.setActions([

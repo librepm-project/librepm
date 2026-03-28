@@ -15,7 +15,7 @@ const trackerStore = useTrackerStore();
 
 const handleSubmit = async (tracker: Tracker) => {
   try {
-    await trackerStore.postTracker(tracker);
+    await trackerStore.post(tracker);
     router.push('/admin/tracker');
   } catch (error) {
     console.error('Error creating tracker:', error);

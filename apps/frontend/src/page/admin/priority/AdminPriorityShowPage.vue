@@ -22,7 +22,7 @@ const priorityStore = usePriorityStore();
 const handleSubmit = async (priority: Priority) => {
   try {
     const priorityId = route.params.priorityId as string;
-    await priorityStore.putPriority(priorityId, priority);
+    await priorityStore.put(priorityId, priority);
     router.push('/admin/priority');
   } catch (error) {
     console.error('Error updating priority:', error);
@@ -33,7 +33,7 @@ const handleDelete = async () => {
   if (confirm('Are you sure you want to delete this priority?')) {
     try {
       const priorityId = route.params.priorityId as string;
-      await priorityStore.deletePriority(priorityId);
+      await priorityStore.delete(priorityId);
       router.push('/admin/priority');
     } catch (error) {
       console.error('Error deleting priority:', error);
@@ -43,6 +43,6 @@ const handleDelete = async () => {
 
 onMounted(async () => {
   const priorityId = route.params.priorityId as string;
-  await priorityStore.getPriority(priorityId);
+  await priorityStore.get(priorityId);
 });
 </script>

@@ -15,7 +15,7 @@ const priorityStore = usePriorityStore();
 
 const handleSubmit = async (priority: Priority) => {
   try {
-    await priorityStore.postPriority(priority);
+    await priorityStore.post(priority);
     router.push('/admin/priority');
   } catch (error) {
     console.error('Error creating priority:', error);

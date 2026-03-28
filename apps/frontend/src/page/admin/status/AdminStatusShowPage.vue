@@ -22,7 +22,7 @@ const statusStore = useStatusStore();
 const handleSubmit = async (status: Status) => {
   try {
     const statusId = route.params.statusId as string;
-    await statusStore.putStatus(statusId, status);
+    await statusStore.put(statusId, status);
     router.push('/admin/status');
   } catch (error) {
     console.error('Error updating status:', error);
@@ -33,7 +33,7 @@ const handleDelete = async () => {
   if (confirm('Are you sure you want to delete this status?')) {
     try {
       const statusId = route.params.statusId as string;
-      await statusStore.deleteStatus(statusId);
+      await statusStore.delete(statusId);
       router.push('/admin/status');
     } catch (error) {
       console.error('Error deleting status:', error);
@@ -43,6 +43,6 @@ const handleDelete = async () => {
 
 onMounted(async () => {
   const statusId = route.params.statusId as string;
-  await statusStore.getStatus(statusId);
+  await statusStore.get(statusId);
 });
 </script>

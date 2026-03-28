@@ -22,27 +22,6 @@ export const useProjectStore = defineStore('project', {
   actions: {
     ...createCrudActions<Project>(projectApi),
 
-    // Alias methods for backward compatibility
-    async getProject(projectId: string) {
-      return this.getCurrentItem(projectId);
-    },
-
-    async getProjects() {
-      return this.getAllItems();
-    },
-
-    async postProject(project: Omit<Project, 'id'>) {
-      return this.createItem(project);
-    },
-
-    async putProject(projectId: string, project: Omit<Project, 'id'>) {
-      return this.updateItem(projectId, project);
-    },
-
-    async deleteProject(projectId: string) {
-      return this.deleteItem(projectId);
-    },
-
     async getIssueProperty(projectId: string): Promise<void> {
       this.currentIssueProperty = await projectIssuePropertyApi.index(projectId)
     }

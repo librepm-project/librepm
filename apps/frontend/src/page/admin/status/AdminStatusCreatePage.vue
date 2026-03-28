@@ -15,7 +15,7 @@ const statusStore = useStatusStore();
 
 const handleSubmit = async (status: Status) => {
   try {
-    await statusStore.postStatus(status);
+    await statusStore.post(status);
     router.push('/admin/status');
   } catch (error) {
     console.error('Error creating status:', error);

@@ -11,7 +11,7 @@ export const useWorklogStore = defineStore('worklog', {
     worklogs: [],
   }),
   actions: {
-    async getWorklogs(issueId: string) {
+    async get(issueId: string) {
       this.worklogs = await worklogApi.index(issueId);
     },
     async create(issueId: string, payload: Partial<Worklog>) {

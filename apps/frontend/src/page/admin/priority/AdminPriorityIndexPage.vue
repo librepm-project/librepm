@@ -22,7 +22,7 @@ const handleEdit = (priority: Priority) => {
 };
 
 onMounted(async () => {
-  await priorityStore.getPriorities();
+  await priorityStore.getAll();
   layoutStore.setActions([
     {
       text: 'global.create',

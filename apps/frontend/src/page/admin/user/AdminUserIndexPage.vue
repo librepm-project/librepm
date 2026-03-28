@@ -22,7 +22,7 @@ const handleEdit = (user: User) => {
 };
 
 onMounted(async () => {
-  await userStore.getUsers();
+  await userStore.getAll();
   layoutStore.setActions([
     {
       text: 'global.create',

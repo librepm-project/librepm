@@ -27,7 +27,7 @@ const handleView = (filter: Filter) => {
 };
 
 onMounted(async () => {
-  await filterStore.getFilters();
+  await filterStore.getAll();
   layoutStore.setActions([
     {
       text: 'global.create',

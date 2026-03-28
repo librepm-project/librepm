@@ -15,7 +15,7 @@ const userStore = useUserStore();
 
 const handleSubmit = async (user: User) => {
   try {
-    await userStore.postUser(user);
+    await userStore.post(user);
     router.push('/admin/user');
   } catch (error) {
     console.error('Error creating user:', error);
