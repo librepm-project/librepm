@@ -24,7 +24,7 @@ func (r FilterConditionRepository) All() (*[]FilterConditionModel, error) {
 	var err error
 	query := r.DB.Select("filter_condition.*")
 
-	if err := query.Find(&filter_conditions).Error; err != nil {
+	if err = query.Find(&filter_conditions).Error; err != nil {
 		slog.Error("failed to fetch filter conditions", "error", err)
 	}
 	return &filter_conditions, err

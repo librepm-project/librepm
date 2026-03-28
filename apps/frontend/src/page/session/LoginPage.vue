@@ -59,7 +59,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { emailRule, requiredRule } from '@/lib/formRule';
-import { useUserSessionStore } from '@/store/userSession.store';
+import { useUserSessionStore } from '@/store/user-session.store';
 import { setToken } from '@/lib/cookie';
 
 const { t } = useI18n();

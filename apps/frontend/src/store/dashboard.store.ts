@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Dashboard, AnyDashboardWidget } from '@/lib/interfaces/dashboard.interface';
 import dashboardApi from '@/api/dashboard.api';
-import dashboardWidgetApi from '@/api/dashboardWidget.api';
+import dashboardWidgetApi from '@/api/dashboard-widget.api';
 import { createCrudActions } from './utils/crudMixin';
 
 interface DashboardStore {

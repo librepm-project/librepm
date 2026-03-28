@@ -25,7 +25,7 @@ func (r StatusRepository) All() (*[]StatusModel, error) {
 	var err error
 	query := r.DB.Select("status.*")
 
-	if err := query.Find(&statuses).Error; err != nil {
+	if err = query.Find(&statuses).Error; err != nil {
 		slog.Error("failed to fetch statuses", "error", err)
 	}
 	return &statuses, err

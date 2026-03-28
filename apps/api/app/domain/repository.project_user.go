@@ -24,7 +24,7 @@ func (r ProjectUserRepository) All() (*[]ProjectUserModel, error) {
 	var err error
 	query := r.DB.Select("project_user.*")
 
-	if err := query.Find(&project_users).Error; err != nil {
+	if err = query.Find(&project_users).Error; err != nil {
 		slog.Error("failed to fetch project users", "error", err)
 	}
 	return &project_users, err

@@ -24,7 +24,7 @@ func (r BoardColumnStatusRepository) All() (*[]BoardColumnStatusModel, error) {
 	var err error
 	query := r.DB.Select("board_column_status.*")
 
-	if err := query.Find(&board_column_statuses).Error; err != nil {
+	if err = query.Find(&board_column_statuses).Error; err != nil {
 		slog.Error("failed to fetch board column statuses", "error", err)
 	}
 	return &board_column_statuses, err

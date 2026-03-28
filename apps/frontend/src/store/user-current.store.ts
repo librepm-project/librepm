@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { User } from '@/lib/interfaces/user.interface';
-import userCurrentApi from '@/api/userCurrent.api';
+import userCurrentApi from '@/api/user-current.api';
 
 interface UserCurrentStore {
   current: User | null;
@@ -14,13 +14,13 @@ export const useUserCurrentStore = defineStore('userCurrent', {
   },
   actions: {
     async get() {
-      this.current = await userCurrentApi.getCurrent();
+      this.current = await userCurrentApi.get();
     },
     set(user: User | null) {
       this.current = user;
     },
-    async updateCurrent(user: Partial<User>) {
-      await userCurrentApi.updateCurrent(user);
+    async update(user: Partial<User>) {
+      await userCurrentApi.update(user);
       await this.get();
     },
   },

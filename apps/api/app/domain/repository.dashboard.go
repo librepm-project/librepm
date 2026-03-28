@@ -25,7 +25,7 @@ func (r DashboardRepository) All() (*[]DashboardModel, error) {
 	var err error
 	query := r.DB.Preload("Widgets.Filter.FilterConditions").Select("dashboard.*")
 
-	if err := query.Find(&dashboards).Error; err != nil {
+	if err = query.Find(&dashboards).Error; err != nil {
 		slog.Error("failed to fetch dashboards", "error", err)
 	}
 	return &dashboards, err

@@ -25,7 +25,7 @@ func (r UserRepository) All() (*[]UserModel, error) {
 	var err error
 	query := r.DB.Select("user.*")
 
-	if err := query.Find(&users).Error; err != nil {
+	if err = query.Find(&users).Error; err != nil {
 		slog.Error("failed to fetch users", "error", err)
 	}
 

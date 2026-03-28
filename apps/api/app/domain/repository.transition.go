@@ -24,7 +24,7 @@ func (r TransitionRepository) All() (*[]TransitionModel, error) {
 	var err error
 	query := r.DB.Select("transition.*")
 
-	if err := query.Find(&transitions).Error; err != nil {
+	if err = query.Find(&transitions).Error; err != nil {
 		slog.Error("failed to fetch transitions", "error", err)
 	}
 	return &transitions, err

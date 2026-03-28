@@ -1,4 +1,4 @@
-import { ProjectIssueProperty } from "@/lib/interfaces/projectIssueProperty.interface";
+import { ProjectIssueProperty } from "@/lib/interfaces/project-issue-property.interface";
 import api from "@/api/api";
 
 const index = async (projectId: string): Promise<ProjectIssueProperty> => {

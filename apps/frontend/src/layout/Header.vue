@@ -97,8 +97,8 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import logo from '@/assets/logo.png';
 import NotificationBell from '@/component/NotificationBell.vue';
-import { useUserCurrentStore } from '@/store/userCurrent.store';
-import { useUserSessionStore } from '@/store/userSession.store';
+import { useUserCurrentStore } from '@/store/user-current.store';
+import { useUserSessionStore } from '@/store/user-session.store';
 import { useLayoutStore } from '@/store/layout.store';
 import { navigationLinks } from '@/lib/navigation';
 

@@ -31,7 +31,7 @@ func (r IssueRepository) All() (*[]IssueModel, error) {
 	var err error
 	query := r.DB.Select("issue.*")
 
-	if err := r.withAssociations(query).Find(&issues).Error; err != nil {
+	if err = r.withAssociations(query).Find(&issues).Error; err != nil {
 		slog.Error("failed to fetch issues", "error", err)
 	}
 	return &issues, err

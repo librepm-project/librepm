@@ -24,7 +24,7 @@ func (r ProjectTrackerTransitionRepository) All() (*[]ProjectTrackerTransitionMo
 	var err error
 	query := r.DB.Select("project_tracker_transition.*")
 
-	if err := query.Find(&project_tracker_transitions).Error; err != nil {
+	if err = query.Find(&project_tracker_transitions).Error; err != nil {
 		slog.Error("failed to fetch project tracker transitions", "error", err)
 	}
 	return &project_tracker_transitions, err

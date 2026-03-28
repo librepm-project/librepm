@@ -11,14 +11,14 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import { useUserCurrentStore } from '@/store/userCurrent.store';
+import { useUserCurrentStore } from '@/store/user-current.store';
 import UserForm from '@/component/UserForm.vue';
 import { User } from '@/lib/interfaces/user.interface';
 
 const userCurrentStore = useUserCurrentStore();
 
 const handleSubmit = async (user: User) => {
-  await userCurrentStore.updateCurrent(user);
+  await userCurrentStore.update(user);
 };
 
 onMounted(async () => {

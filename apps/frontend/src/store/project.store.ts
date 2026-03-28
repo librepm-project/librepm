@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { Project } from '@/lib/interfaces/project.interface';
 import projectApi from '@/api/project.api';
-import projectIssuePropertyApi from '@/api/projectIssueProperty.api';
-import { ProjectIssueProperty } from "@/lib/interfaces/projectIssueProperty.interface";
+import projectIssuePropertyApi from '@/api/project-issue-property.api';
+import { ProjectIssueProperty } from "@/lib/interfaces/project-issue-property.interface";
 import { createCrudActions } from './utils/crudMixin';
 
 interface ProjectStore {

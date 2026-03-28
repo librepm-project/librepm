@@ -26,7 +26,7 @@ func (r ProjectRepository) All() (*[]ProjectModel, error) {
 	var err error
 	query := r.DB.Select("project.*")
 
-	if err := query.Find(&projects).Error; err != nil {
+	if err = query.Find(&projects).Error; err != nil {
 		slog.Error("failed to fetch projects", "error", err)
 	}
 	return &projects, err
