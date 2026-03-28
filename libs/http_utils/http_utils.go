@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
@@ -38,5 +39,9 @@ func StartGenericHTTPServer(ctx StartGenericHTTPServerContext) {
 
 	r.Mount("/", ctx.Router)
 	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":80", r))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "80"
+	}
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
