@@ -35,7 +35,9 @@ func MigrateProductDatabase(db *gorm.DB) {
 
 	// Foreign key constraints for project default values (added separately because
 	// inline REFERENCES in GORM type tags is not valid MariaDB syntax):
+	db.Exec("ALTER TABLE `project` DROP FOREIGN KEY `fk_project_default_status`")
 	db.Exec("ALTER TABLE `project` ADD CONSTRAINT `fk_project_default_status` FOREIGN KEY (`default_status_id`) REFERENCES `status`(`id`) ON DELETE SET NULL")
+	db.Exec("ALTER TABLE `project` DROP FOREIGN KEY `fk_project_default_tracker`")
 	db.Exec("ALTER TABLE `project` ADD CONSTRAINT `fk_project_default_tracker` FOREIGN KEY (`default_tracker_id`) REFERENCES `tracker`(`id`) ON DELETE SET NULL")
 
 	// A régi filter_condition schema cleanup:

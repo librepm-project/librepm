@@ -6,6 +6,7 @@ import (
 
 	"apps/api/app/domain"
 	"libs/http_utils"
+	"gorm.io/gorm"
 )
 
 type BoardControllerInterface interface {
@@ -33,7 +34,11 @@ func (c BoardController) Show(w http.ResponseWriter, r *http.Request) {
 	var board_id, _ = http_utils.GetParamUUID(r, "board_id")
 	board, err := c.BoardService.Show(board_id)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		if err == gorm.ErrRecordNotFound {
+			w.WriteHeader(http.StatusNotFound)
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
 		return
 	}
 	http_utils.RespondWithJSON(w, http.StatusOK, BoardSerializer{}.ModelToResponse(*board))

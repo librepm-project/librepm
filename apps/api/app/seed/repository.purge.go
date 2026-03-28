@@ -39,6 +39,7 @@ func (r PurgeRepository) Purge() {
 
 		&domain.NotificationModel{},
 		&domain.UserModel{},
+		&domain.SettingModel{},
 	}
 	if err := r.DB.Exec("SET FOREIGN_KEY_CHECKS = 0;").Error; err != nil {
 		log.Printf("Failed to disable foreign key checks: %v", err)
