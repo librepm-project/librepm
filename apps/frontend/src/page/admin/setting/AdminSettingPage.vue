@@ -122,8 +122,8 @@ onMounted(async () => {
     const [fetchedBoards, fetchedDashboards] = await Promise.all([
       boardApi.index(),
       dashboardApi.index(),
-      settingStore.fetchSettings(),
     ]);
+    await settingStore.fetchSettings();
     boards.value = fetchedBoards;
     dashboards.value = fetchedDashboards;
   } finally {

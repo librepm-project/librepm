@@ -249,26 +249,28 @@ watch(() => props.items, (newItems) => {
 
 watch(() => props.filterId, loadData);
 
-watch(selectedColumns, async (newColumns) => {
+async function persistDisplaySetting(patch: { columnList?: string; groupBy?: string }, globalKey: string, globalValue: string) {
   if (props.persistMode === 'global') {
-    await settingStore.updateSetting('default_issue_display_columns', JSON.stringify(newColumns));
+    await settingStore.updateSetting(globalKey, globalValue);
   } else if (props.persistMode === 'filter' && props.filterId && filterData.value) {
-    await filterStore.putFilter(props.filterId, {
-      ...filterData.value,
-      columnList: JSON.stringify(newColumns),
-    });
+    await filterStore.putFilter(props.filterId, { ...filterData.value, ...patch });
   }
+}
+
+watch(selectedColumns, (newColumns) => {
+  persistDisplaySetting(
+    { columnList: JSON.stringify(newColumns) },
+    'default_issue_display_columns',
+    JSON.stringify(newColumns),
+  );
 }, { deep: true });
 
-watch(selectedGroupBy, async (newGroupBy) => {
-  if (props.persistMode === 'global') {
-    await settingStore.updateSetting('default_issue_display_group_by', newGroupBy);
-  } else if (props.persistMode === 'filter' && props.filterId && filterData.value) {
-    await filterStore.putFilter(props.filterId, {
-      ...filterData.value,
-      groupBy: newGroupBy,
-    });
-  }
+watch(selectedGroupBy, (newGroupBy) => {
+  persistDisplaySetting(
+    { groupBy: newGroupBy },
+    'default_issue_display_group_by',
+    newGroupBy,
+  );
 });
 </script>
 

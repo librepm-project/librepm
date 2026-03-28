@@ -25,7 +25,7 @@ func (r ProjectTrackerRepository) All() (*[]ProjectTrackerModel, error) {
 	var err error
 	query := r.DB.Select("project_tracker.*")
 
-	if err := query.Find(&project_trackers).Error; err != nil {
+	if err = query.Find(&project_trackers).Error; err != nil {
 		slog.Error("failed to fetch project trackers", "error", err)
 	}
 	return &project_trackers, err
