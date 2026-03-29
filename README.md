@@ -1,3 +1,6 @@
+> [!WARNING]
+> **This tool is under heavy development and is NOT yet suitable for production use.**
+
 # LibrePM
 
 This project is a web application designed for project management.
