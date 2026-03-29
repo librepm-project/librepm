@@ -1140,204 +1140,6 @@
           "tags": []
         }
       },
-      "auth": {
-        "name": "auth",
-        "type": "app",
-        "data": {
-          "root": "apps/auth",
-          "name": "auth",
-          "projectType": "application",
-          "targets": {
-            "build": {
-              "executor": "@nx-go/nx-go:build",
-              "cache": true,
-              "inputs": [
-                "{projectRoot}/go.mod",
-                "{projectRoot}/go.sum",
-                "{projectRoot}/**/*.go",
-                "{workspaceRoot}/go.mod",
-                "{workspaceRoot}/go.sum",
-                "{workspaceRoot}/go.work",
-                "{workspaceRoot}/go.work.sum"
-              ],
-              "outputs": [
-                "{workspaceRoot}/dist/{projectRoot}*"
-              ],
-              "metadata": {
-                "technologies": [
-                  "go"
-                ],
-                "description": "Builds the Go application",
-                "help": {
-                  "command": "go help build",
-                  "example": {
-                    "options": {
-                      "main": "main.go"
-                    }
-                  }
-                }
-              },
-              "options": {
-                "main": "apps/auth/main.go"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "serve": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "air -c .air.toml",
-                "cwd": "apps/auth"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "serve:air": {
-              "executor": "@nx-go/nx-go:serve-air",
-              "continuous": true,
-              "metadata": {
-                "technologies": [
-                  "go"
-                ],
-                "description": "Runs the Go application with Air live reload",
-                "help": {
-                  "command": "air -h",
-                  "example": {
-                    "options": {
-                      "config": ".air.toml"
-                    }
-                  }
-                }
-              },
-              "configurations": {},
-              "options": {},
-              "parallelism": true
-            },
-            "test": {
-              "executor": "@nx-go/nx-go:test",
-              "cache": true,
-              "inputs": [
-                "{projectRoot}/go.mod",
-                "{projectRoot}/go.sum",
-                "{projectRoot}/**/*.go",
-                "{workspaceRoot}/go.mod",
-                "{workspaceRoot}/go.sum",
-                "{workspaceRoot}/go.work",
-                "{workspaceRoot}/go.work.sum"
-              ],
-              "metadata": {
-                "technologies": [
-                  "go"
-                ],
-                "description": "Tests the Go project",
-                "help": {
-                  "command": "go help test",
-                  "example": {
-                    "options": {
-                      "cover": true
-                    }
-                  }
-                }
-              },
-              "configurations": {},
-              "options": {},
-              "parallelism": true
-            },
-            "lint": {
-              "executor": "@nx-go/nx-go:lint",
-              "cache": true,
-              "inputs": [
-                "{projectRoot}/go.mod",
-                "{projectRoot}/go.sum",
-                "{projectRoot}/**/*.go",
-                "{workspaceRoot}/go.mod",
-                "{workspaceRoot}/go.sum",
-                "{workspaceRoot}/go.work",
-                "{workspaceRoot}/go.work.sum"
-              ],
-              "metadata": {
-                "technologies": [
-                  "go"
-                ],
-                "description": "Lints the Go project",
-                "help": {
-                  "command": "go help fmt",
-                  "example": {}
-                }
-              },
-              "configurations": {},
-              "options": {},
-              "parallelism": true
-            },
-            "tidy": {
-              "executor": "@nx-go/nx-go:tidy",
-              "cache": true,
-              "inputs": [
-                "{projectRoot}/go.mod",
-                "{projectRoot}/go.sum",
-                "{projectRoot}/**/*.go",
-                "{workspaceRoot}/go.mod",
-                "{workspaceRoot}/go.sum",
-                "{workspaceRoot}/go.work",
-                "{workspaceRoot}/go.work.sum"
-              ],
-              "outputs": [
-                "{projectRoot}/go.mod",
-                "{projectRoot}/go.sum"
-              ],
-              "metadata": {
-                "technologies": [
-                  "go"
-                ],
-                "description": "Tidies the Go project dependencies",
-                "help": {
-                  "command": "go help mod",
-                  "example": {}
-                }
-              },
-              "configurations": {},
-              "options": {},
-              "parallelism": true
-            },
-            "generate": {
-              "executor": "@nx-go/nx-go:generate",
-              "cache": true,
-              "inputs": [
-                "{projectRoot}/go.mod",
-                "{projectRoot}/go.sum",
-                "{projectRoot}/**/*.go",
-                "{workspaceRoot}/go.mod",
-                "{workspaceRoot}/go.sum",
-                "{workspaceRoot}/go.work",
-                "{workspaceRoot}/go.work.sum"
-              ],
-              "metadata": {
-                "technologies": [
-                  "go"
-                ],
-                "description": "Generates Go source code files",
-                "help": {
-                  "command": "go help generate",
-                  "example": {
-                    "options": {
-                      "args": [
-                        "./..."
-                      ]
-                    }
-                  }
-                }
-              },
-              "configurations": {},
-              "options": {},
-              "parallelism": true
-            }
-          },
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "sourceRoot": "apps/auth",
-          "tags": [],
-          "implicitDependencies": []
-        }
-      },
       "api": {
         "name": "api",
         "type": "app",
@@ -1557,19 +1359,7 @@
       ],
       "libs/jwt-utils": [],
       "frontend": [],
-      "auth": [
-        {
-          "source": "auth",
-          "target": "libs/http-utils",
-          "type": "static"
-        }
-      ],
       "api": [
-        {
-          "source": "api",
-          "target": "libs/mysql-utils",
-          "type": "static"
-        },
         {
           "source": "api",
           "target": "libs/password-utils",
@@ -1583,6 +1373,11 @@
         {
           "source": "api",
           "target": "libs/http-utils",
+          "type": "static"
+        },
+        {
+          "source": "api",
+          "target": "libs/mysql-utils",
           "type": "static"
         }
       ]

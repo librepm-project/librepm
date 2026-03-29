@@ -2,7 +2,6 @@ go 1.23
 
 use (
 	./apps/api
-	./apps/auth
 	./libs/authentication
 	./libs/http_utils
 	./libs/jwt_utils
