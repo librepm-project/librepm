@@ -7,7 +7,13 @@
     max-width="400"
   >
     <template #activator="{ props }">
-      <v-btn icon variant="text" class="text-white" v-bind="props" @click="onOpen">
+      <v-btn
+        icon
+        variant="text"
+        class="text-white"
+        v-bind="props"
+        @click="onOpen"
+      >
         <v-badge
           v-if="store.items.length"
           :content="store.items.length"
@@ -16,7 +22,9 @@
         >
           <v-icon>mdi-bell-outline</v-icon>
         </v-badge>
-        <v-icon v-else>mdi-bell-outline</v-icon>
+        <v-icon v-else>
+          mdi-bell-outline
+        </v-icon>
       </v-btn>
     </template>
 
@@ -26,14 +34,22 @@
       </v-card-title>
       <v-divider />
 
-      <v-list v-if="store.items.length" density="compact" class="pa-1">
+      <v-list
+        v-if="store.items.length"
+        density="compact"
+        class="pa-1"
+      >
         <v-list-item
           v-for="notification in store.items"
           :key="notification.id"
           class="rounded-lg mb-1"
         >
           <template #prepend>
-            <v-icon size="small" :color="typeColor(notification.type)" class="mr-2">
+            <v-icon
+              size="small"
+              :color="typeColor(notification.type)"
+              class="mr-2"
+            >
               {{ typeIcon(notification.type) }}
             </v-icon>
           </template>
@@ -51,13 +67,18 @@
               :title="t('notification.dismiss')"
               @click.stop="store.markAsRead(notification.id)"
             >
-              <v-icon size="small">mdi-close</v-icon>
+              <v-icon size="small">
+                mdi-close
+              </v-icon>
             </v-btn>
           </template>
         </v-list-item>
       </v-list>
 
-      <v-card-text v-else class="text-center text-body-2 text-medium-emphasis py-6">
+      <v-card-text
+        v-else
+        class="text-center text-body-2 text-medium-emphasis py-6"
+      >
         {{ t('notification.empty') }}
       </v-card-text>
     </v-card>

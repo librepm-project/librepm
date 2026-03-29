@@ -1,6 +1,9 @@
 <template>
   <div>
-    <user-form :onSubmit="handleSubmit" submitButtonText="global.create" />
+    <user-form
+      :on-submit="handleSubmit"
+      submit-button-text="global.create"
+    />
   </div>
 </template>
 

@@ -1,7 +1,12 @@
 <template>
   <div class="mb-6">
     <p class="text-subtitle2 font-weight-medium mb-2">
-      <v-icon x-small class="mr-1">{{ icon }}</v-icon>
+      <v-icon
+        x-small
+        class="mr-1"
+      >
+        {{ icon }}
+      </v-icon>
       {{ label }}
     </p>
     <div

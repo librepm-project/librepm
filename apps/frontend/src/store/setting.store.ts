@@ -20,15 +20,15 @@ export const useSettingStore = defineStore('setting', {
             this.loading = true;
             this.error = null;
             try {
-                const data = await settingApi.index();
-                this.settings = data.map((item: any) => ({
-                    key: item.Key || item.key,
-                    value: item.Value || item.value,
-                    valueType: item.ValueType || item.valueType,
-                    options: item.Options || item.options,
+                const data = await settingApi.index() as Array<Record<string, string>>;
+                this.settings = data.map((item) => ({
+                    key: item['Key'] || item['key'],
+                    value: item['Value'] || item['value'],
+                    valueType: item['ValueType'] || item['valueType'],
+                    options: item['Options'] || item['options'],
                 }));
-            } catch (error: any) {
-                this.error = error.message || 'Failed to fetch settings';
+            } catch (error) {
+                this.error = (error instanceof Error ? error.message : null) || 'Failed to fetch settings';
                 console.error('Error fetching settings:', error);
             } finally {
                 this.loading = false;
@@ -45,8 +45,8 @@ export const useSettingStore = defineStore('setting', {
                 if (setting) {
                     setting.value = value;
                 }
-            } catch (error: any) {
-                this.error = error.message || 'Failed to update setting';
+            } catch (error) {
+                this.error = (error instanceof Error ? error.message : null) || 'Failed to update setting';
                 console.error('Error updating setting:', error);
             } finally {
                 this.loading = false;

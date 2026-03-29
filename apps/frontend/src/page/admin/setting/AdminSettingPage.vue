@@ -1,13 +1,27 @@
 <template>
   <v-container fluid>
-    <v-form @submit.prevent="saveSettings" ref="form">
+    <v-form
+      ref="form"
+      @submit.prevent="saveSettings"
+    >
       <v-row v-if="settingStore.loading || loadingData">
-        <v-col cols="12" class="text-center">
-          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        <v-col
+          cols="12"
+          class="text-center"
+        >
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          />
         </v-col>
       </v-row>
       <v-row v-else-if="settingStore.error">
-        <v-col cols="12" class="text-center text-red">{{ settingStore.error }}</v-col>
+        <v-col
+          cols="12"
+          class="text-center text-red"
+        >
+          {{ settingStore.error }}
+        </v-col>
       </v-row>
       <template v-else-if="settingStore.settings.filter(s => s.key && s.key !== 'undefined').length > 0">
         <v-row
@@ -79,7 +93,12 @@
         </v-row>
       </template>
       <v-row v-else>
-        <v-col cols="12" class="text-center">{{ $t('settings.no_settings_found') }}</v-col>
+        <v-col
+          cols="12"
+          class="text-center"
+        >
+          {{ $t('settings.no_settings_found') }}
+        </v-col>
       </v-row>
     </v-form>
   </v-container>

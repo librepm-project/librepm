@@ -9,8 +9,8 @@ export function createEntityStore<T extends { id: string }>(
   api: {
     indexByEntity?: (entityId: string) => Promise<T[]>;
     index?: (entityId: string) => Promise<T[]>;
-    create?: (entityId: string, payload: any) => Promise<T>;
-    update?: (entityId: string, itemId: string, payload: any) => Promise<T>;
+    create?: (entityId: string, payload: unknown) => Promise<T>;
+    update?: (entityId: string, itemId: string, payload: unknown) => Promise<T>;
     destroy?: (itemId: string) => Promise<void>;
   }
 ): StoreDefinition {
@@ -27,14 +27,14 @@ export function createEntityStore<T extends { id: string }>(
         }
       },
 
-      async createItem(entityId: string, payload: any) {
+      async createItem(entityId: string, payload: unknown) {
         if (!api.create) throw new Error('Create not supported');
         const created = await api.create(entityId, payload);
         this.items.unshift(created);
         return created;
       },
 
-      async updateItem(entityId: string, itemId: string, payload: any) {
+      async updateItem(entityId: string, itemId: string, payload: unknown) {
         if (!api.update) throw new Error('Update not supported');
         const updated = await api.update(entityId, itemId, payload);
         const idx = this.items.findIndex((item) => item.id === itemId);

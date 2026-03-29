@@ -1,6 +1,9 @@
 <template>
   <div>
-    <issue-form :onSubmit="create" submitButtonText="global.create" />
+    <issue-form
+      :on-submit="create"
+      submit-button-text="global.create"
+    />
   </div>
 </template>
 

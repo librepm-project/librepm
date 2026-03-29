@@ -1,24 +1,37 @@
 <template>
-  <v-container v-if="issueStore.current" class="pa-0">
+  <v-container
+    v-if="issueStore.current"
+    class="pa-0"
+  >
     <!-- Description label -->
     <p class="text-subtitle2 font-weight-medium mb-3">
-      <v-icon x-small class="mr-1">mdi-text-box-outline</v-icon>
+      <v-icon
+        x-small
+        class="mr-1"
+      >
+        mdi-text-box-outline
+      </v-icon>
       {{ t('issue.description') }}
     </p>
 
     <!-- Description inline edit -->
     <div class="mb-6">
+      <!-- eslint-disable vue/no-v-html -->
       <div
         v-if="!editingDescription"
         class="text-body1 cursor-pointer inline-hover pa-2 rounded"
         @click="startEditDescription"
         v-html="issueStore.current.description || t('global.no_data')"
       />
+      <!-- eslint-enable vue/no-v-html -->
       <div
         v-else
         v-click-outside="saveDescription"
       >
-        <RichTextField v-model="descriptionDraft" :label="t('issue.description')" />
+        <RichTextField
+          v-model="descriptionDraft"
+          :label="t('issue.description')"
+        />
       </div>
     </div>
 
@@ -34,13 +47,23 @@
       :current-issue-id="issueStore.current.id || ''"
     />
 
-    <v-divider class="my-4"></v-divider>
+    <v-divider class="my-4" />
 
     <!-- Tabs: Comments | History | Work Log -->
-    <v-tabs v-model="activeTab" density="compact" class="mb-2">
-      <v-tab value="comments">{{ t('comment.comments') }}</v-tab>
-      <v-tab value="audit">{{ t('audit_log.history') }}</v-tab>
-      <v-tab value="worklogs">{{ t('worklog.work_log') }}</v-tab>
+    <v-tabs
+      v-model="activeTab"
+      density="compact"
+      class="mb-2"
+    >
+      <v-tab value="comments">
+        {{ t('comment.comments') }}
+      </v-tab>
+      <v-tab value="audit">
+        {{ t('audit_log.history') }}
+      </v-tab>
+      <v-tab value="worklogs">
+        {{ t('worklog.work_log') }}
+      </v-tab>
     </v-tabs>
     <v-window v-model="activeTab">
       <v-window-item value="comments">

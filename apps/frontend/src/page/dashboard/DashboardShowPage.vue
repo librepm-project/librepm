@@ -1,135 +1,173 @@
 <template>
-    <v-container fluid>
-        <div class="d-flex align-center justify-space-between mb-5">
-            <v-menu transition="slide-y-transition">
-                <template #activator="{ props, isActive }">
-                    <v-btn
-                        v-bind="props"
-                        variant="tonal"
-                        color="primary"
-                        rounded="xl"
-                        size="large"
-                        prepend-icon="mdi-view-dashboard"
-                        :append-icon="isActive ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-                        class="dashboard-switcher-btn"
-                    >
-                        {{ dashboardStore.current?.name ?? $t('title.dashboardShow') }}
-                    </v-btn>
-                </template>
-                <v-card rounded="xl" elevation="4" min-width="240" class="mt-1">
-                    <v-list>
-                        <v-list-subheader class="text-caption font-weight-bold text-uppercase">
-                            {{ $t('dashboard.dashboards') }}
-                        </v-list-subheader>
-                        <v-list-item
-                            v-for="dashboard in dashboardStore.index"
-                            :key="dashboard.id"
-                            :to="`/dashboard/${dashboard.id}`"
-                            rounded="lg"
-                            :active="dashboard.id === dashboardStore.current?.id"
-                            active-color="primary"
-                            class="mx-2 mb-1"
-                        >
-                            <template #prepend>
-                                <v-icon :color="dashboard.id === dashboardStore.current?.id ? 'primary' : undefined">
-                                    mdi-view-dashboard-outline
-                                </v-icon>
-                            </template>
-                            <v-list-item-title class="font-weight-medium">{{ dashboard.name }}</v-list-item-title>
-                            <template v-if="dashboard.id === dashboardStore.current?.id" #append>
-                                <v-icon size="small" color="primary">mdi-check</v-icon>
-                            </template>
-                        </v-list-item>
-                    </v-list>
-                </v-card>
-            </v-menu>
-            <v-btn
-                color="primary"
-                variant="tonal"
-                prepend-icon="mdi-plus"
-                rounded="lg"
-                @click="openAddWidget"
+  <v-container fluid>
+    <div class="d-flex align-center justify-space-between mb-5">
+      <v-menu transition="slide-y-transition">
+        <template #activator="{ props, isActive }">
+          <v-btn
+            v-bind="props"
+            variant="tonal"
+            color="primary"
+            rounded="xl"
+            size="large"
+            prepend-icon="mdi-view-dashboard"
+            :append-icon="isActive ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+            class="dashboard-switcher-btn"
+          >
+            {{ dashboardStore.current?.name ?? $t('title.dashboardShow') }}
+          </v-btn>
+        </template>
+        <v-card
+          rounded="xl"
+          elevation="4"
+          min-width="240"
+          class="mt-1"
+        >
+          <v-list>
+            <v-list-subheader class="text-caption font-weight-bold text-uppercase">
+              {{ $t('dashboard.dashboards') }}
+            </v-list-subheader>
+            <v-list-item
+              v-for="dashboard in dashboardStore.index"
+              :key="dashboard.id"
+              :to="`/dashboard/${dashboard.id}`"
+              rounded="lg"
+              :active="dashboard.id === dashboardStore.current?.id"
+              active-color="primary"
+              class="mx-2 mb-1"
             >
-                {{ $t('dashboard.add_widget') }}
-            </v-btn>
-        </div>
+              <template #prepend>
+                <v-icon :color="dashboard.id === dashboardStore.current?.id ? 'primary' : undefined">
+                  mdi-view-dashboard-outline
+                </v-icon>
+              </template>
+              <v-list-item-title class="font-weight-medium">
+                {{ dashboard.name }}
+              </v-list-item-title>
+              <template
+                v-if="dashboard.id === dashboardStore.current?.id"
+                #append
+              >
+                <v-icon
+                  size="small"
+                  color="primary"
+                >
+                  mdi-check
+                </v-icon>
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
+      <v-btn
+        color="primary"
+        variant="tonal"
+        prepend-icon="mdi-plus"
+        rounded="lg"
+        @click="openAddWidget"
+      >
+        {{ $t('dashboard.add_widget') }}
+      </v-btn>
+    </div>
 
-        <div v-if="dashboardStore.widgets.length > 0" class="widget-grid">
-            <div
-                v-for="(widget, index) in dashboardStore.widgets"
-                :key="widget.id"
-                class="widget-col"
-                :class="[
-                    widthClass(widget.width),
-                    { 'widget--dragging': draggingIndex === index },
-                    { 'drop-before': dropTarget === index && dropPosition === 'before' },
-                    { 'drop-after': dropTarget === index && dropPosition === 'after' },
-                ]"
-                draggable="true"
-                @dragstart="onDragStart($event, index)"
-                @dragend="onDragEnd"
-                @dragover.prevent="onDragOver($event, index)"
-                @dragleave="onDragLeave($event)"
-                @drop.prevent="onDrop(index)"
-            >
-                <component
-                    :is="widgetComponents[widget.type]"
-                    v-if="widgetComponents[widget.type]"
-                    :widget="widget"
-                    @remove="handleRemoveWidget"
-                    @resize="(width: string) => handleResizeWidget(widget.id!, width)"
-                />
-            </div>
-        </div>
+    <div
+      v-if="dashboardStore.widgets.length > 0"
+      class="widget-grid"
+    >
+      <div
+        v-for="(widget, index) in dashboardStore.widgets"
+        :key="widget.id"
+        class="widget-col"
+        :class="[
+          widthClass(widget.width),
+          { 'widget--dragging': draggingIndex === index },
+          { 'drop-before': dropTarget === index && dropPosition === 'before' },
+          { 'drop-after': dropTarget === index && dropPosition === 'after' },
+        ]"
+        draggable="true"
+        @dragstart="onDragStart($event, index)"
+        @dragend="onDragEnd"
+        @dragover.prevent="onDragOver($event, index)"
+        @dragleave="onDragLeave($event)"
+        @drop.prevent="onDrop(index)"
+      >
+        <component
+          :is="widgetComponents[widget.type]"
+          v-if="widgetComponents[widget.type]"
+          :widget="widget"
+          @remove="handleRemoveWidget"
+          @resize="(width: string) => handleResizeWidget(widget.id!, width)"
+        />
+      </div>
+    </div>
 
-        <div v-else class="text-center py-12 text-grey">
-            <v-icon size="x-large">mdi-view-dashboard-outline</v-icon>
-            <p class="text-h6 mt-3">{{ $t('dashboard.no_widgets') }}</p>
-        </div>
+    <div
+      v-else
+      class="text-center py-12 text-grey"
+    >
+      <v-icon size="x-large">
+        mdi-view-dashboard-outline
+      </v-icon>
+      <p class="text-h6 mt-3">
+        {{ $t('dashboard.no_widgets') }}
+      </p>
+    </div>
 
-        <!-- Add Widget Dialog -->
-        <v-dialog v-model="addWidgetDialog" max-width="480">
-            <v-card rounded="xl" class="pa-2">
-                <v-card-title class="pa-4 pb-2">{{ $t('dashboard.add_widget') }}</v-card-title>
-                <v-card-text>
-                    <v-select
-                        v-model="newWidget.type"
-                        :items="widgetTypeOptions"
-                        item-title="label"
-                        item-value="value"
-                        :label="$t('dashboard.widget_type')"
-                        class="mb-3"
-                    />
-                    <v-text-field
-                        v-model="newWidget.title"
-                        :label="$t('dashboard.widget_title')"
-                        class="mb-3"
-                    />
-                    <v-select
-                        v-if="newWidget.type === 'filter'"
-                        v-model="newWidget.filterId"
-                        :items="filterStore.index"
-                        item-title="name"
-                        item-value="id"
-                        :label="$t('dashboard.select_filter')"
-                    />
-                </v-card-text>
-                <v-card-actions class="pa-4 pt-0">
-                    <v-spacer />
-                    <v-btn variant="text" @click="addWidgetDialog = false">Cancel</v-btn>
-                    <v-btn
-                        color="primary"
-                        variant="flat"
-                        rounded="lg"
-                        :disabled="!canAddWidget"
-                        @click="handleAddWidget"
-                    >
-                        {{ $t('global.create') }}
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-container>
+    <!-- Add Widget Dialog -->
+    <v-dialog
+      v-model="addWidgetDialog"
+      max-width="480"
+    >
+      <v-card
+        rounded="xl"
+        class="pa-2"
+      >
+        <v-card-title class="pa-4 pb-2">
+          {{ $t('dashboard.add_widget') }}
+        </v-card-title>
+        <v-card-text>
+          <v-select
+            v-model="newWidget.type"
+            :items="widgetTypeOptions"
+            item-title="label"
+            item-value="value"
+            :label="$t('dashboard.widget_type')"
+            class="mb-3"
+          />
+          <v-text-field
+            v-model="newWidget.title"
+            :label="$t('dashboard.widget_title')"
+            class="mb-3"
+          />
+          <v-select
+            v-if="newWidget.type === 'filter'"
+            v-model="newWidget.filterId"
+            :items="filterStore.index"
+            item-title="name"
+            item-value="id"
+            :label="$t('dashboard.select_filter')"
+          />
+        </v-card-text>
+        <v-card-actions class="pa-4 pt-0">
+          <v-spacer />
+          <v-btn
+            variant="text"
+            @click="addWidgetDialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="primary"
+            variant="flat"
+            rounded="lg"
+            :disabled="!canAddWidget"
+            @click="handleAddWidget"
+          >
+            {{ $t('global.create') }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script setup lang="ts">

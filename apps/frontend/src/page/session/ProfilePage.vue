@@ -3,8 +3,8 @@
     <user-form
       v-if="userCurrentStore.current"
       :user="userCurrentStore.current"
-      :onSubmit="handleSubmit"
-      submitButtonText="global.save"
+      :on-submit="handleSubmit"
+      submit-button-text="global.save"
     />
   </div>
 </template>

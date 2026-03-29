@@ -1,7 +1,11 @@
 <template>
-    <v-chip :color="tracker.color" size="small" class="text-capitalize">
-        {{ tracker.name }}
-    </v-chip>
+  <v-chip
+    :color="tracker.color"
+    size="small"
+    class="text-capitalize"
+  >
+    {{ tracker.name }}
+  </v-chip>
 </template>
 
 <script lang="ts" setup>

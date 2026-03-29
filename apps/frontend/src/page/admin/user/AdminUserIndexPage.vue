@@ -1,7 +1,7 @@
 <template>
   <user-table 
     :items="userStore.index" 
-    :onEdit="handleEdit" 
+    :on-edit="handleEdit" 
   />
 </template>
 

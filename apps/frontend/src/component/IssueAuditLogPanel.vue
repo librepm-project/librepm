@@ -1,10 +1,14 @@
 <template>
   <div class="mb-6">
-
     <!-- Fejléc -->
     <div class="d-flex align-center mb-3">
       <p class="text-subtitle2 font-weight-medium mb-0 flex-grow-1">
-        <v-icon x-small class="mr-1">mdi-history</v-icon>
+        <v-icon
+          x-small
+          class="mr-1"
+        >
+          mdi-history
+        </v-icon>
         {{ t('audit_log.history') }}
       </p>
     </div>
@@ -15,17 +19,29 @@
       :key="log.id"
       class="d-flex align-start gap-2 pa-2 rounded hover-bg mb-1"
     >
-      <v-icon size="small" class="text-disabled mt-1" style="flex-shrink: 0">{{ eventIcon(log) }}</v-icon>
+      <v-icon
+        size="small"
+        class="text-disabled mt-1"
+        style="flex-shrink: 0"
+      >
+        {{ eventIcon(log) }}
+      </v-icon>
       <div class="flex-grow-1">
         <span class="text-body2">
           <span class="font-weight-medium">{{ userName(log) }}</span>
           {{ ' ' }}{{ eventDescription(log) }}
         </span>
       </div>
-      <span class="text-caption text-disabled" style="white-space: nowrap">{{ formatDate(log.createdAt) }}</span>
+      <span
+        class="text-caption text-disabled"
+        style="white-space: nowrap"
+      >{{ formatDate(log.createdAt) }}</span>
     </div>
 
-    <p v-if="auditLogs.length === 0" class="text-caption text-disabled mb-0">
+    <p
+      v-if="auditLogs.length === 0"
+      class="text-caption text-disabled mb-0"
+    >
       {{ t('audit_log.no_history') }}
     </p>
   </div>

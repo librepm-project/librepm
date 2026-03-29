@@ -1,7 +1,7 @@
 <template>
   <priority-table
     :items="priorityStore.index"
-    :onEdit="handleEdit"
+    :on-edit="handleEdit"
   />
 </template>
 

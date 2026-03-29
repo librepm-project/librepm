@@ -1,19 +1,42 @@
 <template>
-  <v-app-bar elevation="4" color="primary" class="px-3" density="compact">
+  <v-app-bar
+    elevation="4"
+    color="primary"
+    class="px-3"
+    density="compact"
+  >
     <v-app-bar-nav-icon 
       class="d-md-none text-white mr-1" 
       @click.stop="layoutStore.toggleDrawer()"
     />
-    <v-container class="d-flex align-center justify-space-between pa-0" fluid>
-      <div class="d-flex align-center gap-2 cursor-pointer" @click="router.push('/')">
-        <v-img :src="logo" alt="LibrePM" height="32" width="32" contain />
+    <v-container
+      class="d-flex align-center justify-space-between pa-0"
+      fluid
+    >
+      <div
+        class="d-flex align-center gap-2 cursor-pointer"
+        @click="router.push('/')"
+      >
+        <v-img
+          :src="logo"
+          alt="LibrePM"
+          height="32"
+          width="32"
+          contain
+        />
         <span class="text-h6 font-weight-bold text-white d-none d-sm-flex">LibrePM</span>
       </div>
 
       <v-spacer />
 
-      <nav v-if="userCurrentStore.current" class="d-none d-md-flex align-center gap-2">
-        <template v-for="link in navigationLinks" :key="link.key">
+      <nav
+        v-if="userCurrentStore.current"
+        class="d-none d-md-flex align-center gap-2"
+      >
+        <template
+          v-for="link in navigationLinks"
+          :key="link.key"
+        >
           <v-btn
             v-if="!link.sublinks"
             :prepend-icon="link.icon"
@@ -39,9 +62,19 @@
             {{ t('title.issueCreate') }}
           </v-btn>
           <notification-bell />
-          <v-menu v-for="link in navigationLinks.filter(l => l.sublinks)" :key="link.key" open-on-hover location="bottom">
-            <template v-slot:activator="{ props }">
-              <v-btn icon variant="text" class="text-white" v-bind="props">
+          <v-menu
+            v-for="link in navigationLinks.filter(l => l.sublinks)"
+            :key="link.key"
+            open-on-hover
+            location="bottom"
+          >
+            <template #activator="{ props }">
+              <v-btn
+                icon
+                variant="text"
+                class="text-white"
+                v-bind="props"
+              >
                 <v-icon>{{ link.icon }}</v-icon>
               </v-btn>
             </template>
@@ -52,10 +85,14 @@
                 :to="sublink.to"
                 class="rounded-lg ma-1"
               >
-                <template v-slot:prepend>
-                  <v-icon size="small">{{ sublink.icon }}</v-icon>
+                <template #prepend>
+                  <v-icon size="small">
+                    {{ sublink.icon }}
+                  </v-icon>
                 </template>
-                <v-list-item-title class="font-weight-medium">{{ sublink.text }}</v-list-item-title>
+                <v-list-item-title class="font-weight-medium">
+                  {{ sublink.text }}
+                </v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>

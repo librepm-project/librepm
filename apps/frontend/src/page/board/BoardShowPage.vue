@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid v-if="boardStore.current">
+  <v-container
+    v-if="boardStore.current"
+    fluid
+  >
     <div class="d-flex align-center mb-5">
       <v-menu transition="slide-y-transition">
         <template #activator="{ props, isActive }">
@@ -16,7 +19,12 @@
             {{ boardStore.current.name }}
           </v-btn>
         </template>
-        <v-card rounded="xl" elevation="4" min-width="240" class="mt-1">
+        <v-card
+          rounded="xl"
+          elevation="4"
+          min-width="240"
+          class="mt-1"
+        >
           <v-list>
             <v-list-subheader class="text-caption font-weight-bold text-uppercase">
               {{ t('board.boards') }}
@@ -35,9 +43,19 @@
                   mdi-view-dashboard-outline
                 </v-icon>
               </template>
-              <v-list-item-title class="font-weight-medium">{{ board.name }}</v-list-item-title>
-              <template v-if="board.id === boardStore.current?.id" #append>
-                <v-icon size="small" color="primary">mdi-check</v-icon>
+              <v-list-item-title class="font-weight-medium">
+                {{ board.name }}
+              </v-list-item-title>
+              <template
+                v-if="board.id === boardStore.current?.id"
+                #append
+              >
+                <v-icon
+                  size="small"
+                  color="primary"
+                >
+                  mdi-check
+                </v-icon>
               </template>
             </v-list-item>
           </v-list>
@@ -46,49 +64,88 @@
     </div>
 
     <v-row class="board-row flex-nowrap overflow-x-auto">
-      <v-col v-if="sortedColumns.length > 0"
-        v-for="column in sortedColumns" :key="column.id" class="board-column" cols="12" sm="6" md="4" lg="3">
-        <v-card
-          variant="flat"
-          color="grey-lighten-4"
-          class="h-100 d-flex flex-column column-drop-zone"
-          :class="getColumnClass(column)"
-          @dragover="onColumnDragOver($event, column)"
-          @dragleave="onColumnDragLeave($event, column)"
-          @drop.prevent="onColumnDrop(column)"
+      <template v-if="sortedColumns.length > 0">
+        <v-col
+          v-for="column in sortedColumns"
+          :key="column.id"
+          class="board-column"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
         >
-          <v-card-title class="d-flex align-center py-2 bg-grey-lighten-3">
-            <span class="text-subtitle-1 font-weight-bold">{{ column.label }}</span>
-            <v-chip size="x-small" class="ms-2" variant="flat">{{ getIssuesForColumn(column).length }}</v-chip>
-          </v-card-title>
-
-          <v-card-text class="flex-grow-1 pa-2 overflow-y-auto">
-            <div v-for="issue in getIssuesForColumn(column)" :key="issue.id" class="mb-2">
-              <v-card
+          <v-card
+            variant="flat"
+            color="grey-lighten-4"
+            class="h-100 d-flex flex-column column-drop-zone"
+            :class="getColumnClass(column)"
+            @dragover="onColumnDragOver($event, column)"
+            @dragleave="onColumnDragLeave($event, column)"
+            @drop.prevent="onColumnDrop(column)"
+          >
+            <v-card-title class="d-flex align-center py-2 bg-grey-lighten-3">
+              <span class="text-subtitle-1 font-weight-bold">{{ column.label }}</span>
+              <v-chip
+                size="x-small"
+                class="ms-2"
                 variant="flat"
-                class="pa-3 issue-card border"
-                :class="{ 'is-dragging': draggingIssue?.id === issue.id }"
-                draggable="true"
-                @dragstart="onIssueDragStart($event, issue)"
-                @dragend="onIssueDragEnd"
-                @click="router.push(`/issue/key/${issue.key}`)"
               >
-                <div class="d-flex justify-space-between align-start mb-1">
-                  <span class="text-caption text-grey">{{ issue.key }}</span>
-                  <tracker-chip :tracker="issue.tracker" size="x-small" />
-                </div>
-                <div class="text-body-2 font-weight-medium line-clamp-2">{{ issue.summary }}</div>
-              </v-card>
-            </div>
-            <div v-if="getIssuesForColumn(column).length === 0" class="text-center py-4 text-grey-lighten-1">
-              <v-icon size="large">mdi-tray-blank</v-icon>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col v-else cols="12" class="text-center py-8">
-        <v-icon icon="mdi-alert-circle-outline" size="x-large" color="grey-lighten-1"></v-icon>
-        <p class="text-h6 text-grey-lighten-1 mt-2">{{ t('board.no_columns_defined') }}</p>
+                {{ getIssuesForColumn(column).length }}
+              </v-chip>
+            </v-card-title>
+
+            <v-card-text class="flex-grow-1 pa-2 overflow-y-auto">
+              <div
+                v-for="issue in getIssuesForColumn(column)"
+                :key="issue.id"
+                class="mb-2"
+              >
+                <v-card
+                  variant="flat"
+                  class="pa-3 issue-card border"
+                  :class="{ 'is-dragging': draggingIssue?.id === issue.id }"
+                  draggable="true"
+                  @dragstart="onIssueDragStart($event, issue)"
+                  @dragend="onIssueDragEnd"
+                  @click="router.push(`/issue/key/${issue.key}`)"
+                >
+                  <div class="d-flex justify-space-between align-start mb-1">
+                    <span class="text-caption text-grey">{{ issue.key }}</span>
+                    <tracker-chip
+                      :tracker="issue.tracker"
+                      size="x-small"
+                    />
+                  </div>
+                  <div class="text-body-2 font-weight-medium line-clamp-2">
+                    {{ issue.summary }}
+                  </div>
+                </v-card>
+              </div>
+              <div
+                v-if="getIssuesForColumn(column).length === 0"
+                class="text-center py-4 text-grey-lighten-1"
+              >
+                <v-icon size="large">
+                  mdi-tray-blank
+                </v-icon>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </template>
+      <v-col
+        v-else
+        cols="12"
+        class="text-center py-8"
+      >
+        <v-icon
+          icon="mdi-alert-circle-outline"
+          size="x-large"
+          color="grey-lighten-1"
+        />
+        <p class="text-h6 text-grey-lighten-1 mt-2">
+          {{ t('board.no_columns_defined') }}
+        </p>
       </v-col>
     </v-row>
   </v-container>

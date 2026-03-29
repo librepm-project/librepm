@@ -1,8 +1,8 @@
 <template>
   <filter-table
     :items="filterStore.index"
-    :onEdit="handleEdit"
-    :onView="handleView"
+    :on-edit="handleEdit"
+    :on-view="handleView"
   />
 </template>
 

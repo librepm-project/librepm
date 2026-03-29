@@ -1,4 +1,12 @@
-export function createCrudActions<T extends { id?: string }>(api: any) {
+interface SimpleCrudApi<T> {
+  create: (item: unknown) => Promise<T>;
+  update: (id: string, item: unknown) => Promise<T>;
+  destroy: (id: string) => Promise<void>;
+  show: (id: string) => Promise<T>;
+  index: () => Promise<T[]>;
+}
+
+export function createCrudActions<T extends { id?: string }>(api: SimpleCrudApi<T>) {
   return {
     async post(item: Omit<T, 'id'>) {
       const newItem = await api.create(item);
@@ -8,7 +16,7 @@ export function createCrudActions<T extends { id?: string }>(api: any) {
 
     async put(id: string, item: Omit<T, 'id'>) {
       const updated = await api.update(id, item);
-      const idx = this.index.findIndex((e: any) => e.id === id);
+      const idx = this.index.findIndex((e: T) => e.id === id);
       if (idx !== -1) {
         this.index[idx] = updated;
       }
@@ -17,7 +25,7 @@ export function createCrudActions<T extends { id?: string }>(api: any) {
 
     async delete(id: string) {
       await api.destroy(id);
-      this.index = this.index.filter((e: any) => e.id !== id);
+      this.index = this.index.filter((e: T) => e.id !== id);
     },
 
     async get(id: string) {

@@ -1,12 +1,21 @@
 <template>
-  <v-container v-if="filter" fluid>
+  <v-container
+    v-if="filter"
+    fluid
+  >
     <v-row class="mb-4">
       <v-col>
-        <p v-if="filter.description" class="text-body-1 text-medium-emphasis">
+        <p
+          v-if="filter.description"
+          class="text-body-1 text-medium-emphasis"
+        >
           {{ filter.description }}
         </p>
 
-        <div v-if="filter.conditions?.length" class="d-flex flex-wrap gap-2 mt-3">
+        <div
+          v-if="filter.conditions?.length"
+          class="d-flex flex-wrap gap-2 mt-3"
+        >
           <v-chip
             v-for="(condition, i) in filter.conditions"
             :key="i"

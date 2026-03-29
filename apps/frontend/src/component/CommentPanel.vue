@@ -1,6 +1,5 @@
 <template>
   <div class="pa-1">
-
     <!-- Lista -->
     <div
       v-for="comment in comments"
@@ -8,7 +7,10 @@
       class="mb-4"
     >
       <!-- Szerkesztés mód -->
-      <div v-if="editingId === comment.id" class="pa-3 rounded edit-bg">
+      <div
+        v-if="editingId === comment.id"
+        class="pa-3 rounded edit-bg"
+      >
         <v-textarea
           v-model="editContent"
           density="compact"
@@ -19,37 +21,75 @@
           class="mb-2"
         />
         <div class="d-flex gap-2">
-          <v-btn size="small" color="primary" :disabled="!editContent.trim()" @click="submitEdit(comment.id!)">
+          <v-btn
+            size="small"
+            color="primary"
+            :disabled="!editContent.trim()"
+            @click="submitEdit(comment.id!)"
+          >
             {{ t('comment.save') }}
           </v-btn>
-          <v-btn size="small" variant="text" @click="editingId = null">
+          <v-btn
+            size="small"
+            variant="text"
+            @click="editingId = null"
+          >
             {{ t('global.cancel') }}
           </v-btn>
         </div>
       </div>
 
       <!-- Olvasás mód -->
-      <div v-else class="d-flex align-start gap-2 pa-2 rounded hover-bg">
+      <div
+        v-else
+        class="d-flex align-start gap-2 pa-2 rounded hover-bg"
+      >
         <div class="flex-grow-1">
           <div class="d-flex align-center gap-2 mb-1">
             <span class="text-body2 font-weight-medium">{{ userName(comment) }}</span>
             <span class="text-caption text-disabled">{{ formatDate(comment.createdAt) }}</span>
-            <span v-if="comment.updatedAt && comment.updatedAt !== comment.createdAt" class="text-caption text-disabled">
+            <span
+              v-if="comment.updatedAt && comment.updatedAt !== comment.createdAt"
+              class="text-caption text-disabled"
+            >
               (edited)
             </span>
           </div>
-          <p class="text-body2 mb-0" style="white-space: pre-wrap">{{ comment.content }}</p>
+          <p
+            class="text-body2 mb-0"
+            style="white-space: pre-wrap"
+          >
+            {{ comment.content }}
+          </p>
         </div>
-        <v-btn icon size="x-small" variant="text" @click="startEdit(comment)">
-          <v-icon size="small">mdi-pencil</v-icon>
+        <v-btn
+          icon
+          size="x-small"
+          variant="text"
+          @click="startEdit(comment)"
+        >
+          <v-icon size="small">
+            mdi-pencil
+          </v-icon>
         </v-btn>
-        <v-btn icon size="x-small" variant="text" color="error" @click="remove(comment.id!)">
-          <v-icon size="small">mdi-close</v-icon>
+        <v-btn
+          icon
+          size="x-small"
+          variant="text"
+          color="error"
+          @click="remove(comment.id!)"
+        >
+          <v-icon size="small">
+            mdi-close
+          </v-icon>
         </v-btn>
       </div>
     </div>
 
-    <p v-if="comments.length === 0" class="text-caption text-disabled mb-4">
+    <p
+      v-if="comments.length === 0"
+      class="text-caption text-disabled mb-4"
+    >
       {{ t('comment.no_comments') }}
     </p>
 

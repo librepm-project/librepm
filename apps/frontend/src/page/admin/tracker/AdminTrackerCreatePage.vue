@@ -1,6 +1,9 @@
 <template>
   <div>
-    <tracker-form :onSubmit="handleSubmit" submitButtonText="global.create" />
+    <tracker-form
+      :on-submit="handleSubmit"
+      submit-button-text="global.create"
+    />
   </div>
 </template>
 

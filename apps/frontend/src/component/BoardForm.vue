@@ -1,89 +1,149 @@
 <template>
-    <v-form @submit.prevent="submit" ref="formRef">
-        <v-text-field v-model="form.name" :rules="[requiredRule]" :label="t('global.name')"></v-text-field>
-        <v-text-field v-model="form.description" :label="t('global.description')"></v-text-field>
+  <v-form
+    ref="formRef"
+    @submit.prevent="submit"
+  >
+    <v-text-field
+      v-model="form.name"
+      :rules="[requiredRule]"
+      :label="t('global.name')"
+    />
+    <v-text-field
+      v-model="form.description"
+      :label="t('global.description')"
+    />
 
-        <v-divider class="my-4"></v-divider>
-        <div class="d-flex justify-space-between align-center mb-4">
-            <h3>{{ t('board.columns') }}</h3>
-            <v-btn color="secondary" size="small" @click="addColumn" prepend-icon="mdi-plus">
-                {{ t('board.add_column') }}
-            </v-btn>
-        </div>
+    <v-divider class="my-4" />
+    <div class="d-flex justify-space-between align-center mb-4">
+      <h3>{{ t('board.columns') }}</h3>
+      <v-btn
+        color="secondary"
+        size="small"
+        prepend-icon="mdi-plus"
+        @click="addColumn"
+      >
+        {{ t('board.add_column') }}
+      </v-btn>
+    </div>
 
-        <v-card
-            v-for="(column, index) in form.boardColumns"
-            :key="column.id || index"
-            variant="outlined"
-            class="mb-4 column-card"
-            :class="{ 'drag-over': dragOverIndex === index, 'is-dragging': dragSourceIndex === index }"
-            draggable="true"
-            @dragstart="onColumnDragStart($event, index)"
-            @dragover="onColumnDragOver($event, index)"
-            @dragleave="onColumnDragLeave($event)"
-            @drop.prevent="onColumnDrop(index)"
-            @dragend="onColumnDragEnd"
+    <v-card
+      v-for="(column, index) in form.boardColumns"
+      :key="column.id || index"
+      variant="outlined"
+      class="mb-4 column-card"
+      :class="{ 'drag-over': dragOverIndex === index, 'is-dragging': dragSourceIndex === index }"
+      draggable="true"
+      @dragstart="onColumnDragStart($event, index)"
+      @dragover="onColumnDragOver($event, index)"
+      @dragleave="onColumnDragLeave($event)"
+      @drop.prevent="onColumnDrop(index)"
+      @dragend="onColumnDragEnd"
+    >
+      <v-row
+        align="center"
+        class="pa-4"
+        no-gutters
+      >
+        <v-col
+          cols="auto"
+          class="d-flex align-center pe-3"
         >
-            <v-row align="center" class="pa-4" no-gutters>
-                <v-col cols="auto" class="d-flex align-center pe-3">
-                    <v-icon class="drag-handle" color="grey-lighten-1">mdi-drag-vertical</v-icon>
-                </v-col>
-                <v-col cols="12" md="4" class="pe-2">
-                    <v-text-field v-model="column.label" :label="t('board.column_label')" :rules="[requiredRule]" hide-details></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6" class="pe-2">
-                    <v-select v-model="column.statusIds" :items="statusStore.index" item-title="name" item-value="id"
-                        :label="t('board.column_statuses')" multiple chips closable-chips hide-details></v-select>
-                </v-col>
-                <v-col cols="auto" class="d-flex align-center">
-                    <v-btn icon color="error" variant="text" @click="removeColumn(index)">
-                        <v-icon>mdi-delete</v-icon>
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-card>
+          <v-icon
+            class="drag-handle"
+            color="grey-lighten-1"
+          >
+            mdi-drag-vertical
+          </v-icon>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+          class="pe-2"
+        >
+          <v-text-field
+            v-model="column.label"
+            :label="t('board.column_label')"
+            :rules="[requiredRule]"
+            hide-details
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+          class="pe-2"
+        >
+          <v-select
+            v-model="column.statusIds"
+            :items="statusStore.index"
+            item-title="name"
+            item-value="id"
+            :label="t('board.column_statuses')"
+            multiple
+            chips
+            closable-chips
+            hide-details
+          />
+        </v-col>
+        <v-col
+          cols="auto"
+          class="d-flex align-center"
+        >
+          <v-btn
+            icon
+            color="error"
+            variant="text"
+            @click="removeColumn(index)"
+          >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card>
 
-        <v-divider class="my-6" />
+    <v-divider class="my-6" />
 
-        <v-row class="mt-4">
-            <v-col cols="12" class="d-flex gap-3 align-center">
-                <v-btn
-                    type="submit"
-                    color="primary"
-                    size="large"
-                    prepend-icon="mdi-check"
-                    rounded="lg"
-                    class="font-weight-bold"
-                >
-                    {{ t(props.submitButtonText) }}
-                </v-btn>
-                <v-btn
-                    v-if="onDelete"
-                    type="button"
-                    color="error"
-                    variant="text"
-                    size="large"
-                    prepend-icon="mdi-delete"
-                    rounded="lg"
-                    class="font-weight-bold"
-                    @click="onDelete"
-                >
-                    {{ t('global.delete') }}
-                </v-btn>
-                <v-spacer />
-                <v-btn
-                    type="button"
-                    variant="outlined"
-                    color="default"
-                    size="large"
-                    rounded="lg"
-                    @click="router.back()"
-                >
-                    Cancel
-                </v-btn>
-            </v-col>
-        </v-row>
-    </v-form>
+    <v-row class="mt-4">
+      <v-col
+        cols="12"
+        class="d-flex gap-3 align-center"
+      >
+        <v-btn
+          type="submit"
+          color="primary"
+          size="large"
+          prepend-icon="mdi-check"
+          rounded="lg"
+          class="font-weight-bold"
+        >
+          {{ t(props.submitButtonText) }}
+        </v-btn>
+        <v-btn
+          v-if="onDelete"
+          type="button"
+          color="error"
+          variant="text"
+          size="large"
+          prepend-icon="mdi-delete"
+          rounded="lg"
+          class="font-weight-bold"
+          @click="onDelete"
+        >
+          {{ t('global.delete') }}
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          type="button"
+          variant="outlined"
+          color="default"
+          size="large"
+          rounded="lg"
+          @click="router.back()"
+        >
+          Cancel
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-form>
 </template>
 
 <script lang="ts" setup>

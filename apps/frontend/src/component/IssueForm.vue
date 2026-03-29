@@ -1,42 +1,99 @@
 <template>
-    <v-container>
-        <v-form @submit.prevent="submit">
-            <v-row>
-                <v-col cols="12" md="4">
-                    <v-select v-model="form.projectId" :label="t('issue.project')" :items="projectStore.index"
-                        item-title="name" item-value="id" required></v-select>
-                </v-col>
+  <v-container>
+    <v-form @submit.prevent="submit">
+      <v-row>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-select
+            v-model="form.projectId"
+            :label="t('issue.project')"
+            :items="projectStore.index"
+            item-title="name"
+            item-value="id"
+            required
+          />
+        </v-col>
 
-                <v-col cols="12" md="4">
-                    <v-select v-model="form.trackerId" :label="t('issue.tracker')" :items="trackers" item-title="name"
-                        item-value="id" required></v-select>
-                </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-select
+            v-model="form.trackerId"
+            :label="t('issue.tracker')"
+            :items="trackers"
+            item-title="name"
+            item-value="id"
+            required
+          />
+        </v-col>
 
-                <v-col cols="12" md="4">
-                    <v-select v-model="form.statusId" :label="t('issue.status')" :items="statuses" item-title="name"
-                        item-value="id" required></v-select>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-select v-model="form.priorityId" :label="t('issue.priority')" :items="priorityStore.index"
-                        item-title="name" item-value="id" clearable></v-select>
-                </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-select
+            v-model="form.statusId"
+            :label="t('issue.status')"
+            :items="statuses"
+            item-title="name"
+            item-value="id"
+            required
+          />
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-select
+            v-model="form.priorityId"
+            :label="t('issue.priority')"
+            :items="priorityStore.index"
+            item-title="name"
+            item-value="id"
+            clearable
+          />
+        </v-col>
 
-                <v-col cols="12" md="4">
-                    <v-select v-model="form.assignedUserId" :label="t('issue.assignee')" :items="userStore.index"
-                        :item-title="(u: any) => `${u.firstName} ${u.lastName}`" item-value="id" clearable></v-select>
-                </v-col>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-select
+            v-model="form.assignedUserId"
+            :label="t('issue.assignee')"
+            :items="userStore.index"
+            :item-title="(u: any) => `${u.firstName} ${u.lastName}`"
+            item-value="id"
+            clearable
+          />
+        </v-col>
 
-                <v-col cols="12">
-                    <v-text-field v-model="form.summary" :label="t('issue.summary')" required></v-text-field>
-                </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="form.summary"
+            :label="t('issue.summary')"
+            required
+          />
+        </v-col>
 
-                <v-col cols="12">
-                    <RichTextField v-model="form.description" :label="t('issue.description')" />
-                </v-col>
-            </v-row>
-            <v-btn type="submit" color="primary">{{ t(props.submitButtonText) }}</v-btn>
-        </v-form>
-    </v-container>
+        <v-col cols="12">
+          <RichTextField
+            v-model="form.description"
+            :label="t('issue.description')"
+          />
+        </v-col>
+      </v-row>
+      <v-btn
+        type="submit"
+        color="primary"
+      >
+        {{ t(props.submitButtonText) }}
+      </v-btn>
+    </v-form>
+  </v-container>
 </template>
 
 <script lang="ts" setup>

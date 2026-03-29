@@ -27,7 +27,7 @@ interface LayoutStore {
   sidebarItems: SidebarItem[];
   actionButtons: ActionButton[];
   sidebarComponent: Component | null;
-  sidebarProps: Record<string, any>;
+  sidebarProps: Record<string, unknown>;
   hideLayout: boolean;
 }
 
@@ -59,7 +59,7 @@ export const useLayoutStore = defineStore('sidebar', {
       this.title = title;
       this.onTitleClick = onTitleClick;
     },
-    setTitleEditing(isEditing: boolean, draft: string = '', onSave: ((newTitle: string) => void) | null = null, onCancel: (() => void) | null = null) {
+    setTitleEditing(isEditing: boolean, draft = '', onSave: ((newTitle: string) => void) | null = null, onCancel: (() => void) | null = null) {
       this.isEditingTitle = isEditing;
       this.titleDraft = draft;
       this.onTitleSave = onSave;
@@ -79,7 +79,7 @@ export const useLayoutStore = defineStore('sidebar', {
     resetSidebar() {
       this.sidebarItems = [];
     },
-    setSidebarComponent(component: Component | null, props: Record<string, any> = {}) {
+    setSidebarComponent(component: Component | null, props: Record<string, unknown> = {}) {
       this.sidebarComponent = component;
       this.sidebarProps = props;
     },

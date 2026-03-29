@@ -24,7 +24,7 @@ export const useDashboardStore = defineStore('dashboard', {
         },
 
         async addWidget(dashboardId: string, widget: { type: string; title: string; filterId?: string }) {
-            const created = await dashboardWidgetApi.create(dashboardId, widget as any);
+            const created = await dashboardWidgetApi.create(dashboardId, widget);
             this.widgets.push(created);
             return created;
         },
@@ -36,7 +36,7 @@ export const useDashboardStore = defineStore('dashboard', {
         },
 
         async reorderWidgets(dashboardId: string, ordered: AnyDashboardWidget[]) {
-            const items = ordered.map((w, i) => ({ id: w.id!, weight: i }));
+            const items = ordered.map((w, i) => ({ id: w.id ?? '', weight: i }));
             this.widgets = ordered.map((w, i) => ({ ...w, weight: i }));
             await dashboardWidgetApi.reorder(dashboardId, items);
         },

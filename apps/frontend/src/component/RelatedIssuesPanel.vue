@@ -1,19 +1,31 @@
 <template>
   <div class="mb-6">
-
     <!-- Title + Add button -->
     <div class="d-flex align-center mb-3">
       <p class="text-subtitle2 font-weight-medium mb-0 flex-grow-1">
-        <v-icon x-small class="mr-1">mdi-link-variant</v-icon>
+        <v-icon
+          x-small
+          class="mr-1"
+        >
+          mdi-link-variant
+        </v-icon>
         {{ t('issue.related_issues') }}
       </p>
-      <v-btn icon size="x-small" variant="text" @click="openAddForm">
+      <v-btn
+        icon
+        size="x-small"
+        variant="text"
+        @click="openAddForm"
+      >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
 
     <!-- Add form -->
-    <div v-if="showAddForm" class="mb-4">
+    <div
+      v-if="showAddForm"
+      class="mb-4"
+    >
       <v-autocomplete
         v-model="newTargetIssueId"
         :items="availableIssues"
@@ -47,14 +59,22 @@
         >
           {{ t('issue.add_relation') }}
         </v-btn>
-        <v-btn size="small" variant="text" @click="showAddForm = false">
+        <v-btn
+          size="small"
+          variant="text"
+          @click="showAddForm = false"
+        >
           {{ t('global.cancel') }}
         </v-btn>
       </div>
     </div>
 
     <!-- Relations list -->
-    <div v-for="group in groupedByDirection" :key="group.direction" class="mb-4">
+    <div
+      v-for="group in groupedByDirection"
+      :key="group.direction"
+      class="mb-4"
+    >
       <p class="text-caption text-disabled font-weight-medium mb-2">
         {{ getDirectionLabel(group.direction) }}
       </p>
@@ -85,13 +105,18 @@
             color="error"
             @click="deleteRelation(item.relationId)"
           >
-            <v-icon size="small">mdi-close</v-icon>
+            <v-icon size="small">
+              mdi-close
+            </v-icon>
           </v-btn>
         </div>
       </div>
     </div>
 
-    <p v-if="relations.length === 0 && !showAddForm" class="text-caption text-disabled mb-0">
+    <p
+      v-if="relations.length === 0 && !showAddForm"
+      class="text-caption text-disabled mb-0"
+    >
       {{ t('global.no_data') }}
     </p>
   </div>

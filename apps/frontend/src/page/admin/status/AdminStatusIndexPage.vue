@@ -1,7 +1,7 @@
 <template>
   <status-table 
     :items="statusStore.index" 
-    :onEdit="handleEdit" 
+    :on-edit="handleEdit" 
   />
 </template>
 

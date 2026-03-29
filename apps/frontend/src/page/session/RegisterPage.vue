@@ -1,10 +1,30 @@
 <template>
-  <v-container class="fill-height d-flex align-center justify-center" fluid>
-    <v-col cols="12" sm="9" md="6" lg="5">
-      <v-card class="pa-10 rounded-xl mx-auto" elevation="4" max-width="600">
+  <v-container
+    class="fill-height d-flex align-center justify-center"
+    fluid
+  >
+    <v-col
+      cols="12"
+      sm="9"
+      md="6"
+      lg="5"
+    >
+      <v-card
+        class="pa-10 rounded-xl mx-auto"
+        elevation="4"
+        max-width="600"
+      >
         <div class="text-center mb-6">
-          <v-icon size="48" color="primary" class="mb-3">mdi-bug-outline</v-icon>
-          <h1 class="text-h5 font-weight-bold">LibrePM</h1>
+          <v-icon
+            size="48"
+            color="primary"
+            class="mb-3"
+          >
+            mdi-bug-outline
+          </v-icon>
+          <h1 class="text-h5 font-weight-bold">
+            LibrePM
+          </h1>
         </div>
 
         <v-alert
@@ -17,7 +37,10 @@
           {{ error }}
         </v-alert>
 
-        <v-form @submit.prevent="submit" ref="form">
+        <v-form
+          ref="form"
+          @submit.prevent="submit"
+        >
           <v-text-field
             v-model="firstName"
             :rules="[requiredRule]"
@@ -82,7 +105,10 @@
         </v-form>
 
         <div class="text-center mt-4">
-          <router-link :to="{ name: 'login' }" class="text-primary text-decoration-none">
+          <router-link
+            :to="{ name: 'login' }"
+            class="text-primary text-decoration-none"
+          >
             {{ t('register.back_to_login') }}
           </router-link>
         </div>

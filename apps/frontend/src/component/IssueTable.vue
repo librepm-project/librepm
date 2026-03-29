@@ -1,62 +1,117 @@
 <template>
   <div>
-    <div v-if="groupedIssues.length > 0" class="grouped-issues">
-      <div v-for="group in groupedIssues" :key="group.key" class="mb-6">
-        <h3 class="text-h6 mb-4 pa-3 rounded" style="background: rgba(63, 81, 181, 0.08)">
+    <div
+      v-if="groupedIssues.length > 0"
+      class="grouped-issues"
+    >
+      <div
+        v-for="group in groupedIssues"
+        :key="group.key"
+        class="mb-6"
+      >
+        <h3
+          class="text-h6 mb-4 pa-3 rounded"
+          style="background: rgba(63, 81, 181, 0.08)"
+        >
           {{ group.label }}
         </h3>
-        <v-data-table :items="group.issues" :headers="computedHeaders">
-          <template #item.key="{ item }">
-            <router-link :to="`/issue/key/${item.key}`" class="key-link">{{ item.key }}</router-link>
+        <v-data-table
+          :items="group.issues"
+          :headers="computedHeaders"
+        >
+          <template #[`item.key`]="{ item }">
+            <router-link
+              :to="`/issue/key/${item.key}`"
+              class="key-link"
+            >
+              {{ item.key }}
+            </router-link>
           </template>
-          <template #item.tracker="{ item }">
+          <template #[`item.tracker`]="{ item }">
             <tracker-chip :tracker="item.tracker" />
           </template>
-          <template #item.priority="{ item }">
-            <priority-chip v-if="item.priority" :priority="item.priority" />
-            <span v-else class="text-medium-emphasis">—</span>
+          <template #[`item.priority`]="{ item }">
+            <priority-chip
+              v-if="item.priority"
+              :priority="item.priority"
+            />
+            <span
+              v-else
+              class="text-medium-emphasis"
+            >—</span>
           </template>
-          <template #item.summary="{ item }">
-            <router-link :to="`/issue/key/${item.key}`">{{ item.summary }}</router-link>
+          <template #[`item.summary`]="{ item }">
+            <router-link :to="`/issue/key/${item.key}`">
+              {{ item.summary }}
+            </router-link>
           </template>
-          <template #item.status="{ item }">
+          <template #[`item.status`]="{ item }">
             <status-chip :status="item.status" />
           </template>
-          <template #item.assignee="{ item }">
+          <template #[`item.assignee`]="{ item }">
             <span v-if="item.assignedUser">{{ item.assignedUser.firstName }} {{ item.assignedUser.lastName }}</span>
-            <span v-else class="text-medium-emphasis">—</span>
+            <span
+              v-else
+              class="text-medium-emphasis"
+            >—</span>
           </template>
-          <template #item.project="{ item }">
+          <template #[`item.project`]="{ item }">
             <span v-if="item.project">{{ item.project.name }}</span>
-            <span v-else class="text-medium-emphasis">—</span>
+            <span
+              v-else
+              class="text-medium-emphasis"
+            >—</span>
           </template>
         </v-data-table>
       </div>
     </div>
-    <v-data-table v-else :items="items" :headers="computedHeaders">
-      <template #item.key="{ item }">
-        <router-link :to="`/issue/key/${item.key}`" class="key-link">{{ item.key }}</router-link>
+    <v-data-table
+      v-else
+      :items="items"
+      :headers="computedHeaders"
+    >
+      <template #[`item.key`]="{ item }">
+        <router-link
+          :to="`/issue/key/${item.key}`"
+          class="key-link"
+        >
+          {{ item.key }}
+        </router-link>
       </template>
-      <template #item.tracker="{ item }">
+      <template #[`item.tracker`]="{ item }">
         <tracker-chip :tracker="item.tracker" />
       </template>
-      <template #item.priority="{ item }">
-        <priority-chip v-if="item.priority" :priority="item.priority" />
-        <span v-else class="text-medium-emphasis">—</span>
+      <template #[`item.priority`]="{ item }">
+        <priority-chip
+          v-if="item.priority"
+          :priority="item.priority"
+        />
+        <span
+          v-else
+          class="text-medium-emphasis"
+        >—</span>
       </template>
-      <template #item.summary="{ item }">
-        <router-link :to="`/issue/key/${item.key}`">{{ item.summary }}</router-link>
+      <template #[`item.summary`]="{ item }">
+        <router-link :to="`/issue/key/${item.key}`">
+          {{ item.summary }}
+        </router-link>
       </template>
-      <template #item.status="{ item }">
+      <template #[`item.status`]="{ item }">
         <status-chip :status="item.status" />
       </template>
-      <template #item.assignee="{ item }">
+      <template #[`item.assignee`]="{ item }">
         <span v-if="item.assignedUser">{{ item.assignedUser.firstName }} {{ item.assignedUser.lastName }}</span>
-        <span v-else class="text-medium-emphasis">—</span>
+        <span
+          v-else
+          class="text-medium-emphasis"
+        >—</span>
       </template>
-      <template #item.project="{ item }">
+      <template #[`item.project`]="{ item }">
         <span v-if="item.project">{{ item.project.name }}</span>
-        <span v-else class="text-medium-emphasis">—</span>
+        <span
+          v-else
+          class="text-medium-emphasis"
+        >—</span>
       </template>
     </v-data-table>
   </div>
@@ -101,7 +156,7 @@ const computedHeaders = computed(() => {
 
 const getGroupKey = (issue: Issue): string => {
   if (!props.groupBy) return '';
-  
+
   switch (props.groupBy) {
     case 'status':
       return issue.status?.name || 'Unassigned';
@@ -122,7 +177,7 @@ const groupedIssues = computed(() => {
   if (!props.groupBy) return [];
 
   const groups = new Map<string, Issue[]>();
-  
+
   for (const issue of props.items) {
     const key = getGroupKey(issue);
     if (!groups.has(key)) {

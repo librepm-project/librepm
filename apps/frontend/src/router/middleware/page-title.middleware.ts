@@ -18,7 +18,7 @@ export const pageTitleMiddleware = (
 
   to.meta = reactive({
     title: title,
-  }),
+  });
   window.document.title = `LibrePM | ${title}`;
   next();
 };

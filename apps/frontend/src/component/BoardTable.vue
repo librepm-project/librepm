@@ -1,5 +1,8 @@
 <template>
-  <v-card elevation="0" class="rounded-xl">
+  <v-card
+    elevation="0"
+    class="rounded-xl"
+  >
     <v-data-table
       :items="items"
       :headers="headers"
@@ -22,7 +25,7 @@
         </thead>
       </template>
 
-      <template #item.name="{ item }">
+      <template #[`item.name`]="{ item }">
         {{ item.name }}
       </template>
     </v-data-table>

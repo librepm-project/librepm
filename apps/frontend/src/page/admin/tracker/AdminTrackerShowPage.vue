@@ -2,9 +2,9 @@
   <tracker-form
     v-if="trackerStore.current"
     :tracker="trackerStore.current"
-    :onSubmit="handleSubmit"
-    :onDelete="handleDelete"
-    submitButtonText="global.update"
+    :on-submit="handleSubmit"
+    :on-delete="handleDelete"
+    submit-button-text="global.update"
   />
 </template>
 

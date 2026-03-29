@@ -1,15 +1,29 @@
 <template>
   <div class="mb-6">
-
-    <input ref="fileInputRef" type="file" hidden @change="onFileSelected" />
+    <input
+      ref="fileInputRef"
+      type="file"
+      hidden
+      @change="onFileSelected"
+    >
 
     <!-- Fejléc -->
     <div class="d-flex align-center mb-3">
       <p class="text-subtitle2 font-weight-medium mb-0 flex-grow-1">
-        <v-icon x-small class="mr-1">mdi-paperclip</v-icon>
+        <v-icon
+          x-small
+          class="mr-1"
+        >
+          mdi-paperclip
+        </v-icon>
         {{ t('attachment.attachments') }}
       </p>
-      <v-btn icon size="x-small" variant="text" @click="triggerFileInput">
+      <v-btn
+        icon
+        size="x-small"
+        variant="text"
+        @click="triggerFileInput"
+      >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
@@ -20,20 +34,43 @@
       :key="attachment.id"
       class="d-flex align-center gap-2 pa-2 rounded hover-bg mb-2"
     >
-      <v-icon size="small" class="text-disabled">mdi-file-outline</v-icon>
+      <v-icon
+        size="small"
+        class="text-disabled"
+      >
+        mdi-file-outline
+      </v-icon>
       <div class="flex-grow-1 min-width-0">
         <span class="text-body2">{{ attachment.filename }}</span>
         <span class="text-caption text-disabled ml-2">{{ formatSize(attachment.size) }}</span>
       </div>
-      <v-btn icon size="x-small" variant="text" @click="downloadAttachment(attachment)">
-        <v-icon size="small">mdi-download</v-icon>
+      <v-btn
+        icon
+        size="x-small"
+        variant="text"
+        @click="downloadAttachment(attachment)"
+      >
+        <v-icon size="small">
+          mdi-download
+        </v-icon>
       </v-btn>
-      <v-btn icon size="x-small" variant="text" color="error" @click="remove(attachment.id!)">
-        <v-icon size="small">mdi-close</v-icon>
+      <v-btn
+        icon
+        size="x-small"
+        variant="text"
+        color="error"
+        @click="remove(attachment.id!)"
+      >
+        <v-icon size="small">
+          mdi-close
+        </v-icon>
       </v-btn>
     </div>
 
-    <p v-if="attachments.length === 0" class="text-caption text-disabled mb-0">
+    <p
+      v-if="attachments.length === 0"
+      class="text-caption text-disabled mb-0"
+    >
       {{ t('attachment.no_attachments') }}
     </p>
   </div>

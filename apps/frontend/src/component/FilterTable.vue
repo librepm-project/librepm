@@ -1,5 +1,8 @@
 <template>
-  <v-card elevation="0" class="rounded-xl">
+  <v-card
+    elevation="0"
+    class="rounded-xl"
+  >
     <v-data-table
       :items="items"
       :headers="headers"
@@ -23,11 +26,11 @@
         </thead>
       </template>
 
-      <template #item.name="{ item }">
+      <template #[`item.name`]="{ item }">
         {{ item.name }}
       </template>
 
-      <template #item.conditions="{ item }">
+      <template #[`item.conditions`]="{ item }">
         <v-chip
           v-if="item.conditions && item.conditions.length > 0"
           size="small"
@@ -35,14 +38,23 @@
         >
           {{ item.conditions.length }} condition(s)
         </v-chip>
-        <v-chip v-else size="small" variant="outlined" label>
+        <v-chip
+          v-else
+          size="small"
+          variant="outlined"
+          label
+        >
           No conditions
         </v-chip>
       </template>
 
-      <template #item.actions="{ item }">
+      <template #[`item.actions`]="{ item }">
         <div class="d-flex justify-end">
-          <v-icon @click="onEdit(item)" icon="mdi-pencil" class="cursor-pointer" />
+          <v-icon
+            icon="mdi-pencil"
+            class="cursor-pointer"
+            @click="onEdit(item)"
+          />
         </div>
       </template>
     </v-data-table>

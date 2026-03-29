@@ -1,6 +1,9 @@
 <template>
   <div>
-    <project-form :onSubmit="handleSubmit" submitButtonText="global.create" />
+    <project-form
+      :on-submit="handleSubmit"
+      submit-button-text="global.create"
+    />
   </div>
 </template>
 

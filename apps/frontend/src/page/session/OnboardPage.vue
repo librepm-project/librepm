@@ -1,11 +1,33 @@
 <template>
-  <v-container class="fill-height d-flex align-center justify-center" fluid>
-    <v-col cols="12" sm="9" md="6" lg="5">
-      <v-card class="pa-10 rounded-xl mx-auto" elevation="4" max-width="600">
+  <v-container
+    class="fill-height d-flex align-center justify-center"
+    fluid
+  >
+    <v-col
+      cols="12"
+      sm="9"
+      md="6"
+      lg="5"
+    >
+      <v-card
+        class="pa-10 rounded-xl mx-auto"
+        elevation="4"
+        max-width="600"
+      >
         <div class="text-center mb-6">
-          <v-icon size="48" color="primary" class="mb-3">mdi-bug-outline</v-icon>
-          <h1 class="text-h5 font-weight-bold">{{ t('onboard.title') }}</h1>
-          <p class="text-body-2 text-medium-emphasis mt-1">{{ t('onboard.subtitle') }}</p>
+          <v-icon
+            size="48"
+            color="primary"
+            class="mb-3"
+          >
+            mdi-bug-outline
+          </v-icon>
+          <h1 class="text-h5 font-weight-bold">
+            {{ t('onboard.title') }}
+          </h1>
+          <p class="text-body-2 text-medium-emphasis mt-1">
+            {{ t('onboard.subtitle') }}
+          </p>
         </div>
 
         <v-alert
@@ -18,7 +40,10 @@
           {{ error }}
         </v-alert>
 
-        <v-form @submit.prevent="submit" ref="form">
+        <v-form
+          ref="form"
+          @submit.prevent="submit"
+        >
           <v-text-field
             v-model="siteTitle"
             :rules="[requiredRule]"
@@ -30,7 +55,9 @@
             min-width="200px"
           />
 
-          <div class="text-subtitle-2 text-medium-emphasis mb-3">{{ t('onboard.admin_account') }}</div>
+          <div class="text-subtitle-2 text-medium-emphasis mb-3">
+            {{ t('onboard.admin_account') }}
+          </div>
 
           <v-text-field
             v-model="firstName"

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <dashboard-form :onSubmit="dashboardStore.postDashboard" submitButtonText="global.create" />
+    <dashboard-form
+      :on-submit="dashboardStore.postDashboard"
+      submit-button-text="global.create"
+    />
   </div>
 </template>
 

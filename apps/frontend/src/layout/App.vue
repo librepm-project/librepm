@@ -10,11 +10,19 @@
     >
       <v-list>
         <div class="pa-4 d-flex align-center gap-2 mb-4">
-          <v-icon color="primary" size="24">mdi-rhombus-split</v-icon>
+          <v-icon
+            color="primary"
+            size="24"
+          >
+            mdi-rhombus-split
+          </v-icon>
           <span class="text-h6 font-weight-black text-primary">LibrePM</span>
         </div>
         
-        <template v-for="link in navigationLinks" :key="link.key">
+        <template
+          v-for="link in navigationLinks"
+          :key="link.key"
+        >
           <v-list-item
             v-if="!link.sublinks"
             :to="link.to"
@@ -24,8 +32,11 @@
             class="ma-2"
           />
           
-          <v-list-group v-else :value="link.key">
-            <template v-slot:activator="{ props }">
+          <v-list-group
+            v-else
+            :value="link.key"
+          >
+            <template #activator="{ props }">
               <v-list-item
                 v-bind="props"
                 :prepend-icon="link.icon"
@@ -62,13 +73,28 @@
     </v-navigation-drawer>
 
     <v-main :class="layoutStore.hideLayout ? 'bg-minimal' : 'bg-surface'">
-      <v-container v-if="layoutStore.hideLayout" fluid class="fill-height pa-0">
+      <v-container
+        v-if="layoutStore.hideLayout"
+        fluid
+        class="fill-height pa-0"
+      >
         <router-view />
       </v-container>
-      <v-container v-else fluid class="pa-1 pa-sm-3">
+      <v-container
+        v-else
+        fluid
+        class="pa-1 pa-sm-3"
+      >
         <v-row class="ma-0">
-          <Sidebar v-if="layoutStore.hasSidebar" class="d-none d-md-flex pa-1" />
-          <Main :cols="12" :md="layoutStore.hasSidebar ? 10 : 12" class="pa-1" />
+          <Sidebar
+            v-if="layoutStore.hasSidebar"
+            class="d-none d-md-flex pa-1"
+          />
+          <Main
+            :cols="12"
+            :md="layoutStore.hasSidebar ? 10 : 12"
+            class="pa-1"
+          />
         </v-row>
       </v-container>
       <Footer v-if="!layoutStore.hideLayout" />

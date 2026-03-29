@@ -68,9 +68,9 @@ app.use(router);
 
 const configStore = useAppConfigStore();
 const settingStore = useSettingStore();
-Promise.all([
-  configStore.fetch().catch(() => {}),
-  settingStore.fetch().catch(() => {}),
+Promise.allSettled([
+  configStore.fetch(),
+  settingStore.fetch(),
 ]).finally(() => {
   app.mount('#root');
 });

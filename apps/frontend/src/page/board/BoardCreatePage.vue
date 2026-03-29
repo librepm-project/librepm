@@ -1,6 +1,9 @@
 <template>
   <div>
-    <board-form :onSubmit="create" submitButtonText="global.create" />
+    <board-form
+      :on-submit="create"
+      submit-button-text="global.create"
+    />
   </div>
 </template>
 

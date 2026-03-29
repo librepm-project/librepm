@@ -1,5 +1,8 @@
 <template>
-  <v-card elevation="0" class="rounded-xl">
+  <v-card
+    elevation="0"
+    class="rounded-xl"
+  >
     <v-data-table
       :items="items"
       :headers="headers"
@@ -22,12 +25,15 @@
         </thead>
       </template>
 
-      <template #item.email="{ item }">
+      <template #[`item.email`]="{ item }">
         {{ item.email }}
       </template>
 
-      <template #item.fullName="{ item }">
-        <v-chip variant="elevated" size="small">
+      <template #[`item.fullName`]="{ item }">
+        <v-chip
+          variant="elevated"
+          size="small"
+        >
           {{ item.firstName }} {{ item.lastName }}
         </v-chip>
       </template>

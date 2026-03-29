@@ -1,5 +1,8 @@
 <template>
-  <v-card elevation="0" class="rounded-xl">
+  <v-card
+    elevation="0"
+    class="rounded-xl"
+  >
     <v-data-table
       :items="items"
       :headers="headers"
@@ -22,16 +25,16 @@
         </thead>
       </template>
 
-      <template #item.name="{ item }">
+      <template #[`item.name`]="{ item }">
         {{ item.name }}
       </template>
 
-      <template #item.color="{ item }">
+      <template #[`item.color`]="{ item }">
         <div class="d-flex justify-end">
           <div
             class="color-box"
             :style="{ backgroundColor: item.color }"
-          ></div>
+          />
         </div>
       </template>
     </v-data-table>

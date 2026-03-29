@@ -1,65 +1,69 @@
 <template>
-    <div>
-        <div v-for="(condition, index) in conditions" :key="index" class="d-flex align-center gap-2 mb-3">
-            <v-select
-                v-model="condition.field"
-                :items="fieldOptions"
-                item-title="label"
-                item-value="key"
-                :label="$t('filter.field')"
-                density="compact"
-                hide-details
-                style="min-width: 140px; max-width: 160px"
-                @update:modelValue="onFieldChange(condition)"
-            />
-            <v-select
-                v-model="condition.op"
-                :items="getOperatorsForField(condition.field)"
-                item-title="label"
-                item-value="key"
-                :label="$t('filter.operator')"
-                density="compact"
-                hide-details
-                style="min-width: 120px; max-width: 140px"
-            />
-            <v-select
-                v-if="getFieldDef(condition.field)?.valueType === 'select'"
-                v-model="condition.value"
-                :items="getValueOptions(condition.field)"
-                item-title="name"
-                item-value="id"
-                :label="$t('filter.value')"
-                density="compact"
-                hide-details
-                class="flex-grow-1"
-            />
-            <v-text-field
-                v-else
-                v-model="condition.value"
-                :label="$t('filter.value')"
-                density="compact"
-                hide-details
-                class="flex-grow-1"
-            />
-            <v-btn
-                icon="mdi-minus"
-                variant="text"
-                color="error"
-                density="compact"
-                @click="removeCondition(index)"
-            />
-        </div>
-
-        <v-btn
-            variant="tonal"
-            color="primary"
-            size="small"
-            prepend-icon="mdi-plus"
-            @click="addCondition"
-        >
-            {{ $t('filter.add_condition') }}
-        </v-btn>
+  <div>
+    <div
+      v-for="(condition, index) in conditions"
+      :key="index"
+      class="d-flex align-center gap-2 mb-3"
+    >
+      <v-select
+        v-model="condition.field"
+        :items="fieldOptions"
+        item-title="label"
+        item-value="key"
+        :label="$t('filter.field')"
+        density="compact"
+        hide-details
+        style="min-width: 140px; max-width: 160px"
+        @update:model-value="onFieldChange(condition)"
+      />
+      <v-select
+        v-model="condition.op"
+        :items="getOperatorsForField(condition.field)"
+        item-title="label"
+        item-value="key"
+        :label="$t('filter.operator')"
+        density="compact"
+        hide-details
+        style="min-width: 120px; max-width: 140px"
+      />
+      <v-select
+        v-if="getFieldDef(condition.field)?.valueType === 'select'"
+        v-model="condition.value"
+        :items="getValueOptions(condition.field)"
+        item-title="name"
+        item-value="id"
+        :label="$t('filter.value')"
+        density="compact"
+        hide-details
+        class="flex-grow-1"
+      />
+      <v-text-field
+        v-else
+        v-model="condition.value"
+        :label="$t('filter.value')"
+        density="compact"
+        hide-details
+        class="flex-grow-1"
+      />
+      <v-btn
+        icon="mdi-minus"
+        variant="text"
+        color="error"
+        density="compact"
+        @click="removeCondition(index)"
+      />
     </div>
+
+    <v-btn
+      variant="tonal"
+      color="primary"
+      size="small"
+      prepend-icon="mdi-plus"
+      @click="addCondition"
+    >
+      {{ $t('filter.add_condition') }}
+    </v-btn>
+  </div>
 </template>
 
 <script lang="ts" setup>

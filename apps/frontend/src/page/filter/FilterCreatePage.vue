@@ -1,6 +1,9 @@
 <template>
   <div>
-    <filter-form :onSubmit="handleSubmit" submitButtonText="global.create" />
+    <filter-form
+      :on-submit="handleSubmit"
+      submit-button-text="global.create"
+    />
   </div>
 </template>
 

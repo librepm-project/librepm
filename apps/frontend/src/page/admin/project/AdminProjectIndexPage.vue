@@ -1,7 +1,7 @@
 <template>
   <project-table 
     :items="projectStore.index" 
-    :onEdit="handleEdit" 
+    :on-edit="handleEdit" 
   />
 </template>
 

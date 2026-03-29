@@ -1,22 +1,37 @@
 <template>
   <div class="mb-6">
-
     <!-- Fejléc -->
     <div class="d-flex align-center mb-3">
       <p class="text-subtitle2 font-weight-medium mb-0 flex-grow-1">
-        <v-icon x-small class="mr-1">mdi-clock-outline</v-icon>
+        <v-icon
+          x-small
+          class="mr-1"
+        >
+          mdi-clock-outline
+        </v-icon>
         {{ t('worklog.work_log') }}
-        <span v-if="totalSeconds > 0" class="text-caption text-disabled ml-2">
+        <span
+          v-if="totalSeconds > 0"
+          class="text-caption text-disabled ml-2"
+        >
           {{ t('worklog.total') }}: {{ formatSeconds(totalSeconds) }}
         </span>
       </p>
-      <v-btn icon size="x-small" variant="text" @click="openAddForm">
+      <v-btn
+        icon
+        size="x-small"
+        variant="text"
+        @click="openAddForm"
+      >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
 
     <!-- Hozzáadás form -->
-    <div v-if="showAddForm" class="mb-4">
+    <div
+      v-if="showAddForm"
+      class="mb-4"
+    >
       <div class="d-flex gap-2 mb-2">
         <v-text-field
           v-model.number="addForm.hours"
@@ -66,7 +81,11 @@
         >
           {{ t('worklog.add_worklog') }}
         </v-btn>
-        <v-btn size="small" variant="text" @click="showAddForm = false">
+        <v-btn
+          size="small"
+          variant="text"
+          @click="showAddForm = false"
+        >
           {{ t('global.cancel') }}
         </v-btn>
       </div>
@@ -79,7 +98,10 @@
       class="mb-3"
     >
       <!-- Szerkesztés form -->
-      <div v-if="editingId === worklog.id" class="pa-2 rounded edit-bg">
+      <div
+        v-if="editingId === worklog.id"
+        class="pa-2 rounded edit-bg"
+      >
         <div class="d-flex gap-2 mb-2">
           <v-text-field
             v-model.number="editForm.hours"
@@ -121,39 +143,75 @@
           class="mb-2"
         />
         <div class="d-flex gap-2">
-          <v-btn size="small" color="primary" :disabled="editFormSeconds <= 0" @click="submitEdit(worklog.id!)">
+          <v-btn
+            size="small"
+            color="primary"
+            :disabled="editFormSeconds <= 0"
+            @click="submitEdit(worklog.id!)"
+          >
             {{ t('global.update') }}
           </v-btn>
-          <v-btn size="small" variant="text" @click="editingId = null">
+          <v-btn
+            size="small"
+            variant="text"
+            @click="editingId = null"
+          >
             {{ t('global.cancel') }}
           </v-btn>
         </div>
       </div>
 
       <!-- Sor nézet -->
-      <div v-else class="d-flex align-center gap-2 pa-2 rounded hover-bg">
+      <div
+        v-else
+        class="d-flex align-center gap-2 pa-2 rounded hover-bg"
+      >
         <div class="flex-grow-1">
           <div class="d-flex align-center gap-2">
             <span class="text-body2 font-weight-medium">{{ formatSeconds(worklog.seconds) }}</span>
             <span class="text-caption text-disabled">{{ formatDate(worklog.loggedAt) }}</span>
-            <span v-if="worklog.user" class="text-caption text-disabled">
+            <span
+              v-if="worklog.user"
+              class="text-caption text-disabled"
+            >
               {{ worklog.user.firstName }} {{ worklog.user.lastName }}
             </span>
           </div>
-          <div v-if="worklog.comment" class="text-caption text-medium-emphasis mt-1">
+          <div
+            v-if="worklog.comment"
+            class="text-caption text-medium-emphasis mt-1"
+          >
             {{ worklog.comment }}
           </div>
         </div>
-        <v-btn icon size="x-small" variant="text" @click="startEdit(worklog)">
-          <v-icon size="small">mdi-pencil</v-icon>
+        <v-btn
+          icon
+          size="x-small"
+          variant="text"
+          @click="startEdit(worklog)"
+        >
+          <v-icon size="small">
+            mdi-pencil
+          </v-icon>
         </v-btn>
-        <v-btn icon size="x-small" variant="text" color="error" @click="remove(worklog.id!)">
-          <v-icon size="small">mdi-close</v-icon>
+        <v-btn
+          icon
+          size="x-small"
+          variant="text"
+          color="error"
+          @click="remove(worklog.id!)"
+        >
+          <v-icon size="small">
+            mdi-close
+          </v-icon>
         </v-btn>
       </div>
     </div>
 
-    <p v-if="worklogs.length === 0 && !showAddForm" class="text-caption text-disabled mb-0">
+    <p
+      v-if="worklogs.length === 0 && !showAddForm"
+      class="text-caption text-disabled mb-0"
+    >
       {{ t('worklog.no_worklogs') }}
     </p>
   </div>

@@ -21,15 +21,16 @@ class WebSocketService {
     }
 
     this.socket.onclose = () => {
-      if (this.token) {
-        setTimeout(() => this.connect(this.token!), 3000)
+      const token = this.token;
+      if (token) {
+        setTimeout(() => this.connect(token), 3000)
       }
     }
   }
 
   on(type: string, handler: Handler) {
     if (!this.typeHandlers.has(type)) this.typeHandlers.set(type, [])
-    this.typeHandlers.get(type)!.push(handler)
+    this.typeHandlers.get(type)?.push(handler)
   }
 
   off(type: string, handler: Handler) {
@@ -39,7 +40,7 @@ class WebSocketService {
 
   subscribe(channel: string, handler: Handler) {
     if (!this.channelHandlers.has(channel)) this.channelHandlers.set(channel, [])
-    this.channelHandlers.get(channel)!.push(handler)
+    this.channelHandlers.get(channel)?.push(handler)
     this.socket?.send(JSON.stringify({ type: 'subscribe', channel }))
   }
 

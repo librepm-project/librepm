@@ -1,7 +1,7 @@
 <template>
   <tracker-table 
     :items="trackerStore.index" 
-    :onEdit="handleEdit" 
+    :on-edit="handleEdit" 
   />
 </template>
 

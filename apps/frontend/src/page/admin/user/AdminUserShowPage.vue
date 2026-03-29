@@ -3,9 +3,9 @@
     <user-form
       v-if="userStore.current"
       :user="userStore.current"
-      :onSubmit="handleSubmit"
-      :onDelete="handleDelete"
-      submitButtonText="global.update"
+      :on-submit="handleSubmit"
+      :on-delete="handleDelete"
+      submit-button-text="global.update"
     />
   </div>
 </template>

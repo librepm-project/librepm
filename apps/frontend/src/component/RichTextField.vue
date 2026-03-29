@@ -1,9 +1,11 @@
 <template>
-  <div class="text-subtitle-1 mb-2">{{ label }}</div>
+  <div class="text-subtitle-1 mb-2">
+    {{ label }}
+  </div>
   <v-sheet elevation="0">
     <quill-editor
       v-model:content="localContent"
-      contentType="html"
+      content-type="html"
       theme="snow"
       style="min-height: 200px"
     />

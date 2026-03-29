@@ -1,39 +1,55 @@
 <template>
   <div class="issue-list-container">
-    <div v-if="showSettingsToggle" class="mb-4 d-flex align-center gap-2">
-      <slot name="actions-prepend"></slot>
+    <div
+      v-if="showSettingsToggle"
+      class="mb-4 d-flex align-center gap-2"
+    >
+      <slot name="actions-prepend" />
       <v-spacer />
       <v-btn
         icon
         variant="tonal"
         color="primary"
         class="ml-auto"
-        @click="showSettings = !showSettings"
         :title="showSettings ? 'Settings are visible' : 'Toggle display settings'"
+        @click="showSettings = !showSettings"
       >
         <v-icon>mdi-cog</v-icon>
       </v-btn>
     </div>
 
     <v-expand-transition>
-      <v-card v-if="showSettings" class="mb-4 pa-4 rounded-lg" elevation="0" border>
+      <v-card
+        v-if="showSettings"
+        class="mb-4 pa-4 rounded-lg"
+        elevation="0"
+        border
+      >
         <v-row class="align-center gap-4">
-          <v-col cols="12" md="6">
+          <v-col
+            cols="12"
+            md="6"
+          >
             <label class="text-body2 font-weight-medium mb-2 d-block">Display Columns (drag to reorder)</label>
             <div class="columns-container d-flex flex-column gap-2">
               <div
                 v-for="(column, index) in selectedColumns"
                 :key="`col-${column}`"
                 draggable="true"
+                class="column-item pa-3 rounded d-flex align-center justify-space-between"
+                :style="{ background: draggedIndex === index ? 'rgba(var(--v-theme-primary), 0.1)' : 'rgba(0,0,0,0.04)' }"
                 @dragstart="dragStart($event, index)"
                 @dragover.prevent="dragOver($event, index)"
                 @drop="dragDrop($event, index)"
                 @dragend="dragEnd"
-                class="column-item pa-3 rounded d-flex align-center justify-space-between"
-                :style="{ background: draggedIndex === index ? 'rgba(var(--v-theme-primary), 0.1)' : 'rgba(0,0,0,0.04)' }"
               >
                 <span class="text-body2 flex-grow-1">{{ getColumnLabel(column) }}</span>
-                <v-icon size="small" class="text-medium-emphasis me-2 cursor-grab">mdi-drag</v-icon>
+                <v-icon
+                  size="small"
+                  class="text-medium-emphasis me-2 cursor-grab"
+                >
+                  mdi-drag
+                </v-icon>
                 <v-btn
                   icon
                   size="x-small"
@@ -41,7 +57,9 @@
                   color="error"
                   @click="removeColumn(index)"
                 >
-                  <v-icon size="small">mdi-close</v-icon>
+                  <v-icon size="small">
+                    mdi-close
+                  </v-icon>
                 </v-btn>
               </div>
             </div>
@@ -58,7 +76,10 @@
               @update:model-value="addColumn"
             />
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col
+            cols="12"
+            md="6"
+          >
             <v-select
               v-model="selectedGroupBy"
               :items="groupByOptions"
@@ -71,8 +92,14 @@
       </v-card>
     </v-expand-transition>
 
-    <div v-if="loading" class="d-flex justify-center py-8">
-      <v-progress-circular indeterminate color="primary" />
+    <div
+      v-if="loading"
+      class="d-flex justify-center py-8"
+    >
+      <v-progress-circular
+        indeterminate
+        color="primary"
+      />
     </div>
     <div v-else>
       <issue-table
@@ -81,8 +108,16 @@
         :columns="selectedColumns"
         :group-by="selectedGroupBy"
       />
-      <div v-else class="text-center py-12 text-medium-emphasis">
-        <v-icon size="x-large" class="mb-2">mdi-tray-blank</v-icon>
+      <div
+        v-else
+        class="text-center py-12 text-medium-emphasis"
+      >
+        <v-icon
+          size="x-large"
+          class="mb-2"
+        >
+          mdi-tray-blank
+        </v-icon>
         <p>{{ $t('issue.no_issues_found') || 'No issues found' }}</p>
       </div>
     </div>
@@ -108,6 +143,8 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  filterId: undefined,
+  items: undefined,
   showSettingsToggle: false,
   persistMode: 'none',
 });

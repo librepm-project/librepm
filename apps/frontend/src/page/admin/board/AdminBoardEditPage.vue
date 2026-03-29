@@ -1,6 +1,11 @@
 <template>
   <div v-if="boardStore.current">
-    <board-form :onSubmit="update" :onDelete="handleDelete" :initialData="boardStore.current" submitButtonText="global.update" />
+    <board-form
+      :on-submit="update"
+      :on-delete="handleDelete"
+      :initial-data="boardStore.current"
+      submit-button-text="global.update"
+    />
   </div>
 </template>
 

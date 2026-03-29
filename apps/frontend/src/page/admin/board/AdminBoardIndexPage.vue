@@ -1,5 +1,8 @@
 <template>
-  <board-table :items="boardStore.index" :onEdit="onEdit" />
+  <board-table
+    :items="boardStore.index"
+    :on-edit="onEdit"
+  />
 </template>
 
 <script lang="ts" setup>

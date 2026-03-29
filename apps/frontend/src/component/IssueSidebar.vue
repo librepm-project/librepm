@@ -1,19 +1,35 @@
 <template>
-  <div v-if="issueStore.current" class="pa-2">
-
+  <div
+    v-if="issueStore.current"
+    class="pa-2"
+  >
     <div class="mb-6">
       <p class="text-subtitle2 font-weight-medium mb-2">
-        <v-icon x-small class="mr-1">mdi-tag-outline</v-icon>
+        <v-icon
+          x-small
+          class="mr-1"
+        >
+          mdi-tag-outline
+        </v-icon>
         {{ t('issue.key') }}
       </p>
-      <v-chip color="primary" variant="outlined" class="font-weight-bold">
+      <v-chip
+        color="primary"
+        variant="outlined"
+        class="font-weight-bold"
+      >
         {{ issueStore.current.key }}
       </v-chip>
     </div>
 
     <div class="mb-6">
       <p class="text-subtitle2 font-weight-medium mb-2">
-        <v-icon x-small class="mr-1">mdi-folder-outline</v-icon>
+        <v-icon
+          x-small
+          class="mr-1"
+        >
+          mdi-folder-outline
+        </v-icon>
         {{ t('issue.project') }}
       </p>
       <p class="text-body2 mb-0">
@@ -33,8 +49,14 @@
       clearable
       @update:model-value="savePriority"
     >
-      <priority-chip v-if="issueStore.current.priority" :priority="issueStore.current.priority" />
-      <span v-else class="text-medium-emphasis">—</span>
+      <priority-chip
+        v-if="issueStore.current.priority"
+        :priority="issueStore.current.priority"
+      />
+      <span
+        v-else
+        class="text-medium-emphasis"
+      >—</span>
     </inline-sidebar-edit>
 
     <!-- Tracker inline edit -->
@@ -77,7 +99,10 @@
       <span v-if="issueStore.current.assignedUser">
         {{ issueStore.current.assignedUser.firstName }} {{ issueStore.current.assignedUser.lastName }}
       </span>
-      <span v-else class="text-medium-emphasis">—</span>
+      <span
+        v-else
+        class="text-medium-emphasis"
+      >—</span>
     </inline-sidebar-edit>
 
     <!-- Reporter inline edit -->
@@ -94,10 +119,13 @@
       <span v-if="issueStore.current.reporterUser">
         {{ issueStore.current.reporterUser.firstName }} {{ issueStore.current.reporterUser.lastName }}
       </span>
-      <span v-else class="text-medium-emphasis">—</span>
+      <span
+        v-else
+        class="text-medium-emphasis"
+      >—</span>
     </inline-sidebar-edit>
 
-    <v-divider class="my-4"></v-divider>
+    <v-divider class="my-4" />
   </div>
 </template>
 

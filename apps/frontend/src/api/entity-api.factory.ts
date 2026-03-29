@@ -21,12 +21,12 @@ export function createEntityAPI<T extends { id: string }>(basePath: string) {
       return response.data as T;
     },
 
-    async create(entityId: string, payload: any): Promise<T> {
+    async create(entityId: string, payload: unknown): Promise<T> {
       const response = await api.apiCall().post(`${basePath}/${entityId}`, payload);
       return response.data as T;
     },
 
-    async update(entityId: string, itemId: string, payload: any): Promise<T> {
+    async update(entityId: string, itemId: string, payload: unknown): Promise<T> {
       const response = await api.apiCall().put(`${basePath}/${entityId}/${itemId}`, payload);
       return response.data as T;
     },

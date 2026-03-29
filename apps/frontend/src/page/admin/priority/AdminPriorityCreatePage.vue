@@ -1,6 +1,9 @@
 <template>
   <div>
-    <priority-form :onSubmit="handleSubmit" submitButtonText="global.create" />
+    <priority-form
+      :on-submit="handleSubmit"
+      submit-button-text="global.create"
+    />
   </div>
 </template>
 
