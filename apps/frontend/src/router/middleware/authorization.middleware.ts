@@ -11,7 +11,7 @@ export const authorizationMiddleware = (
     next: NavigationGuardNext
   ) => {
   const accessToken = getToken();
-  if (to.name !== 'login' && !accessToken) {
+  if (to.name !== 'login' && to.name !== 'register' && !accessToken) {
     next({ name: 'login' });
   } else {
     next();

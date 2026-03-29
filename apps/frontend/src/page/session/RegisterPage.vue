@@ -19,6 +19,26 @@
 
         <v-form @submit.prevent="submit" ref="form">
           <v-text-field
+            v-model="firstName"
+            :rules="[requiredRule]"
+            :label="t('user.firstName')"
+            prepend-inner-icon="mdi-account-outline"
+            variant="outlined"
+            density="comfortable"
+            class="mb-3"
+            min-width="200px"
+          />
+          <v-text-field
+            v-model="lastName"
+            :rules="[requiredRule]"
+            :label="t('user.lastName')"
+            prepend-inner-icon="mdi-account-outline"
+            variant="outlined"
+            density="comfortable"
+            class="mb-3"
+            min-width="200px"
+          />
+          <v-text-field
             v-model="email"
             :rules="[requiredRule, emailRule]"
             :label="t('user.email')"
@@ -36,6 +56,17 @@
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
             density="comfortable"
+            class="mb-3"
+            min-width="200px"
+          />
+          <v-text-field
+            v-model="passwordConfirm"
+            type="password"
+            :rules="[requiredRule, passwordMatchRule]"
+            :label="t('register.password_confirm')"
+            prepend-inner-icon="mdi-lock-check-outline"
+            variant="outlined"
+            density="comfortable"
             class="mb-5"
             min-width="200px"
           />
@@ -46,13 +77,13 @@
             size="large"
             :loading="loading"
           >
-            {{ t('login.submit') }}
+            {{ t('register.submit') }}
           </v-btn>
         </v-form>
 
-        <div v-if="configStore.registerAllowed" class="text-center mt-4">
-          <router-link :to="{ name: 'register' }" class="text-primary text-decoration-none">
-            {{ t('login.register') }}
+        <div class="text-center mt-4">
+          <router-link :to="{ name: 'login' }" class="text-primary text-decoration-none">
+            {{ t('register.back_to_login') }}
           </router-link>
         </div>
       </v-card>
@@ -61,33 +92,26 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { emailRule, requiredRule } from '@/lib/formRule';
-import { useUserSessionStore } from '@/store/user-session.store';
-import { useAppConfigStore } from '@/store/app-config.store';
-import { setToken } from '@/lib/cookie';
+import userRegisterApi from '@/api/user-register.api';
 
 const { t } = useI18n();
 const router = useRouter();
-const route = useRoute();
-const userSessionStore = useUserSessionStore();
-const configStore = useAppConfigStore();
 
-onMounted(() => {
-  const token = route.query.token as string | undefined;
-  if (token) {
-    setToken(token);
-    router.replace('/dashboard');
-  }
-});
-
+const firstName = ref('');
+const lastName = ref('');
 const email = ref('');
 const password = ref('');
+const passwordConfirm = ref('');
 const loading = ref(false);
 const error = ref('');
 const form = ref<{ validate: () => Promise<{ valid: boolean }> } | null>(null);
+
+const passwordMatchRule = (value: string) =>
+  value === password.value || t('register.password_mismatch');
 
 const submit = async () => {
   const { valid } = await form.value!.validate();
@@ -96,10 +120,15 @@ const submit = async () => {
   loading.value = true;
   error.value = '';
   try {
-    await userSessionStore.postLogin({ email: email.value, password: password.value });
-    router.push('/dashboard');
+    await userRegisterApi.create({
+      email: email.value,
+      password: password.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
+    });
+    router.push({ name: 'login' });
   } catch {
-    error.value = t('login.invalid_credentials');
+    error.value = t('register.error');
   } finally {
     loading.value = false;
   }

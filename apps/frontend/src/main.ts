@@ -13,6 +13,7 @@ import router from '@/router/index.router';
 import { theme } from '@/theme/theme';
 import { i18n } from '@/i18n';
 import '@mdi/font/css/materialdesignicons.css'
+import { useAppConfigStore } from '@/store/app-config.store';
 
 const vuetify = createVuetify({
   components,
@@ -63,4 +64,8 @@ app.use(i18n);
 app.use(pinia);
 app.use(vuetify);
 app.use(router);
-app.mount('#root');
+
+const configStore = useAppConfigStore();
+configStore.fetch().catch(() => {}).finally(() => {
+  app.mount('#root');
+});

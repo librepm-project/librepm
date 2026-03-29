@@ -116,6 +116,7 @@ docker compose -f docker-compose.production.yaml exec app \
 | `DB_PASSWORD` | yes | Database password |
 | `DB_NAME` | yes | Database name |
 | `JWT_SECRET` | yes | Secret used to sign JWT tokens — use a long random string in production |
+| `REGISTER_ALLOWED` | no | Allow new user registration via the `/register` page. Set to `true` to enable, omit or set to `false` to disable (recommended in production) |
 
 ### Reverse proxy (optional)
 

@@ -155,6 +155,14 @@ export const en = {
         submit: 'Login',
         logout: 'Logout',
         invalid_credentials: 'Invalid email or password.',
+        register: 'Register',
+    },
+    register: {
+        submit: 'Register',
+        back_to_login: 'Back to login',
+        error: 'Registration failed. The email may already be in use.',
+        password_confirm: 'Confirm password',
+        password_mismatch: 'Passwords do not match',
     },
     admin: {
         settings: 'Settings',

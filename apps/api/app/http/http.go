@@ -28,6 +28,10 @@ func StartHttpServer(d domain.Domain) {
 				Method: "GET",
 				Path:   "/setting",
 			},
+			{
+				Method: "GET",
+				Path:   "/config",
+			},
 		},
 	}
 

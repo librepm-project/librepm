@@ -7,8 +7,10 @@ import (
 )
 
 type UserRegisterRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
 }
 
 type UserRequest struct {
