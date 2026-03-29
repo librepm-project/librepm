@@ -32,6 +32,10 @@ func StartHttpServer(d domain.Domain) {
 				Method: "GET",
 				Path:   "/config",
 			},
+			{
+				Method: "POST",
+				Path:   "/onboard",
+			},
 		},
 	}
 
@@ -76,6 +80,9 @@ func StartHttpServer(d domain.Domain) {
 		},
 		UserRegisterController: UserRegisterController{
 			UserRegisterService: d.UserRegisterService,
+		},
+		OnboardController: OnboardController{
+			OnboardService: d.OnboardService,
 		},
 		UserController: UserController{
 			UserService: d.UserService,

@@ -14,6 +14,7 @@ import { theme } from '@/theme/theme';
 import { i18n } from '@/i18n';
 import '@mdi/font/css/materialdesignicons.css'
 import { useAppConfigStore } from '@/store/app-config.store';
+import { useSettingStore } from '@/store/setting.store';
 
 const vuetify = createVuetify({
   components,
@@ -66,6 +67,10 @@ app.use(vuetify);
 app.use(router);
 
 const configStore = useAppConfigStore();
-configStore.fetch().catch(() => {}).finally(() => {
+const settingStore = useSettingStore();
+Promise.all([
+  configStore.fetch().catch(() => {}),
+  settingStore.fetch().catch(() => {}),
+]).finally(() => {
   app.mount('#root');
 });

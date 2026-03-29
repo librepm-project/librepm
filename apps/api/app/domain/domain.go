@@ -24,6 +24,7 @@ type Domain struct {
 	UserService             UserServiceInterface
 	UserSessionService      UserSessionServiceInterface
 	UserRegisterService     UserRegisterServiceInterface
+	OnboardService          OnboardServiceInterface
 	StatusService           StatusServiceInterface
 	PriorityService         PriorityServiceInterface
 	TransitionService       TransitionServiceInterface
@@ -128,6 +129,10 @@ func NewDomain(DB *gorm.DB) Domain {
 		},
 		UserRegisterService: UserRegisterService{
 			UserRepository: userRepository,
+		},
+		OnboardService: OnboardService{
+			SettingRepository: settingRepository,
+			UserRepository:    userRepository,
 		},
 		StatusService: StatusService{
 			StatusRepository: statusRepository,

@@ -18,6 +18,7 @@ const (
 	SettingKeyDefaultIssueDisplayGroupBy = "default_issue_display_group_by"
 	SettingKeyDefaultBoardID             = "default_board_id"
 	SettingKeyDefaultDashboardID         = "default_dashboard_id"
+	SettingKeyOnboarded                  = "onboarded"
 )
 
 func GetPredefinedSettings() []SettingModel {
@@ -53,6 +54,11 @@ func GetPredefinedSettings() []SettingModel {
 			Key:       SettingKeyDefaultDashboardID,
 			Value:     "",
 			ValueType: "string",
+		},
+		{
+			Key:       SettingKeyOnboarded,
+			Value:     "false",
+			ValueType: "boolean",
 		},
 	}
 }

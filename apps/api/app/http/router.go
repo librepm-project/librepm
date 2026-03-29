@@ -5,6 +5,7 @@ import (
 )
 
 type Router struct {
+	OnboardController              OnboardControllerInterface
 	ProjectController              ProjectControllerInterface
 	IssueController                IssueControllerInterface
 	IssueWorklogController         IssueWorklogControllerInterface
@@ -98,6 +99,7 @@ func (r Router) Init() *chi.Mux {
 	router.Delete("/dashboard/{dashboard_id}/widget/{widget_id}", r.DashboardWidgetController.Destroy)
 
 	router.Get("/config", ConfigController{}.Show)
+	router.Post("/onboard", r.OnboardController.Create)
 
 	router.Get("/user/current", r.UserCurrentController.Show)
 	router.Put("/user/current", r.UserCurrentController.Update)

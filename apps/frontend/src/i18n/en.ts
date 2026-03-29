@@ -164,6 +164,16 @@ export const en = {
         password_confirm: 'Confirm password',
         password_mismatch: 'Passwords do not match',
     },
+    onboard: {
+        title: 'Welcome to LibrePM',
+        subtitle: 'Let\'s set up your instance.',
+        site_name: 'Site name',
+        admin_account: 'Administrator account',
+        submit: 'Finish setup',
+        error: 'Setup failed. The email may already be in use.',
+        password_confirm: 'Confirm password',
+        password_mismatch: 'Passwords do not match',
+    },
     admin: {
         settings: 'Settings',
     },
