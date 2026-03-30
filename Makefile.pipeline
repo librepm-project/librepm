@@ -1,0 +1,40 @@
+VERSION  := $(shell jq -r '.version' package.json)
+IMAGE    := ghcr.io/librepm-project/librepm
+
+# Override in CI: make -f Makefile.pipeline build CACHE_ARGS="--cache-from ..."
+CACHE_ARGS ?=
+
+.PHONY: lint-go lint-frontend lint test-go test-frontend test build push
+
+# ── Lint ──────────────────────────────────────────────────────────────────────
+
+lint-go:
+	go vet ./...
+
+lint-frontend:
+	npx nx run-many --target=lint --all --parallel=3
+
+lint: lint-go lint-frontend
+
+# ── Test ──────────────────────────────────────────────────────────────────────
+
+test-go:
+	go test apps/api/test/...
+
+test-frontend:
+	npx nx run-many --target=test --all --parallel=3
+
+test: test-go test-frontend
+
+# ── Build & Push ──────────────────────────────────────────────────────────────
+
+build:
+	docker buildx build -f Dockerfile.production \
+		$(CACHE_ARGS) \
+		-t $(IMAGE):latest \
+		-t $(IMAGE):$(VERSION) \
+		.
+
+push:
+	docker push $(IMAGE):latest
+	docker push $(IMAGE):$(VERSION)
