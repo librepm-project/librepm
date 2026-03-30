@@ -28,6 +28,9 @@ export const en = {
         filterIndex: 'Filters',
         adminStatusIndex: 'Statuses',
         adminTrackerIndex: 'Trackers',
+        adminReleaseIndex: 'Releases',
+        adminReleaseCreate: 'Create Release',
+        adminReleaseShow: 'Edit Release',
         issueShow: 'Issue details',
         login: 'Login',
         projectCreate: 'Create project',
@@ -61,6 +64,7 @@ export const en = {
         assignee: 'Assignee',
         priority: 'Priority',
         reporter: 'Reporter',
+        release: 'Release',
         related_issues: 'Related Issues',
         add_relation: 'Add relation',
         relation_type: 'Relation type',
@@ -176,6 +180,20 @@ export const en = {
     },
     admin: {
         settings: 'Settings',
+        release: {
+            name: 'Release Name',
+            status: 'Status',
+            released_at: 'Released At',
+            projects: 'Projects in Release',
+            add_project: 'Add Project to Release',
+            issue: 'Issue',
+            issue_key: 'Issue Key',
+            issue_title: 'Issue Title',
+            issues: 'Issues in Release',
+        },
+        project: {
+            name: 'Project Name',
+        },
     },
     settings: {
         site_title: 'Site Title',
@@ -203,6 +221,9 @@ export const en = {
         email: "Invalid email format",
         required: "Required field",
         minimumLength: "Minimum length is {len}"
+    },
+    validation: {
+        required: 'This field is required',
     }
 }
 

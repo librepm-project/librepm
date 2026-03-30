@@ -125,17 +125,39 @@
       >—</span>
     </inline-sidebar-edit>
 
+    <!-- Release inline edit -->
+    <inline-sidebar-edit
+      :label="t('issue.release')"
+      icon="mdi-tag-multiple-outline"
+      :model-value="projectReleaseIssueStore.byIssue?.project_release_id ?? null"
+      :items="projectReleaseStore.byProject"
+      :item-title="(pr: any) => pr.release?.name ?? ''"
+      item-value="id"
+      clearable
+      @update:model-value="saveRelease"
+    >
+      <span v-if="projectReleaseIssueStore.byIssue">
+        {{ releaseLabel }}
+      </span>
+      <span
+        v-else
+        class="text-medium-emphasis"
+      >—</span>
+    </inline-sidebar-edit>
+
     <v-divider class="my-4" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useIssueStore } from '@/store/issue.store';
 import { useProjectStore } from '@/store/project.store';
 import { useUserStore } from '@/store/user.store';
 import { usePriorityStore } from '@/store/priority.store';
+import { useProjectReleaseStore } from '@/store/project-release.store';
+import { useProjectReleaseIssueStore } from '@/store/project-release-issue.store';
 import StatusChip from '@/component/StatusChip.vue';
 import TrackerChip from '@/component/TrackerChip.vue';
 import PriorityChip from '@/component/PriorityChip.vue';
@@ -146,16 +168,27 @@ const issueStore = useIssueStore();
 const projectStore = useProjectStore();
 const userStore = useUserStore();
 const priorityStore = usePriorityStore();
+const projectReleaseStore = useProjectReleaseStore();
+const projectReleaseIssueStore = useProjectReleaseIssueStore();
 
 const trackers = ref<any[]>([]);
 const statuses = ref<any[]>([]);
 const users = ref<any[]>([]);
 const priorities = ref<any[]>([]);
 
+const releaseLabel = computed(() => {
+  const prId = projectReleaseIssueStore.byIssue?.project_release_id;
+  const pr = projectReleaseStore.byProject.find(r => r.id === prId);
+  return pr?.release?.name ?? '';
+});
+
 onMounted(async () => {
   const projectId = issueStore.current?.project?.id;
+  const issueId = issueStore.current?.id;
   await Promise.all([
     projectId ? projectStore.getIssueProperty(projectId) : Promise.resolve(),
+    projectId ? projectReleaseStore.getByProjectId(projectId) : Promise.resolve(),
+    issueId ? projectReleaseIssueStore.getByIssueId(issueId) : Promise.resolve(),
     userStore.getAll(),
     priorityStore.getAll(),
   ]);
@@ -200,6 +233,21 @@ const saveReporter = async (reporterUserId: string | null) => {
 const savePriority = async (priorityId: string | null) => {
   if (priorityId !== issueStore.current?.priorityId) {
     await issueStore.update(issueStore.current!.id!, { priorityId });
+  }
+};
+
+const saveRelease = async (projectReleaseId: string | null) => {
+  const existing = projectReleaseIssueStore.byIssue;
+  if (existing?.id) {
+    await projectReleaseIssueStore.delete(existing.id);
+    projectReleaseIssueStore.byIssue = null;
+  }
+  if (projectReleaseId) {
+    const created = await projectReleaseIssueStore.post({
+      project_release_id: projectReleaseId,
+      issue_id: issueStore.current!.id!,
+    });
+    projectReleaseIssueStore.byIssue = created;
   }
 };
 </script>
