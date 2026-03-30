@@ -12,6 +12,7 @@ type MockProjectReleaseIssueRepository struct {
 	AllFunc                    func() (*[]domain.ProjectReleaseIssueModel, error)
 	FindByIDFunc               func(id uuid.UUID) (*domain.ProjectReleaseIssueModel, error)
 	FindByProjectReleaseIDFunc func(projectReleaseID uuid.UUID) (*[]domain.ProjectReleaseIssueModel, error)
+	FindByIssueIDFunc          func(issueID uuid.UUID) (*domain.ProjectReleaseIssueModel, error)
 	CreateFunc                 func(pri *domain.ProjectReleaseIssueModel) error
 	DestroyFunc                func(id uuid.UUID) error
 }
@@ -33,6 +34,13 @@ func (m *MockProjectReleaseIssueRepository) FindByID(id uuid.UUID) (*domain.Proj
 func (m *MockProjectReleaseIssueRepository) FindByProjectReleaseID(projectReleaseID uuid.UUID) (*[]domain.ProjectReleaseIssueModel, error) {
 	if m.FindByProjectReleaseIDFunc != nil {
 		return m.FindByProjectReleaseIDFunc(projectReleaseID)
+	}
+	return nil, nil
+}
+
+func (m *MockProjectReleaseIssueRepository) FindByIssueID(issueID uuid.UUID) (*domain.ProjectReleaseIssueModel, error) {
+	if m.FindByIssueIDFunc != nil {
+		return m.FindByIssueIDFunc(issueID)
 	}
 	return nil, nil
 }
