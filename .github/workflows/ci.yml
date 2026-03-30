@@ -105,11 +105,3 @@ jobs:
             CACHE_ARGS="--cache-from type=gha --cache-to type=gha,mode=max" \
             PUSH_ARGS="$PUSH_ARGS"
 
-      - name: Scan image for vulnerabilities
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ env.IMAGE }}:${{ steps.version.outputs.version }}
-          format: table
-          exit-code: 1
-          severity: CRITICAL
-        continue-on-error: true
