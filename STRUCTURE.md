@@ -17,7 +17,13 @@ This document defines the structural rules, naming conventions, and architectura
    - [Dependency Injection](#dependency-injection)
    - [Database & Migrations](#database--migrations)
    - [Seed Data](#seed-data)
-3. [Frontend — Vue / TypeScript](#frontend--vue--typescript)
+3. [Backend — Testing](#backend--testing)
+   - [Directory Structure](#directory-structure)
+   - [Mock Strategy](#mock-strategy)
+   - [Service Tests](#service-tests)
+   - [Controller Tests](#controller-tests)
+   - [Serializer Tests](#serializer-tests)
+4. [Frontend — Vue / TypeScript](#frontend--vue--typescript)
    - [Folder Structure](#folder-structure)
    - [File Naming](#frontend-file-naming)
    - [Layers](#frontend-layers)
@@ -406,6 +412,170 @@ app/seed/
 ├── service.seed.{entity}.go  # Methods that write seed data to DB
 └── service.seed.go           # Orchestrates all seed calls
 ```
+
+---
+
+## Backend — Testing
+
+### Directory Structure
+
+```
+apps/api/test/
+├── mock/
+│   ├── repository/   # package mockrepo — manual mock repositories
+│   └── service/      # package mocksvc  — manual mock services
+├── service/          # package service_test   — service unit tests
+├── controller/       # package controller_test — controller HTTP tests
+└── serializer/       # package serializer_test — serializer pure-function tests
+```
+
+Tests are run with:
+```
+docker compose --profile cli exec cli go test apps/api/test/...
+```
+Or via `make test`.
+
+### Mock Strategy
+
+Use **manual mocks with function fields** — do not use `testify/mock` (requires `stretchr/objx` which is not in `go.sum`). Use `testify/assert` for assertions only.
+
+Each mock mirrors its interface:
+
+```go
+// test/mock/repository/mock_project_repository.go
+package mockrepo
+
+type MockProjectRepository struct {
+    AllFunc     func() (*[]domain.ProjectModel, error)
+    FindByIDFunc func(id uuid.UUID) (*domain.ProjectModel, error)
+    CreateFunc  func(project *domain.ProjectModel) error
+    UpdateFunc  func(id uuid.UUID, project *domain.ProjectModel) error
+    DestroyFunc func(id uuid.UUID) error
+}
+
+func (m *MockProjectRepository) All() (*[]domain.ProjectModel, error) {
+    if m.AllFunc != nil {
+        return m.AllFunc()
+    }
+    return &[]domain.ProjectModel{}, nil
+}
+// ... remaining methods follow the same pattern
+```
+
+Rules:
+- One mock struct per interface, one file per entity
+- All function fields optional — nil means "return zero value, no error"
+- Mock file name: `mock_{entity}_repository.go` / `mock_{entity}_service.go`
+- Mock struct name: `Mock{Entity}Repository` / `Mock{Entity}Service`
+
+### Service Tests
+
+Test the service directly by injecting mock repositories:
+
+```go
+// test/service/filter_service_test.go
+package service_test
+
+func TestFilterService_Create_DelegatesCorrectly(t *testing.T) {
+    var saved *domain.FilterModel
+    repo := &mockrepo.MockFilterRepository{
+        CreateFunc: func(f *domain.FilterModel) error {
+            saved = f
+            return nil
+        },
+    }
+    svc := domain.FilterService{FilterRepository: repo}
+
+    filter := &domain.FilterModel{Name: "New Filter"}
+    err := svc.Create(filter)
+
+    assert.NoError(t, err)
+    assert.Equal(t, filter, saved)
+}
+```
+
+Test naming: `Test{Entity}Service_{Method}_{Scenario}` — e.g. `TestIssueService_Create_GeneratesKey`, `TestRelatedIssueService_Create_SelfReferenceReturnsError`.
+
+Services that use `jwt_utils.GenerateToken` (e.g. `UserSessionService`) need `JWT_SECRET` set. Use `init()` or `TestMain` to set it:
+
+```go
+func init() {
+    os.Setenv("JWT_SECRET", "test-secret-key")
+}
+```
+
+### Controller Tests
+
+Test via `net/http/httptest`. URL params are injected using `chi.NewRouteContext()`:
+
+```go
+// test/controller/project_controller_test.go
+package controller_test
+
+// Set JWT_SECRET once for the whole package
+func TestMain(m *testing.M) {
+    os.Setenv("JWT_SECRET", "test-secret-key")
+    os.Exit(m.Run())
+}
+
+// URL param helper (one per param name)
+func withProjectID(r *http.Request, id uuid.UUID) *http.Request {
+    rctx := chi.NewRouteContext()
+    rctx.URLParams.Add("project_id", id.String())
+    return r.WithContext(context.WithValue(r.Context(), chi.RouteCtxKey, rctx))
+}
+
+// Auth header helper (shared across all controller tests in the package)
+func withAuthToken(r *http.Request) *http.Request {
+    token := jwt_utils.GenerateToken(uuid.New(), "test@example.com")
+    r.Header.Set("Authorization", "Bearer "+token)
+    return r
+}
+
+func TestProjectController_Index_ReturnsOK(t *testing.T) {
+    svc := &mocksvc.MockProjectService{
+        AllFunc: func() (*[]domain.ProjectModel, error) {
+            return &[]domain.ProjectModel{{ID: uuid.New(), Name: "Alpha"}}, nil
+        },
+    }
+    ctrl := apphttp.ProjectController{ProjectService: svc}
+
+    w := httptest.NewRecorder()
+    r := httptest.NewRequest(http.MethodGet, "/project", nil)
+    ctrl.Index(w, r)
+
+    assert.Equal(t, http.StatusOK, w.Code)
+}
+```
+
+Rules:
+- `TestMain` is defined once per package — only in the first controller test file
+- Helper functions (`withProjectID`, `withAuthToken`, `jsonBody`) are package-level, defined once and shared
+- For controllers with multiple dependencies (e.g. `IssueWorklogController`), use a builder helper: `buildWorklogController(svc)`
+- Controllers that read `UserID` from JWT (`GetUserIDFromRequest`) require `withAuthToken`
+
+### Serializer Tests
+
+Serializers are pure functions — test input-output mapping directly:
+
+```go
+// test/serializer/project_serializer_test.go
+package serializer_test
+
+func TestProjectSerializer_ModelToResponse_MapsFields(t *testing.T) {
+    id := uuid.New()
+    model := domain.ProjectModel{ID: id, Name: "Alpha", CodeName: "AL"}
+
+    resp := apphttp.ProjectSerializer{}.ModelToResponse(model)
+
+    assert.Equal(t, id, resp.ID)
+    assert.Equal(t, "Alpha", resp.Name)
+}
+```
+
+Test naming: `Test{Entity}Serializer_{Method}_{Scenario}` — e.g. `TestProjectSerializer_RequestToModel_ParsesDefaultStatusID`.
+
+Always test `ModelToResponseMany` with both a populated slice and an empty slice.
 
 ---
 

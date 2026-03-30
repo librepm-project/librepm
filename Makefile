@@ -32,6 +32,9 @@ open:
 		echo "Unsupported OS. Please open the URL manually: $$URL"; \
 	fi
 
+test:
+	docker compose --profile cli exec cli go test apps/api/test/...
+
 seed:
 	docker compose --profile cli exec cli go run apps/api seed /app/apps/api/seed.yaml
 
