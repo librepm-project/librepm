@@ -80,6 +80,12 @@ export const navigationLinks: Link[] = [
         icon: 'mdi-table-large',
       },
       {
+        text: 'Releases',
+        key: 'releases',
+        to: '/admin/release',
+        icon: 'mdi-tag-multiple-outline',
+      },
+      {
         text: 'Settings',
         key: 'settings',
         to: '/admin/settings',

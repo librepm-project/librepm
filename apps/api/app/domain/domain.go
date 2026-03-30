@@ -34,6 +34,9 @@ type Domain struct {
 	CommentService          CommentServiceInterface
 	SettingService          SettingServiceInterface
 	NotificationService     NotificationServiceInterface
+	ReleaseService          ReleaseServiceInterface
+	ProjectReleaseService   ProjectReleaseServiceInterface
+	ProjectReleaseIssueService ProjectReleaseIssueServiceInterface
 
 	ProjectRepository              ProjectRepositoryInterface
 	ProjectTrackerStatusRepository ProjectTrackerStatusRepositoryInterface
@@ -59,6 +62,9 @@ type Domain struct {
 	CommentRepository              CommentRepositoryInterface
 	SettingRepository              SettingRepositoryInterface
 	NotificationRepository         NotificationRepositoryInterface
+	ReleaseRepository              ReleaseRepositoryInterface
+	ProjectReleaseRepository       ProjectReleaseRepositoryInterface
+	ProjectReleaseIssueRepository  ProjectReleaseIssueRepositoryInterface
 }
 
 func NewDomain(DB *gorm.DB) Domain {
@@ -87,6 +93,9 @@ func NewDomain(DB *gorm.DB) Domain {
 	settingRepository := SettingRepository{DB: DB}
 	settingRepository.Seed()
 	notificationRepository := NotificationRepository{DB: DB}
+	releaseRepository := ReleaseRepository{DB: DB}
+	projectReleaseRepository := ProjectReleaseRepository{DB: DB}
+	projectReleaseIssueRepository := ProjectReleaseIssueRepository{DB: DB}
 
 	return Domain{
 		DB: DB,
@@ -161,6 +170,15 @@ func NewDomain(DB *gorm.DB) Domain {
 		NotificationService: &NotificationService{
 			NotificationRepository: notificationRepository,
 		},
+		ReleaseService: ReleaseService{
+			ReleaseRepository: releaseRepository,
+		},
+		ProjectReleaseService: ProjectReleaseService{
+			ProjectReleaseRepository: projectReleaseRepository,
+		},
+		ProjectReleaseIssueService: ProjectReleaseIssueService{
+			ProjectReleaseIssueRepository: projectReleaseIssueRepository,
+		},
 
 		ProjectRepository:              projectRepository,
 		IssueRepository:                issueRepository,
@@ -186,5 +204,8 @@ func NewDomain(DB *gorm.DB) Domain {
 		CommentRepository:              commentRepository,
 		SettingRepository:              settingRepository,
 		NotificationRepository:         notificationRepository,
+		ReleaseRepository:              releaseRepository,
+		ProjectReleaseRepository:       projectReleaseRepository,
+		ProjectReleaseIssueRepository:  projectReleaseIssueRepository,
 	}
 }

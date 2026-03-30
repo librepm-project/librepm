@@ -29,6 +29,9 @@ type Router struct {
 	SettingController              SettingControllerInterface
 	NotificationController         NotificationControllerInterface
 	WebSocketController            WebSocketControllerInterface
+	ReleaseController              ReleaseControllerInterface
+	ProjectReleaseController       ProjectReleaseControllerInterface
+	ProjectReleaseIssueController  ProjectReleaseIssueControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
@@ -144,6 +147,26 @@ func (r Router) Init() *chi.Mux {
 	router.Patch("/notification/{notification_id}/read", r.NotificationController.MarkRead)
 
 	router.Get("/ws", r.WebSocketController.Connect)
+
+	router.Get("/release", r.ReleaseController.Index)
+	router.Post("/release", r.ReleaseController.Create)
+	router.Get("/release/{release_id}", r.ReleaseController.Show)
+	router.Put("/release/{release_id}", r.ReleaseController.Update)
+	router.Delete("/release/{release_id}", r.ReleaseController.Destroy)
+
+	router.Get("/project-release", r.ProjectReleaseController.Index)
+	router.Post("/project-release", r.ProjectReleaseController.Create)
+	router.Get("/project-release/{project_release_id}", r.ProjectReleaseController.Show)
+	router.Delete("/project-release/{project_release_id}", r.ProjectReleaseController.Destroy)
+	router.Get("/release/{release_id}/project", r.ProjectReleaseController.IndexByRelease)
+	router.Get("/project/{project_id}/release", r.ProjectReleaseController.IndexByProject)
+
+	router.Get("/project-release-issue", r.ProjectReleaseIssueController.Index)
+	router.Post("/project-release-issue", r.ProjectReleaseIssueController.Create)
+	router.Get("/project-release-issue/{project_release_issue_id}", r.ProjectReleaseIssueController.Show)
+	router.Delete("/project-release-issue/{project_release_issue_id}", r.ProjectReleaseIssueController.Destroy)
+	router.Get("/project-release/{project_release_id}/issue", r.ProjectReleaseIssueController.IndexByProjectRelease)
+	router.Get("/issue/{issue_id}/project-release-issue", r.ProjectReleaseIssueController.ShowByIssue)
 
 	return router
 }
