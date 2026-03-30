@@ -9,7 +9,7 @@ CACHE_ARGS ?=
 # ── Lint ──────────────────────────────────────────────────────────────────────
 
 lint-go:
-	go vet ./...
+	go vet $(shell go work edit -json | jq -r '.Use[].DiskPath + "/..."')
 
 lint-frontend:
 	npx nx run-many --target=lint --all --parallel=3
