@@ -97,12 +97,13 @@ jobs:
 
       - name: Build image
         run: |
+          PUSH_ARGS=""
+          if [ "${{ github.ref }}" = "refs/heads/master" ] && [ "${{ github.event_name }}" = "push" ]; then
+            PUSH_ARGS="--push"
+          fi
           make -f Makefile.pipeline build \
-            CACHE_ARGS="--cache-from type=gha --cache-to type=gha,mode=max"
-
-      - name: Push image
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: make -f Makefile.pipeline push
+            CACHE_ARGS="--cache-from type=gha --cache-to type=gha,mode=max" \
+            PUSH_ARGS="$PUSH_ARGS"
 
       - name: Scan image for vulnerabilities
         uses: aquasecurity/trivy-action@master
