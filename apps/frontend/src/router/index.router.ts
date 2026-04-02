@@ -14,6 +14,7 @@ import { adminReleaseRouter } from '@/router/admin.release.router';
 import { authorizationMiddleware } from '@/router/middleware/authorization.middleware';
 import { pageTitleMiddleware } from '@/router/middleware/page-title.middleware';
 import { layoutMiddleware } from '@/router/middleware/layout.middleware';
+import { permissionMiddleware } from '@/router/middleware/permission.middleware';
 import AdminSettingPage from '@/page/admin/setting/AdminSettingPage.vue'; // Import the new page
 
 const router = createRouter({
@@ -31,17 +32,18 @@ const router = createRouter({
     ...adminReleaseRouter,
     ...adminUserRouter,
     ...adminBoardRouter,
-    { // Add the settings route
+    {
       path: '/admin/settings',
       name: 'admin-settings',
       component: AdminSettingPage,
-      meta: { title: 'admin.settings' },
+      meta: { title: 'admin.settings', permission: 'setting:read' as const },
     },
   ],
 });
 
-router.beforeEach(layoutMiddleware)
-router.beforeEach(pageTitleMiddleware)
+router.beforeEach(layoutMiddleware);
+router.beforeEach(pageTitleMiddleware);
 router.beforeEach(authorizationMiddleware);
+router.beforeEach(permissionMiddleware);
 
 export default router;

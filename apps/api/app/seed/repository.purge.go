@@ -38,6 +38,7 @@ func (r PurgeRepository) Purge() {
 		&domain.PriorityModel{},
 
 		&domain.NotificationModel{},
+		&domain.UserRoleModel{},
 		&domain.UserModel{},
 		&domain.SettingModel{},
 	}

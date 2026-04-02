@@ -34,6 +34,7 @@ type Domain struct {
 	CommentService          CommentServiceInterface
 	SettingService          SettingServiceInterface
 	NotificationService     NotificationServiceInterface
+	PermissionService       PermissionServiceInterface
 	ReleaseService          ReleaseServiceInterface
 	ProjectReleaseService   ProjectReleaseServiceInterface
 	ProjectReleaseIssueService ProjectReleaseIssueServiceInterface
@@ -62,6 +63,7 @@ type Domain struct {
 	CommentRepository              CommentRepositoryInterface
 	SettingRepository              SettingRepositoryInterface
 	NotificationRepository         NotificationRepositoryInterface
+	UserRoleRepository             UserRoleRepositoryInterface
 	ReleaseRepository              ReleaseRepositoryInterface
 	ProjectReleaseRepository       ProjectReleaseRepositoryInterface
 	ProjectReleaseIssueRepository  ProjectReleaseIssueRepositoryInterface
@@ -93,6 +95,7 @@ func NewDomain(DB *gorm.DB) Domain {
 	settingRepository := SettingRepository{DB: DB}
 	settingRepository.Seed()
 	notificationRepository := NotificationRepository{DB: DB}
+	userRoleRepository := UserRoleRepository{DB: DB}
 	releaseRepository := ReleaseRepository{DB: DB}
 	projectReleaseRepository := ProjectReleaseRepository{DB: DB}
 	projectReleaseIssueRepository := ProjectReleaseIssueRepository{DB: DB}
@@ -137,11 +140,13 @@ func NewDomain(DB *gorm.DB) Domain {
 			UserRepository: userRepository,
 		},
 		UserRegisterService: UserRegisterService{
-			UserRepository: userRepository,
+			UserRepository:     userRepository,
+			UserRoleRepository: userRoleRepository,
 		},
 		OnboardService: OnboardService{
-			SettingRepository: settingRepository,
-			UserRepository:    userRepository,
+			SettingRepository:  settingRepository,
+			UserRepository:     userRepository,
+			UserRoleRepository: userRoleRepository,
 		},
 		StatusService: StatusService{
 			StatusRepository: statusRepository,
@@ -169,6 +174,9 @@ func NewDomain(DB *gorm.DB) Domain {
 		},
 		NotificationService: &NotificationService{
 			NotificationRepository: notificationRepository,
+		},
+		PermissionService: PermissionService{
+			UserRoleRepository: userRoleRepository,
 		},
 		ReleaseService: ReleaseService{
 			ReleaseRepository: releaseRepository,
@@ -204,6 +212,7 @@ func NewDomain(DB *gorm.DB) Domain {
 		CommentRepository:              commentRepository,
 		SettingRepository:              settingRepository,
 		NotificationRepository:         notificationRepository,
+		UserRoleRepository:             userRoleRepository,
 		ReleaseRepository:              releaseRepository,
 		ProjectReleaseRepository:       projectReleaseRepository,
 		ProjectReleaseIssueRepository:  projectReleaseIssueRepository,

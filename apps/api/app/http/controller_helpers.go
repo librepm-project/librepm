@@ -36,6 +36,11 @@ func RespondNoContent(w http.ResponseWriter) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// RespondForbidden sends a 403 Forbidden response
+func RespondForbidden(w http.ResponseWriter) {
+	w.WriteHeader(http.StatusForbidden)
+}
+
 // RespondJSON sends a JSON response with the given status code
 func RespondJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	http_utils.RespondWithJSON(w, statusCode, data)

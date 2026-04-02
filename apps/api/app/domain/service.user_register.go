@@ -9,7 +9,8 @@ type UserRegisterServiceInterface interface {
 }
 
 type UserRegisterService struct {
-	UserRepository UserRepositoryInterface
+	UserRepository     UserRepositoryInterface
+	UserRoleRepository UserRoleRepositoryInterface
 }
 
 type UserRegisterCreateReturn struct {
@@ -25,6 +26,13 @@ func (s UserRegisterService) Create(email string, password string, firstName str
 		FirstName:    firstName,
 		LastName:     lastName,
 	}
-	err := s.UserRepository.Create(&user)
-	return &user, err
+	if err := s.UserRepository.Create(&user); err != nil {
+		return &user, err
+	}
+	defaultRole := "viewer"
+	_ = s.UserRoleRepository.Create(&UserRoleModel{
+		UserID: user.ID,
+		Role:   defaultRole,
+	})
+	return &user, nil
 }

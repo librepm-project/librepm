@@ -11,8 +11,9 @@ type OnboardServiceInterface interface {
 }
 
 type OnboardService struct {
-	SettingRepository SettingRepositoryInterface
-	UserRepository    UserRepositoryInterface
+	SettingRepository  SettingRepositoryInterface
+	UserRepository     UserRepositoryInterface
+	UserRoleRepository UserRoleRepositoryInterface
 }
 
 func (s OnboardService) Execute(siteTitle, email, password, firstName, lastName string) error {
@@ -35,6 +36,12 @@ func (s OnboardService) Execute(siteTitle, email, password, firstName, lastName 
 	if err := s.UserRepository.Create(&user); err != nil {
 		return err
 	}
+
+	adminRole := "admin"
+	_ = s.UserRoleRepository.Create(&UserRoleModel{
+		UserID: user.ID,
+		Role:   adminRole,
+	})
 
 	return s.SettingRepository.Update(SettingKeyOnboarded, "true")
 }

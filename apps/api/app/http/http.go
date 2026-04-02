@@ -129,6 +129,13 @@ func StartHttpServer(d domain.Domain) {
 		ProjectReleaseIssueController: ProjectReleaseIssueController{
 			ProjectReleaseIssueService: d.ProjectReleaseIssueService,
 		},
+		PermissionService: d.PermissionService,
+		UserPermissionController: UserPermissionController{
+			PermissionService: d.PermissionService,
+		},
+		UserRoleController: UserRoleController{
+			UserRoleRepository: d.UserRoleRepository,
+		},
 	}.Init()
 
 	slog.Info("API listen on port 80")
