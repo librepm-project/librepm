@@ -43,6 +43,8 @@
           v-for="notification in store.items"
           :key="notification.id"
           class="rounded-lg mb-1"
+          :class="{ 'cursor-pointer': resolveLink(notification) }"
+          @click="handleNotificationClick(notification)"
         >
           <template #prepend>
             <v-icon
@@ -88,9 +90,12 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { useNotificationStore } from '@/store/notification.store';
+import type { Notification } from '@/lib/interfaces/notification.interface';
 
 const { t } = useI18n();
+const router = useRouter();
 const store = useNotificationStore();
 const open = ref(false);
 
@@ -122,6 +127,21 @@ const typeColor = (type: string): string => {
     issue_status_changed: 'info',
   };
   return colors[type] ?? 'default';
+};
+
+const resolveLink = (notification: Notification) => {
+  if (notification.entityType === 'issue' && notification.entityId) {
+    return { name: 'issueShowById', params: { issueId: notification.entityId } };
+  }
+  return undefined;
+};
+
+const handleNotificationClick = (notification: Notification) => {
+  open.value = false;
+  const link = resolveLink(notification);
+  if (link) {
+    router.push(link);
+  }
 };
 
 const formatDate = (dateStr: string): string => {
