@@ -396,3 +396,9 @@ notifications:
     entity_type: "issue"
     issue_key: "WED-3"
     read: false
+
+user_roles:
+  - user_email: "testuser@example.com"
+    role: "admin"
+  - user_email: "testuser2@example.com"
+    role: "admin"

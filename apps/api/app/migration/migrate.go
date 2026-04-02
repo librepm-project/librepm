@@ -39,6 +39,7 @@ func Run(db *gorm.DB) {
 		migrationRelease(),
 		migrationProjectRelease(),
 		migrationProjectReleaseIssue(),
+		migrationUserRole(),
 	})
 
 	if err := m.Migrate(); err != nil {

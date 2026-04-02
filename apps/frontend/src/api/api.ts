@@ -19,7 +19,10 @@ const apiCall = (): AxiosInstance => {
       (error) => {
         if (error.response?.status === 401) {
           removeToken();
-          window.location.href = "/";
+          window.location.href = '/';
+        }
+        if (error.response?.status === 403) {
+          window.location.href = '/forbidden';
         }
         return Promise.reject(error);
       }

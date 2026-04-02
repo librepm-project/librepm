@@ -13,4 +13,5 @@ type SeedData struct {
 	Issues         []IssueData         `yaml:"issues" validate:"required,dive"`
 	RelatedIssues  []RelatedIssueData  `yaml:"related_issues"`
 	Notifications  []NotificationData  `yaml:"notifications" validate:"dive"`
+	UserRoles      []UserRoleData      `yaml:"user_roles" validate:"dive"`
 }

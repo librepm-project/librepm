@@ -3,6 +3,7 @@ import LoginPage from '@/page/session/LoginPage.vue';
 import ProfilePage from '@/page/session/ProfilePage.vue';
 import RegisterPage from '@/page/session/RegisterPage.vue';
 import OnboardPage from '@/page/session/OnboardPage.vue';
+import ForbiddenPage from '@/page/session/ForbiddenPage.vue';
 import { useAppConfigStore } from '@/store/app-config.store';
 import { useSettingStore } from '@/store/setting.store';
 
@@ -44,5 +45,10 @@ export const sessionRouter: RouteRecordRaw[] = [
     path: '/profile',
     name: 'profile',
     component: ProfilePage,
+  },
+  {
+    path: '/forbidden',
+    name: 'forbidden',
+    component: ForbiddenPage,
   },
 ];

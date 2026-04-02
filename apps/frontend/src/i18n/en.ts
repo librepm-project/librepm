@@ -224,7 +224,23 @@ export const en = {
     },
     validation: {
         required: 'This field is required',
-    }
+    },
+    forbidden: {
+        title: 'Access Denied',
+        description: 'You do not have permission to view this page.',
+        back: 'Go to Dashboard',
+    },
+    role: {
+        title: 'Roles',
+        add: 'Add Role',
+        empty: 'No roles assigned.',
+        options: {
+            admin: 'Admin',
+            project_manager: 'Project Manager',
+            developer: 'Developer',
+            viewer: 'Viewer',
+        },
+    },
 }
 
 // Merge with Vuetify's English locale

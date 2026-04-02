@@ -15,6 +15,8 @@ import { i18n } from '@/i18n';
 import '@mdi/font/css/materialdesignicons.css'
 import { useAppConfigStore } from '@/store/app-config.store';
 import { useSettingStore } from '@/store/setting.store';
+import { usePermissionStore } from '@/store/permission.store';
+import { getToken } from '@/lib/cookie';
 
 const vuetify = createVuetify({
   components,
@@ -68,9 +70,17 @@ app.use(router);
 
 const configStore = useAppConfigStore();
 const settingStore = useSettingStore();
-Promise.allSettled([
+const permissionStore = usePermissionStore();
+
+const startupFetches: Promise<unknown>[] = [
   configStore.fetch(),
   settingStore.fetch(),
-]).finally(() => {
+];
+
+if (getToken()) {
+  startupFetches.push(permissionStore.fetch());
+}
+
+Promise.allSettled(startupFetches).finally(() => {
   app.mount('#root');
 });

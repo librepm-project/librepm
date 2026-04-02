@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import userSessionApi from '@/api/user-session.api';
 import { useUserCurrentStore } from './user-current.store';
+import { usePermissionStore } from './permission.store';
 import { LoginRequest } from '@/lib/interfaces/user.interface';
 import { setToken, removeToken } from '@/lib/cookie';
 
@@ -12,11 +13,12 @@ export const useUserSessionStore = defineStore('userSession', {
       setToken(session.token);
       const userCurrentStore = useUserCurrentStore();
       userCurrentStore.set(session.user);
+      await usePermissionStore().fetch();
     },
     logout() {
       removeToken();
-      const userCurrentStore = useUserCurrentStore();
-      userCurrentStore.set(null);
+      useUserCurrentStore().set(null);
+      usePermissionStore().clear();
     },
   },
 });
