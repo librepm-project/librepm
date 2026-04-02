@@ -25,6 +25,12 @@ func (s SeedService) createNotification(items []NotificationData) error {
 			notification.EntityType = &item.EntityType
 		}
 
+		if item.IssueKey != "" {
+			if issue, issueErr := s.IssueRepository.FindByKey(item.IssueKey); issueErr == nil {
+				notification.EntityID = &issue.ID
+			}
+		}
+
 		err = s.NotificationRepository.Create(&notification)
 	}
 	return err

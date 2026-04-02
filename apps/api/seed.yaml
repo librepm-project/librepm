@@ -379,16 +379,20 @@ notifications:
   - user_email: "testuser@example.com"
     type: "issue_assigned"
     entity_type: "issue"
+    issue_key: "WED-0"
     read: false
   - user_email: "testuser@example.com"
     type: "comment_added"
     entity_type: "issue"
+    issue_key: "WED-1"
     read: false
   - user_email: "testuser@example.com"
     type: "mention"
     entity_type: "issue"
+    issue_key: "WED-2"
     read: false
   - user_email: "testuser@example.com"
     type: "issue_status_changed"
     entity_type: "issue"
+    issue_key: "WED-3"
     read: false

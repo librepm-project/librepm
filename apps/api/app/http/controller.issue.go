@@ -127,7 +127,11 @@ func (c IssueController) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	c.IssueAuditLogService.LogFieldChanges(issue_id, user_id, *oldIssue, *updated)
-	c.NotificationService.NotifyIssueParticipants(updated, "issue_updated", user_id)
+	if oldIssue.StatusID != updated.StatusID {
+		c.NotificationService.NotifyIssueParticipants(updated, "issue_status_changed", user_id)
+	} else {
+		c.NotificationService.NotifyIssueParticipants(updated, "issue_updated", user_id)
+	}
 	c.broadcastIssueUpdate(issue_id, updated)
 
 	RespondJSON(w, http.StatusOK, IssueSerializer{}.ModelToResponse(*updated))
