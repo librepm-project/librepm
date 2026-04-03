@@ -41,6 +41,10 @@ seed:
 purge:
 	docker compose --profile cli exec cli go run apps/api purge
 
+e2e:
+	docker compose --profile dev up -d
+	docker compose --profile e2e run --rm playwright
+
 login:
 ifndef EMAIL
 	@echo "Usage: make login EMAIL=<email>"

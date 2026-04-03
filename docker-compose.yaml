@@ -115,6 +115,23 @@ services:
     depends_on:
       - api
 
+  playwright:
+    profiles:
+      - e2e
+    image: mcr.microsoft.com/playwright:v1.59.0-noble
+    working_dir: /app/apps/frontend-e2e
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      sh -c "until node -e \"const h=require('http');h.get('http://host.docker.internal:4200',r=>process.exit(0)).on('error',()=>process.exit(1))\" 2>/dev/null; do
+        echo 'Waiting for frontend...'; sleep 2;
+      done && npx playwright test"
+    environment:
+      BASE_URL: http://host.docker.internal:4200
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+    volumes:
+      - .:/app
+
   database:
     profiles:
       - dev
