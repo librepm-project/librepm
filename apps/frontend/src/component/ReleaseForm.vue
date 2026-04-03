@@ -65,6 +65,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   submitButtonText: 'global.create',
+  initialData: undefined,
 });
 
 const loading = ref(false);

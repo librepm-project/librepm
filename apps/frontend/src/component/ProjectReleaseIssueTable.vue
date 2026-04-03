@@ -20,7 +20,9 @@
             >
               {{ header.title }}
             </th>
-            <th class="text-white font-weight-bold">{{ t('global.actions') }}</th>
+            <th class="text-white font-weight-bold">
+              {{ t('global.actions') }}
+            </th>
           </tr>
         </thead>
       </template>
