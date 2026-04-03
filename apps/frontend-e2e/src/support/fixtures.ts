@@ -7,8 +7,8 @@ type Fixtures = {
 export const test = base.extend<Fixtures>({
   authenticatedPage: async ({ page }, use) => {
     await page.goto('/login');
-    await page.getByLabel('Email').fill('admin@librepm.com');
-    await page.getByLabel('Password').fill('password');
+    await page.getByLabel('E-mail').fill('testuser@example.com');
+    await page.getByLabel('Password').fill('password123');
     await page.getByRole('button', { name: 'Login' }).click();
     await page.waitForURL('/');
     await use(page);
