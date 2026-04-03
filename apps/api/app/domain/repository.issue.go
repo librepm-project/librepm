@@ -107,12 +107,14 @@ func (r IssueRepository) FindByID(issue_id uuid.UUID) (*IssueModel, error) {
 
 func (r IssueRepository) FindByKey(key string) (*IssueModel, error) {
 	var issue IssueModel
-	query := r.withAssociations(r.DB).Where("`key` = ?", key).First(&issue)
-
-	if query.Error != nil {
-		slog.Error("failed to find issue by key", "error", query.Error)
+	if err := r.withAssociations(r.DB).Where("`key` = ?", key).Limit(1).Find(&issue).Error; err != nil {
+		slog.Error("failed to find issue by key", "error", err)
+		return nil, err
 	}
-	return &issue, query.Error
+	if issue.ID == uuid.Nil {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return &issue, nil
 }
 
 func (r IssueRepository) Create(issue *IssueModel) error {

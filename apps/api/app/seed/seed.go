@@ -24,6 +24,7 @@ func NewSeedService(domain domain.Domain) SeedService {
 		DashboardWidgetRepository:      domain.DashboardWidgetRepository,
 		NotificationRepository:         domain.NotificationRepository,
 		UserRoleRepository:             domain.UserRoleRepository,
+		SettingRepository:              domain.SettingRepository,
 		PurgeRepository: PurgeRepository{
 			DB: domain.DB,
 		},
