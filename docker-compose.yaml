@@ -114,6 +114,27 @@ services:
     depends_on:
       - api
 
+  seed:
+    profiles:
+      - seed
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    entrypoint: sh -c "until curl -sf http://api:80/health; do echo 'Waiting for API...'; sleep 3; done && go run apps/api seed /app/apps/api/seed.yaml"
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_USER: api
+      DB_PASSWORD: apipass
+      DB_NAME: api
+      JWT_SECRET: secret
+    depends_on:
+      - api
+    networks:
+      - nx-network
+    volumes:
+      - .:/app
+
   playwright:
     profiles:
       - e2e

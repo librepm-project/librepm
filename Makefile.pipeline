@@ -5,7 +5,7 @@ IMAGE    := ghcr.io/librepm-project/librepm
 CACHE_ARGS ?=
 PUSH_ARGS  ?=
 
-.PHONY: lint-go lint-frontend lint test-go test-frontend test build
+.PHONY: lint-go lint-frontend lint test-go test-frontend test test-e2e build
 
 # ── Lint ──────────────────────────────────────────────────────────────────────
 
@@ -26,6 +26,14 @@ test-frontend:
 	npx nx run-many --target=test --all --parallel=3
 
 test: test-go test-frontend
+
+test-e2e:
+	docker compose --profile dev up -d && \
+	docker compose --profile seed run --rm seed && \
+	docker compose --profile e2e run --rm playwright; \
+	EXIT_CODE=$$?; \
+	docker compose --profile dev down; \
+	exit $$EXIT_CODE
 
 # ── Build & Push ──────────────────────────────────────────────────────────────
 
