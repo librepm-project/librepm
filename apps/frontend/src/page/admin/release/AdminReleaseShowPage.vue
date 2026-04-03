@@ -7,7 +7,9 @@
     />
 
     <div class="mt-6">
-      <h3 class="text-h6 mb-4">{{ t('admin.release.projects') }}</h3>
+      <h3 class="text-h6 mb-4">
+        {{ t('admin.release.projects') }}
+      </h3>
       <project-release-table
         :items="projectReleaseStore.byRelease"
         :on-delete="handleDeleteProjectRelease"
@@ -15,7 +17,9 @@
     </div>
 
     <div class="mt-6">
-      <h3 class="text-h6 mb-4">{{ t('admin.release.add_project') }}</h3>
+      <h3 class="text-h6 mb-4">
+        {{ t('admin.release.add_project') }}
+      </h3>
       <project-release-form
         :on-submit="handleAddProjectRelease"
         :release-id="releaseId"

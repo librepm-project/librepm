@@ -14,4 +14,11 @@ module.exports = [
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.vue'],
     rules: { 'vue/multi-word-component-names': 'off' },
   },
+  {
+    files: ['**/*.stories.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+    },
+  },
 ];

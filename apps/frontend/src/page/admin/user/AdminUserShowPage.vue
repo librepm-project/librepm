@@ -8,7 +8,10 @@
       submit-button-text="global.update"
     />
 
-    <v-card elevation="0" class="rounded-xl pa-6">
+    <v-card
+      elevation="0"
+      class="rounded-xl pa-6"
+    >
       <v-card-title class="pa-0 mb-4 text-h6 font-weight-bold">
         {{ t('role.title') }}
       </v-card-title>
@@ -25,11 +28,18 @@
             {{ t(`role.options.${role}`, role) }}
           </v-chip>
         </template>
-        <span v-else class="text-body-2 text-medium-emphasis">{{ t('role.empty') }}</span>
+        <span
+          v-else
+          class="text-body-2 text-medium-emphasis"
+        >{{ t('role.empty') }}</span>
       </div>
 
       <v-row align="center">
-        <v-col cols="12" sm="6" md="4">
+        <v-col
+          cols="12"
+          sm="6"
+          md="4"
+        >
           <v-select
             v-model="selectedRole"
             :items="availableRoles"

@@ -62,6 +62,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   submitButtonText: 'global.create',
+  releaseId: undefined,
   releases: () => [],
 });
 
