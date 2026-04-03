@@ -4,5 +4,21 @@
   "projectType": "application",
   "sourceRoot": "apps/frontend/src",
   "// targets": "to see all targets run: nx show project frontend --web",
-  "targets": {}
+  "targets": {
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "apps/frontend/.storybook"
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/frontend",
+        "configDir": "apps/frontend/.storybook"
+      }
+    }
+  }
 }

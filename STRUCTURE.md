@@ -586,7 +586,7 @@ Always test `ModelToResponseMany` with both a populated slice and an empty slice
 ```
 apps/frontend/src/
 ├── api/           # API client functions, one file per entity
-├── component/     # Reusable Vue components (flat, no subdirectories)
+├── component/     # Reusable Vue components (flat, no subdirectories); every component has a paired .stories.ts
 ├── i18n/          # Translation files
 ├── layout/        # App-level layout components
 ├── lib/
@@ -621,6 +621,7 @@ apps/frontend/src/
 | Store | `{entity}.store.ts` | `project.store.ts`, `related-issue.store.ts` |
 | Interface | `{entity}.interface.ts` | `project.interface.ts`, `issue-audit-log.interface.ts` |
 | Component | `{PascalCase}.vue` | `ProjectForm.vue`, `IssueList.vue` |
+| Component story | `{PascalCase}.stories.ts` | `ProjectForm.stories.ts`, `IssueList.stories.ts` |
 | Page | `{PascalCase}Page.vue` | `AdminProjectShowPage.vue`, `IssueIndexPage.vue` |
 | Router | `{section}.router.ts` | `board.router.ts`, `admin.project.router.ts` |
 
@@ -813,3 +814,56 @@ Key conventions:
 - Second-level keys: camelCase for single words, snake_case for multi-word phrases
 - Accessed in templates: `$t('project.default_tracker')`
 - `global.*` keys are for labels reused across multiple domains
+
+---
+
+### Storybook
+
+Every component in `src/component/` **must** have a paired `{PascalCase}.stories.ts` file in the same directory. Stories live next to the component, not in a separate folder.
+
+```
+src/component/
+  StatusChip.vue
+  StatusChip.stories.ts   ← required
+  IssueForm.vue
+  IssueForm.stories.ts    ← required
+```
+
+**Storybook is started with:**
+```bash
+make storybook   # → http://localhost:4400
+```
+
+#### Story rules
+
+- Every story file exports a `default` meta object with `component` and `title` (`'Components/{ComponentName}'`).
+- Every component needs at minimum a `Default` story that renders it with realistic data.
+- Components with an empty/zero state (tables, panels) also need an `Empty` story.
+- Components with create/edit variants (forms) need a `Create` and an `Edit` story.
+- Story titles follow the pattern `'Components/{ComponentName}'` — no nesting beyond this.
+
+#### Handling store dependencies in stories
+
+Components that call stores internally must have their stores pre-seeded in the story's `render` function `setup()`. Do **not** mock the store module — use the real Pinia store and set its state directly:
+
+```ts
+export const Default: Story = {
+  render: (args) => ({
+    components: { MyComponent },
+    setup() {
+      const store = useMyStore();
+      store.index = [{ id: '1', name: 'Example' }];
+      return { args };
+    },
+    template: `<MyComponent v-bind="args" />`,
+  }),
+  args: { ... },
+};
+```
+
+#### Configuration
+
+| File | Purpose |
+|------|---------|
+| `apps/frontend/.storybook/main.ts` | Storybook server config, stories glob, `@` alias |
+| `apps/frontend/.storybook/preview.ts` | Global setup: Vuetify (full theme + defaults), Pinia, vue-i18n, vue-router |

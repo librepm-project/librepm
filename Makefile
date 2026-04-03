@@ -41,6 +41,9 @@ seed:
 purge:
 	docker compose --profile cli exec cli go run apps/api purge
 
+storybook:
+	docker compose --profile cli run --rm --entrypoint sh cli -c "cd /app && npx nx run frontend:storybook"
+
 e2e:
 	docker compose --profile dev up -d
 	docker compose --profile e2e run --rm playwright
