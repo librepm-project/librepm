@@ -19,7 +19,7 @@ func TestUserRegisterService_Create_HashesPasswordAndCreatesUser(t *testing.T) {
 			return nil
 		},
 	}
-	svc := domain.UserRegisterService{UserRepository: repo}
+	svc := domain.UserRegisterService{UserRepository: repo, UserRoleRepository: &mockrepo.MockUserRoleRepository{}}
 
 	result, err := svc.Create("new@example.com", "plainpassword", "Jane", "Doe")
 
