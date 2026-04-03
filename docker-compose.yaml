@@ -128,8 +128,6 @@ services:
       DB_PASSWORD: apipass
       DB_NAME: api
       JWT_SECRET: secret
-    depends_on:
-      - api
     networks:
       - nx-network
     volumes:
