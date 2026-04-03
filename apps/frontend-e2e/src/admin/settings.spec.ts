@@ -8,6 +8,6 @@ test.describe('Admin > Settings', () => {
 
   test('shows settings in admin sidebar', async ({ authenticatedPage: page }) => {
     await page.goto('/admin/settings');
-    await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible();
+    await expect(page.getByRole('list').getByRole('link', { name: 'Settings' })).toBeVisible();
   });
 });

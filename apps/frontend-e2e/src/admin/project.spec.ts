@@ -8,7 +8,7 @@ test.describe('Admin > Projects', () => {
 
   test('navigates to project create page', async ({ authenticatedPage: page }) => {
     await page.goto('/admin/project');
-    await page.getByRole('button', { name: /create/i }).click();
+    await page.getByRole('link', { name: 'Create', exact: true }).click();
     await expect(page).toHaveURL('/admin/project/create');
   });
 });

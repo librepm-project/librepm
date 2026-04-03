@@ -11,7 +11,7 @@ test.describe('Authentication', () => {
     await page.getByLabel('E-mail').fill('testuser@example.com');
     await page.getByLabel('Password').fill('password123');
     await page.getByRole('button', { name: 'Login' }).click();
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL(/\/dashboard/);
   });
 
   test('shows error with invalid credentials', async ({ page }) => {
@@ -27,7 +27,7 @@ test.describe('Authentication', () => {
     await page.getByLabel('E-mail').fill('testuser@example.com');
     await page.getByLabel('Password').fill('password123');
     await page.getByRole('button', { name: 'Login' }).click();
-    await page.waitForURL('/');
+    await page.waitForURL(/\/dashboard/);
     await page.getByRole('button', { name: /logout/i }).click();
     await expect(page).toHaveURL('/login');
   });

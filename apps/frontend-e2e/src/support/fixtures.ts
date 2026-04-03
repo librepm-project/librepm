@@ -10,7 +10,7 @@ export const test = base.extend<Fixtures>({
     await page.getByLabel('E-mail').fill('testuser@example.com');
     await page.getByLabel('Password').fill('password123');
     await page.getByRole('button', { name: 'Login' }).click();
-    await page.waitForURL('/');
+    await page.waitForURL(/\/dashboard/);
     await use(page);
   },
 });
