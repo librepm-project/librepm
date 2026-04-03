@@ -47,13 +47,14 @@ func (r SettingRepository) Seed() error {
 	predefined := GetPredefinedSettings()
 	for _, s := range predefined {
 		var existing SettingModel
-		err := r.DB.Where("`key` = ?", s.Key).First(&existing).Error
-		if err == gorm.ErrRecordNotFound {
+		if err := r.DB.Where("`key` = ?", s.Key).Limit(1).Find(&existing).Error; err != nil {
+			slog.Error("failed to check setting during seed", "key", s.Key, "error", err)
+			continue
+		}
+		if existing.Key == "" {
 			if err := r.DB.Create(&s).Error; err != nil {
 				slog.Error("failed to seed setting", "key", s.Key, "error", err)
 			}
-		} else if err != nil {
-			slog.Error("failed to check setting during seed", "key", s.Key, "error", err)
 		} else {
 			optionsJSON, err := json.Marshal(s.Options)
 			if err != nil {

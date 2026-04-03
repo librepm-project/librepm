@@ -18,21 +18,34 @@ type PurgeRepository struct {
 func (r PurgeRepository) Purge() {
 	models := []interface{}{
 
+		&domain.ProjectReleaseIssueModel{},
+		&domain.ProjectReleaseModel{},
+		&domain.ReleaseModel{},
+
+		&domain.RelatedIssueModel{},
+		&domain.IssueWorklogModel{},
+		&domain.AttachmentModel{},
+		&domain.CommentModel{},
+		&domain.IssueAuditLogModel{},
 		&domain.IssueModel{},
 
+		&domain.ProjectTrackerTransitionModel{},
 		&domain.ProjectTrackerStatusModel{},
 		&domain.ProjectTrackerModel{},
+		&domain.ProjectUserModel{},
 		&domain.ProjectModel{},
 
 		&domain.DashboardWidgetModel{},
 		&domain.DashboardModel{},
 
+		&domain.BoardColumnStatusModel{},
 		&domain.BoardColumnModel{},
 		&domain.BoardModel{},
 
 		&domain.FilterConditionModel{},
 		&domain.FilterModel{},
 
+		&domain.TransitionModel{},
 		&domain.StatusModel{},
 		&domain.TrackerModel{},
 		&domain.PriorityModel{},

@@ -38,6 +38,7 @@ type SeedService struct {
 	DashboardWidgetRepository          domain.DashboardWidgetRepositoryInterface
 	NotificationRepository             domain.NotificationRepositoryInterface
 	UserRoleRepository                 domain.UserRoleRepositoryInterface
+	SettingRepository                  domain.SettingRepositoryInterface
 	PurgeRepository                    PurgeRepositoryInterface
 }
 
@@ -88,6 +89,12 @@ func (s SeedService) Seed(filePath string) []error {
 	errors = append(errors, err)
 
 	err = s.createUserRole(seedData.UserRoles)
+	errors = append(errors, err)
+
+	err = s.SettingRepository.Seed()
+	errors = append(errors, err)
+
+	err = s.SettingRepository.Update(domain.SettingKeyOnboarded, "true")
 	errors = append(errors, err)
 
 	slog.Info("seed completed successfully")
