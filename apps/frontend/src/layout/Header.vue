@@ -62,40 +62,15 @@
             {{ t('title.issueCreate') }}
           </v-btn>
           <notification-bell />
-          <v-menu
-            v-for="link in navigationLinks.filter(l => l.sublinks)"
-            :key="link.key"
-            open-on-hover
-            location="bottom"
+          <v-btn
+            icon
+            variant="text"
+            class="text-white"
+            to="/admin/settings"
+            title="Settings"
           >
-            <template #activator="{ props }">
-              <v-btn
-                icon
-                variant="text"
-                class="text-white"
-                v-bind="props"
-              >
-                <v-icon>{{ link.icon }}</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(sublink, index) in link.sublinks"
-                :key="index"
-                :to="sublink.to"
-                class="rounded-lg ma-1"
-              >
-                <template #prepend>
-                  <v-icon size="small">
-                    {{ sublink.icon }}
-                  </v-icon>
-                </template>
-                <v-list-item-title class="font-weight-medium">
-                  {{ sublink.text }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+            <v-icon>mdi-cog-outline</v-icon>
+          </v-btn>
           <v-btn
             variant="text"
             class="text-white text-body2 text-no-wrap text-capitalize"

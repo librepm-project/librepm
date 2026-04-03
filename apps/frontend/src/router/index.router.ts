@@ -15,7 +15,8 @@ import { authorizationMiddleware } from '@/router/middleware/authorization.middl
 import { pageTitleMiddleware } from '@/router/middleware/page-title.middleware';
 import { layoutMiddleware } from '@/router/middleware/layout.middleware';
 import { permissionMiddleware } from '@/router/middleware/permission.middleware';
-import AdminSettingPage from '@/page/admin/setting/AdminSettingPage.vue'; // Import the new page
+import AdminSettingPage from '@/page/admin/setting/AdminSettingPage.vue';
+import AdminLayout from '@/layout/AdminLayout.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,18 +26,25 @@ const router = createRouter({
     ...filterRouter,
     ...issueRouter,
     ...sessionRouter,
-    ...adminProjectRouter,
-    ...adminStatusRouter,
-    ...adminTrackerRouter,
-    ...adminPriorityRouter,
-    ...adminReleaseRouter,
-    ...adminUserRouter,
-    ...adminBoardRouter,
     {
-      path: '/admin/settings',
-      name: 'admin-settings',
-      component: AdminSettingPage,
-      meta: { title: 'admin.settings', permission: 'setting:read' as const },
+      path: '/admin',
+      component: AdminLayout,
+      redirect: '/admin/project',
+      children: [
+        ...adminProjectRouter,
+        ...adminStatusRouter,
+        ...adminTrackerRouter,
+        ...adminPriorityRouter,
+        ...adminReleaseRouter,
+        ...adminUserRouter,
+        ...adminBoardRouter,
+        {
+          path: '/admin/settings',
+          name: 'admin-settings',
+          component: AdminSettingPage,
+          meta: { title: 'admin.settings', permission: 'setting:read' as const },
+        },
+      ],
     },
   ],
 });

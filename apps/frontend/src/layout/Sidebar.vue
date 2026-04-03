@@ -2,7 +2,7 @@
   <v-col
     cols="12"
     md="2"
-    class="pe-3"
+    class="pe-3 align-self-start"
   >
     <v-sheet
       rounded="xl"
