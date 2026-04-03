@@ -35,6 +35,7 @@ const (
 )
 
 // Attachment
+// Note: AttachmentUpdate is intentionally omitted – attachments are immutable once uploaded (replace = delete + create).
 const (
 	AttachmentCreate Permission = "attachment:create"
 	AttachmentRead   Permission = "attachment:read"

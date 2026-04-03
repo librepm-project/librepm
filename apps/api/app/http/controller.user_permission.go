@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+type UserPermissionControllerInterface interface {
+	Index(w http.ResponseWriter, r *http.Request)
+}
+
 type UserPermissionController struct {
 	PermissionService domain.PermissionServiceInterface
 }

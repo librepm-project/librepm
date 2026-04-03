@@ -35,6 +35,7 @@ type Domain struct {
 	SettingService          SettingServiceInterface
 	NotificationService     NotificationServiceInterface
 	PermissionService       PermissionServiceInterface
+	UserRoleService         UserRoleServiceInterface
 	ReleaseService          ReleaseServiceInterface
 	ProjectReleaseService   ProjectReleaseServiceInterface
 	ProjectReleaseIssueService ProjectReleaseIssueServiceInterface
@@ -176,6 +177,9 @@ func NewDomain(DB *gorm.DB) Domain {
 			NotificationRepository: notificationRepository,
 		},
 		PermissionService: PermissionService{
+			UserRoleRepository: userRoleRepository,
+		},
+		UserRoleService: UserRoleService{
 			UserRoleRepository: userRoleRepository,
 		},
 		ReleaseService: ReleaseService{

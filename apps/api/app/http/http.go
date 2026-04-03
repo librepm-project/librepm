@@ -138,7 +138,7 @@ func StartHttpServer(d domain.Domain) {
 			PermissionService: d.PermissionService,
 		},
 		UserRoleController: UserRoleController{
-			UserRoleRepository: d.UserRoleRepository,
+			UserRoleService: d.UserRoleService,
 		},
 	}.Init()
 
