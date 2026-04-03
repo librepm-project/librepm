@@ -2,7 +2,7 @@ import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import { usePermissionStore } from '@/store/permission.store';
 import type { Permission } from '@/lib/permissions';
 
-export const permissionMiddleware = (
+export const permissionMiddleware = async (
   to: RouteLocationNormalized,
   _from: RouteLocationNormalized,
   next: NavigationGuardNext
@@ -12,6 +12,13 @@ export const permissionMiddleware = (
     return next();
   }
   const permissionStore = usePermissionStore();
+  if (!permissionStore.loaded) {
+    try {
+      await permissionStore.fetch();
+    } catch {
+      return next({ name: 'forbidden' });
+    }
+  }
   if (!permissionStore.can(requiredPermission)) {
     return next({ name: 'forbidden' });
   }

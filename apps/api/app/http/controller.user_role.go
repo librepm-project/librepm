@@ -5,8 +5,14 @@ import (
 	"net/http"
 )
 
+type UserRoleControllerInterface interface {
+	Index(w http.ResponseWriter, r *http.Request)
+	Create(w http.ResponseWriter, r *http.Request)
+	Destroy(w http.ResponseWriter, r *http.Request)
+}
+
 type UserRoleController struct {
-	UserRoleRepository domain.UserRoleRepositoryInterface
+	UserRoleService domain.UserRoleServiceInterface
 }
 
 func (c UserRoleController) Index(w http.ResponseWriter, r *http.Request) {
@@ -15,7 +21,7 @@ func (c UserRoleController) Index(w http.ResponseWriter, r *http.Request) {
 		RespondBadRequest(w)
 		return
 	}
-	roles, err := c.UserRoleRepository.FindByUserID(userID)
+	roles, err := c.UserRoleService.FindByUserID(userID)
 	if err != nil {
 		RespondBadRequest(w)
 		return
@@ -45,7 +51,7 @@ func (c UserRoleController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	m := &domain.UserRoleModel{UserID: userID, Role: body.Role}
-	if err := c.UserRoleRepository.Create(m); err != nil {
+	if err := c.UserRoleService.Create(m); err != nil {
 		RespondBadRequest(w)
 		return
 	}
@@ -63,7 +69,7 @@ func (c UserRoleController) Destroy(w http.ResponseWriter, r *http.Request) {
 		RespondBadRequest(w)
 		return
 	}
-	if err := c.UserRoleRepository.Delete(userID, role); err != nil {
+	if err := c.UserRoleService.Delete(userID, role); err != nil {
 		RespondBadRequest(w)
 		return
 	}

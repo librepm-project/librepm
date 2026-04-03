@@ -36,8 +36,8 @@ type Router struct {
 	ProjectReleaseController       ProjectReleaseControllerInterface
 	ProjectReleaseIssueController  ProjectReleaseIssueControllerInterface
 	PermissionService              domain.PermissionServiceInterface
-	UserPermissionController       UserPermissionController
-	UserRoleController             UserRoleController
+	UserPermissionController       UserPermissionControllerInterface
+	UserRoleController             UserRoleControllerInterface
 }
 
 func (r Router) Init() *chi.Mux {
