@@ -28,8 +28,9 @@ test-frontend:
 test: test-go test-frontend
 
 test-e2e:
-	docker compose --profile dev up -d && \
-	docker compose --profile seed run --rm seed && \
+	docker compose --profile dev up -d
+	until curl -sf http://localhost:3000/health; do sleep 3; done
+	DB_HOST=127.0.0.1 DB_PORT=3306 DB_USER=api DB_PASSWORD=apipass DB_NAME=api JWT_SECRET=secret go run apps/api seed apps/api/seed.yaml
 	docker compose --profile e2e run --rm playwright; \
 	EXIT_CODE=$$?; \
 	docker compose --profile dev down; \
