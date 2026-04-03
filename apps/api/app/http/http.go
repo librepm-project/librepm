@@ -33,6 +33,10 @@ func StartHttpServer(d domain.Domain) {
 				Path:   "/config",
 			},
 			{
+				Method: "GET",
+				Path:   "/health",
+			},
+			{
 				Method: "POST",
 				Path:   "/onboard",
 			},
