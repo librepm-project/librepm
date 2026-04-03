@@ -2,6 +2,7 @@ package http
 
 import (
 	"apps/api/app/domain"
+	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -106,6 +107,7 @@ func (r Router) Init() *chi.Mux {
 	router.With(RequirePermission(r.PermissionService, domain.DashboardUpdate)).Patch("/dashboard/{dashboard_id}/widget/{widget_id}", r.DashboardWidgetController.Update)
 	router.With(RequirePermission(r.PermissionService, domain.DashboardUpdate)).Delete("/dashboard/{dashboard_id}/widget/{widget_id}", r.DashboardWidgetController.Destroy)
 
+	router.Get("/health", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	router.Get("/config", ConfigController{}.Show)
 	router.Post("/onboard", r.OnboardController.Create)
 
