@@ -50,8 +50,9 @@ func TestOnboardService_Execute_UpdatesTitleAndCreatesUser(t *testing.T) {
 		},
 	}
 	svc := domain.OnboardService{
-		SettingRepository: settingRepo,
-		UserRepository:    userRepo,
+		SettingRepository:  settingRepo,
+		UserRepository:     userRepo,
+		UserRoleRepository: &mockrepo.MockUserRoleRepository{},
 	}
 
 	err := svc.Execute("MyPM", "admin@example.com", "secure123", "Admin", "User")
