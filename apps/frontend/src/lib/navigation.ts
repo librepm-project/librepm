@@ -44,6 +44,12 @@ export const navigationLinks: Link[] = [
     icon: 'mdi-cog-outline',
     sublinks: [
       {
+        text: 'Settings',
+        key: 'settings',
+        to: '/admin/settings',
+        icon: 'mdi-cog',
+      },
+      {
         text: 'Projects',
         key: 'projects',
         to: '/admin/project',
@@ -84,12 +90,6 @@ export const navigationLinks: Link[] = [
         key: 'releases',
         to: '/admin/release',
         icon: 'mdi-tag-multiple-outline',
-      },
-      {
-        text: 'Settings',
-        key: 'settings',
-        to: '/admin/settings',
-        icon: 'mdi-cog',
       },
     ],
   },
