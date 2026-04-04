@@ -2,540 +2,1821 @@ openapi: 3.1.0
 info:
   title: LibrePM API
   version: 1.0.0
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: auth
+  - name: project
+  - name: issue
+  - name: worklog
+  - name: comment
+  - name: attachment
+  - name: filter
+  - name: board
+  - name: dashboard
+  - name: tracker
+  - name: status
+  - name: priority
+  - name: transition
+  - name: release
+  - name: user
+  - name: setting
+  - name: notification
+  - name: system
+
 paths:
+  /health:
+    get:
+      tags: [system]
+      summary: Health check
+      security: []
+      responses:
+        '200':
+          description: OK
+
+  /config:
+    get:
+      tags: [system]
+      summary: Get app configuration
+      security: []
+      responses:
+        '200':
+          description: App config
+
+  /onboard:
+    post:
+      tags: [system]
+      summary: Initial setup
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnboardRequest'
+      responses:
+        '201':
+          description: Created
+
+  /ws:
+    get:
+      tags: [system]
+      summary: WebSocket connection
+      security: []
+      responses:
+        '101':
+          description: Switching Protocols
+
+  # Auth
+
+  /user/session:
+    post:
+      tags: [auth]
+      summary: Login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+        '401':
+          description: Invalid credentials
+
+  /user/register:
+    post:
+      tags: [auth]
+      summary: Register user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+
+  # Projects
+
   /project:
     get:
-      tags: ["project"]
-      description: Get project list
+      tags: [project]
+      summary: List projects
       responses:
         '200':
           description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
     post:
-      tags: ["project"]
-      description: Create project
+      tags: [project]
+      summary: Create project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
       responses:
         '201':
-          description: Created
-  /project/{propjectId}:
+          description: Created project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+
+  /project/{projectId}:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
     get:
-      tags: ["project"]
-      description: Get a project
-      parameters:
-        - in: path
-          name: projectId
-          schema:
-            type: string
+      tags: [project]
+      summary: Get a project
       responses:
         '200':
           description: Project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
     put:
-      tags: ["project"]
-      description: Update a project
-      parameters:
-        - in: path
-          name: projectId
-          schema:
-            type: string
+      tags: [project]
+      summary: Update a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
       responses:
         '200':
-          description: OK
+          description: Updated project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
     delete:
-      tags: ["project"]
-      description: Delete a project
-      parameters:
-        - in: path
-          name: projectId
-          schema:
-            type: string
+      tags: [project]
+      summary: Delete a project
       responses:
         '204':
           description: No content
-  /project/{propjectId}/issue-property:
+
+  /project/{projectId}/issue-property:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
     get:
-      tags: ["project-issue-property"]
-      description: Get a project issue property
-      parameters:
-        - in: path
-          name: projectId
-          schema:
-            type: string
+      tags: [project]
+      summary: Get project issue properties
       responses:
         '200':
-          description: ProjectIssueProperty
-  /issue:
+          description: Project issue property configuration
+
+  /project/{projectId}/tracker:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
     get:
-      tags: ["issue"]
-      description: Get issue list
-      responses:
-        '200':
-          description: List of issues
-    post:
-      tags: ["issue"]
-      description: Create issue
-      responses:
-        '201':
-          description: Created
-  /issue/{issueId}:
-    get:
-      tags: ["issue"]
-      description: Get a issue
-      parameters:
-        - in: path
-          name: issueId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Issue
-    put:
-      tags: ["issue"]
-      description: Update a issue
-      parameters:
-        - in: path
-          name: issueId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    delete:
-      tags: ["issue"]
-      description: Delete a issue
-      parameters:
-        - in: path
-          name: issueId
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No content
-  /filter:
-    get:
-      tags: ["filter"]
-      description: Get filter list
-      responses:
-        '200':
-          description: List of filters
-    post:
-      tags: ["filter"]
-      description: Create filter
-      responses:
-        '201':
-          description: Created
-  /filter/{filterId}:
-    get:
-      tags: ["filter"]
-      description: Get a filter
-      parameters:
-        - in: path
-          name: filterId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Filter
-    put:
-      tags: ["filter"]
-      description: Update a filter
-      parameters:
-        - in: path
-          name: filterId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    delete:
-      tags: ["filter"]
-      description: Delete a filter
-      parameters:
-        - in: path
-          name: filterId
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No content
-  /status:
-    get:
-      tags: ["status"]
-      description: Get status list
-      responses:
-        '200':
-          description: List of statuss
-    post:
-      tags: ["status"]
-      description: Create status
-      responses:
-        '201':
-          description: Created
-  /status/{statusId}:
-    get:
-      tags: ["status"]
-      description: Get a status
-      parameters:
-        - in: path
-          name: statusId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Status
-    put:
-      tags: ["status"]
-      description: Update a status
-      parameters:
-        - in: path
-          name: statusId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    delete:
-      tags: ["status"]
-      description: Delete a status
-      parameters:
-        - in: path
-          name: statusId
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No content
-  /tracker:
-    get:
-      tags: ["tracker"]
-      description: Get tracker list
+      tags: [project]
+      summary: List trackers assigned to a project
       responses:
         '200':
           description: List of trackers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tracker'
+
+  /project/{projectId}/status:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [project]
+      summary: List statuses assigned to a project
+      responses:
+        '200':
+          description: List of statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+
+  /project/{projectId}/attachment:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+    get:
+      tags: [attachment]
+      summary: List attachments for a project
+      responses:
+        '200':
+          description: List of attachments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attachment'
     post:
-      tags: ["tracker"]
-      description: Create tracker
+      tags: [attachment]
+      summary: Upload attachment to project
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
       responses:
         '201':
-          description: Created
-  /tracker/{trackerId}:
+          description: Created attachment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+
+  /project/{projectId}/release:
+    parameters:
+      - $ref: '#/components/parameters/projectId'
     get:
-      tags: ["tracker"]
-      description: Get a tracker
-      parameters:
-        - in: path
-          name: trackerId
-          schema:
-            type: string
+      tags: [release]
+      summary: List releases for a project
       responses:
         '200':
-          description: Tracker
+          description: List of project releases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectRelease'
+
+  # Issues
+
+  /issue:
+    get:
+      tags: [issue]
+      summary: List issues
+      parameters:
+        - name: projectId
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of issues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Issue'
+    post:
+      tags: [issue]
+      summary: Create issue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueRequest'
+      responses:
+        '201':
+          description: Created issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+
+  /issue/key/{key}:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+        example: PROJ-1
+    get:
+      tags: [issue]
+      summary: Get issue by key
+      responses:
+        '200':
+          description: Issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+
+  /issue/{issueId}:
+    parameters:
+      - $ref: '#/components/parameters/issueId'
+    get:
+      tags: [issue]
+      summary: Get an issue
+      responses:
+        '200':
+          description: Issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
     put:
-      tags: ["tracker"]
-      description: Update a tracker
-      parameters:
-        - in: path
-          name: trackerId
-          schema:
-            type: string
+      tags: [issue]
+      summary: Update an issue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueRequest'
       responses:
         '200':
-          description: OK
+          description: Updated issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
     delete:
-      tags: ["tracker"]
-      description: Delete a tracker
-      parameters:
-        - in: path
-          name: trackerId
-          schema:
-            type: string
+      tags: [issue]
+      summary: Delete an issue
       responses:
         '204':
           description: No content
-  /transition:
+
+  /issue/{issueId}/related:
+    parameters:
+      - $ref: '#/components/parameters/issueId'
     get:
-      tags: ["transition"]
-      description: Get transition list
+      tags: [issue]
+      summary: List related issues
       responses:
         '200':
-          description: List of transitions
+          description: List of related issues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RelatedIssue'
     post:
-      tags: ["transition"]
-      description: Create transition
+      tags: [issue]
+      summary: Add related issue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelatedIssueRequest'
       responses:
         '201':
-          description: Created
-  /transition/{transitionId}:
-    get:
-      tags: ["transition"]
-      description: Get a transition
-      parameters:
-        - in: path
-          name: transitionId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Transition
-    put:
-      tags: ["transition"]
-      description: Update a transition
-      parameters:
-        - in: path
-          name: transitionId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
+          description: Created related issue link
+
+  /related-issue/{relatedIssueId}:
+    parameters:
+      - name: relatedIssueId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
     delete:
-      tags: ["transition"]
-      description: Delete a transition
-      parameters:
-        - in: path
-          name: transitionId
-          schema:
-            type: string
+      tags: [issue]
+      summary: Remove related issue link
       responses:
         '204':
           description: No content
+
+  /issue/{issueId}/audit-log:
+    parameters:
+      - $ref: '#/components/parameters/issueId'
+    get:
+      tags: [issue]
+      summary: List audit log for an issue
+      responses:
+        '200':
+          description: List of audit log entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IssueAuditLog'
+
+  /issue/{issueId}/project-release-issue:
+    parameters:
+      - $ref: '#/components/parameters/issueId'
+    get:
+      tags: [release]
+      summary: Get project release issue for an issue
+      responses:
+        '200':
+          description: Project release issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectReleaseIssue'
+
+  # Worklogs
+
+  /issue/{issueId}/worklog:
+    parameters:
+      - $ref: '#/components/parameters/issueId'
+    get:
+      tags: [worklog]
+      summary: List worklogs for an issue
+      responses:
+        '200':
+          description: List of worklogs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Worklog'
+    post:
+      tags: [worklog]
+      summary: Create worklog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorklogRequest'
+      responses:
+        '201':
+          description: Created worklog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Worklog'
+
+  /issue/{issueId}/worklog/{worklogId}:
+    parameters:
+      - $ref: '#/components/parameters/issueId'
+      - name: worklogId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    put:
+      tags: [worklog]
+      summary: Update worklog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorklogRequest'
+      responses:
+        '200':
+          description: Updated worklog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Worklog'
+    delete:
+      tags: [worklog]
+      summary: Delete worklog
+      responses:
+        '204':
+          description: No content
+
+  # Attachments
+
+  /issue/{issueId}/attachment:
+    parameters:
+      - $ref: '#/components/parameters/issueId'
+    get:
+      tags: [attachment]
+      summary: List attachments for an issue
+      responses:
+        '200':
+          description: List of attachments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attachment'
+    post:
+      tags: [attachment]
+      summary: Upload attachment to issue
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Created attachment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+
+  /attachment/{attachmentId}/download:
+    parameters:
+      - name: attachmentId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [attachment]
+      summary: Download an attachment
+      responses:
+        '200':
+          description: File content
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+  /attachment/{attachmentId}:
+    parameters:
+      - name: attachmentId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    delete:
+      tags: [attachment]
+      summary: Delete an attachment
+      responses:
+        '204':
+          description: No content
+
+  # Comments
+
+  /issue/{issueId}/comment:
+    parameters:
+      - $ref: '#/components/parameters/issueId'
+    get:
+      tags: [comment]
+      summary: List comments for an issue
+      responses:
+        '200':
+          description: List of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+    post:
+      tags: [comment]
+      summary: Create comment on issue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '201':
+          description: Created comment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+
+  /comment/{commentId}:
+    parameters:
+      - name: commentId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    put:
+      tags: [comment]
+      summary: Update a comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '200':
+          description: Updated comment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+    delete:
+      tags: [comment]
+      summary: Delete a comment
+      responses:
+        '204':
+          description: No content
+
+  # Filters
+
+  /filter/condition-options:
+    get:
+      tags: [filter]
+      summary: Get available filter fields and operators
+      responses:
+        '200':
+          description: Filter condition options
+
+  /filter:
+    get:
+      tags: [filter]
+      summary: List filters
+      responses:
+        '200':
+          description: List of filters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Filter'
+    post:
+      tags: [filter]
+      summary: Create filter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequest'
+      responses:
+        '201':
+          description: Created filter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Filter'
+
+  /filter/{filterId}:
+    parameters:
+      - $ref: '#/components/parameters/filterId'
+    get:
+      tags: [filter]
+      summary: Get a filter
+      responses:
+        '200':
+          description: Filter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Filter'
+    put:
+      tags: [filter]
+      summary: Update a filter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequest'
+      responses:
+        '200':
+          description: Updated filter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Filter'
+    delete:
+      tags: [filter]
+      summary: Delete a filter
+      responses:
+        '204':
+          description: No content
+
+  # Boards
+
   /board:
     get:
-      tags: ["board"]
-      description: Get board list
+      tags: [board]
+      summary: List boards
       responses:
         '200':
           description: List of boards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Board'
     post:
-      tags: ["board"]
-      description: Create board
+      tags: [board]
+      summary: Create board
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoardRequest'
       responses:
         '201':
-          description: Created
+          description: Created board
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Board'
+
   /board/{boardId}:
+    parameters:
+      - $ref: '#/components/parameters/boardId'
     get:
-      tags: ["board"]
-      description: Get a board
-      parameters:
-        - in: path
-          name: boardId
-          schema:
-            type: string
+      tags: [board]
+      summary: Get a board
       responses:
         '200':
           description: Board
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Board'
     put:
-      tags: ["board"]
-      description: Update a board
-      parameters:
-        - in: path
-          name: boardId
-          schema:
-            type: string
+      tags: [board]
+      summary: Update a board
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoardRequest'
       responses:
         '200':
-          description: OK
+          description: Updated board
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Board'
     delete:
-      tags: ["board"]
-      description: Delete a board
-      parameters:
-        - in: path
-          name: boardId
-          schema:
-            type: string
+      tags: [board]
+      summary: Delete a board
       responses:
         '204':
           description: No content
+
+  # Dashboards
+
   /dashboard:
     get:
-      tags: ["dashboard"]
-      description: Get dashboard list
+      tags: [dashboard]
+      summary: List dashboards
       responses:
         '200':
           description: List of dashboards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dashboard'
     post:
-      tags: ["dashboard"]
-      description: Create dashboard
+      tags: [dashboard]
+      summary: Create dashboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardRequest'
       responses:
         '201':
-          description: Created
+          description: Created dashboard
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dashboard'
+
   /dashboard/{dashboardId}:
+    parameters:
+      - $ref: '#/components/parameters/dashboardId'
     get:
-      tags: ["dashboard"]
-      description: Get a dashboard
-      parameters:
-        - in: path
-          name: dashboardId
-          schema:
-            type: string
+      tags: [dashboard]
+      summary: Get a dashboard
       responses:
         '200':
           description: Dashboard
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dashboard'
     put:
-      tags: ["dashboard"]
-      description: Update a dashboard
-      parameters:
-        - in: path
-          name: dashboardId
-          schema:
-            type: string
+      tags: [dashboard]
+      summary: Update a dashboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardRequest'
       responses:
         '200':
-          description: OK
+          description: Updated dashboard
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dashboard'
     delete:
-      tags: ["dashboard"]
-      description: Delete a dashboard
-      parameters:
-        - in: path
-          name: dashboardId
-          schema:
-            type: string
+      tags: [dashboard]
+      summary: Delete a dashboard
       responses:
         '204':
           description: No content
-  /user:
+
+  /dashboard/{dashboardId}/widget:
+    parameters:
+      - $ref: '#/components/parameters/dashboardId'
     get:
-      tags: ["user"]
-      description: Get user list
+      tags: [dashboard]
+      summary: List widgets for a dashboard
       responses:
         '200':
-          description: List of users
+          description: List of widgets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardWidget'
     post:
-      tags: ["user"]
-      description: Create user
+      tags: [dashboard]
+      summary: Create widget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardWidgetRequest'
+      responses:
+        '201':
+          description: Created widget
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardWidget'
+
+  /dashboard/{dashboardId}/widget/reorder:
+    parameters:
+      - $ref: '#/components/parameters/dashboardId'
+    put:
+      tags: [dashboard]
+      summary: Reorder widgets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                widgetIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        '200':
+          description: OK
+
+  /dashboard/{dashboardId}/widget/{widgetId}:
+    parameters:
+      - $ref: '#/components/parameters/dashboardId'
+      - name: widgetId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [dashboard]
+      summary: Update widget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardWidgetUpdateRequest'
+      responses:
+        '200':
+          description: Updated widget
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardWidget'
+    delete:
+      tags: [dashboard]
+      summary: Delete widget
+      responses:
+        '204':
+          description: No content
+
+  # Trackers
+
+  /tracker:
+    get:
+      tags: [tracker]
+      summary: List trackers
+      responses:
+        '200':
+          description: List of trackers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tracker'
+    post:
+      tags: [tracker]
+      summary: Create tracker
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackerRequest'
+      responses:
+        '201':
+          description: Created tracker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracker'
+
+  /tracker/{trackerId}:
+    parameters:
+      - $ref: '#/components/parameters/trackerId'
+    get:
+      tags: [tracker]
+      summary: Get a tracker
+      responses:
+        '200':
+          description: Tracker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracker'
+    put:
+      tags: [tracker]
+      summary: Update a tracker
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackerRequest'
+      responses:
+        '200':
+          description: Updated tracker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracker'
+    delete:
+      tags: [tracker]
+      summary: Delete a tracker
+      responses:
+        '204':
+          description: No content
+
+  # Statuses
+
+  /status:
+    get:
+      tags: [status]
+      summary: List statuses
+      responses:
+        '200':
+          description: List of statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+    post:
+      tags: [status]
+      summary: Create status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusRequest'
+      responses:
+        '201':
+          description: Created status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+
+  /status/{statusId}:
+    parameters:
+      - $ref: '#/components/parameters/statusId'
+    get:
+      tags: [status]
+      summary: Get a status
+      responses:
+        '200':
+          description: Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+    put:
+      tags: [status]
+      summary: Update a status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusRequest'
+      responses:
+        '200':
+          description: Updated status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+    delete:
+      tags: [status]
+      summary: Delete a status
+      responses:
+        '204':
+          description: No content
+
+  # Priorities
+
+  /priority:
+    get:
+      tags: [priority]
+      summary: List priorities
+      responses:
+        '200':
+          description: List of priorities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Priority'
+    post:
+      tags: [priority]
+      summary: Create priority
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriorityRequest'
+      responses:
+        '201':
+          description: Created priority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Priority'
+
+  /priority/{priorityId}:
+    parameters:
+      - $ref: '#/components/parameters/priorityId'
+    get:
+      tags: [priority]
+      summary: Get a priority
+      responses:
+        '200':
+          description: Priority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Priority'
+    put:
+      tags: [priority]
+      summary: Update a priority
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriorityRequest'
+      responses:
+        '200':
+          description: Updated priority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Priority'
+    delete:
+      tags: [priority]
+      summary: Delete a priority
+      responses:
+        '204':
+          description: No content
+
+  # Transitions
+
+  /transition:
+    get:
+      tags: [transition]
+      summary: List transitions
+      responses:
+        '200':
+          description: List of transitions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transition'
+    post:
+      tags: [transition]
+      summary: Create transition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransitionRequest'
+      responses:
+        '201':
+          description: Created transition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transition'
+
+  /transition/{transitionId}:
+    parameters:
+      - $ref: '#/components/parameters/transitionId'
+    get:
+      tags: [transition]
+      summary: Get a transition
+      responses:
+        '200':
+          description: Transition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transition'
+    put:
+      tags: [transition]
+      summary: Update a transition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransitionRequest'
+      responses:
+        '200':
+          description: Updated transition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transition'
+    delete:
+      tags: [transition]
+      summary: Delete a transition
+      responses:
+        '204':
+          description: No content
+
+  # Releases
+
+  /release:
+    get:
+      tags: [release]
+      summary: List releases
+      responses:
+        '200':
+          description: List of releases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Release'
+    post:
+      tags: [release]
+      summary: Create release
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRequest'
+      responses:
+        '201':
+          description: Created release
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Release'
+
+  /release/{releaseId}:
+    parameters:
+      - $ref: '#/components/parameters/releaseId'
+    get:
+      tags: [release]
+      summary: Get a release
+      responses:
+        '200':
+          description: Release
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Release'
+    put:
+      tags: [release]
+      summary: Update a release
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRequest'
+      responses:
+        '200':
+          description: Updated release
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Release'
+    delete:
+      tags: [release]
+      summary: Delete a release
+      responses:
+        '204':
+          description: No content
+
+  /release/{releaseId}/project:
+    parameters:
+      - $ref: '#/components/parameters/releaseId'
+    get:
+      tags: [release]
+      summary: List projects in a release
+      responses:
+        '200':
+          description: List of project releases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectRelease'
+
+  /project-release:
+    get:
+      tags: [release]
+      summary: List project releases
+      responses:
+        '200':
+          description: List of project releases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectRelease'
+    post:
+      tags: [release]
+      summary: Create project release
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectReleaseRequest'
+      responses:
+        '201':
+          description: Created project release
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRelease'
+
+  /project-release/{projectReleaseId}:
+    parameters:
+      - name: projectReleaseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [release]
+      summary: Get a project release
+      responses:
+        '200':
+          description: Project release
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRelease'
+    delete:
+      tags: [release]
+      summary: Delete a project release
+      responses:
+        '204':
+          description: No content
+
+  /project-release/{projectReleaseId}/issue:
+    parameters:
+      - name: projectReleaseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [release]
+      summary: List issues in a project release
+      responses:
+        '200':
+          description: List of project release issues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectReleaseIssue'
+
+  /project-release-issue:
+    get:
+      tags: [release]
+      summary: List project release issues
+      responses:
+        '200':
+          description: List of project release issues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectReleaseIssue'
+    post:
+      tags: [release]
+      summary: Add issue to project release
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectReleaseIssueRequest'
       responses:
         '201':
           description: Created
-  /user/{userId}:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectReleaseIssue'
+
+  /project-release-issue/{projectReleaseIssueId}:
+    parameters:
+      - name: projectReleaseIssueId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
     get:
-      tags: ["user"]
-      description: Get a user
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
+      tags: [release]
+      summary: Get a project release issue
       responses:
         '200':
-          description: User
+          description: Project release issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectReleaseIssue'
+    delete:
+      tags: [release]
+      summary: Remove issue from project release
+      responses:
+        '204':
+          description: No content
+
+  # Settings
+
+  /setting:
+    get:
+      tags: [setting]
+      summary: List all settings
+      security: []
+      responses:
+        '200':
+          description: List of settings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Setting'
+
+  /setting/{key}:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+            - site_title
+            - dark_mode
+            - default_issue_display_columns
+            - default_issue_display_group_by
+            - default_board_id
+            - default_dashboard_id
+            - onboarded
     put:
-      tags: ["user"]
-      description: Update a user
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
+      tags: [setting]
+      summary: Update a setting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingRequest'
+      responses:
+        '200':
+          description: Updated setting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Setting'
+
+  # Notifications
+
+  /notification:
+    get:
+      tags: [notification]
+      summary: List notifications for current user
+      responses:
+        '200':
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+
+  /notification/{notificationId}/read:
+    parameters:
+      - name: notificationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [notification]
+      summary: Mark notification as read
       responses:
         '200':
           description: OK
+
+  # Users
+
+  /user:
+    get:
+      tags: [user]
+      summary: List users
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags: [user]
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '201':
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /user/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/userId'
+    get:
+      tags: [user]
+      summary: Get a user
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags: [user]
+      summary: Update a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
     delete:
-      tags: ["user"]
-      description: Delete a user
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
+      tags: [user]
+      summary: Delete a user
       responses:
         '204':
           description: No content
+
   /user/current:
     get:
-      tags: ["userCurrent"]
-      description: Get current user
+      tags: [user]
+      summary: Get current user
       responses:
         '200':
-          description: User
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
     put:
-      tags: ["userCurrent"]
-      description: Update current user
+      tags: [user]
+      summary: Update current user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
       responses:
         '200':
-          description: User
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
     delete:
-      tags: ["userCurrent"]
-      description: Delete current user
+      tags: [user]
+      summary: Delete current user account
       responses:
         '204':
           description: No content
-  /user/session:
-    post:
-      tags: ["userSession"]
-      description: Create session
-      requestBody:
-        content:
-          "application/json":
-            schema:
-              email:
-                type: string
-              password:
-                type: string
-      responses:
-        '201':
-          description: Session
-  /user/register:
+
+  /user/permission:
     get:
-      tags: ["userRegister"]
-      description: Register user
+      tags: [user]
+      summary: Get current user permissions
       responses:
         '200':
-          description: User
+          description: List of permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsResponse'
+
+  /user/{userId}/role:
+    parameters:
+      - $ref: '#/components/parameters/userId'
+    get:
+      tags: [user]
+      summary: List roles for a user
+      responses:
+        '200':
+          description: Roles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolesResponse'
     post:
-      tags: ["userRegister"]
-      description: Register user
+      tags: [user]
+      summary: Assign role to user
       requestBody:
+        required: true
         content:
-          "application/json":
+          application/json:
             schema:
-              email:
-                type: string
-              password:
-                type: string
+              $ref: '#/components/schemas/RoleRequest'
       responses:
         '201':
-          description: Session
+          description: Role assigned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse'
+
+  /user/{userId}/role/{role}:
+    parameters:
+      - $ref: '#/components/parameters/userId'
+      - name: role
+        in: path
+        required: true
+        schema:
+          type: string
     delete:
-      tags: ["userRegister"]
-      description: Delete session
+      tags: [user]
+      summary: Remove role from user
       responses:
         '204':
           description: No content
+
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    projectId:
+      name: projectId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    issueId:
+      name: issueId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    filterId:
+      name: filterId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    boardId:
+      name: boardId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    dashboardId:
+      name: dashboardId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    trackerId:
+      name: trackerId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    statusId:
+      name: statusId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    priorityId:
+      name: priorityId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    transitionId:
+      name: transitionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    releaseId:
+      name: releaseId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
   schemas:
-    Project:
+
+    # Auth
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    RegisterRequest:
+      type: object
+      required: [email, password, firstName, lastName]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    SessionResponse:
       type: object
       properties:
-        id:
+        token:
           type: string
-        name:
-          type: string
-        codeName:
-          type: string
-        createdAt:
-          type: string
-    Issue:
+        user:
+          $ref: '#/components/schemas/User'
+
+    OnboardRequest:
       type: object
+      required: [email, password, firstName, lastName]
       properties:
-        id:
+        email:
           type: string
-        key:
+          format: email
+        password:
           type: string
-        type:
+          format: password
+        firstName:
           type: string
-        summary:
+        lastName:
           type: string
-        description:
-          type: string
-        status:
-          type: string
-        createdAt:
-          type: string
+
+    # User
+
     User:
       type: object
       properties:
         id:
           type: string
+          format: uuid
         email:
           type: string
+          format: email
         firstName:
           type: string
         lastName:
@@ -546,3 +1827,747 @@ components:
           type: string
         country:
           type: string
+
+    UserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        language:
+          type: string
+        country:
+          type: string
+
+    PermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+
+    RolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+
+    RoleRequest:
+      type: object
+      required: [role]
+      properties:
+        role:
+          type: string
+
+    RoleResponse:
+      type: object
+      properties:
+        role:
+          type: string
+
+    # Project
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        codeName:
+          type: string
+        defaultStatusId:
+          type: string
+          format: uuid
+          nullable: true
+        defaultTrackerId:
+          type: string
+          format: uuid
+          nullable: true
+
+    ProjectRequest:
+      type: object
+      required: [name, codeName]
+      properties:
+        name:
+          type: string
+        codeName:
+          type: string
+        defaultStatusId:
+          type: string
+          format: uuid
+          nullable: true
+        defaultTrackerId:
+          type: string
+          format: uuid
+          nullable: true
+
+    # Issue
+
+    Issue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        key:
+          type: string
+          example: PROJ-1
+        summary:
+          type: string
+        description:
+          type: string
+        assignedUserId:
+          type: string
+          format: uuid
+          nullable: true
+        assignedUser:
+          $ref: '#/components/schemas/User'
+        reporterUserId:
+          type: string
+          format: uuid
+          nullable: true
+        reporterUser:
+          $ref: '#/components/schemas/User'
+        priorityId:
+          type: string
+          format: uuid
+          nullable: true
+        priority:
+          $ref: '#/components/schemas/Priority'
+        project:
+          $ref: '#/components/schemas/Project'
+        status:
+          $ref: '#/components/schemas/Status'
+        tracker:
+          $ref: '#/components/schemas/Tracker'
+
+    IssueRequest:
+      type: object
+      required: [projectId, statusId, trackerId, summary]
+      properties:
+        projectId:
+          type: string
+          format: uuid
+        statusId:
+          type: string
+          format: uuid
+        trackerId:
+          type: string
+          format: uuid
+        assignedUserId:
+          type: string
+          format: uuid
+          nullable: true
+        reporterUserId:
+          type: string
+          format: uuid
+          nullable: true
+        priorityId:
+          type: string
+          format: uuid
+          nullable: true
+        summary:
+          type: string
+        description:
+          type: string
+
+    RelatedIssue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        issueA:
+          $ref: '#/components/schemas/Issue'
+        issueB:
+          $ref: '#/components/schemas/Issue'
+        type:
+          type: string
+          enum: [related, blocks, implements, duplicates]
+        directionFromCurrent:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    RelatedIssueRequest:
+      type: object
+      required: [targetIssueId, type]
+      properties:
+        targetIssueId:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [related, blocks, implements, duplicates]
+
+    IssueAuditLog:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        eventType:
+          type: string
+          enum:
+            - field_changed
+            - attachment_added
+            - attachment_removed
+            - worklog_added
+            - worklog_updated
+            - worklog_removed
+            - related_issue_added
+            - related_issue_removed
+        field:
+          type: string
+        oldValue:
+          type: string
+        newValue:
+          type: string
+        meta:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+
+    # Worklog
+
+    Worklog:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        seconds:
+          type: integer
+        comment:
+          type: string
+        loggedAt:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/User'
+
+    WorklogRequest:
+      type: object
+      required: [seconds, loggedAt]
+      properties:
+        seconds:
+          type: integer
+        comment:
+          type: string
+        loggedAt:
+          type: string
+          format: date-time
+
+    # Comment
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content:
+          type: string
+        entityType:
+          type: string
+        entityId:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CommentRequest:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+
+    # Attachment
+
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        filename:
+          type: string
+        mimeType:
+          type: string
+        size:
+          type: integer
+          format: int64
+        entityType:
+          type: string
+        entityId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+
+    # Filter
+
+    Filter:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+        columnList:
+          type: string
+        groupBy:
+          type: string
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterCondition'
+
+    FilterRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+        columnList:
+          type: string
+        groupBy:
+          type: string
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterConditionRequest'
+
+    FilterCondition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        field:
+          type: string
+        op:
+          type: string
+        value:
+          type: string
+
+    FilterConditionRequest:
+      type: object
+      required: [field, op, value]
+      properties:
+        field:
+          type: string
+        op:
+          type: string
+        value:
+          type: string
+
+    # Board
+
+    Board:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        boardColumns:
+          type: array
+          items:
+            $ref: '#/components/schemas/BoardColumn'
+
+    BoardRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        boardColumns:
+          type: array
+          items:
+            $ref: '#/components/schemas/BoardColumnRequest'
+
+    BoardColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+        weight:
+          type: integer
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Status'
+
+    BoardColumnRequest:
+      type: object
+      required: [label]
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        label:
+          type: string
+        weight:
+          type: integer
+        statusIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+
+    # Dashboard
+
+    Dashboard:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+        widgets:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardWidget'
+
+    DashboardRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+
+    DashboardWidget:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        dashboardId:
+          type: string
+          format: uuid
+        type:
+          type: string
+        title:
+          type: string
+        weight:
+          type: integer
+        width:
+          type: string
+        filter:
+          $ref: '#/components/schemas/Filter'
+
+    DashboardWidgetRequest:
+      type: object
+      required: [type, title]
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        filterId:
+          type: string
+          format: uuid
+          nullable: true
+
+    DashboardWidgetUpdateRequest:
+      type: object
+      properties:
+        width:
+          type: string
+          nullable: true
+
+    # Tracker / Status / Priority
+
+    Tracker:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        color:
+          type: string
+          example: '#3498db'
+
+    TrackerRequest:
+      type: object
+      required: [name, color]
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+          example: '#3498db'
+
+    Status:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        color:
+          type: string
+          example: '#2ecc71'
+
+    StatusRequest:
+      type: object
+      required: [name, color]
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+          example: '#2ecc71'
+
+    Priority:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        color:
+          type: string
+          example: '#e74c3c'
+
+    PriorityRequest:
+      type: object
+      required: [name, color]
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+          example: '#e74c3c'
+
+    # Transition
+
+    Transition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        sourceStatusId:
+          type: string
+          format: uuid
+        targetStatusId:
+          type: string
+          format: uuid
+
+    TransitionRequest:
+      type: object
+      required: [name, sourceStatusId, targetStatusId]
+      properties:
+        name:
+          type: string
+        sourceStatusId:
+          type: string
+          format: uuid
+        targetStatusId:
+          type: string
+          format: uuid
+
+    # Release
+
+    Release:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+          enum: [Planned, Released]
+        released_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ReleaseRequest:
+      type: object
+      required: [name, status]
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [Planned, Released]
+        released_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ProjectRelease:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        release_id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        release:
+          $ref: '#/components/schemas/Release'
+        project:
+          $ref: '#/components/schemas/Project'
+
+    ProjectReleaseRequest:
+      type: object
+      required: [releaseId, projectId]
+      properties:
+        releaseId:
+          type: string
+          format: uuid
+        projectId:
+          type: string
+          format: uuid
+
+    ProjectReleaseIssue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_release_id:
+          type: string
+          format: uuid
+        issue_id:
+          type: string
+          format: uuid
+        issue:
+          $ref: '#/components/schemas/Issue'
+
+    ProjectReleaseIssueRequest:
+      type: object
+      required: [projectReleaseId, issueId]
+      properties:
+        projectReleaseId:
+          type: string
+          format: uuid
+        issueId:
+          type: string
+          format: uuid
+
+    # Setting
+
+    Setting:
+      type: object
+      properties:
+        key:
+          type: string
+          enum:
+            - site_title
+            - dark_mode
+            - default_issue_display_columns
+            - default_issue_display_group_by
+            - default_board_id
+            - default_dashboard_id
+            - onboarded
+        value:
+          type: string
+        valueType:
+          type: string
+          enum: [string, boolean, number, json]
+        options:
+          type: array
+          items:
+            type: string
+
+    SettingRequest:
+      type: object
+      required: [value]
+      properties:
+        value:
+          type: string
+
+    # Notification
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        entityType:
+          type: string
+          nullable: true
+        entityId:
+          type: string
+          format: uuid
+          nullable: true
+        read:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
