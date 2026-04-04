@@ -14,7 +14,7 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:8081"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock   
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - nx-network
 
@@ -75,6 +75,7 @@ services:
       DB_PASSWORD: apipass
       DB_NAME: api
       OPENAPI_PATH: /app/apps/api/app/http/openapi.yaml
+      OPENAPI_DOCS: true
       JWT_SECRET: secret
       REGISTER_ALLOWED: "true"
     labels:
@@ -104,7 +105,7 @@ services:
     labels:
       - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
       - "traefik.http.services.frontend.loadbalancer.server.port=4200"
-      - "traefik.http.routers.frontend.entrypoints=web"   
+      - "traefik.http.routers.frontend.entrypoints=web"
     ports:
       - '4200:4200'
     volumes:

@@ -3,6 +3,7 @@ package http
 import (
 	"apps/api/app/domain"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -106,6 +107,11 @@ func (r Router) Init() *chi.Mux {
 	router.With(RequirePermission(r.PermissionService, domain.DashboardUpdate)).Put("/dashboard/{dashboard_id}/widget/reorder", r.DashboardWidgetController.Reorder)
 	router.With(RequirePermission(r.PermissionService, domain.DashboardUpdate)).Patch("/dashboard/{dashboard_id}/widget/{widget_id}", r.DashboardWidgetController.Update)
 	router.With(RequirePermission(r.PermissionService, domain.DashboardUpdate)).Delete("/dashboard/{dashboard_id}/widget/{widget_id}", r.DashboardWidgetController.Destroy)
+
+	if os.Getenv("OPENAPI_DOCS") == "true" {
+		router.Get("/docs", docsUIHandler)
+		router.Get("/docs/openapi.yaml", docsSpecHandler)
+	}
 
 	router.Get("/health", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	router.Get("/config", ConfigController{}.Show)

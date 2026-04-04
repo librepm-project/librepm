@@ -53,7 +53,7 @@
           <v-icon
             icon="mdi-pencil"
             class="cursor-pointer"
-            @click="onEdit(item)"
+            @click.stop="onEdit(item)"
           />
         </div>
       </template>
