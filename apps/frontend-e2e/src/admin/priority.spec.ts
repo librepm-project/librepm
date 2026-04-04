@@ -1,9 +1,10 @@
-import { test, expect } from '../support/fixtures';
+import { test, expect, showAllRows } from '../support/fixtures';
 
 test.describe('Admin > Priorities', () => {
   test('shows seeded priorities in list', async ({ adminPage: page }) => {
     await page.goto('/admin/priority');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: 'High' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'Normal' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'Low' })).toBeVisible();
@@ -26,12 +27,14 @@ test.describe('Admin > Priorities', () => {
 
     await expect(page).toHaveURL('/admin/priority');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: priorityName })).toBeVisible();
   });
 
   test('opens existing priority detail', async ({ adminPage: page }) => {
     await page.goto('/admin/priority');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await page.getByRole('cell', { name: 'High' }).click();
     await expect(page).toHaveURL(/\/admin\/priority\/.+/);
     await expect(page.getByLabel('Name')).toHaveValue('High');

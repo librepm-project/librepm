@@ -1,9 +1,10 @@
-import { test, expect } from './support/fixtures';
+import { test, expect, showAllRows } from './support/fixtures';
 
 test.describe('Filters', () => {
   test('shows seeded filters in list', async ({ authenticatedPage: page }) => {
     await page.goto('/filter');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: 'Open Issues' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'Wedding Tasks' })).toBeVisible();
   });
@@ -25,12 +26,14 @@ test.describe('Filters', () => {
     await page.getByRole('button', { name: 'Create' }).click();
 
     await expect(page).toHaveURL('/filter');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: filterName })).toBeVisible();
   });
 
   test('opens filter view page by clicking row', async ({ authenticatedPage: page }) => {
     await page.goto('/filter');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await page.getByRole('cell', { name: 'Open Issues' }).click();
     await expect(page).toHaveURL(/\/filter\/[^/]+$/);
     await expect(page.getByRole('table')).toBeVisible();
@@ -39,6 +42,7 @@ test.describe('Filters', () => {
   test('opens filter edit page via pencil icon', async ({ authenticatedPage: page }) => {
     await page.goto('/filter');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     const row = page.getByRole('row').filter({ hasText: 'Open Issues' });
     await row.locator('.mdi-pencil').click();
     await expect(page).toHaveURL(/\/filter\/.+\/edit/);
@@ -52,6 +56,7 @@ test.describe('Filters', () => {
     await page.getByRole('button', { name: 'Create' }).click();
     await expect(page).toHaveURL('/filter');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: filterName })).toBeVisible();
 
     // Open edit page via pencil icon

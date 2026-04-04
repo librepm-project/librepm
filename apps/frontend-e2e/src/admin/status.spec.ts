@@ -1,10 +1,10 @@
-import { test, expect } from '../support/fixtures';
+import { test, expect, showAllRows } from '../support/fixtures';
 
 test.describe('Admin > Statuses', () => {
   test('shows seeded statuses in list', async ({ adminPage: page }) => {
     await page.goto('/admin/status');
     await page.waitForLoadState('networkidle');
-    // Check items that are on the first page of the paginated list
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: 'Done' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'Open' })).toBeVisible();
   });
@@ -26,13 +26,12 @@ test.describe('Admin > Statuses', () => {
 
     await expect(page).toHaveURL('/admin/status');
     await page.waitForLoadState('networkidle');
-    // Navigate to page 2 to find the newly created status (list paginates at 10)
-    // Or just verify redirect happened (status was created)
   });
 
   test('opens existing status detail', async ({ adminPage: page }) => {
     await page.goto('/admin/status');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await page.getByRole('cell', { name: 'Done' }).click();
     await expect(page).toHaveURL(/\/admin\/status\/.+/);
     await expect(page.getByLabel('Name')).toHaveValue('Done');

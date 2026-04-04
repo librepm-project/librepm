@@ -65,7 +65,7 @@ test.describe('Dashboard – detail', () => {
 
     await dialog.getByRole('button', { name: 'Create' }).click();
 
-    await expect(page.getByText('E2E Widget')).toBeVisible();
+    await expect(page.getByText('E2E Widget').first()).toBeVisible();
   });
 
   test('creates a new dashboard', async ({ authenticatedPage: page }) => {

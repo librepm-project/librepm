@@ -25,6 +25,7 @@ test.describe('Issues – CRUD', () => {
 
     await page.getByLabel('Project').click({ force: true });
     await page.getByRole('option', { name: 'Wedding Project' }).click();
+    await page.waitForLoadState('networkidle'); // wait for tracker options to load async
 
     await page.getByLabel('Tracker').click({ force: true });
     await page.getByRole('option', { name: 'Planning' }).click();
