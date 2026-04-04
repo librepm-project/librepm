@@ -1,9 +1,10 @@
-import { test, expect } from '../support/fixtures';
+import { test, expect, showAllRows } from '../support/fixtures';
 
 test.describe('Admin > Boards', () => {
   test('shows seeded boards in list', async ({ adminPage: page }) => {
     await page.goto('/admin/board');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: 'Wedding Project Board' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'Startup Launch Board' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'London Trip Board' })).toBeVisible();
@@ -31,6 +32,7 @@ test.describe('Admin > Boards', () => {
   test('opens board edit page from admin list', async ({ adminPage: page }) => {
     await page.goto('/admin/board');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await page.getByRole('cell', { name: 'Wedding Project Board' }).click();
     await expect(page).toHaveURL(/\/admin\/board\/.+\/edit/);
   });
@@ -38,6 +40,7 @@ test.describe('Admin > Boards', () => {
   test('board edit page shows existing columns', async ({ adminPage: page }) => {
     await page.goto('/admin/board');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await page.getByRole('cell', { name: 'Wedding Project Board' }).click();
     await expect(page).toHaveURL(/\/admin\/board\/.+\/edit/);
 

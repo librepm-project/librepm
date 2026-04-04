@@ -1,10 +1,10 @@
-import { test, expect } from '../support/fixtures';
+import { test, expect, showAllRows } from '../support/fixtures';
 
 test.describe('Admin > Trackers', () => {
   test('shows seeded trackers in list', async ({ adminPage: page }) => {
     await page.goto('/admin/tracker');
     await page.waitForLoadState('networkidle');
-    // Use items confirmed to be on page 1 (Bug, Epic are seeded items on first page)
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: 'Bug', exact: true })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'Epic', exact: true })).toBeVisible();
   });
@@ -30,7 +30,7 @@ test.describe('Admin > Trackers', () => {
   test('opens existing tracker detail', async ({ adminPage: page }) => {
     await page.goto('/admin/tracker');
     await page.waitForLoadState('networkidle');
-    // Bug is confirmed to be on page 1
+    await showAllRows(page);
     await page.getByRole('cell', { name: 'Bug', exact: true }).click();
     await expect(page).toHaveURL(/\/admin\/tracker\/.+/);
     await expect(page.getByLabel('Name')).toHaveValue('Bug');

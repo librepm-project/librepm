@@ -1,4 +1,4 @@
-import { test, expect } from '../support/fixtures';
+import { test, expect, showAllRows } from '../support/fixtures';
 
 test.describe('Admin > Releases', () => {
   test('shows releases index page', async ({ adminPage: page }) => {
@@ -28,6 +28,7 @@ test.describe('Admin > Releases', () => {
 
     await expect(page).toHaveURL('/admin/release');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: releaseName })).toBeVisible();
   });
 
@@ -44,6 +45,7 @@ test.describe('Admin > Releases', () => {
 
     await expect(page).toHaveURL('/admin/release');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: releaseName })).toBeVisible();
   });
 
@@ -56,6 +58,7 @@ test.describe('Admin > Releases', () => {
     await page.getByRole('button', { name: 'Create' }).click();
     await expect(page).toHaveURL('/admin/release');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
 
     await page.getByRole('cell', { name: releaseName }).click();
     await expect(page).toHaveURL(/\/admin\/release\/.+/);

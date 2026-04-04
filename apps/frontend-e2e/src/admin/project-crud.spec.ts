@@ -1,9 +1,10 @@
-import { test, expect } from '../support/fixtures';
+import { test, expect, showAllRows } from '../support/fixtures';
 
 test.describe('Admin > Projects – CRUD', () => {
   test('shows seeded projects in list', async ({ adminPage: page }) => {
     await page.goto('/admin/project');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: 'Wedding Project' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'WED', exact: true })).toBeVisible();
   });
@@ -26,12 +27,14 @@ test.describe('Admin > Projects – CRUD', () => {
 
     await expect(page).toHaveURL('/admin/project');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: `E2E Project ${ts}` })).toBeVisible();
   });
 
   test('opens seeded project detail', async ({ adminPage: page }) => {
     await page.goto('/admin/project');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await page.getByRole('cell', { name: 'Wedding Project' }).click();
     await expect(page).toHaveURL(/\/admin\/project\/.+/);
     await expect(page.getByLabel('Name', { exact: true })).toHaveValue('Wedding Project');
@@ -46,6 +49,7 @@ test.describe('Admin > Projects – CRUD', () => {
     await page.getByRole('button', { name: 'Create' }).click();
     await expect(page).toHaveURL('/admin/project');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
 
     await page.getByRole('cell', { name: `Update Me ${ts}` }).click();
     await expect(page).toHaveURL(/\/admin\/project\/.+/);
@@ -56,6 +60,7 @@ test.describe('Admin > Projects – CRUD', () => {
 
     await expect(page).toHaveURL('/admin/project');
     await page.waitForLoadState('networkidle');
+    await showAllRows(page);
     await expect(page.getByRole('cell', { name: `Update Me ${ts} (Updated)` })).toBeVisible();
   });
 });
