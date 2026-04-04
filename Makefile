@@ -48,6 +48,7 @@ ifndef VERSION
 endif
 	@echo "$(VERSION)" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$$' || { echo "Error: VERSION must be semver (x.y.z), got '$(VERSION)'"; exit 1; }
 	npm pkg set version=$(VERSION)
+	sed -i '' 's/^\([[:space:]]*version:[[:space:]]*\).*/\1$(VERSION)/' apps/api/app/http/openapi.yaml
 	@echo "Version set to $(VERSION)"
 
 storybook:
