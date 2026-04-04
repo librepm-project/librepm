@@ -500,48 +500,49 @@ paths:
         '204':
           description: No content
 components:
-  Project:
-    type: object
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-      codeName:
-        type: string
-      createdAt:
-        type: string
-  Issue:
-    type: object
-    properties:
-      id:
-        type: string
-      key:
-        type: string
-      type:
-        type: string
-      summary:
-        type: string
-      description:
-        type: string
-      status:
-        type: string
-      createdAt:
-        type: string  
-  User:
-    type: object
-    properties:
-      id:
-        type: string
-      email:
-        type: string
-      firstName:
-        type: string
-      lastName:
-        type: string
-      phone:
-        type: string
-      language:
-        type: string
-      country:
-        type: string
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        codeName:
+          type: string
+        createdAt:
+          type: string
+    Issue:
+      type: object
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        type:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        language:
+          type: string
+        country:
+          type: string

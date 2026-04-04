@@ -4,43 +4,34 @@ import (
 	"apps/api/app/domain"
 	"libs/http_utils"
 	"log/slog"
+	"os"
 )
+
+func buildWhitelist() []http_utils.Endpoint {
+	whitelist := []http_utils.Endpoint{
+		{Method: "POST", Path: "/user/session"},
+		{Method: "POST", Path: "/user/register"},
+		{Method: "GET", Path: "/ws"},
+		{Method: "GET", Path: "/setting"},
+		{Method: "GET", Path: "/config"},
+		{Method: "GET", Path: "/health"},
+		{Method: "POST", Path: "/onboard"},
+	}
+	if os.Getenv("OPENAPI_DOCS") == "true" {
+		whitelist = append(whitelist,
+			http_utils.Endpoint{Method: "GET", Path: "/docs"},
+			http_utils.Endpoint{Method: "GET", Path: "/docs/openapi.yaml"},
+		)
+	}
+	return whitelist
+}
 
 func StartHttpServer(d domain.Domain) {
 	hub := NewHub()
 	d.NotificationService.SetPusher(hub)
 
 	authorization_middleware_context := http_utils.AuthorizationMiddlewareContext{
-		Whitelist: []http_utils.Endpoint{
-			{
-				Method: "POST",
-				Path:   "/user/session",
-			},
-			{
-				Method: "POST",
-				Path:   "/user/register",
-			},
-			{
-				Method: "GET",
-				Path:   "/ws",
-			},
-			{
-				Method: "GET",
-				Path:   "/setting",
-			},
-			{
-				Method: "GET",
-				Path:   "/config",
-			},
-			{
-				Method: "GET",
-				Path:   "/health",
-			},
-			{
-				Method: "POST",
-				Path:   "/onboard",
-			},
-		},
+		Whitelist: buildWhitelist(),
 	}
 
 	router := Router{
