@@ -41,6 +41,16 @@ seed:
 purge:
 	docker compose --profile cli exec cli go run apps/api purge
 
+set_version:
+ifndef VERSION
+	@echo "Usage: make set_version VERSION=x.y.z"
+	@exit 1
+endif
+	@echo "$(VERSION)" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$$' || { echo "Error: VERSION must be semver (x.y.z), got '$(VERSION)'"; exit 1; }
+	npm pkg set version=$(VERSION)
+	sed -i '' 's/^\([[:space:]]*version:[[:space:]]*\).*/\1$(VERSION)/' apps/api/app/http/openapi.yaml
+	@echo "Version set to $(VERSION)"
+
 storybook:
 	docker compose --profile cli run --rm --entrypoint sh cli -c "cd /app && npx nx run frontend:storybook"
 
