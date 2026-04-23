@@ -1,4 +1,4 @@
-VERSION := $(shell node -p "require('./package.json').version")
+VERSION := $(shell node -p "require('./package.json').version" 2>/dev/null)
 
 build:
 	docker build -f Dockerfile.production \
@@ -61,7 +61,7 @@ e2e:
 upgrade:
 	docker compose down
 	git pull
-	docker compose up --build -d
+	docker compose --profile dev up --build -d
 
 login:
 ifndef EMAIL
