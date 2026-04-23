@@ -6,8 +6,8 @@ services:
     image: traefik:v2.10
     container_name: librepm_traefik
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "${TRAEFIK_DASHBOARD_PORT:-8080}:8080"
+      - "${TRAEFIK_WEB_PORT:-8081}:8081"
     command:
       - "--api.insecure=true"
       - "--api.dashboard=true"
@@ -50,11 +50,11 @@ services:
     container_name: librepm_cli
     environment:
       DB_HOST: database
-      DB_PORT: 3306
-      DB_USER: api
-      DB_PASSWORD: apipass
-      DB_NAME: api
-      JWT_SECRET: secret
+      DB_PORT: ${DB_PORT:-3306}
+      DB_USER: ${DB_USER:-api}
+      DB_PASSWORD: ${DB_PASSWORD:-apipass}
+      DB_NAME: ${DB_NAME:-api}
+      JWT_SECRET: ${JWT_SECRET:-secret}
     networks:
       - nx-network
     volumes:
@@ -70,14 +70,14 @@ services:
     container_name: librepm_api
     environment:
       DB_HOST: database
-      DB_PORT: 3306
-      DB_USER: api
-      DB_PASSWORD: apipass
-      DB_NAME: api
+      DB_PORT: ${DB_PORT:-3306}
+      DB_USER: ${DB_USER:-api}
+      DB_PASSWORD: ${DB_PASSWORD:-apipass}
+      DB_NAME: ${DB_NAME:-api}
       OPENAPI_PATH: /app/apps/api/app/http/openapi.yaml
-      OPENAPI_DOCS: true
-      JWT_SECRET: secret
-      REGISTER_ALLOWED: "true"
+      OPENAPI_DOCS: ${OPENAPI_DOCS:-true}
+      JWT_SECRET: ${JWT_SECRET:-secret}
+      REGISTER_ALLOWED: ${REGISTER_ALLOWED:-true}
     labels:
       - "traefik.http.routers.api.rule=PathPrefix(`/api`)"
       - "traefik.http.services.api.loadbalancer.server.port=80"
@@ -85,7 +85,7 @@ services:
       - "traefik.http.routers.api.middlewares=api-strip-prefix"
       - "traefik.http.routers.api.entrypoints=web"
     ports:
-      - '3000:80'
+      - '${API_PORT:-3000}:80'
     volumes:
       - .:/app
       - api-uploads:/app/apps/api/uploads
@@ -107,7 +107,7 @@ services:
       - "traefik.http.services.frontend.loadbalancer.server.port=4200"
       - "traefik.http.routers.frontend.entrypoints=web"
     ports:
-      - '4200:4200'
+      - '${FRONTEND_PORT:-4200}:4200'
     volumes:
       - .:/app
     networks:
@@ -127,7 +127,7 @@ services:
         echo 'Waiting for frontend...'; sleep 2;
       done && npx playwright test"
     environment:
-      BASE_URL: http://host.docker.internal:8081
+      BASE_URL: http://host.docker.internal:${TRAEFIK_WEB_PORT:-8081}
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     volumes:
       - .:/app
@@ -138,12 +138,12 @@ services:
     image: mariadb:11.5.2
     container_name: librepm_database
     environment:
-      MYSQL_DATABASE: api
-      MYSQL_USER: api
-      MYSQL_PASSWORD: apipass
-      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ${DB_NAME:-api}
+      MYSQL_USER: ${DB_USER:-api}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-apipass}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
     ports:
-      - 3306:3306
+      - ${DB_EXTERNAL_PORT:-3306}:3306
     volumes:
       - db-data:/var/lib/mysql
     networks:

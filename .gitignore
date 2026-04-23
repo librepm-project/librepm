@@ -41,6 +41,9 @@ Thumbs.db
 # File uploads
 apps/api/uploads/
 
+# Environment
+.env
+
 # AI Tools
 .claude
 NOTES_*
