@@ -58,6 +58,11 @@ e2e:
 	docker compose --profile dev up -d
 	docker compose --profile e2e run --rm playwright
 
+upgrade:
+	docker compose down
+	git pull
+	docker compose up --build -d
+
 login:
 ifndef EMAIL
 	@echo "Usage: make login EMAIL=<email>"
